@@ -33,7 +33,7 @@ export default function DoctorSignPage() {
       </section>
 
       {/* Client-side interactive form + info */}
-      <PatientSignUpForm />
+      <DoctorSignUpForm />
     </>
   );
 }

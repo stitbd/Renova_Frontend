@@ -33,7 +33,7 @@ export default function OutletSignUpPage() {
       </section>
 
       {/* Client-side interactive form + info */}
-      <PatientSignUpForm />
+      <OutletSignUpForm />
     </>
   );
 }

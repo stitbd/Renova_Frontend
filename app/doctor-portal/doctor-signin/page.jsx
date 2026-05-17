@@ -1,4 +1,4 @@
-// src/app/DoctorPortal/dportal/page.jsx
+// src/app/doctor-portal/dportal/page.jsx
 import { siteConfig } from "@/constants/siteData";
 import DoctorPortalForm from "./DoctorPortalForm";
 
@@ -8,7 +8,7 @@ export const metadata = {
   openGraph: {
     title: `Doctor Portal | ${siteConfig.name}`,
     description: "Secure login to access your Doctor portal and health records.",
-    url: `${siteConfig.url}/dportal`,
+    url: `${siteConfig.url}/doctor-portal/doctor-signin`,
   },
   // Prevent search engines from indexing login pages
   robots: "noindex, nofollow",

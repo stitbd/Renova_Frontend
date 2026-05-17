@@ -8,7 +8,7 @@ export const metadata = {
   openGraph: {
     title: `Patient Portal | ${siteConfig.name}`,
     description: "Secure login to access your patient portal and health records.",
-    url: `${siteConfig.url}/pportal`,
+    url: `${siteConfig.url}/patient-portal/patient-signin`,
   },
   // Prevent search engines from indexing login pages
   robots: "noindex, nofollow",

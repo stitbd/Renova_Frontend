@@ -1,4 +1,4 @@
-// src/app/DoctorPortal/dportal/DoctorPortalForm.jsx
+// src/app/doctor-portal/dportal/DoctorPortalForm.jsx
 "use client";
 
 import { useState } from "react";

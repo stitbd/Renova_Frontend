@@ -62,22 +62,24 @@ export const footerLinks = {
     { label: "About Us", href: "/about" },
     { label: "Events", href: "/events" },
     { label: "Careers", href: "/careers" },
-    { label: "Our Team", href: "/doctors" },
+    { label: "Our Team", href: "/our-team" },
     { label: "Contact Us", href: "/contact" },
+    { label: "Complain & Advise", href: "/complain" },
   ],
   support: [
     { label: "Book Appointment", href: "/appointment" },
-    { label: "Patient Portal", href: "/patient-portal" },
+    { label: "Patient Portal", href: "/patient-portal/pportal" },
+    { label: "Doctor Portal", href: "/doctor-portal/dportal" },
+    { label: "Outlet Portal", href: "/outlet-portal/oportal" },
     { label: "FAQ", href: "/faq" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms-of-service" },
-    { label: "Complain & Advise", href: "/complain" },
   ],
 };
 
 export const loginLinks = [
-  { label: "Sign Up", href: "/AuthScreen?tab=signup" },
-  { label: "Signin", href: "/AuthScreen?tab=signin" },
+  { label: "Sign Up", href: "/signup" },
+  { label: "Signin", href: "/signin" },
 ];
 
 export const socialLinks = [
