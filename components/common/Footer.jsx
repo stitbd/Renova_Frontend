@@ -60,7 +60,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="footer-brand-col">
             {/* Logo */}
-            <Link href="/" className="logo-wrapper">
+            <Link href="/" className="footer-logo-wrapper">
               <div className="logo">
                 <Image
                   src="/images/logo2.png"

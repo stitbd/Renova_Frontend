@@ -3,6 +3,7 @@ import "@/styles/pages.css";
 import { siteConfig } from "@/constants/siteData";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
+import MobileBottomNav from "@/components/common/MobileBottomNav";
 import { CartProvider } from "@/context/CartContext";
 
 export const metadata = {
@@ -80,6 +81,7 @@ export default function RootLayout({ children }) {
           <main id="main-content">
             {children}
           </main>
+          <MobileBottomNav />
           <Footer />
         </CartProvider>
       </body>

@@ -1073,3 +1073,228 @@
     display: none;
   }
 }
+
+
+/* ════════════════════════════════════════
+   MOBILE BOTTOM NAVIGATION BAR
+   ════════════════════════════════════════ */
+
+.mob-nav {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+
+  /* body padding so content not hidden behind nav */
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Nav bar */
+  .mob-nav {
+    display: flex;
+    align-items: stretch;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-white);
+    border-top: 1px solid rgba(0, 0, 0, 0.09);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  /* Backdrop behind dropup */
+  .mob-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 499;
+    background: transparent;
+  }
+
+  /* Each nav item (Link) */
+  .mob-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    text-decoration: none;
+    color: var(--color-text-muted, #888);
+    transition: color 0.18s ease;
+    position: relative;
+    min-width: 0;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+
+  .mob-nav-item:hover {
+    color: var(--color-authority);
+  }
+
+  /* Active state */
+  .mob-nav-item--active {
+    color: var(--color-authority);
+  }
+
+  /* Active top indicator bar */
+  .mob-nav-item--active .mob-nav-icon::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 3px;
+    background: var(--color-authority);
+    border-radius: 0 0 3px 3px;
+  }
+
+  /* Icon wrapper */
+  .mob-nav-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  /* Label */
+  .mob-nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 56px;
+  }
+
+  /* Cart badge */
+  .mob-nav-badge {
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    background: #e53935;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 999px;
+    min-width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    line-height: 1;
+    border: 1.5px solid var(--color-white);
+  }
+
+  /* ── Account item wrapper ── */
+  .mob-nav-account {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-width: 0;
+  }
+
+  /* Account button (resets button defaults) */
+  .mob-nav-account-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-family: var(--font-body);
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.18s ease;
+  }
+
+  .mob-nav-account-btn:hover {
+    color: var(--color-authority);
+  }
+
+  .mob-nav-item--active .mob-nav-account-btn {
+    color: var(--color-authority);
+  }
+
+  /* ── Dropup panel ── */
+  .mob-nav-dropup {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    right: 0;
+    min-width: 148px;
+    background: var(--color-white);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.13);
+    overflow: hidden;
+    z-index: 501;
+    animation: mob-dropup-in 0.18s ease;
+  }
+
+  @keyframes mob-dropup-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Dropup link items */
+  .mob-nav-dropup-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .mob-nav-dropup-item:hover {
+    background: rgba(66, 138, 38, 0.07);
+    color: var(--color-authority);
+  }
+
+  .mob-nav-dropup-item svg {
+    flex-shrink: 0;
+    opacity: 0.65;
+    transition: opacity 0.15s ease;
+  }
+
+  .mob-nav-dropup-item:hover svg {
+    opacity: 1;
+  }
+
+  /* Divider between Sign Up and Sign In */
+  .mob-nav-dropup-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 0;
+  }
+
+} /* end @media (max-width: 1024px) */
