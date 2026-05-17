@@ -42,7 +42,7 @@ export default function AppointmentPage() {
           </nav>
           
 
-          <div className="appt-hero__stats" aria-label="Key statistics">
+          {/* <div className="appt-hero__stats" aria-label="Key statistics">
             {[
               ["50K+", "Patients served"],
               ["100+", "Expert doctors"],
@@ -54,7 +54,7 @@ export default function AppointmentPage() {
                 <div className="appt-hero__stat-lbl">{label}</div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 
