@@ -395,7 +395,7 @@ export default function Navbar() {
 
           {/* Desktop CTA Buttons */}
           <div className="nav-buttons">
-            <Link href="/doctor-portal/dportal" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+            <Link href="/doctor-portal/doctor-signin" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
               <ReportIcon size={15} />
               Doctor Login
             </Link>

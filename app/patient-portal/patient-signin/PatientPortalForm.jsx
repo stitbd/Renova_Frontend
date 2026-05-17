@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import "./patient-portal.css";
 
 export default function PatientPortalForm() {
   const [uhid, setUhid] = useState("");
