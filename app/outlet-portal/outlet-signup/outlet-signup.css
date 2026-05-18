@@ -3,26 +3,61 @@
    Uses Global Design Tokens from global.css (Single Source of Truth)
    ════════════════════════════════════════ */
 
-/* ── Page Wrapper ─────────────────────── */
+/* Standalone page wrapper */
 .os-standalone {
   min-height: 100vh;
-  background: var(--color-bg-light);
+  background: var(--color-white);
+}
+
+/* Container with background image */
+.os-container {
+  position: relative;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-4);
-  font-family: var(--font-body);
+  padding: var(--space-4);
+  overflow: hidden;
+  background: #e8f0f8;
 }
 
+/* Background Image Layer */
+.os-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.os-background img,
+.os-background .next-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Overlay for better contrast */
+.os-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(5, 65, 125, 0.85) 0%,
+    rgba(30, 111, 175, 0.75) 40%,
+    rgba(76, 175, 80, 0.65) 100%);
+  z-index: 1;
+  backdrop-filter: blur(2px);
+}
 /* ── Card ─────────────────────────────── */
 .os-card {
-  display: flex;
-  width: 1536px;
+  position: relative;
+  z-index: 2;
   background: var(--color-white);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0,0,0,0.10);
+  animation: slideUp 0.5s ease-out;
+  display: flex;
   overflow: hidden;
-  animation: dsSlideUp 0.45s ease-out both;
+  width: 1536px;
 }
 
 @keyframes dsSlideUp {
@@ -70,7 +105,16 @@
   pointer-events: none;
 }
 
-/* Logo circle */
+/* Logo Section */
+.os-logo-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .os-logo-wrap {
   display: flex;
   align-items: center;

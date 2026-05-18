@@ -235,6 +235,21 @@ export default function OutletSignUpForm() {
   }
 
   return (
+    <div className="os-container">
+      {/* Background Image */}
+      <div className="os-background">
+        <Image
+          src="/images/obg-login.jpg"
+          alt="Compassionate healthcare at Renova Life Care"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        <div className="os-overlay" />
+      </div>
+
+      {/* Main Card */}
     <div className="os-card">
       {/* ══════════════════════════════
           SIDEBAR — Left Panel
@@ -245,15 +260,17 @@ export default function OutletSignUpForm() {
           <div className="os-sidebar-dots" />
 
           {/* Logo */}
-          <div className="os-logo-wrap">
-            <Image
-              src="/images/logo.png"
-              alt="Renova Life Care Logo"
-              width={150}
-              height={150}
-              priority
-              style={{ objectFit: "contain" }}
-            />
+          <div className="os-logo-section">
+            <div className="os-logo-wrap">
+              <Image
+                src="/images/logo.png"
+                alt="Renova Life Care Logo"
+                width={150}
+                height={150}
+                priority
+                style={{ objectFit: "contain" }}
+              />
+            </div>
           </div>
         </div>
 
@@ -689,6 +706,8 @@ export default function OutletSignUpForm() {
           </span>
         </div>
       </main>
+    </div>
+  );
     </div>
   );
 }

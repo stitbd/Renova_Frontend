@@ -130,9 +130,9 @@ function Input({ icon: IconComp, hasIcon = true, ...props }) {
           <IconComp />
         </span>
       )}
-      <input 
-        className={`ps-input ${hasIcon ? '' : 'no-icon'}`} 
-        {...props} 
+      <input
+        className={`ps-input ${hasIcon ? '' : 'no-icon'}`}
+        {...props}
       />
     </div>
   );
@@ -191,14 +191,12 @@ export default function PatientSignUpForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    
-    // Basic validation
+
     if (!agreed) {
       setError("Please agree to the Terms & Conditions to proceed");
       return;
     }
-    
-    // Handle form submission logic here
+
     console.log("Patient registration submitted:", formData);
     setSubmitted(true);
   };
@@ -211,10 +209,14 @@ export default function PatientSignUpForm() {
           <h2>Registration Submitted!</h2>
           <p>Your patient account has been created successfully. You will receive a confirmation SMS shortly.</p>
           <button
-            onClick={() => { setSubmitted(false); setAgreed(false); setFormData({
-              fullName: "", referenceName: "", mobile: "", email: "", dob: "",
-              gender: "", bloodGroup: "", address: "", outlet: "",
-            }); }}
+            onClick={() => {
+              setSubmitted(false);
+              setAgreed(false);
+              setFormData({
+                fullName: "", referenceName: "", mobile: "", email: "", dob: "",
+                gender: "", bloodGroup: "", address: "", outlet: "",
+              });
+            }}
             className="ps-success-btn"
           >
             Register Another Patient
@@ -241,63 +243,95 @@ export default function PatientSignUpForm() {
 
       {/* Main Card */}
       <div className="ps-card">
-        {/* Sidebar - Left Panel */}
+
+        {/* ── SIDEBAR ── */}
         <aside className="ps-sidebar">
-          {/* Decorative Elements */}
-          <div className="ps-sidebar-dots"></div>
-          <svg className="ps-leaf-watermark" viewBox="0 0 80 110" fill="none">
-            <path d="M40 10 C10 30 5 70 30 95 C20 70 35 40 70 30 C50 20 40 10 40 10Z" fill="#4CAF50"/>
-            <path d="M40 10 L55 85" stroke="#4CAF50" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
+          {/* Top white section: dots + logo */}
+          <div className="ps-sidebar-top">
+            <div className="ps-sidebar-dots" />
 
-          {/* Logo Section */}
-          <div className="ps-logo-section">
-            <div className="ps-logo-image-wrap">
-              <Image 
-                src="/images/logo.png" 
-                alt="Renova Life Care" 
-                width={140} 
-                height={140}
-                priority
-                className="ps-logo-image"
+            {/* Logo */}
+            <div className="ps-logo-section">
+              <div className="ps-logo-image-wrap">
+                <Image
+                  src="/images/logo.png"
+                  alt="Renova Life Care"
+                  width={200}
+                  height={200}
+                  priority
+                  className="ps-logo-image"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Wave SVG — seamlessly transitions white → gradient */}
+          <div className="ps-sidebar-wave">
+            <svg
+              viewBox="0 0 340 60"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ display: "block", width: "100%", height: "60px" }}
+            >
+              <defs>
+                <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#05417d" />
+                  <stop offset="50%" stopColor="#1a6faf" />
+                  <stop offset="100%" stopColor="#4caf50" />
+                </linearGradient>
+              </defs>
+              {/* White fill above the wave curve */}
+              <path
+                d="M0 0 L340 0 L340 20 Q270 60 170 35 Q80 12 0 50 Z"
+                fill="#ffffff"
               />
-            </div>
+              {/* Gradient wave shape */}
+              <path
+                d="M0 50 Q80 12 170 35 Q270 60 340 20 L340 60 L0 60 Z"
+                fill="url(#waveGrad)"
+              />
+            </svg>
           </div>
 
-          {/* Sidebar Content */}
-          <h2 className="ps-sidebar-title">Your Health,<br/>Our Priority</h2>
-          <p className="ps-sidebar-subtitle">
-            Please fill in the information carefully.<br/>
-            All your data is secure & confidential.
-          </p>
+          {/* Bottom gradient section: text + features */}
+          <div className="ps-sidebar-bottom">
+            {/* Decorative leaf */}
+            <svg className="ps-leaf-watermark" viewBox="0 0 80 110" fill="none">
+              <path d="M40 10 C10 30 5 70 30 95 C20 70 35 40 70 30 C50 20 40 10 40 10Z" fill="#ffffff"/>
+              <path d="M40 10 L55 85" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
 
-          {/* Feature Circles */}
-          <div className="ps-features">
-            <div className="ps-feature">
-              <div className="ps-feature-circle">
-                <Icon.Secure />
+            <h2 className="ps-sidebar-title">Your Health,<br />Our Priority</h2>
+            <p className="ps-sidebar-subtitle">
+              Please fill in the information carefully.<br />
+              All your data is secure &amp; confidential.
+            </p>
+
+            {/* Feature Circles */}
+            <div className="ps-features">
+              <div className="ps-feature">
+                <div className="ps-feature-circle">
+                  <Icon.Secure />
+                </div>
+                <span className="ps-feature-label">Secure<br />Data</span>
               </div>
-              <span className="ps-feature-label">Secure<br/>Data</span>
-            </div>
-            <div className="ps-feature">
-              <div className="ps-feature-circle">
-                <Icon.Care />
+              <div className="ps-feature">
+                <div className="ps-feature-circle">
+                  <Icon.Care />
+                </div>
+                <span className="ps-feature-label">Better<br />Care</span>
               </div>
-              <span className="ps-feature-label">Better<br/>Care</span>
-            </div>
-            <div className="ps-feature">
-              <div className="ps-feature-circle">
-                <Icon.Support />
+              <div className="ps-feature">
+                <div className="ps-feature-circle">
+                  <Icon.Support />
+                </div>
+                <span className="ps-feature-label">24/7<br />Support</span>
               </div>
-              <span className="ps-feature-label">24/7<br/>Support</span>
             </div>
           </div>
-
-          {/* Green Accent Bar */}
-          <div className="ps-sidebar-accent"></div>
         </aside>
 
-        {/* Form Panel - Right Side */}
+        {/* ── FORM PANEL ── */}
         <main className="ps-panel">
           <form onSubmit={handleSubmit} noValidate>
             {/* Form Header */}
@@ -366,18 +400,12 @@ export default function PatientSignUpForm() {
                 <Input icon={Icon.User} type="text" placeholder="Auto calculated" value={age ? `${age} years` : ""} disabled readOnly />
               </Field>
               <Field label="Gender" required>
-                <div className="ps-gender-btns">
-                  {["Male", "Female", "Other"].map((g) => (
-                    <button
-                      key={g}
-                      type="button"
-                      className={`ps-gender-btn${formData.gender === g ? " active" : ""}`}
-                      onClick={() => setFormData(p => ({...p, gender: g}))}
-                    >
-                      <Icon.User /> {g}
-                    </button>
-                  ))}
-                </div>
+                <Select icon={Icon.User} required defaultValue="">
+                  <option value="" disabled>Select gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </Select>
               </Field>
             </div>
 
@@ -386,14 +414,25 @@ export default function PatientSignUpForm() {
               <Field label="Blood Group" required>
                 <Select icon={Icon.Blood} value={formData.bloodGroup} onChange={set("bloodGroup")} required>
                   <option value="">Select blood group</option>
-                  {["A+","A−","B+","B−","AB+","AB−","O+","O−"].map(g => (
+                  {["A+", "A−", "B+", "B−", "AB+", "AB−", "O+", "O−"].map(g => (
                     <option key={g} value={g}>{g}</option>
                   ))}
                 </Select>
               </Field>
+            <Field label="Nationality">
+              <Select icon={Icon.Globe} defaultValue="">
+                <option value="" disabled>Select nationality</option>
+                <option value="BD">Bangladeshi</option>
+                <option value="other">Other</option>
+              </Select>
+            </Field>
+            </div>
+
+            {/* Row 5: Blood Group + Address */}
+            <div className="">
               <Field label="Address" required>
-                <div className="ps-input-wrap" style={{alignItems: "flex-start"}}>
-                  <span className="ps-input-icon" style={{top: 14, transform: "none"}}>
+                <div className="ps-input-wrap" style={{ alignItems: "flex-start" }}>
+                  <span className="ps-input-icon" style={{ top: 14, transform: "none" }}>
                     <Icon.Location />
                   </span>
                   <textarea
@@ -408,19 +447,16 @@ export default function PatientSignUpForm() {
               </Field>
             </div>
 
-            {/* Divider */}
-            <div className="ps-section-divider"></div>
-
-            {/* Outlet Selection - Full Width */}
+            {/* Outlet Selection */}
             <Field label="Outlet Selection" required>
               <div className="ps-outlet-wrap">
                 <span className="ps-outlet-icon">
                   <Icon.Outlet />
                 </span>
-                <select 
-                  className="ps-outlet-select" 
-                  value={formData.outlet} 
-                  onChange={set("outlet")} 
+                <select
+                  className="ps-outlet-select"
+                  value={formData.outlet}
+                  onChange={set("outlet")}
                   required
                 >
                   <option value="">Select outlet</option>
@@ -450,12 +486,12 @@ export default function PatientSignUpForm() {
             {/* Form Footer */}
             <div className="ps-form-footer">
               <label className="ps-agree-row">
-                <input 
-                  type="checkbox" 
-                  checked={agreed} 
-                  onChange={e => setAgreed(e.target.checked)} 
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={e => setAgreed(e.target.checked)}
                 />
-                I agree to the <a href="/terms" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a> *
+                I agree to the <a href="/terms" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a> *
               </label>
               <button type="submit" className="ps-submit-btn" disabled={!agreed}>
                 <Icon.Submit />
