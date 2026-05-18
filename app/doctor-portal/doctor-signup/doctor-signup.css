@@ -3,38 +3,81 @@
    Uses Global Design Tokens from global.css (Single Source of Truth)
    ═══════════════════════════════════════════════════════════════ */
 
-/* ── Page wrapper ─────────────────────── */
-.doctor-signup-standalone {
+
+/* Standalone page wrapper */
+.doctor-standalone {
   min-height: 100vh;
-  background: var(--color-bg-light);
+  background: var(--color-white);
+}
+
+/* Container with background image */
+.doctor-container {
+  position: relative;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-4);
-  font-family: var(--font-body);
+  padding: var(--space-4);
+  overflow: hidden;
+  background: #e8f0f8;
+}
+
+/* Background Image Layer */
+.doctor-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.doctor-background img,
+.doctor-background .next-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Overlay for better contrast */
+.doctor-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(5, 65, 125, 0.85) 0%,
+    rgba(30, 111, 175, 0.75) 40%,
+    rgba(76, 175, 80, 0.65) 100%);
+  z-index: 1;
+  backdrop-filter: blur(2px);
 }
 
 /* ── Card ─────────────────────────────── */
 .doctor-signup__card {
-  display: flex;
-  width: 1536px;
+  position: relative;
+  z-index: 2;
   background: var(--color-white);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0,0,0,0.10);
+  animation: slideUp 0.5s ease-out;
+  display: flex;
   overflow: hidden;
-  animation: dsSlideUp 0.45s ease-out both;
+  width: 1536px;
 }
 
 @keyframes dsSlideUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ══════════════════════════════════════
    SIDEBAR
 ══════════════════════════════════════ */
 .doctor-signup__sidebar {
-  flex: 0 0 330px;
+  flex: 0 0 340px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -45,23 +88,24 @@
 
 /* Top white area */
 .doctor-signup__sidebar-top {
-  flex: 0 0 auto;
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-8) var(--space-6) var(--space-4);
-  position: relative;
-  background: var(--color-white);
-  z-index: 2;
+  justify-content: center;
+  padding: var(--space-6) var(--space-5) 0;
+  flex: 1;
+  background: #ffffff;
 }
 
 /* Dot pattern */
 .doctor-signup__sidebar-dots {
   position: absolute;
   top: var(--space-4);
-  right: var(--space-3);
-  width: 76px;
-  height: 76px;
+  right: var(--space-4);
+  width: 72px;
+  height: 72px;
   background-image: radial-gradient(circle, var(--color-primary) 1.5px, transparent 1.5px);
   background-size: 8px 8px;
   opacity: 0.3;
@@ -211,8 +255,8 @@
 }
 
 .doctor-signup__form-icon {
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
   border-radius: var(--radius-full);
   border: 2.5px solid var(--color-primary);
   background: var(--color-bg-light);
@@ -222,10 +266,16 @@
   flex-shrink: 0;
 }
 
+.doctor-header-icon svg {
+  width: 26px;
+  height: 26px;
+  color: var(--color-primary);
+}
+
 .doctor-signup__form-title {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-extrabold);
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
   line-height: 1.1;
 }
 

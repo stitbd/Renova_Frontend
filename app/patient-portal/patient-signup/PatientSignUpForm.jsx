@@ -73,9 +73,9 @@ const Icon = {
     </svg>
   ),
   Shield: () => (
-    <svg viewBox="0 0 20 20" fill="none" width="20" height="20">
-      <path d="M10 2L3 5.5v5C3 14.7 6.1 17.9 10 19c3.9-1.1 7-4.3 7-8.5v-5L10 2z" fill="currentColor"/>
-      <path d="M7 10l2 2.5L13 8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
+      <path d="M14 3L5 7.5v6.5C5 19.7 8.9 23.7 14 25c5.1-1.3 9-5.3 9-11V7.5L14 3z" fill="#4caf50"/>
+      <path d="M10 14l3 3.5L18 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
   Submit: () => (
@@ -484,16 +484,28 @@ export default function PatientSignUpForm() {
             </div>
 
             {/* Form Footer */}
-            <div className="ps-form-footer">
-              <label className="ps-agree-row">
+            <div className="ps-signup__footer">
+              <label className="ps-signup__agree">
                 <input
                   type="checkbox"
                   checked={agreed}
-                  onChange={e => setAgreed(e.target.checked)}
+                  onChange={(e) => setAgreed(e.target.checked)}
                 />
-                I agree to the <a href="/terms" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a> *
+                I agree to the{" "}
+                <a href="/terms" target="_blank" rel="noreferrer">
+                  Terms &amp; Conditions
+                </a>{" "}
+                and{" "}
+                <a href="/privacy" target="_blank" rel="noreferrer">
+                  Privacy Policy
+                </a>{" "}
+                *
               </label>
-              <button type="submit" className="ps-submit-btn" disabled={!agreed}>
+              <button
+                type="submit"
+                className="ps-signup__btn-submit"
+                disabled={!agreed}
+              >
                 <Icon.Submit />
                 Submit Registration
               </button>

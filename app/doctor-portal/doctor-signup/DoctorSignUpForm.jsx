@@ -285,384 +285,400 @@ export default function DoctorSignUpForm() {
   }
 
   return (
-    <div className="doctor-signup__card">
-      {/* ══════════════════════════════
-          SIDEBAR
-      ══════════════════════════════ */}
-      <aside className="doctor-signup__sidebar">
-        {/* Top white section */}
-        <div className="doctor-signup__sidebar-top">
-          <div className="doctor-signup__sidebar-dots" />
+    <div className="doctor-container">
+      {/* Background Image */}
+      <div className="doctor-background">
+        <Image
+          src="/images/dbg-login.jpg"
+          alt="Compassionate healthcare at Renova Life Care"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        <div className="doctor-overlay" />
+      </div>
 
-          {/* Leaf watermark */}
-          <svg
-            className="doctor-signup__leaf"
-            viewBox="0 0 100 140"
-            fill="none"
-            width="100"
-            height="130"
-          >
-            <path
-              d="M50 15 C15 40 8 90 38 120 C26 88 44 52 90 38 C65 26 50 15 50 15Z"
-              fill="#4caf50"
-            />
-            <path
-              d="M50 15 L68 108"
-              stroke="#4caf50"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+      {/* Main Card */}
+      <div className="doctor-signup__card">
+        {/* ══════════════════════════════
+            SIDEBAR
+        ══════════════════════════════ */}
+        <aside className="doctor-signup__sidebar">
+          {/* Top white section */}
+          <div className="doctor-signup__sidebar-top">
+            <div className="doctor-signup__sidebar-dots" />
 
-          {/* Logo */}
-          <div className="doctor-signup__logo-wrap">
-            <Image
-              src="/images/logo.png"
-              alt="Renova Life Care Logo"
-              width={148}
-              height={148}
-              priority
-              style={{ objectFit: "contain" }}
-            />
-          </div>
-        </div>
-
-        {/* Wave divider */}
-        <div className="doctor-signup__wave">
-          <svg
-            viewBox="0 0 330 55"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0 0 Q82 18 165 9 Q248 0 330 18 L330 0 Z"
-              fill="#ffffff"
-            />
-            <path
-              d="M0 18 Q82 36 165 25 Q248 14 330 35 L330 55 L0 55 Z"
-              fill="#2e7d32"
-              opacity="0.8"
-            />
-            <path
-              d="M0 28 Q82 48 165 35 Q248 22 330 46 L330 55 L0 55 Z"
-              fill="#1256a0"
-            />
-          </svg>
-        </div>
-
-        {/* Bottom dark blue */}
-        <div className="doctor-signup__sidebar-bottom">
-          <h2 className="doctor-signup__sidebar-title">
-            Join Our Medical Network
-          </h2>
-          <p className="doctor-signup__sidebar-subtitle">
-            Register as a doctor and start providing quality care to patients.
-          </p>
-
-          <div className="doctor-signup__benefit">
-            <div className="doctor-signup__benefit-icon">
-              <Icon.Verified />
-            </div>
-            <div className="doctor-signup__benefit-content">
-              <h4>Verified &amp; Secure</h4>
-              <p>Your data is safe with us</p>
-            </div>
-          </div>
-
-          <div className="doctor-signup__benefit">
-            <div className="doctor-signup__benefit-icon">
-              <Icon.Grow />
-            </div>
-            <div className="doctor-signup__benefit-content">
-              <h4>Grow Your Practice</h4>
-              <p>Connect with more patients</p>
-            </div>
-          </div>
-
-          <div className="doctor-signup__benefit">
-            <div className="doctor-signup__benefit-icon">
-              <Icon.Manage />
-            </div>
-            <div className="doctor-signup__benefit-content">
-              <h4>Manage Easily</h4>
-              <p>Smart tools for doctors</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* ══════════════════════════════
-          FORM PANEL
-      ══════════════════════════════ */}
-      <main className="doctor-signup__panel">
-        <form onSubmit={handleSubmit} noValidate>
-          {/* Header */}
-          <div className="doctor-signup__form-header">
-            <div className="doctor-signup__form-icon">
-              <Icon.Doctor />
-            </div>
-            <div>
-              <h1 className="doctor-signup__form-title">
-                Doctor <span>Registration</span>
-              </h1>
-              <p className="doctor-signup__form-subtitle">
-                Fill in the details to create your doctor account
-              </p>
-            </div>
-          </div>
-
-          {/* Heartbeat divider */}
-          <div className="doctor-signup__pulse-bar">
-            <div className="pbl" />
-            <svg viewBox="0 0 70 20" fill="none" width="70" height="20">
-              <polyline
-                points="0,10 10,10 14,3 19,17 24,5 29,15 34,10 44,10 49,7 54,10 64,10 70,10"
+            {/* Leaf watermark */}
+            <svg
+              className="doctor-signup__leaf"
+              viewBox="0 0 100 140"
+              fill="none"
+              width="100"
+              height="130"
+            >
+              <path
+                d="M50 15 C15 40 8 90 38 120 C26 88 44 52 90 38 C65 26 50 15 50 15Z"
+                fill="#4caf50"
+              />
+              <path
+                d="M50 15 L68 108"
                 stroke="#4caf50"
                 strokeWidth="2"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
               />
             </svg>
-            <div className="pbl" />
-          </div>
 
-          {/* Error */}
-          {error && (
-            <div className="doctor-signup__error" role="alert">
-              {error}
-            </div>
-          )}
-
-          {/* ── Personal Information ── */}
-          <h3 className="doctor-signup__section-title">Personal Information</h3>
-
-          <div className="doctor-signup__grid-3">
-            <Field label="Doctor ID (Auto-generated)">
-              <Input icon={Icon.ID} value="DR-2025-000123" disabled readOnly />
-            </Field>
-            <Field label="Full Name" required>
-              <Input icon={Icon.User} type="text" placeholder="Enter full name" required />
-            </Field>
-            <Field label="Father's / Husband's Name">
-              <Input icon={Icon.User} type="text" placeholder="Enter father's / husband's name" />
-            </Field>
-          </div>
-
-          <div className="doctor-signup__grid-3">
-            <Field label="Mobile Number" required>
-              <div className="doctor-signup__otp-row">
-                <Input icon={Icon.Phone} type="tel" placeholder="Enter mobile number" required />
-                <button type="button" className="doctor-signup__btn-otp">
-                  Send OTP
-                </button>
-              </div>
-            </Field>
-            <Field label="Email Address" required>
-              <Input icon={Icon.Email} type="email" placeholder="Enter email address" required />
-            </Field>
-            <Field label="Date of Birth" required>
-              <Input icon={Icon.Calendar} type="date" required />
-            </Field>
-          </div>
-
-          <div className="doctor-signup__grid-3">
-            <Field label="Gender" required>
-              <Select icon={Icon.User} required defaultValue="">
-                <option value="" disabled>Select gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-              </Select>
-            </Field>
-            <Field label="Blood Group">
-              <Select icon={Icon.Blood} defaultValue="">
-                <option value="" disabled>Select blood group</option>
-                {["A+", "A−", "B+", "B−", "AB+", "AB−", "O+", "O−"].map((g) => (
-                  <option key={g}>{g}</option>
-                ))}
-              </Select>
-            </Field>
-            <Field label="Nationality">
-              <Select icon={Icon.Globe} defaultValue="">
-                <option value="" disabled>Select nationality</option>
-                <option value="BD">Bangladeshi</option>
-                <option value="other">Other</option>
-              </Select>
-            </Field>
-          </div>
-
-          {/* ── Professional Information ── */}
-          <h3 className="doctor-signup__section-title">Professional Information</h3>
-
-          <div className="doctor-signup__grid-3">
-            <Field label="BMDC / Registration Number" required>
-              <Input icon={Icon.BMDC} type="text" placeholder="Enter BMDC / Reg. number" required />
-            </Field>
-            <Field label="Specialization" required>
-              <Select icon={Icon.Stethoscope} required defaultValue="">
-                <option value="" disabled>Select specialization</option>
-                {[
-                  "Cardiology", "Dermatology", "ENT", "General Medicine",
-                  "Gynecology", "Neurology", "Orthopedics", "Pediatrics",
-                  "Psychiatry", "Surgery",
-                ].map((s) => (
-                  <option key={s}>{s}</option>
-                ))}
-              </Select>
-            </Field>
-            <Field label="Sub Specialization">
-              <Select icon={Icon.Stethoscope} defaultValue="">
-                <option value="" disabled>Select sub specialization</option>
-                <option>Interventional Cardiology</option>
-                <option>Pediatric Surgery</option>
-                <option>Spine Surgery</option>
-              </Select>
-            </Field>
-          </div>
-
-          <div className="doctor-signup__grid-3">
-            <Field label="Qualification" required>
-              <Input icon={Icon.Degree} type="text" placeholder="Enter highest qualification" required />
-            </Field>
-            <Field label="Experience" required>
-              <div className="doctor-signup__input-wrap">
-                <span className="doctor-signup__input-icon">
-                  <Icon.Clock />
-                </span>
-                <input
-                  className="doctor-signup__input"
-                  type="number"
-                  min="0"
-                  placeholder="Enter years of experience"
-                  required
-                  style={{ paddingRight: "52px" }}
-                />
-                <span className="doctor-signup__exp-suffix">Years</span>
-              </div>
-            </Field>
-            <Field label="Current Designation">
-              <Input icon={Icon.Designation} type="text" placeholder="Enter current designation" />
-            </Field>
-          </div>
-
-          {/* ── Work & Availability ── */}
-          <h3 className="doctor-signup__section-title">Work &amp; Availability</h3>
-
-          <div className="doctor-signup__grid-3">
-            <Field label="Consultation Type" required>
-              <div className="doctor-signup__consult-types">
-                {[
-                  { id: "video",  label: "Video Call", Ic: Icon.Video  },
-                  { id: "audio",  label: "Audio Call", Ic: Icon.Audio  },
-                  { id: "chat",   label: "Chat Only",  Ic: Icon.Chat   },
-                ].map(({ id, label, Ic }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className={`doctor-signup__consult-btn${consultType === id ? " active" : ""}`}
-                    onClick={() => setConsultType(id)}
-                  >
-                    <Ic /> {label}
-                  </button>
-                ))}
-              </div>
-            </Field>
-            <Field label="Work Schedule" required>
-              <Select icon={Icon.Calendar} required defaultValue="">
-                <option value="" disabled>Select work schedule</option>
-                <option>Morning (8am – 2pm)</option>
-                <option>Evening (2pm – 8pm)</option>
-                <option>Full Day (8am – 8pm)</option>
-                <option>Night (8pm – 8am)</option>
-                <option>Flexible</option>
-              </Select>
-            </Field>
-            <Field label="Consultation Fee (৳)" required>
-              <Input icon={Icon.Taka} type="number" min="0" placeholder="Enter consultation fee" required />
-            </Field>
-          </div>
-
-          {/* ── Documents Upload ── */}
-          <h3 className="doctor-signup__section-title">Documents Upload</h3>
-
-          <div className="doctor-signup__docs-grid">
-            {[
-              { Ic: Icon.Photo,   title: "Profile Photo",         req: true,  hint: "JPG, PNG (Max 2MB)",       btn: "Upload Photo"    },
-              { Ic: Icon.NID,     title: "NID / Passport",        req: true,  hint: "JPG, PNG (Max 2MB)",       btn: "Upload Document" },
-              { Ic: Icon.BMDCID,  title: "BMDC Certificate",      req: true,  hint: "JPG, PNG, PDF (Max 2MB)",  btn: "Upload Document" },
-              { Ic: Icon.EduCert, title: "Educational Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document" },
-              { Ic: Icon.ExpCert, title: "Experience Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document" },
-            ].map(({ Ic, title, req, hint, btn }) => (
-              <div key={title} className="doctor-signup__doc-card">
-                <div className="doctor-signup__doc-icon">
-                  <Ic />
-                </div>
-                <p className="doctor-signup__doc-title">
-                  {title}
-                  {req && <span className="required"> *</span>}
-                </p>
-                <p className="doctor-signup__doc-hint">{hint}</p>
-                <button type="button" className="doctor-signup__btn-upload">
-                  {btn}
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* ── Verification ── */}
-          <h3 className="doctor-signup__section-title">Verification</h3>
-
-          <div className="doctor-signup__verify-banner">
-            <div className="doctor-signup__verify-icon">
-              <Icon.Shield />
-            </div>
-            <div className="doctor-signup__verify-text">
-              <h4>Your information is safe with us.</h4>
-              <p>
-                We will review your information and documents. You&apos;ll be
-                notified once verified.
-              </p>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="doctor-signup__footer">
-            <label className="doctor-signup__agree">
-              <input
-                type="checkbox"
-                checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
+            {/* Logo */}
+            <div className="doctor-signup__logo-wrap">
+              <Image
+                src="/images/logo.png"
+                alt="Renova Life Care Logo"
+                width={148}
+                height={148}
+                priority
+                style={{ objectFit: "contain" }}
               />
-              I agree to the{" "}
-              <a href="/terms" target="_blank" rel="noreferrer">
-                Terms &amp; Conditions
-              </a>{" "}
-              and{" "}
-              <a href="/privacy" target="_blank" rel="noreferrer">
-                Privacy Policy
-              </a>{" "}
-              *
-            </label>
-            <button
-              type="submit"
-              className="doctor-signup__btn-submit"
-              disabled={!agreed}
-            >
-              <Icon.Submit />
-              Submit Registration
-            </button>
+            </div>
           </div>
-        </form>
 
-        {/* Security notice */}
-        <div className="doctor-signup__security-notice">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
-          <span>Your connection is secure. All data is encrypted end-to-end.</span>
-        </div>
-      </main>
+          {/* Wave divider */}
+          <div className="doctor-signup__wave">
+            <svg
+              viewBox="0 0 330 55"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0 0 Q82 18 165 9 Q248 0 330 18 L330 0 Z"
+                fill="#ffffff"
+              />
+              <path
+                d="M0 18 Q82 36 165 25 Q248 14 330 35 L330 55 L0 55 Z"
+                fill="#2e7d32"
+                opacity="0.8"
+              />
+              <path
+                d="M0 28 Q82 48 165 35 Q248 22 330 46 L330 55 L0 55 Z"
+                fill="#1256a0"
+              />
+            </svg>
+          </div>
+
+          {/* Bottom dark blue */}
+          <div className="doctor-signup__sidebar-bottom">
+            <h2 className="doctor-signup__sidebar-title">
+              Join Our Medical Network
+            </h2>
+            <p className="doctor-signup__sidebar-subtitle">
+              Register as a doctor and start providing quality care to patients.
+            </p>
+
+            <div className="doctor-signup__benefit">
+              <div className="doctor-signup__benefit-icon">
+                <Icon.Verified />
+              </div>
+              <div className="doctor-signup__benefit-content">
+                <h4>Verified &amp; Secure</h4>
+                <p>Your data is safe with us</p>
+              </div>
+            </div>
+
+            <div className="doctor-signup__benefit">
+              <div className="doctor-signup__benefit-icon">
+                <Icon.Grow />
+              </div>
+              <div className="doctor-signup__benefit-content">
+                <h4>Grow Your Practice</h4>
+                <p>Connect with more patients</p>
+              </div>
+            </div>
+
+            <div className="doctor-signup__benefit">
+              <div className="doctor-signup__benefit-icon">
+                <Icon.Manage />
+              </div>
+              <div className="doctor-signup__benefit-content">
+                <h4>Manage Easily</h4>
+                <p>Smart tools for doctors</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* ══════════════════════════════
+            FORM PANEL
+        ══════════════════════════════ */}
+        <main className="doctor-signup__panel">
+          <form onSubmit={handleSubmit} noValidate>
+            {/* Header */}
+            <div className="doctor-signup__form-header">
+              <div className="doctor-signup__form-icon">
+                <Icon.Doctor />
+              </div>
+              <div>
+                <h1 className="doctor-signup__form-title">
+                  Doctor <span>Registration</span>
+                </h1>
+                <p className="doctor-signup__form-subtitle">
+                  Fill in the details to create your doctor account
+                </p>
+              </div>
+            </div>
+
+            {/* Heartbeat divider */}
+            <div className="doctor-signup__pulse-bar">
+              <div className="pbl" />
+              <svg viewBox="0 0 70 20" fill="none" width="70" height="20">
+                <polyline
+                  points="0,10 10,10 14,3 19,17 24,5 29,15 34,10 44,10 49,7 54,10 64,10 70,10"
+                  stroke="#4caf50"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+              <div className="pbl" />
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div className="doctor-signup__error" role="alert">
+                {error}
+              </div>
+            )}
+
+            {/* ── Personal Information ── */}
+            <h3 className="doctor-signup__section-title">Personal Information</h3>
+
+            <div className="doctor-signup__grid-3">
+              <Field label="Doctor ID (Auto-generated)">
+                <Input icon={Icon.ID} value="DR-2025-000123" disabled readOnly />
+              </Field>
+              <Field label="Full Name" required>
+                <Input icon={Icon.User} type="text" placeholder="Enter full name" required />
+              </Field>
+              <Field label="Father's / Husband's Name">
+                <Input icon={Icon.User} type="text" placeholder="Enter father's / husband's name" />
+              </Field>
+            </div>
+
+            <div className="doctor-signup__grid-3">
+              <Field label="Mobile Number" required>
+                <div className="doctor-signup__otp-row">
+                  <Input icon={Icon.Phone} type="tel" placeholder="Enter mobile number" required />
+                  <button type="button" className="doctor-signup__btn-otp">
+                    Send OTP
+                  </button>
+                </div>
+              </Field>
+              <Field label="Email Address" required>
+                <Input icon={Icon.Email} type="email" placeholder="Enter email address" required />
+              </Field>
+              <Field label="Date of Birth" required>
+                <Input icon={Icon.Calendar} type="date" required />
+              </Field>
+            </div>
+
+            <div className="doctor-signup__grid-3">
+              <Field label="Gender" required>
+                <Select icon={Icon.User} required defaultValue="">
+                  <option value="" disabled>Select gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </Select>
+              </Field>
+              <Field label="Blood Group">
+                <Select icon={Icon.Blood} defaultValue="">
+                  <option value="" disabled>Select blood group</option>
+                  {["A+", "A−", "B+", "B−", "AB+", "AB−", "O+", "O−"].map((g) => (
+                    <option key={g}>{g}</option>
+                  ))}
+                </Select>
+              </Field>
+              <Field label="Nationality">
+                <Select icon={Icon.Globe} defaultValue="">
+                  <option value="" disabled>Select nationality</option>
+                  <option value="BD">Bangladeshi</option>
+                  <option value="other">Other</option>
+                </Select>
+              </Field>
+            </div>
+
+            {/* ── Professional Information ── */}
+            <h3 className="doctor-signup__section-title">Professional Information</h3>
+
+            <div className="doctor-signup__grid-3">
+              <Field label="BMDC / Registration Number" required>
+                <Input icon={Icon.BMDC} type="text" placeholder="Enter BMDC / Reg. number" required />
+              </Field>
+              <Field label="Specialization" required>
+                <Select icon={Icon.Stethoscope} required defaultValue="">
+                  <option value="" disabled>Select specialization</option>
+                  {[
+                    "Cardiology", "Dermatology", "ENT", "General Medicine",
+                    "Gynecology", "Neurology", "Orthopedics", "Pediatrics",
+                    "Psychiatry", "Surgery",
+                  ].map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+                </Select>
+              </Field>
+              <Field label="Sub Specialization">
+                <Select icon={Icon.Stethoscope} defaultValue="">
+                  <option value="" disabled>Select sub specialization</option>
+                  <option>Interventional Cardiology</option>
+                  <option>Pediatric Surgery</option>
+                  <option>Spine Surgery</option>
+                </Select>
+              </Field>
+            </div>
+
+            <div className="doctor-signup__grid-3">
+              <Field label="Qualification" required>
+                <Input icon={Icon.Degree} type="text" placeholder="Enter highest qualification" required />
+              </Field>
+              <Field label="Experience" required>
+                <div className="doctor-signup__input-wrap">
+                  <span className="doctor-signup__input-icon">
+                    <Icon.Clock />
+                  </span>
+                  <input
+                    className="doctor-signup__input"
+                    type="number"
+                    min="0"
+                    placeholder="Enter years of experience"
+                    required
+                    style={{ paddingRight: "52px" }}
+                  />
+                  <span className="doctor-signup__exp-suffix">Years</span>
+                </div>
+              </Field>
+              <Field label="Current Designation">
+                <Input icon={Icon.Designation} type="text" placeholder="Enter current designation" />
+              </Field>
+            </div>
+
+            {/* ── Work & Availability ── */}
+            <h3 className="doctor-signup__section-title">Work &amp; Availability</h3>
+
+            <div className="doctor-signup__grid-3">
+              <Field label="Consultation Type" required>
+                <div className="doctor-signup__consult-types">
+                  {[
+                    { id: "video",  label: "Video Call", Ic: Icon.Video  },
+                    { id: "audio",  label: "Audio Call", Ic: Icon.Audio  },
+                    { id: "chat",   label: "Chat Only",  Ic: Icon.Chat   },
+                  ].map(({ id, label, Ic }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className={`doctor-signup__consult-btn${consultType === id ? " active" : ""}`}
+                      onClick={() => setConsultType(id)}
+                    >
+                      <Ic /> {label}
+                    </button>
+                  ))}
+                </div>
+              </Field>
+              <Field label="Work Schedule" required>
+                <Select icon={Icon.Calendar} required defaultValue="">
+                  <option value="" disabled>Select work schedule</option>
+                  <option>Morning (8am – 2pm)</option>
+                  <option>Evening (2pm – 8pm)</option>
+                  <option>Full Day (8am – 8pm)</option>
+                  <option>Night (8pm – 8am)</option>
+                  <option>Flexible</option>
+                </Select>
+              </Field>
+              <Field label="Consultation Fee (৳)" required>
+                <Input icon={Icon.Taka} type="number" min="0" placeholder="Enter consultation fee" required />
+              </Field>
+            </div>
+
+            {/* ── Documents Upload ── */}
+            <h3 className="doctor-signup__section-title">Documents Upload</h3>
+
+            <div className="doctor-signup__docs-grid">
+              {[
+                { Ic: Icon.Photo,   title: "Profile Photo",         req: true,  hint: "JPG, PNG (Max 2MB)",       btn: "Upload Photo"    },
+                { Ic: Icon.NID,     title: "NID / Passport",        req: true,  hint: "JPG, PNG (Max 2MB)",       btn: "Upload Document" },
+                { Ic: Icon.BMDCID,  title: "BMDC Certificate",      req: true,  hint: "JPG, PNG, PDF (Max 2MB)",  btn: "Upload Document" },
+                { Ic: Icon.EduCert, title: "Educational Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document" },
+                { Ic: Icon.ExpCert, title: "Experience Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document" },
+              ].map(({ Ic, title, req, hint, btn }) => (
+                <div key={title} className="doctor-signup__doc-card">
+                  <div className="doctor-signup__doc-icon">
+                    <Ic />
+                  </div>
+                  <p className="doctor-signup__doc-title">
+                    {title}
+                    {req && <span className="required"> *</span>}
+                  </p>
+                  <p className="doctor-signup__doc-hint">{hint}</p>
+                  <button type="button" className="doctor-signup__btn-upload">
+                    {btn}
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* ── Verification ── */}
+            <h3 className="doctor-signup__section-title">Verification</h3>
+
+            <div className="doctor-signup__verify-banner">
+              <div className="doctor-signup__verify-icon">
+                <Icon.Shield />
+              </div>
+              <div className="doctor-signup__verify-text">
+                <h4>Your information is safe with us.</h4>
+                <p>
+                  We will review your information and documents. You&apos;ll be
+                  notified once verified.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="doctor-signup__footer">
+              <label className="doctor-signup__agree">
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                />
+                I agree to the{" "}
+                <a href="/terms" target="_blank" rel="noreferrer">
+                  Terms &amp; Conditions
+                </a>{" "}
+                and{" "}
+                <a href="/privacy" target="_blank" rel="noreferrer">
+                  Privacy Policy
+                </a>{" "}
+                *
+              </label>
+              <button
+                type="submit"
+                className="doctor-signup__btn-submit"
+                disabled={!agreed}
+              >
+                <Icon.Submit />
+                Submit Registration
+              </button>
+            </div>
+          </form>
+
+          {/* Security notice */}
+          <div className="doctor-signup__security-notice">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <span>Your connection is secure. All data is encrypted end-to-end.</span>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

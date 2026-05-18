@@ -73,7 +73,7 @@ export const footerLinks = {
     { label: "Outlet Portal", href: "/outlet-portal/oportal" },
     { label: "FAQ", href: "/faq" },
     { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms-of-service" },
+    { label: "Terms of Service", href: "/terms" },
   ],
 };
 

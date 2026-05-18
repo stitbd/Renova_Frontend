@@ -278,7 +278,7 @@
 .os-form-title {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-extrabold);
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
   line-height: 1.1;
   font-family: var(--font-heading);
 }
