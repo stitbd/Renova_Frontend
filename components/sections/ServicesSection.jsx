@@ -1,8 +1,15 @@
-// components/sections/ServicesSection.jsx
+"use client";
+import { motion } from "framer-motion";
 import { services } from "@/constants/siteData";
 import { Section, SectionHeader } from "@/components/common/Section";
 import Link from "next/link";
 import "./ServicesSection.css";
+
+// Animation variants - Same as AboutSection
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 /**
  * Service Icon Component
@@ -224,52 +231,104 @@ export default function ServicesSection() {
 
   return (
     <Section id="services" bg="bg-white">
-      <SectionHeader
-        label="Our Services"
-        title="Comprehensive Medical <span class='text-primary'>Care Under One Roof</span>"
-        subtitle="From preventive checkups to complex surgical procedures, our specialists deliver the highest standard of care for every patient."
-      />
       
-      {/* Services Grid */}
+      {/* Section Header with Animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <SectionHeader
+          label="Our Services"
+          title="Comprehensive Medical <span class='text-primary'>Care Under One Roof</span>"
+          subtitle="From preventive checkups to complex surgical procedures, our specialists deliver the highest standard of care for every patient."
+        />
+      </motion.div>
+      
+      {/* Services Grid with Staggered Card Animations */}
       <div className="services-grid">
-        {displayedServices.map((service) => (
-          <Link
+        {displayedServices.map((service, index) => (
+          <motion.div
             key={service.id}
-            href={service.href}
-            className="service-card group"
-            style={{ '--service-color': service.color }}
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
           >
-            {/* ✅ UPDATED: Icon + Title in same row */}
-            <div className="service-header-row">
-              <div className="service-icon-wrapper">
-                <ServiceIcon type={service.icon} color="var(--service-color)" />
+            <Link
+              href={service.href}
+              className="service-card group"
+              style={{ '--service-color': service.color }}
+            >
+              {/* Icon + Title Row with Icon Animation */}
+              <div className="service-header-row">
+                <motion.div 
+                  className="service-icon-wrapper"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.1, type: "spring", stiffness: 200 }}
+                >
+                  <ServiceIcon type={service.icon} color="var(--service-color)" />
+                </motion.div>
+                <motion.h3 
+                  className="service-title"
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.15 }}
+                >
+                  {service.title}
+                </motion.h3>
               </div>
-              <h3 className="service-title">{service.title}</h3>
-            </div>
-            
-            {/* Description remains below the header row */}
-            <p className="service-description">{service.description}</p>
-            
-            {/* Learn More Link */}
-            <span className="service-link">
-              Learn More
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="service-link-icon" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </Link>
+              
+              {/* Description with Fade Animation */}
+              <motion.p 
+                className="service-description"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 + 0.2 }}
+              >
+                {service.description}
+              </motion.p>
+              
+              {/* Learn More Link with Hover Effect */}
+              <motion.span 
+                className="service-link"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 + 0.25 }}
+                whileHover={{ x: 4 }}
+              >
+                Learn More
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="service-link-icon" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </motion.span>
+            </Link>
+          </motion.div>
         ))}
       </div>
 
-      {/* View All Services Button */}
-      <div className="services-cta">
+      {/* View All Services Button with Animation */}
+      <motion.div 
+        className="services-cta"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
         <Link href="/services" className="btn btn-primary services-cta-btn">
           View All Services
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </Link>
-      </div>
+      </motion.div>
     </Section>
   );
 }

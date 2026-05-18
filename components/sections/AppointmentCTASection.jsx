@@ -1,9 +1,37 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { siteConfig } from "@/constants/siteData";
 import { useState, useEffect } from "react";
 import "./AppointmentCTASection.css";
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
 
 /* ─── SVG Icons ──────────────────────────────────────────── */
 const Icon = {
@@ -15,7 +43,7 @@ const Icon = {
   ),
   Phone: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.87-6.87A19.79 19.79 0 0 1 4.08 4.18 2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z"/>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.87-6.87A19.79 19.79 0 0 1 4.08 4.18 A2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z"/>
     </svg>
   ),
   Stethoscope: () => (
@@ -84,30 +112,26 @@ const Icon = {
 
 /* ─── Departments ────────────────────────────────────────── */
 const DEPARTMENTS = [
-  { value: "",              label: "Select Department",     disabled: true },
-  { value: "general",      label: "General Checkup" },
-  { value: "cardiology",   label: "Cardiology" },
-  { value: "orthopedics",  label: "Orthopedics" },
-  { value: "neurology",    label: "Neurology" },
-  { value: "pediatrics",   label: "Pediatrics" },
-  { value: "dental",       label: "Dental Care" },
-  { value: "dermatology",  label: "Dermatology" },
-  { value: "ophthalmology",label: "Eye Care" },
-  { value: "gynecology",   label: "Gynecology & Obs." },
-  { value: "oncology",     label: "Oncology" },
+  { value: "", label: "Select Department", disabled: true },
+  { value: "general", label: "General Checkup" },
+  { value: "cardiology", label: "Cardiology" },
+  { value: "orthopedics", label: "Orthopedics" },
+  { value: "neurology", label: "Neurology" },
+  { value: "pediatrics", label: "Pediatrics" },
+  { value: "dental", label: "Dental Care" },
+  { value: "dermatology", label: "Dermatology" },
+  { value: "ophthalmology", label: "Eye Care" },
+  { value: "gynecology", label: "Gynecology & Obs." },
+  { value: "oncology", label: "Oncology" },
 ];
 
 /* ─── Validation ─────────────────────────────────────────── */
 const validate = (data) => {
   const errs = {};
-  if (!data.name.trim() || data.name.trim().length < 2)
-    errs.name = "Enter a valid full name";
-  if (!data.phone.trim() || !/^(\+880|01)[0-9]{9,10}$/.test(data.phone.replace(/\s/g, "")))
-    errs.phone = "Enter a valid Bangladesh phone number";
-  if (!data.department)
-    errs.department = "Please select a department";
-  if (!data.date)
-    errs.date = "Please select a preferred date";
+  if (!data.name.trim() || data.name.trim().length < 2) errs.name = "Enter a valid full name";
+  if (!data.phone.trim() || !/^(\+880|01)[0-9]{9,10}$/.test(data.phone.replace(/\s/g, ""))) errs.phone = "Enter a valid Bangladesh phone number";
+  if (!data.department) errs.department = "Please select a department";
+  if (!data.date) errs.date = "Please select a preferred date";
   return errs;
 };
 
@@ -115,11 +139,11 @@ const validate = (data) => {
 export default function AppointmentCTASection() {
   const EMPTY = { name: "", phone: "", department: "", date: "" };
 
-  const [form,       setForm]       = useState(EMPTY);
-  const [errors,     setErrors]     = useState({});
+  const [form, setForm] = useState(EMPTY);
+  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [status,     setStatus]     = useState(null); // "success" | "error"
-  const [minDate,    setMinDate]    = useState("");
+  const [status, setStatus] = useState(null);
+  const [minDate, setMinDate] = useState("");
 
   useEffect(() => {
     setMinDate(new Date().toISOString().split("T")[0]);
@@ -148,303 +172,177 @@ export default function AppointmentCTASection() {
     }
   };
 
-  const inputCls  = (f) => `appt__input${errors[f]  ? " appt__input--err"  : ""}`;
+  const inputCls = (f) => `appt__input${errors[f] ? " appt__input--err" : ""}`;
   const selectCls = (f) => `appt__select${errors[f] ? " appt__select--err" : ""}`;
 
-  const FEATURES = [
-    "Instant confirmation",
-    "Free first consultation",
-    "100% privacy guaranteed",
-    "Available 24 / 7",
-  ];
-
+  const FEATURES = ["Instant confirmation", "Free first consultation", "100% privacy guaranteed", "Available 24 / 7"];
   const STATS = [
-    { num: "50K+", label: "Patients Served"    },
+    { num: "50K+", label: "Patients Served" },
     { num: "120+", label: "Specialist Doctors" },
-    { num: "4.9★", label: "Average Rating"     },
+    { num: "4.9★", label: "Average Rating" },
   ];
 
   return (
-    <section
-      id="appointment"
-      className="appt"
-      aria-labelledby="appt-heading"
-    >
+    <section id="appointment" className="appt" aria-labelledby="appt-heading">
       {/* Animated background */}
-      <div className="appt__bg" aria-hidden="true">
+      <motion.div className="appt__bg" aria-hidden="true" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
         <div className="appt__bg-glow" />
         <div className="appt__bg-grid" />
         <div className="appt__bg-lines" />
         <div className="appt__orb appt__orb--a" />
         <div className="appt__orb appt__orb--b" />
         <div className="appt__orb appt__orb--c" />
-      </div>
+      </motion.div>
 
       <div className="appt__container">
         <div className="appt__grid">
 
           {/* ══ LEFT ══ */}
-          <div className="appt__left">
+          <motion.div className="appt__left" variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
 
             {/* Eyebrow */}
-            <div className="appt__tag" role="presentation">
+            <motion.div className="appt__tag" role="presentation" variants={fadeInUp}>
               <span className="appt__tag-dot" />
               <span className="appt__tag-text">Now Accepting Patients</span>
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h2 id="appt-heading" className="appt__headline">
-              Your Health Deserves
-              <em>Expert Care,</em>
-              <span className="appt__headline-accent">Right Now.</span>
-            </h2>
+            <motion.h2 id="appt-heading" className="appt__headline" variants={fadeInUp}>
+              Your Health Deserves <em>Expert Care,</em> <span className="appt__headline-accent">Right Now.</span>
+            </motion.h2>
 
             {/* Subtext */}
-            <p className="appt__subtext">
-              Connect with Bangladesh's leading specialists in seconds.
-              Smart, secure, and built around your wellbeing —
-              book an appointment in under two minutes.
-            </p>
+            <motion.p className="appt__subtext" variants={fadeInUp}>
+              Connect with Bangladesh&apos;s leading specialists in seconds. Smart, secure, and built around your wellbeing — book an appointment in under two minutes.
+            </motion.p>
 
             {/* Feature pills */}
-            <ul className="appt__features" aria-label="Key benefits">
-              {FEATURES.map((f) => (
-                <li key={f} className="appt__feature">
+            <motion.ul className="appt__features" aria-label="Key benefits" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              {FEATURES.map((f, i) => (
+                <motion.li key={f} className="appt__feature" variants={fadeInUp} custom={i}>
                   <span className="appt__feature-icon"><Icon.Check /></span>
                   {f}
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
 
             {/* Stats */}
-            <div className="appt__stats" role="list" aria-label="Clinic statistics">
-              {STATS.map((s) => (
-                <div key={s.label} className="appt__stat" role="listitem">
+            <motion.div className="appt__stats" role="list" aria-label="Clinic statistics" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              {STATS.map((s, i) => (
+                <motion.div key={s.label} className="appt__stat" role="listitem" variants={fadeInUp} custom={i}>
                   <span className="appt__stat-num">{s.num}</span>
                   <span className="appt__stat-label">{s.label}</span>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Phone */}
-            <div className="appt__phone-block">
+            <motion.div className="appt__phone-block" variants={fadeInUp}>
               <span className="appt__phone-label">Prefer a call?</span>
-              <Link
-                href={`tel:${siteConfig.phone}`}
-                className="appt__phone-link"
-                aria-label={`Call us at ${siteConfig.phone}`}
-              >
+              <Link href={`tel:${siteConfig.phone}`} className="appt__phone-link" aria-label={`Call us at ${siteConfig.phone}`}>
                 <span className="appt__phone-icon"><Icon.Phone /></span>
                 <span>{siteConfig.phone}</span>
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* ══ RIGHT — Form Card ══ */}
-          <div className="appt__card">
+          <motion.div className="appt__card" variants={slideInRight} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
 
             {/* Card header */}
-            <div className="appt__card-head">
-              <div className="appt__card-icon-wrap">
-                <Icon.Stethoscope />
-              </div>
-              <h3 className="appt__card-title">Book an Appointment</h3>
-              <p className="appt__card-subtitle">
-                We'll confirm within 1 hour — guaranteed
-              </p>
-            </div>
+            <motion.div className="appt__card-head" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              <motion.div className="appt__card-icon-wrap" variants={fadeInUp}><Icon.Stethoscope /></motion.div>
+              <motion.h3 className="appt__card-title" variants={fadeInUp}>Book an Appointment</motion.h3>
+              <motion.p className="appt__card-subtitle" variants={fadeInUp}>We&apos;ll confirm within 1 hour — guaranteed</motion.p>
+            </motion.div>
 
             {/* Card body */}
-            <div className="appt__card-body">
+            <motion.div className="appt__card-body" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
 
               {/* Alerts */}
               {status === "success" && (
-                <div className="appt__alert appt__alert--success" role="alert">
+                <motion.div className="appt__alert appt__alert--success" role="alert" variants={fadeInUp} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
                   <span className="appt__alert-icon"><Icon.CheckCircle /></span>
                   <span>Appointment requested! Our team will call you shortly.</span>
-                </div>
+                </motion.div>
               )}
               {status === "error" && (
-                <div className="appt__alert appt__alert--error" role="alert">
+                <motion.div className="appt__alert appt__alert--error" role="alert" variants={fadeInUp} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
                   <span className="appt__alert-icon"><Icon.AlertCircle /></span>
                   <span>Something went wrong. Please try again or call us directly.</span>
-                </div>
+                </motion.div>
               )}
 
               {/* Form */}
               <form onSubmit={submit} className="appt__form" noValidate>
-
                 {/* Name + Phone row */}
-                <div className="appt__row">
+                <motion.div className="appt__row" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
 
                   {/* Name */}
-                  <div className="appt__field">
-                    <label htmlFor="appt-name" className="appt__label">
-                      Full Name <span className="appt__req" aria-hidden="true">*</span>
-                    </label>
+                  <motion.div className="appt__field" variants={fadeInUp}>
+                    <label htmlFor="appt-name" className="appt__label">Full Name <span className="appt__req" aria-hidden="true">*</span></label>
                     <div className="appt__input-wrap">
                       <span className="appt__input-icon"><Icon.User /></span>
-                      <input
-                        id="appt-name"
-                        type="text"
-                        placeholder="Fatima Rahman"
-                        value={form.name}
-                        onChange={(e) => change("name", e.target.value)}
-                        className={inputCls("name")}
-                        aria-invalid={!!errors.name}
-                        aria-describedby={errors.name ? "err-name" : undefined}
-                        disabled={submitting}
-                        autoComplete="name"
-                      />
+                      <input id="appt-name" type="text" placeholder="Fatima Rahman" value={form.name} onChange={(e) => change("name", e.target.value)} className={inputCls("name")} aria-invalid={!!errors.name} aria-describedby={errors.name ? "err-name" : undefined} disabled={submitting} autoComplete="name" />
                     </div>
-                    {errors.name && (
-                      <span id="err-name" className="appt__error" role="alert">
-                        {errors.name}
-                      </span>
-                    )}
-                  </div>
+                    {errors.name && <motion.span id="err-name" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.name}</motion.span>}
+                  </motion.div>
 
                   {/* Phone */}
-                  <div className="appt__field">
-                    <label htmlFor="appt-phone" className="appt__label">
-                      Phone <span className="appt__req" aria-hidden="true">*</span>
-                    </label>
+                  <motion.div className="appt__field" variants={fadeInUp}>
+                    <label htmlFor="appt-phone" className="appt__label">Phone <span className="appt__req" aria-hidden="true">*</span></label>
                     <div className="appt__input-wrap">
                       <span className="appt__input-icon"><Icon.Phone /></span>
-                      <input
-                        id="appt-phone"
-                        type="tel"
-                        placeholder="01XXX-XXXXXX"
-                        value={form.phone}
-                        onChange={(e) => change("phone", e.target.value)}
-                        className={inputCls("phone")}
-                        aria-invalid={!!errors.phone}
-                        aria-describedby={errors.phone ? "err-phone" : undefined}
-                        disabled={submitting}
-                        autoComplete="tel"
-                      />
+                      <input id="appt-phone" type="tel" placeholder="01XXX-XXXXXX" value={form.phone} onChange={(e) => change("phone", e.target.value)} className={inputCls("phone")} aria-invalid={!!errors.phone} aria-describedby={errors.phone ? "err-phone" : undefined} disabled={submitting} autoComplete="tel" />
                     </div>
-                    {errors.phone && (
-                      <span id="err-phone" className="appt__error" role="alert">
-                        {errors.phone}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                    {errors.phone && <motion.span id="err-phone" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.phone}</motion.span>}
+                  </motion.div>
+                </motion.div>
 
                 {/* Department */}
-                <div className="appt__field">
-                  <label htmlFor="appt-dept" className="appt__label">
-                    Department <span className="appt__req" aria-hidden="true">*</span>
-                  </label>
+                <motion.div className="appt__field" variants={fadeInUp}>
+                  <label htmlFor="appt-dept" className="appt__label">Department <span className="appt__req" aria-hidden="true">*</span></label>
                   <div className="appt__input-wrap">
                     <span className="appt__input-icon"><Icon.StethoscopeSmall /></span>
-                    <select
-                      id="appt-dept"
-                      value={form.department}
-                      onChange={(e) => change("department", e.target.value)}
-                      className={selectCls("department")}
-                      aria-invalid={!!errors.department}
-                      aria-describedby={errors.department ? "err-dept" : undefined}
-                      disabled={submitting}
-                    >
-                      {DEPARTMENTS.map((d) => (
-                        <option
-                          key={d.value || "placeholder"}
-                          value={d.value}
-                          disabled={d.disabled}
-                        >
-                          {d.label}
-                        </option>
-                      ))}
+                    <select id="appt-dept" value={form.department} onChange={(e) => change("department", e.target.value)} className={selectCls("department")} aria-invalid={!!errors.department} aria-describedby={errors.department ? "err-dept" : undefined} disabled={submitting}>
+                      {DEPARTMENTS.map((d) => (<option key={d.value || "placeholder"} value={d.value} disabled={d.disabled}>{d.label}</option>))}
                     </select>
                   </div>
-                  {errors.department && (
-                    <span id="err-dept" className="appt__error" role="alert">
-                      {errors.department}
-                    </span>
-                  )}
-                </div>
+                  {errors.department && <motion.span id="err-dept" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.department}</motion.span>}
+                </motion.div>
 
                 {/* Date */}
-                <div className="appt__field">
-                  <label htmlFor="appt-date" className="appt__label">
-                    Preferred Date <span className="appt__req" aria-hidden="true">*</span>
-                  </label>
+                <motion.div className="appt__field" variants={fadeInUp}>
+                  <label htmlFor="appt-date" className="appt__label">Preferred Date <span className="appt__req" aria-hidden="true">*</span></label>
                   <div className="appt__input-wrap">
                     <span className="appt__input-icon"><Icon.Calendar /></span>
-                    <input
-                      id="appt-date"
-                      type="date"
-                      value={form.date}
-                      onChange={(e) => change("date", e.target.value)}
-                      className={inputCls("date")}
-                      aria-invalid={!!errors.date}
-                      aria-describedby={errors.date ? "err-date" : undefined}
-                      disabled={submitting}
-                      min={minDate}
-                    />
+                    <input id="appt-date" type="date" value={form.date} onChange={(e) => change("date", e.target.value)} className={inputCls("date")} aria-invalid={!!errors.date} aria-describedby={errors.date ? "err-date" : undefined} disabled={submitting} min={minDate} />
                   </div>
-                  {errors.date && (
-                    <span id="err-date" className="appt__error" role="alert">
-                      {errors.date}
-                    </span>
-                  )}
-                </div>
+                  {errors.date && <motion.span id="err-date" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.date}</motion.span>}
+                </motion.div>
 
                 {/* Submit */}
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={submitting}
-                  aria-busy={submitting}
-                  aria-label={submitting ? "Submitting…" : "Request appointment"}
-                >
-                  {submitting ? (
-                    <>
-                      <span className="appt__spinner" aria-hidden="true" />
-                      <span>Processing…</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Request Appointment</span>
-                      <Icon.Arrow />
-                    </>
-                  )}
-                </button>
+                <motion.button type="submit" className="btn btn-primary" disabled={submitting} aria-busy={submitting} aria-label={submitting ? "Submitting…" : "Request appointment"} variants={fadeInUp} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  {submitting ? (<><span className="appt__spinner" aria-hidden="true" /><span>Processing…</span></>) : (<><span>Request Appointment</span><Icon.Arrow /></>)}
+                </motion.button>
 
                 {/* Trust strip */}
-                <div className="appt__trust">
-                  <Icon.Shield />
-                  <span>SSL Encrypted</span>
-                  <span className="appt__trust-dot" />
-                  <Icon.Clock />
-                  <span>1-hour confirm</span>
-                  <span className="appt__trust-dot" />
-                  <Icon.Star />
-                  <span>4.9 / 5 rating</span>
-                </div>
-
+                <motion.div className="appt__trust" variants={fadeInUp}>
+                  <Icon.Shield /><span>SSL Encrypted</span><span className="appt__trust-dot" /><Icon.Clock /><span>1-hour confirm</span><span className="appt__trust-dot" /><Icon.Star /><span>4.9 / 5 rating</span>
+                </motion.div>
               </form>
-            </div>
-          </div>
-
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
       {/* Bottom decorative wave */}
-      <div className="appt__wave" aria-hidden="true">
+      <motion.div className="appt__wave" aria-hidden="true" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
         <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
-          <path
-            d="M0 40C360 80 720 0 1080 40C1260 60 1380 20 1440 40V80H0V40Z"
-            fill="rgba(255,255,255,0.04)"
-          />
-          <path
-            d="M0 60C240 30 600 80 960 50C1200 28 1380 60 1440 55V80H0V60Z"
-            fill="rgba(255,255,255,0.025)"
-          />
+          <path d="M0 40C360 80 720 0 1080 40C1260 60 1380 20 1440 40V80H0V40Z" fill="rgba(255,255,255,0.04)" />
+          <path d="M0 60C240 30 600 80 960 50C1200 28 1380 60 1440 55V80H0V60Z" fill="rgba(255,255,255,0.025)" />
         </svg>
-      </div>
+      </motion.div>
     </section>
   );
 }

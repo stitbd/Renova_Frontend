@@ -1,8 +1,16 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { portfolioItems } from "@/constants/siteData";
 import { Section, SectionHeader } from "@/components/common/Section";
 import "./PortfolioSection.css";
+
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 export default function PortfolioSection() {
   const getGradientClass = (index) => {

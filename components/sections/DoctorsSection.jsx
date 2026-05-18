@@ -1,11 +1,18 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 import { doctors } from "@/constants/siteData";
 import Button from "@/components/common/Button"
 import { Section, SectionHeader } from "@/components/common/Section";
 import "./DoctorsSection.css";
+
+// Animation variants - Same as AboutSection
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 // ── Icons ─────────────────────────────────────────────────────
 const ProfileIcon = () => (
@@ -83,35 +90,52 @@ export default function DoctorsSection() {
   return (
     <Section id="doctors" variant="alternate">
       
-      <SectionHeader
-        label="Meet Our Team"
-        title="Expert Specialists, <span class='text-primary'>Compassionate Care</span>"
-        subtitle="Our doctors bring decades of experience and international training to
-          deliver the best healthcare in Bangladesh."
-      />
+      {/* Section Header with Animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <SectionHeader
+          label="Meet Our Team"
+          title="Expert Specialists, <span class='text-primary'>Compassionate Care</span>"
+          subtitle="Our doctors bring decades of experience and international training to
+            deliver the best healthcare in Bangladesh."
+        />
+      </motion.div>
 
-      {/* Doctors Grid */}
+      {/* Doctors Grid with Staggered Card Animations */}
       <div className="doctors-grid">
-        {/* ✅ UPDATED: Map over displayedDoctors instead of full doctors array */}
         {displayedDoctors.map((doc, index) => {
           const accent = accentColors[index % accentColors.length];
           const hasImageError = imageErrors[doc.id];
 
           return (
-            <article
+            <motion.article
               key={doc.id}
               className="dcard"
               style={{
                 "--accent-from": accent.from,
                 "--accent-to": accent.to,
-                animationDelay: `${index * 0.1}s`,
               }}
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
             >
               {/* Top accent line */}
               <div className="dcard__accent-bar" aria-hidden="true" />
 
-              {/* Image / Avatar */}
-              <div className="dcard__visual">
+              {/* Image / Avatar with Animation */}
+              <motion.div 
+                className="dcard__visual"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 + 0.1, type: "spring", stiffness: 200 }}
+              >
                 <div className="dcard__image-ring" aria-hidden="true" />
                 
                 {hasImageError ? (
@@ -121,7 +145,11 @@ export default function DoctorsSection() {
                     accentTo={accent.to} 
                   />
                 ) : (
-                  <div className="dcard__image-wrap">
+                  <motion.div 
+                    className="dcard__image-wrap"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <Image
                       src={`/images/doctors/doctor-${doc.id}.jpg`}
                       alt={`Portrait of ${doc.name}`}
@@ -130,64 +158,134 @@ export default function DoctorsSection() {
                       className="dcard__image"
                       onError={() => setImageErrors((prev) => ({ ...prev, [doc.id]: true }))}
                     />
-                  </div>
+                  </motion.div>
                 )}
 
-                {/* Availability indicator */}
-                <div className="dcard__status" role="status" aria-label="Available for appointments">
+                {/* Availability indicator with Fade-in */}
+                <motion.div 
+                  className="dcard__status" 
+                  role="status" 
+                  aria-label="Available for appointments"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.2 }}
+                >
                   <span className="dcard__status-dot" aria-hidden="true" />
                   <span className="dcard__status-text">Available</span>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
-              {/* Content */}
+              {/* Content with Staggered Text Animations */}
               <div className="dcard__body">
-                <h3 className="dcard__name">{doc.name}</h3>
-                <p className="dcard__specialty">{doc.specialty}</p>
-                <p className="dcard__qualification">{doc.qualification}</p>
+                <motion.h3 
+                  className="dcard__name"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.15 }}
+                >
+                  {doc.name}
+                </motion.h3>
+                
+                <motion.p 
+                  className="dcard__specialty"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.2 }}
+                >
+                  {doc.specialty}
+                </motion.p>
+                
+                <motion.p 
+                  className="dcard__qualification"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.25 }}
+                >
+                  {doc.qualification}
+                </motion.p>
 
-                {/* Stats row */}
-                <div className="dcard__stats">
-                  <div className="dcard__stat">
+                {/* Stats row with Staggered Animation */}
+                <motion.div 
+                  className="dcard__stats"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
+                >
+                  <motion.div 
+                    className="dcard__stat"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.35 }}
+                  >
                     <span className="dcard__stat-value">{doc.experience}</span>
                     <span className="dcard__stat-label">Experience</span>
-                  </div>
+                  </motion.div>
                   <div className="dcard__stat-divider" aria-hidden="true" />
-                  <div className="dcard__stat">
+                  <motion.div 
+                    className="dcard__stat"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.4 }}
+                  >
                     <span className="dcard__stat-value">
                       <StarIcon />
                       {doc.rating}
                     </span>
                     <span className="dcard__stat-label">Rating</span>
-                  </div>
+                  </motion.div>
                   <div className="dcard__stat-divider" aria-hidden="true" />
-                  <div className="dcard__stat">
+                  <motion.div 
+                    className="dcard__stat"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.45 }}
+                  >
                     <span className="dcard__stat-value">{doc.patients}</span>
                     <span className="dcard__stat-label">Patients</span>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
-                {/* Two CTA buttons - Stacked */}
-                <div className="dcard-cta-group">
+                {/* Two CTA buttons - Stacked with Animation */}
+                <motion.div 
+                  className="dcard-cta-group"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 + 0.5 }}
+                >
                   <Button variant="secondary" href={`/doctors/${doc.id}`}>
                     <ProfileIcon /> Doctor Profile
                   </Button>
                   <Button variant="primary" href={`/appointment?doctor=${doc.id}`}>
                     <CalendarIcon /> Book Appointment
                   </Button>
-                </div>
+                </motion.div>
               </div>
-            </article>
+            </motion.article>
           );
         })}
       </div>
 
-      {/* View All CTA */}
-      <div style={{ textAlign: "center", marginTop: "var(--space-10)" }}>
+      {/* View All CTA with Animation */}
+      <motion.div 
+        style={{ textAlign: "center", marginTop: "var(--space-10)" }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
         <Button variant="primary" className="btn-lg" href="/doctors">
           <UsersIcon /> View All Doctors
         </Button>
-      </div>
+      </motion.div>
     </Section>
   );
 }

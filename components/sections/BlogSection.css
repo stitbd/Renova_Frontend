@@ -152,7 +152,7 @@
 }
 
 .blog-read-more-icon {
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .blog-card:hover .blog-read-more-icon {
@@ -281,4 +281,33 @@
   .blog-view-all {
     display: none;
   }
+}
+
+
+.blog-card-wrapper {
+  height: 100%;
+  display: flex;
+}
+
+.blog-card-wrapper .blog-card {
+  height: 100%;
+}
+
+/* Smooth hover effect for cards */
+.blog-card-wrapper:hover {
+  transform: translateY(-6px);
+}
+
+/* Ensure images don't jump during animation */
+.blog-image-container {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.blog-image {
+  transition: transform 0.4s ease;
+}
+
+.blog-card-wrapper:hover .blog-image {
+  transform: scale(1.03);
 }

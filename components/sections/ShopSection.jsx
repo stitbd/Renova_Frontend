@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -7,6 +8,23 @@ import { shopProducts } from "@/constants/siteData";
 import { Section, SectionHeader } from "@/components/common/Section";
 import { useCart } from "@/context/CartContext";
 import "./ShopSection.css";
+
+// Animation variants - Same as AboutSection
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
 
 /* ── Icons ──────────────────────────────────────────────────── */
 const CartIcon = () => (
@@ -63,9 +81,9 @@ function Toast({ message }) {
 let toastIdCounter = 0;
 
 /* ════════════════════════════════════════════════════════════════
-   PRODUCT CARD
+   PRODUCT CARD - with animations
    ════════════════════════════════════════════════════════════════ */
-function ProductCard({ product }) {
+function ProductCard({ product, index }) {
   const { addToCart, cartItems } = useCart();
   const router = useRouter();
 
@@ -95,9 +113,22 @@ function ProductCard({ product }) {
     : null;
 
   return (
-    <article className="spc-card" aria-label={product.name}>
-      {/* ── Image ── */}
-      <div className="spc-img-wrap">
+    <motion.article 
+      className="spc-card" 
+      aria-label={product.name}
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -6 }}
+    >
+      {/* ── Image with Animation ── */}
+      <motion.div 
+        className="spc-img-wrap"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.3 }}
+      >
         <Image
           src={`/images/shop/image${product.id}.jpg`}
           alt={product.name}
@@ -109,82 +140,164 @@ function ProductCard({ product }) {
         {/* Gradient overlay */}
         <div className="spc-img-overlay" aria-hidden="true" />
 
-        {/* Badge */}
+        {/* Badge with Fade-in */}
         {product.badge && (
-          <span className={`spc-badge ${badgeCls}`}>{product.badge}</span>
+          <motion.span 
+            className={`spc-badge ${badgeCls}`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 + 0.1, type: "spring" }}
+          >
+            {product.badge}
+          </motion.span>
         )}
 
-        {/* Discount pill */}
+        {/* Discount pill with Fade-in */}
         {discount && (
-          <span className="spc-discount-pill">-{discount}%</span>
+          <motion.span 
+            className="spc-discount-pill"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 + 0.15, type: "spring" }}
+          >
+            -{discount}%
+          </motion.span>
         )}
 
         {/* Quick-add on image hover */}
-        <div className="spc-quick-add" aria-hidden="true">
-          <button
+        <motion.div 
+          className="spc-quick-add" 
+          aria-hidden="true"
+          initial={{ opacity: 0, y: 10 }}
+          whileHover={{ opacity: 1, y: 0 }}
+        >
+          <motion.button
             type="button"
             className="spc-quick-btn"
             onClick={handleAddToCart}
             tabIndex={-1}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <CartIcon />
             Quick Add
-          </button>
-        </div>
-      </div>
+          </motion.button>
+        </motion.div>
+      </motion.div>
 
-      {/* ── Body ── */}
-      <div className="spc-body">
+      {/* ── Body with Staggered Content ── */}
+      <motion.div 
+        className="spc-body"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
         {/* Category + rating row */}
-        <div className="spc-meta">
-          <span className="spc-category">{product.category}</span>
-          <div className="spc-stars" aria-label={`${product.rating} stars`}>
+        <motion.div 
+          className="spc-meta"
+          variants={fadeInUp}
+        >
+          <motion.span 
+            className="spc-category"
+            variants={fadeInUp}
+          >
+            {product.category}
+          </motion.span>
+          <motion.div 
+            className="spc-stars" 
+            aria-label={`${product.rating} stars`}
+            variants={staggerContainer}
+          >
             {[1, 2, 3, 4, 5].map((s) => (
-              <StarIcon key={s} filled={s <= Math.floor(product.rating)} />
+              <motion.span
+                key={s}
+                variants={fadeInUp}
+                whileHover={{ scale: 1.3, rotate: 10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <StarIcon filled={s <= Math.floor(product.rating)} />
+              </motion.span>
             ))}
-            <span className="spc-reviews">({product.reviews})</span>
-          </div>
-        </div>
+            <motion.span 
+              className="spc-reviews"
+              variants={fadeInUp}
+            >
+              ({product.reviews})
+            </motion.span>
+          </motion.div>
+        </motion.div>
 
-        {/* Name */}
-        <h3 className="spc-name">{product.name}</h3>
+        {/* Name with Hover Color Transition */}
+        <motion.h3 
+          className="spc-name"
+          variants={fadeInUp}
+          whileHover={{ color: "var(--color-primary, #1E6FAF)" }}
+        >
+          {product.name}
+        </motion.h3>
 
-        {/* Price row */}
-        <div className="spc-price-row">
-          <span className="spc-price">৳{product.price.toLocaleString()}</span>
+        {/* Price row with Fade-in */}
+        <motion.div 
+          className="spc-price-row"
+          variants={fadeInUp}
+        >
+          <motion.span 
+            className="spc-price"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 200 }}
+          >
+            ৳{product.price.toLocaleString()}
+          </motion.span>
           {product.oldPrice && (
-            <span className="spc-old-price">
+            <motion.span 
+              className="spc-old-price"
+              variants={fadeInUp}
+            >
               ৳{product.oldPrice.toLocaleString()}
-            </span>
+            </motion.span>
           )}
-        </div>
+        </motion.div>
 
-        {/* ── CTA buttons ── */}
-        <div className="spc-actions">
-          <button
+        {/* ── CTA buttons with Hover Effects ── */}
+        <motion.div 
+          className="spc-actions"
+          variants={fadeInUp}
+        >
+          <motion.button
             type="button"
             onClick={handleAddToCart}
             className={`btn btn-secondary spc-btn-cart ${
               added ? "spc-btn-cart--added" : ""
             }`}
             aria-label={added ? "Added to cart" : `Add ${product.name} to cart`}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.2 }}
           >
             {added ? <CheckIcon /> : <CartIcon />}
             <span>{added ? "Added!" : "Add to Cart"}</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
             onClick={handleBuyNow}
             className="btn btn-primary spc-btn-buy"
             aria-label={`Buy ${product.name} now`}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.2 }}
           >
             <BuyIcon />
             <span>Buy Now</span>
-          </button>
-        </div>
-      </div>
-    </article>
+          </motion.button>
+        </motion.div>
+      </motion.div>
+    </motion.article>
   );
 }
 
@@ -210,36 +323,65 @@ export default function ShopSection() {
   return (
     <>
       <Section id="shop" bg="bg-white">
-        <SectionHeader
-          label="Our Shop"
-          title="Health Products, <span class='text-primary'>Delivered to Your Door</span>"
-          subtitle="Trusted medical devices, supplements, and health kits from certified brands — all in one place."
-        />
+        
+        {/* Section Header with Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <SectionHeader
+            label="Our Shop"
+            title="Health Products, <span class='text-primary'>Delivered to Your Door</span>"
+            subtitle="Trusted medical devices, supplements, and health kits from certified brands — all in one place."
+          />
+        </motion.div>
 
-        <div className="shop-grid">
-          {shopProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        {/* Product Grid with Staggered Card Animations */}
+        <motion.div 
+          className="shop-grid"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          {shopProducts.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
           ))}
-        </div>
+        </motion.div>
 
-        <div className="shop-view-all">
-          <Link href="/shop" className="btn btn-primary shop-cta-btn">
-            Browse All Products
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
+        {/* View All Button with Animation */}
+        <motion.div 
+          className="shop-view-all"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <motion.div 
+            whileHover={{ scale: 1.03 }} 
+            whileTap={{ scale: 0.98 }} 
+            transition={{ duration: 0.2 }}
+          >
+            <Link href="/shop" className="btn btn-primary shop-cta-btn">
+              Browse All Products
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </motion.div>
+        </motion.div>
       </Section>
 
       {/* Toast Container - Fixed position, outside Section for proper stacking */}

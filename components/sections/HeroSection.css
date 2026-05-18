@@ -734,3 +734,25 @@
     bottom: 0.6rem;
   }
 }
+
+
+
+/* Smooth transition for motion hover effects */
+.hero-avatar,
+.hero-stat-item,
+.hero-main-card,
+.hero-floating-badge-top,
+.hero-floating-badge-bottom {
+  will-change: transform;
+}
+
+/* Ensure stars animate smoothly */
+.hero-stars svg {
+  transform-origin: center;
+}
+
+/* Button hover transition enhancement */
+.hero-buttons a {
+  display: inline-flex;
+  will-change: transform;
+}

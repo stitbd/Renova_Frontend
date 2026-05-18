@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { siteConfig } from "@/constants/siteData";
 import "./EmergencyBanner.css";
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 export default function EmergencyBanner() {
   return (

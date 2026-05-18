@@ -211,6 +211,7 @@
   z-index: 1;
   background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
   transition: box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 .dcard:hover .dcard__image-wrap {
@@ -314,6 +315,7 @@
   align-items: center;
   gap: var(--space-05, 2px);
   flex: 1;
+  will-change: opacity, transform;
 }
 
 .dcard__stat-value {
