@@ -155,16 +155,22 @@ export default function HeroSection() {
             <div className="hero-trust-indicators">
               <div className="hero-doctor-avatars" aria-hidden="true">
                 {[
-                  "from-green-400 to-primary",
-                  "from-blue-400 to-authority",
-                  "from-secondary to-green-500",
-                  "from-authority to-accent",
-                ].map((gradient, i) => (
-                  <div
-                    key={i}
-                    className={`hero-avatar ${gradient}`}
-                  >
-                    {["FR", "TH", "NA", "MI"][i]}
+                  "/images/patients/01.jpg",
+                  "/images/patients/02.jpg",
+                  "/images/patients/03.jpg",
+                  "/images/patients/04.jpg",
+                ].map((src, i) => (
+                  <div key={i} className="hero-avatar">
+                    <img
+                      src={src}
+                      alt={`Patient ${i + 1}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "9999px",
+                      }}
+                    />
                   </div>
                 ))}
               </div>
