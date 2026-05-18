@@ -1,4 +1,4 @@
-// src/app/doctor-portal/dportal/DoctorPortalForm.jsx
+// src/app/doctor-portal/doctor-signin/DoctorPortalForm.jsx
 "use client";
 
 import { useState } from "react";
@@ -49,7 +49,7 @@ export default function DoctorPortalForm() {
         <div className="doctor-portal__logo-section">
           <div className="doctor-portal__logos">
             <Image
-              src="/images/logo.png"
+              src="/images/logo2.png"
               alt="Renova Life Care Logo"
               width={160}
               height={60}
@@ -150,6 +150,12 @@ export default function DoctorPortalForm() {
           <div className="doctor-portal__help">
             <a href="/portal-help" className="doctor-portal__help-link">
               How to use doctor portal
+            </a>
+          </div>
+
+          <div className="doctor-portal__help">
+            New Doctor? <a href="/doctor-portal/doctor-signup" className="doctor-portal__help-link">
+              Create your account
             </a>
           </div>
         </form>

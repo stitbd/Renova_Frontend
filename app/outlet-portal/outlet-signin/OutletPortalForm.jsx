@@ -1,4 +1,4 @@
-// src/app/OutletPortal/oportal/OutletPortalForm.jsx
+// src/app/outlet-portal/outlet-signin/OutletPortalForm.jsx
 "use client";
 
 import { useState } from "react";
@@ -31,9 +31,9 @@ export default function OutletPortalForm() {
   };
 
   return (
-    <div className="patient-portal-container">
+    <div className="outlet-portal-container">
       {/* Background Image */}
-      <div className="patient-portal__background">
+      <div className="outlet-portal__background">
         <Image
           src="/images/obg-login.jpg"
           alt="Compassionate care at Renova Life Care"
@@ -41,37 +41,37 @@ export default function OutletPortalForm() {
           className="object-cover"
           priority
         />
-        <div className="patient-portal__overlay" />
+        <div className="outlet-portal__overlay" />
       </div>
 
       {/* Login Card */}
-      <div className="patient-portal__card">
-        <div className="patient-portal__logo-section">
-          <div className="patient-portal__logos">
+      <div className="outlet-portal__card">
+        <div className="outlet-portal__logo-section">
+          <div className="outlet-portal__logos">
             <Image
-              src="/images/logo.png"
+              src="/images/logo2.png"
               alt="Renova Life Care Logo"
               width={160}
               height={60}
-              className="patient-portal__logo"
+              className="outlet-portal__logo"
               style={{ objectFit: "contain" }}
             />
           </div>
         </div>
 
-        <div className="patient-portal__header">
-          <h1 className="patient-portal__title">Outlet Portal</h1>
-          <p className="patient-portal__subtitle">Sign in to access your outlet dashboard</p>
+        <div className="outlet-portal__header">
+          <h1 className="outlet-portal__title">Outlet Portal</h1>
+          <p className="outlet-portal__subtitle">Sign in to access your outlet dashboard</p>
         </div>
 
         {error && (
-          <div className="patient-portal__error" role="alert">
+          <div className="outlet-portal__error" role="alert">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSignIn} className="patient-portal__form" noValidate>
-          <div className="patient-portal__input-group">
+        <form onSubmit={handleSignIn} className="outlet-portal__form" noValidate>
+          <div className="outlet-portal__input-group">
             <input
               type="text"
               id="outletId"
@@ -79,13 +79,13 @@ export default function OutletPortalForm() {
               value={outletId}
               onChange={(e) => setOutletId(e.target.value)}
               placeholder="Enter your Outlet ID"
-              className="patient-portal__input"
+              className="outlet-portal__input"
               required
               autoComplete="username"
               aria-label="Outlet ID"
             />
             <svg
-              className="patient-portal__icon"
+              className="outlet-portal__icon"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -101,7 +101,7 @@ export default function OutletPortalForm() {
             </svg>
           </div>
 
-          <div className="patient-portal__input-group">
+          <div className="outlet-portal__input-group">
             <input
               type="password"
               id="password"
@@ -109,13 +109,13 @@ export default function OutletPortalForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="patient-portal__input"
+              className="outlet-portal__input"
               required
               autoComplete="current-password"
               aria-label="Password"
             />
             <svg
-              className="patient-portal__icon"
+              className="outlet-portal__icon"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -131,31 +131,37 @@ export default function OutletPortalForm() {
             </svg>
           </div>
 
-          <div className="patient-portal__buttons">
-            <button type="submit" className="btn-patient-portal btn-signin">
+          <div className="outlet-portal__buttons">
+            <button type="submit" className="btn-outlet-portal btn-signin">
               Sign In
             </button>
             <button
               type="button"
               onClick={handleReset}
-              className="btn-patient-portal btn-reset"
+              className="btn-outlet-portal btn-reset"
             >
               Reset
             </button>
-            <button type="button" className="btn-patient-portal btn-forgot">
+            <button type="button" className="btn-outlet-portal btn-forgot">
               Forgot Password
             </button>
           </div>
 
-          <div className="patient-portal__help">
-            <a href="/portal-help" className="patient-portal__help-link">
+          <div className="outlet-portal__help">
+            <a href="/portal-help" className="outlet-portal__help-link">
               How to use outlet portal
+            </a>
+          </div>
+
+          <div className="outlet-portal__help">
+            New Outlet? <a href="/outlet-portal/outlet-signup" className="outlet-portal__help-link">
+              Create your account
             </a>
           </div>
         </form>
 
         {/* Security Notice */}
-        <div className="patient-portal__security-notice">
+        <div className="outlet-portal__security-notice">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>

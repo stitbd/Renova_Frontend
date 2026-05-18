@@ -1,4 +1,4 @@
-// src/app/OutletPortal/oportal/layout.jsx
+// src/app/outlet-portal/outlet-signin/layout.jsx
 export const dynamic = "force-static";
 
 // Opt-out of root layout (Next.js 14+)

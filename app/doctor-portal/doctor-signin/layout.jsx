@@ -1,4 +1,4 @@
-// src/app/doctor-portal/dportal/layout.jsx
+// src/app/doctor-portal/doctor-signin/layout.jsx
 export const dynamic = "force-static";
 
 // Opt-out of root layout (Next.js 14+)

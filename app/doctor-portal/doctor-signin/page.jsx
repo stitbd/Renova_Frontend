@@ -1,4 +1,4 @@
-// src/app/doctor-portal/dportal/page.jsx
+// src/app/doctor-portal/doctor-signin/page.jsx
 import { siteConfig } from "@/constants/siteData";
 import DoctorPortalForm from "./DoctorPortalForm";
 

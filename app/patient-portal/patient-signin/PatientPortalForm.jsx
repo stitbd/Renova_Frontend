@@ -1,8 +1,9 @@
-// src/app/PatientPortal/pportal/PatientPortalForm.jsx
+// src/app/patient-portal/patient-signin/PatientPortalForm.jsx
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
+import "./patient-portal.css";
 
 export default function PatientPortalForm() {
   const [uhid, setUhid] = useState("");
@@ -48,7 +49,7 @@ export default function PatientPortalForm() {
         <div className="patient-portal__logo-section">
           <div className="patient-portal__logos">
             <Image
-              src="/images/logo.png"
+              src="/images/logo2.png"
               alt="Renova Life Care Logo"
               width={160}
               height={60}
@@ -149,6 +150,12 @@ export default function PatientPortalForm() {
           <div className="patient-portal__help">
             <a href="/portal-help" className="patient-portal__help-link">
               How to use patient portal
+            </a>
+          </div>
+
+          <div className="patient-portal__help">
+            New Patient? <a href="/patient-portal/patient-signup" className="patient-portal__help-link">
+              Create your account
             </a>
           </div>
         </form>

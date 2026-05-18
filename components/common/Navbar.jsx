@@ -563,7 +563,7 @@ export default function Navbar() {
 
       {/* ── Fixed Right Side Button ── */}
       <div className="fixed-report-wrapper">
-        <Link href="/PatientPortal/pportal" target="_blank" rel="noopener noreferrer" className="fixed-report-btn">
+        <Link href="/patient-portal/patient-signin" target="_blank" rel="noopener noreferrer" className="fixed-report-btn">
           <ReportIcon size={15} />
           Report Download
         </Link>

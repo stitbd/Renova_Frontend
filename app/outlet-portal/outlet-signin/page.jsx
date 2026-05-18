@@ -1,4 +1,4 @@
-// src/app/OutletPortal/oportal/page.jsx
+// src/app/outlet-portal/outlet-signin/page.jsx
 import { siteConfig } from "@/constants/siteData";
 import OutletPortalForm from "./OutletPortalForm";
 
@@ -7,7 +7,7 @@ export const metadata = {
   description: `Access your outlet portal account at ${siteConfig.name} to view your medical records, appointments, and health information.`,
   openGraph: {
     title: `Outlet Portal | ${siteConfig.name}`,
-    description: "Secure login to access your outlet portal and health records.",
+    description: "Secure login to access your Outlet portal and health records.",
     url: `${siteConfig.url}/outlet-portal/outlet-signin`,
   },
   // Prevent search engines from indexing login pages

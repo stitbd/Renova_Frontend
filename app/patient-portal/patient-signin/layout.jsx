@@ -1,4 +1,4 @@
-// src/app/PatientPortal/pportal/layout.jsx
+// src/app/patient-portal/patient-signin/layout.jsx
 export const dynamic = "force-static";
 
 // Opt-out of root layout (Next.js 14+)

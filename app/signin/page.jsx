@@ -12,7 +12,7 @@ export default function SignInSelectionPage() {
   return (
     <>
       {/* Page Hero */}
-      <section className="page-hero">
+      {/* <section className="page-hero">
         <div className="page-hero__container">
           <span className="page-hero__label">Welcome Back</span>
           <h1 className="page-hero__title">
@@ -27,10 +27,10 @@ export default function SignInSelectionPage() {
             <span aria-current="page">Sign In</span>
           </nav>
         </div>
-      </section>
+      </section> */}
 
       {/* Selection Cards */}
-      <section style={{ padding: '4rem 1rem', background: 'var(--bg-subtle)' }}>
+      <section class="page-section page-section--slate">
         <style>{`
           .panel-card:hover {
             transform: translateY(-5px) !important;
@@ -60,15 +60,14 @@ export default function SignInSelectionPage() {
               <span className="btn btn-secondary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign In</span>
             </div>
           </Link>
-
           <Link href="/outlet-portal/outlet-signin" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className="panel-card" style={{ background: '#fff', borderRadius: '1rem', padding: '2.5rem 1.5rem', textAlign: 'center', boxShadow: 'var(--shadow-md)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}>
-              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--success-light, #d1fae5)', color: 'var(--success, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
               </div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Outlet Panel</h3>
-              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Access your pharmacy or diagnostic center portal.</p>
-              <span className="btn btn-primary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center', background: 'var(--success, #059669)', borderColor: 'var(--success, #059669)' }}>Sign In</span>
+              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Access your health records and appointments.</p>
+              <span className="btn btn-primary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign In</span>
             </div>
           </Link>
 
