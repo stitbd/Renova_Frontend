@@ -6,13 +6,9 @@
 .appt {
   position: relative;
   overflow: hidden;
-  background: var(--color-bg-dark); /* #05417d */
-  padding: 5rem 0 7rem;
+  background: var(--color-bg-dark);
+  padding: 3rem 0 4rem;
   font-family: var(--font-body);
-}
-
-@media (min-width: 1024px) {
-  .appt { padding: 7rem 0 9rem; }
 }
 
 /* ── Background ─────────────────────────────────────────── */
@@ -118,7 +114,7 @@
 
 .appt__grid {
   display: grid;
-  gap: var(--space-12);
+  gap: var(--space-6);
 }
 
 @media (min-width: 1024px) {
@@ -134,7 +130,7 @@
   color: var(--color-white);
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-4);
 }
 
 /* Eyebrow tag */
@@ -710,4 +706,178 @@
 .appt__submit:focus-visible {
   outline: 2px solid var(--color-authority);
   outline-offset: 2px;
+}
+
+
+/* ── Gender Radio ────────────────────────────────────────── */
+.appt__gender-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+.appt__gender-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-default);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-light);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  transition: var(--transition-fast);
+  user-select: none;
+}
+
+.appt__gender-option:hover {
+  border-color: var(--color-authority);
+  background: rgba(66,138,38,0.05);
+}
+
+.appt__gender-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-authority);
+  cursor: pointer;
+}
+
+.appt__gender-option--selected {
+  border-color: var(--color-authority);
+  background: rgba(66,138,38,0.08);
+  color: var(--color-authority-dark);
+}
+
+@media (max-width: 640px) {
+  .appt {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .appt__container {
+    padding: 0 var(--space-4);
+  }
+
+  .appt__grid {
+    gap: var(--space-5);
+  }
+
+  .appt__left {
+    gap: var(--space-3);
+    text-align: center;
+    align-items: center;
+  }
+
+  .appt__headline {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    letter-spacing: -0.01em;
+  }
+
+  .appt__subtext {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .appt__features {
+    gap: var(--space-2);
+    justify-content: center;
+  }
+
+  .appt__feature {
+    font-size: 0.75rem;
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .appt__feature-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .appt__stats {
+    width: 100%;
+  }
+
+  .appt__stat {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .appt__stat-num {
+    font-size: var(--font-size-xl);
+  }
+
+  .appt__stat-label {
+    font-size: 0.6rem;
+  }
+
+  .appt__phone-block {
+    padding-top: var(--space-3);
+    align-items: center;
+  }
+
+  .appt__phone-link {
+    font-size: 1rem;
+  }
+
+  .appt__phone-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .appt__tag {
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .appt__tag-text {
+    font-size: 0.65rem;
+  }
+
+  .appt__card-head {
+    padding: var(--space-5) var(--space-4) var(--space-6);
+  }
+
+  .appt__card-body {
+    padding: var(--space-4) var(--space-4) var(--space-5);
+  }
+
+  .appt__card-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .appt__card-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .appt__card-icon-wrap {
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--space-3);
+  }
+
+  .appt__form {
+    gap: var(--space-3);
+  }
+
+  .appt__input,
+  .appt__select {
+    height: 44px;
+    font-size: 0.85rem;
+  }
+
+  .appt__label {
+    font-size: 0.65rem;
+  }
+
+  .appt__gender-option {
+    font-size: 0.78rem;
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .appt__trust {
+    font-size: 0.65rem;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    justify-content: center;
+  }
 }

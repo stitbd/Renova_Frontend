@@ -46,6 +46,19 @@ const Icon = {
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.87-6.87A19.79 19.79 0 0 1 4.08 4.18 A2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z"/>
     </svg>
   ),
+  Mail: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+      <polyline points="22,6 12,13 2,6"/>
+    </svg>
+  ),
+  Cake: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <path d="M12 3a2 2 0 0 1 2 2c0 1.5-2 3-2 3s-2-1.5-2-3a2 2 0 0 1 2-2z"/>
+      <rect x="3" y="10" width="18" height="8" rx="1"/>
+    </svg>
+  ),
   Stethoscope: () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
@@ -110,34 +123,20 @@ const Icon = {
   ),
 };
 
-/* ─── Departments ────────────────────────────────────────── */
-const DEPARTMENTS = [
-  { value: "", label: "Select Department", disabled: true },
-  { value: "general", label: "General Checkup" },
-  { value: "cardiology", label: "Cardiology" },
-  { value: "orthopedics", label: "Orthopedics" },
-  { value: "neurology", label: "Neurology" },
-  { value: "pediatrics", label: "Pediatrics" },
-  { value: "dental", label: "Dental Care" },
-  { value: "dermatology", label: "Dermatology" },
-  { value: "ophthalmology", label: "Eye Care" },
-  { value: "gynecology", label: "Gynecology & Obs." },
-  { value: "oncology", label: "Oncology" },
-];
-
 /* ─── Validation ─────────────────────────────────────────── */
 const validate = (data) => {
   const errs = {};
   if (!data.name.trim() || data.name.trim().length < 2) errs.name = "Enter a valid full name";
+  if (!data.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) errs.email = "Enter a valid email";
   if (!data.phone.trim() || !/^(\+880|01)[0-9]{9,10}$/.test(data.phone.replace(/\s/g, ""))) errs.phone = "Enter a valid Bangladesh phone number";
-  if (!data.department) errs.department = "Please select a department";
-  if (!data.date) errs.date = "Please select a preferred date";
+  if (!data.dob) errs.dob = "Please enter your date of birth";
+  if (!data.gender) errs.gender = "Please select a gender";
   return errs;
 };
 
 /* ─── Component ──────────────────────────────────────────── */
 export default function AppointmentCTASection() {
-  const EMPTY = { name: "", phone: "", department: "", date: "" };
+  const EMPTY = { name: "", email: "", phone: "", dob: "", gender: "",};
 
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
@@ -275,10 +274,10 @@ export default function AppointmentCTASection() {
 
               {/* Form */}
               <form onSubmit={submit} className="appt__form" noValidate>
-                {/* Name + Phone row */}
+                {/* Row 1 — Full Name + Email */}
                 <motion.div className="appt__row" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
 
-                  {/* Name */}
+                  {/* Full Name */}
                   <motion.div className="appt__field" variants={fadeInUp}>
                     <label htmlFor="appt-name" className="appt__label">Full Name <span className="appt__req" aria-hidden="true">*</span></label>
                     <div className="appt__input-wrap">
@@ -287,6 +286,20 @@ export default function AppointmentCTASection() {
                     </div>
                     {errors.name && <motion.span id="err-name" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.name}</motion.span>}
                   </motion.div>
+
+                  {/* Email */}
+                  <motion.div className="appt__field" variants={fadeInUp}>
+                    <label htmlFor="appt-email" className="appt__label">Email <span className="appt__req" aria-hidden="true">*</span></label>
+                    <div className="appt__input-wrap">
+                      <span className="appt__input-icon"><Icon.Mail /></span>
+                      <input id="appt-email" type="email" placeholder="you@example.com" value={form.email} onChange={(e) => change("email", e.target.value)} className={inputCls("email")} aria-invalid={!!errors.email} aria-describedby={errors.email ? "err-email" : undefined} disabled={submitting} autoComplete="email" />
+                    </div>
+                    {errors.email && <motion.span id="err-email" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.email}</motion.span>}
+                  </motion.div>
+                </motion.div>
+
+                {/* Row 2 — Phone + Date of Birth */}
+                <motion.div className="appt__row" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
 
                   {/* Phone */}
                   <motion.div className="appt__field" variants={fadeInUp}>
@@ -297,28 +310,30 @@ export default function AppointmentCTASection() {
                     </div>
                     {errors.phone && <motion.span id="err-phone" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.phone}</motion.span>}
                   </motion.div>
+
+                  {/* Date of Birth */}
+                  <motion.div className="appt__field" variants={fadeInUp}>
+                    <label htmlFor="appt-dob" className="appt__label">Date of Birth <span className="appt__req" aria-hidden="true">*</span></label>
+                    <div className="appt__input-wrap">
+                      <span className="appt__input-icon"><Icon.Cake /></span>
+                      <input id="appt-dob" type="date" value={form.dob} onChange={(e) => change("dob", e.target.value)} className={inputCls("dob")} aria-invalid={!!errors.dob} aria-describedby={errors.dob ? "err-dob" : undefined} disabled={submitting} max={new Date().toISOString().split("T")[0]} />
+                    </div>
+                    {errors.dob && <motion.span id="err-dob" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.dob}</motion.span>}
+                  </motion.div>
                 </motion.div>
 
-                {/* Department */}
+                {/* Gender */}
                 <motion.div className="appt__field" variants={fadeInUp}>
-                  <label htmlFor="appt-dept" className="appt__label">Department <span className="appt__req" aria-hidden="true">*</span></label>
-                  <div className="appt__input-wrap">
-                    <span className="appt__input-icon"><Icon.StethoscopeSmall /></span>
-                    <select id="appt-dept" value={form.department} onChange={(e) => change("department", e.target.value)} className={selectCls("department")} aria-invalid={!!errors.department} aria-describedby={errors.department ? "err-dept" : undefined} disabled={submitting}>
-                      {DEPARTMENTS.map((d) => (<option key={d.value || "placeholder"} value={d.value} disabled={d.disabled}>{d.label}</option>))}
-                    </select>
+                  <label className="appt__label">Gender <span className="appt__req" aria-hidden="true">*</span></label>
+                  <div className="appt__gender-group" role="group" aria-label="Select gender">
+                    {["Male", "Female", "Other"].map((g) => (
+                      <label key={g} className={`appt__gender-option${form.gender === g.toLowerCase() ? " appt__gender-option--selected" : ""}`}>
+                        <input type="radio" name="gender" value={g.toLowerCase()} checked={form.gender === g.toLowerCase()} onChange={() => change("gender", g.toLowerCase())} disabled={submitting} />
+                        {g}
+                      </label>
+                    ))}
                   </div>
-                  {errors.department && <motion.span id="err-dept" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.department}</motion.span>}
-                </motion.div>
-
-                {/* Date */}
-                <motion.div className="appt__field" variants={fadeInUp}>
-                  <label htmlFor="appt-date" className="appt__label">Preferred Date <span className="appt__req" aria-hidden="true">*</span></label>
-                  <div className="appt__input-wrap">
-                    <span className="appt__input-icon"><Icon.Calendar /></span>
-                    <input id="appt-date" type="date" value={form.date} onChange={(e) => change("date", e.target.value)} className={inputCls("date")} aria-invalid={!!errors.date} aria-describedby={errors.date ? "err-date" : undefined} disabled={submitting} min={minDate} />
-                  </div>
-                  {errors.date && <motion.span id="err-date" className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.date}</motion.span>}
+                  {errors.gender && <motion.span className="appt__error" role="alert" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>{errors.gender}</motion.span>}
                 </motion.div>
 
                 {/* Submit */}

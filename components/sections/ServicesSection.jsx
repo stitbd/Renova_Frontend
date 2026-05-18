@@ -256,6 +256,7 @@ export default function ServicesSection() {
             whileInView="visible"
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
+            style={{ height: "100%" }}
           >
             <Link
               href={service.href}
