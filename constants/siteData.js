@@ -323,6 +323,9 @@ export const doctors = [
     available: "Mon, Wed, Thu",
     rating: 4.9,
     patients: "3,200+",
+    gender: "Female",
+    branch: "Gulshan Branch",
+    consultationType: "Video / Audio Call",
   },
   {
     id: 2,
@@ -334,6 +337,9 @@ export const doctors = [
     available: "Sun, Mon, Sat",
     rating: 4.8,
     patients: "2,800+",
+    gender: "Female",
+    branch: "Gulshan Branch",
+    consultationType: "Video / Audio Call",
   },
   {
     id: 3,
@@ -345,6 +351,9 @@ export const doctors = [
     available: "Tue, Wed, Sat",
     rating: 4.9,
     patients: "4,100+",
+    gender: "Female",
+    branch: "Mirpur Branch",
+    consultationType: "Video / Audio Call",
   },
   {
     id: 4,
@@ -356,6 +365,9 @@ export const doctors = [
     available: "Mon, Thu, Sat",
     rating: 4.7,
     patients: "2,500+",
+    gender: "Male",
+    branch: "Gulshan Branch",
+    consultationType: "Face to Face",
   },
   
   {
@@ -368,6 +380,9 @@ export const doctors = [
     available: "Mon, Wed, Thu",
     rating: 4.9,
     patients: "3,200+",
+    gender: "Female",
+    branch: "Gulshan Branch",
+    consultationType: "Video / Audio Call",
   },
   {
     id: 6,
@@ -379,6 +394,9 @@ export const doctors = [
     available: "Sun, Mon, Sat",
     rating: 4.8,
     patients: "2,800+",
+    gender: "Female",
+    branch: "Gulshan Branch",
+    consultationType: "Video / Audio Call",
   },
   {
     id: 7,
@@ -390,6 +408,9 @@ export const doctors = [
     available: "Tue, Wed, Sat",
     rating: 4.9,
     patients: "4,100+",
+    gender: "Female",
+    branch: "Mirpur Branch",
+    consultationType: "Video / Audio Call",
   },
   {
     id: 8,
@@ -401,6 +422,9 @@ export const doctors = [
     available: "Mon, Thu, Sat",
     rating: 4.7,
     patients: "2,500+",
+    gender: "Female",
+    branch: "Dhanmondi Branch",
+    consultationType: "Video / Audio Call",
   },
 ];
 
