@@ -88,27 +88,6 @@ export default function DoctorsGrid() {
 
   return (
     <div id="doctors" className="doctors-section-wrapper">
-      
-      {/* Section Header */}
-      <motion.header 
-        className="doctors-header-wrapper"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="doctors-label-pill">
-          <span className="doctors-label-dot" aria-hidden="true" />
-          Meet Our Team
-        </div>
-        <h2 className="doctors-heading">
-          Expert Specialists, <span className="doctors-heading-accent">Compassionate Care</span>
-        </h2>
-        <p className="doctors-subheading">
-          Our doctors bring decades of experience and international training to
-          deliver the best healthcare in Bangladesh.
-        </p>
-      </motion.header>
 
       {/* Doctors Grid with Staggered Animations */}
       <motion.div 
