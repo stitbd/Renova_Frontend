@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/constants/siteData";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import "./AppointmentCTASection.css";
 
@@ -136,13 +137,15 @@ const validate = (data) => {
 
 /* ─── Component ──────────────────────────────────────────── */
 export default function AppointmentCTASection() {
-  const EMPTY = { name: "", email: "", phone: "", dob: "", gender: "",};
+  const EMPTY = { name: "", email: "", phone: "", dob: "", gender: "" };
 
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
   const [minDate, setMinDate] = useState("");
+  
+  const router = useRouter(); // ← add here
 
   useEffect(() => {
     setMinDate(new Date().toISOString().split("T")[0]);
@@ -158,14 +161,16 @@ export default function AppointmentCTASection() {
     const errs = validate(form);
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setSubmitting(true);
-    setStatus(null);
     try {
-      await new Promise(r => setTimeout(r, 1600));
-      setStatus("success");
-      setForm(EMPTY);
-      setTimeout(() => setStatus(null), 6000);
-    } catch {
-      setStatus("error");
+      const params = new URLSearchParams({
+        fullName: form.name,
+        email:    form.email,
+        phone:    form.phone,
+        dob:      form.dob,
+        gender:   form.gender,
+        step:     "2",
+      });
+      router.push(`/appointment?${params.toString()}`);
     } finally {
       setSubmitting(false);
     }

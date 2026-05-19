@@ -986,21 +986,37 @@ export default function AppointmentForm({
    * the very first render — avoids the flash/race condition.
    */
   const [data, setData] = useState(() => {
-    /* On the server searchParams may be null; guard with optional chaining */
-    const preDoctor = searchParams?.get?.("doctor") ?? null;
-    if (!preDoctor) return INITIAL_FORM;
+    const preDoctor  = searchParams?.get?.("doctor")   ?? null;
+    const preStep    = searchParams?.get?.("step")     ?? null;
+    const fullName   = searchParams?.get?.("fullName") ?? "";
+    const email      = searchParams?.get?.("email")    ?? "";
+    const phone      = searchParams?.get?.("phone")    ?? "";
+    const dob        = searchParams?.get?.("dob")      ?? "";
+    const gender     = searchParams?.get?.("gender")   ?? "";
 
-    /* Find which department this doctor belongs to */
+    // CTA pre-fill (step=2, no doctor)
+    if (preStep === "2" && !preDoctor) {
+      return { ...INITIAL_FORM, fullName, email, phone, dob, gender };
+    }
+
+    // Doctor deep-link (existing behaviour)
+    if (!preDoctor) return INITIAL_FORM;
     const preDept = Object.keys(DOCTORS).find(deptId =>
       DOCTORS[deptId].some(d => d.id === preDoctor)
     );
     if (!preDept) return INITIAL_FORM;
-
-    return { ...INITIAL_FORM, mode: "online", dept: preDept, doctor: preDoctor };
+    return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: "online", dept: preDept, doctor: preDoctor };
   });
 
+  
   /* If data was pre-filled, start on step 2 immediately */
-  const [step,   setStep]   = useState(() => (data.dept && data.doctor ? 2 : 1));
+  const [step, setStep] = useState(() => {
+    const preStep  = searchParams?.get?.("step")   ?? null;
+    const preDoctor = searchParams?.get?.("doctor") ?? null;
+    if (preStep === "2") return 2;
+    if (data.dept && data.doctor) return 2;
+    return 1;
+  });
   const [errors, setErrors] = useState({});
   const [busy,   setBusy]   = useState(false);
   const [done,   setDone]   = useState(false);
