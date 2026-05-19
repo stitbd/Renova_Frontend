@@ -50,7 +50,7 @@
   z-index: 1;
   text-align: center;
   max-width: 1536px;
-  margin: 0 auto var(--space-14);
+  margin: 0 auto var(--space-8);
 }
 
 .doctors-label-pill {
@@ -107,7 +107,7 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 @media (min-width: 560px) {
@@ -350,13 +350,14 @@
 /* ── CTA buttons inside card ─────────────────────────────────── */
 .dcard-cta-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: var(--space-2);
   width: 100%;
   margin-top: auto;
 }
 
 .dcard-cta-group .btn {
+  flex: 1;
   width: 100% !important;
   padding: var(--space-3) var(--space-6) !important;
   box-sizing: border-box;
@@ -372,24 +373,147 @@
 
 /* ── Responsive Tweaks ───────────────────────────────────────── */
 @media (max-width: 559px) {
+  .doctors-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
   .dcard {
-    padding: var(--space-6) var(--space-5) var(--space-5);
+    padding: var(--space-4) var(--space-4) var(--space-4);
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    gap: var(--space-3);
+  }
+
+  .dcard__accent-bar {
+    display: none;
+  }
+
+  .dcard__visual {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .dcard__image-ring {
+    display: none;
   }
 
   .dcard__image-wrap {
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
   }
 
-  .doctors-cta-link {
-    padding: var(--space-3) var(--space-8);
-    font-size: var(--font-size-sm);
+  .dcard__status {
+    margin-top: var(--space-2);
+    padding: 2px var(--space-2);
+  }
+
+  .dcard__status-text {
+    font-size: 0.6rem;
+  }
+
+  .dcard__body {
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .dcard__name {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+  }
+
+  .dcard__specialty {
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+  }
+
+  .dcard__qualification {
+    font-size: 0.65rem;
+    margin-bottom: var(--space-2);
+    line-height: 1.4;
+  }
+
+  .dcard__stats {
+    padding: var(--space-2) 0;
+    margin-bottom: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .dcard__stat-value {
+    font-size: 0.75rem;
+  }
+
+  .dcard__stat-label {
+    font-size: 0.55rem;
+  }
+
+  .dcard__stat-divider {
+    height: 20px;
+  }
+
+  .dcard-cta-group {
+    flex-direction: row;
+    gap: var(--space-2);
+  }
+
+  .dcard-cta-group .btn {
+    padding: var(--space-2) var(--space-3) !important;
+    font-size: 0.7rem !important;
+    flex: 1;
+  }
+
+  .dcard-cta-group .btn svg {
+    width: 12px;
+    height: 12px;
   }
 }
 
 @media (min-width: 560px) and (max-width: 1023px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
   .dcard {
-    padding: var(--space-7) var(--space-5) var(--space-5);
+    padding: var(--space-4) var(--space-4) var(--space-4);
+  }
+
+  .dcard__image-wrap {
+    width: 120px;
+    height: 120px;
+  }
+
+  .dcard__name {
+    font-size: 0.95rem;
+  }
+
+  .dcard__specialty {
+    font-size: 0.8rem;
+  }
+
+  .dcard__qualification {
+    font-size: 0.68rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .dcard__stats {
+    padding: var(--space-3) 0;
+    margin-bottom: var(--space-3);
+  }
+
+  .dcard__stat-value {
+    font-size: 0.8rem;
+  }
+
+  .dcard__stat-label {
+    font-size: 0.6rem;
+  }
+
+  .dcard-cta-group .btn {
+    padding: var(--space-2) var(--space-3) !important;
+    font-size: 0.75rem !important;
   }
 }
 

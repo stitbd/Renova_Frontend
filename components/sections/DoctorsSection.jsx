@@ -262,10 +262,10 @@ export default function DoctorsSection() {
                   transition={{ delay: index * 0.1 + 0.5 }}
                 >
                   <Button variant="secondary" href={`/doctors/${doc.id}`}>
-                    <ProfileIcon /> Doctor Profile
+                    <ProfileIcon /> Profile
                   </Button>
                   <Button variant="primary" href={`/appointment?doctor=${doc.id}`}>
-                    <CalendarIcon /> Book Appointment
+                    <CalendarIcon /> Appointment
                   </Button>
                 </motion.div>
               </div>
@@ -275,8 +275,8 @@ export default function DoctorsSection() {
       </div>
 
       {/* View All CTA with Animation */}
-      <motion.div 
-        style={{ textAlign: "center", marginTop: "var(--space-10)" }}
+      <motion.div
+        style={{ textAlign: "center", marginTop: "var(--space-6)" }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
