@@ -1,14 +1,92 @@
+/* TestimonialsSection.css */
+
 .testimonial-card {
   will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-default);
+  box-shadow: 0 2px 8px #04417d0d, 0 8px 32px #04417d12;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
 }
 
 .testimonial-card svg {
   transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
-/* Ensure spring animations feel smooth */
+.testimonial-card svg:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.avatar-spring {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.avatar-spring:hover {
+  transform: scale(1.1);
+}
+
+.stat-value {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.shadow-card {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-card-hover {
+  box-shadow: 0 12px 40px -4px rgba(0, 0, 0, 0.12);
+}
+
 @supports (animation-timing-function: linear(0, 0.0033, 0.0267, 0.09, 0.2, 0.5333, 1)) {
   .font-heading {
     animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@media (max-width: 640px) {
+  .testimonial-card {
+    padding: 0.875rem !important;
+    gap: 0.65rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .testimonial-card blockquote {
+    font-size: 0.75rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .testimonial-card .flex.items-center.gap-2,
+  .testimonial-card .flex.items-center.gap-3 {
+    gap: 0.5rem !important;
+    padding-top: 0.5rem !important;
+  }
+
+  .testimonial-card .font-semibold {
+    font-size: 0.75rem !important;
+  }
+
+  .testimonial-card .text-xs {
+    font-size: 0.62rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-card,
+  .testimonial-card svg,
+  .avatar-spring,
+  .stat-value {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .testimonial-card:hover {
+    transform: none;
   }
 }

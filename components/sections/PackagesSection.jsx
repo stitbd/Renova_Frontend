@@ -107,6 +107,33 @@ const pricingPlans = [
       { name: "Needle, Tube & Reg. Charges",                price: 230  },
     ],
   },
+  {
+    id: "package-4",
+    name: "Package-4",
+    description: "Comprehensive wellness check",
+    price: 10650,
+    totalCost: 14030,
+    savings: 3380,
+    popular: true,
+    features: [
+      { name: "Complete Blood Count (CBC)",                 price: 400  },
+      { name: "Blood Sugar (Fasting & 2 hrs ABF)",          price: 400  },
+      { name: "HbA1c",                                      price: 1400 },
+      { name: "Lipid Profile (Fasting)",                    price: 1400 },
+      { name: "Liver Function Test",                        price: 1000 },
+      { name: "Serum Creatinine",                           price: 400  },
+      { name: "Serum Uric Acid",                            price: 600  },
+      { name: "Serum Electrolytes",                         price: 1000 },
+      { name: "TSH",                                        price: 1000 },
+      { name: "HBsAg",                                      price: 1000 },
+      { name: "PSA",                                        price: 1400 },
+      { name: "Urine R/E",                                  price: 400  },
+      { name: "ECG",                                        price: 400  },
+      { name: "Digital X-Ray of Chest P/A View (Digital)",  price: 600  },
+      { name: "Ultrasonography of Whole Abdomen",           price: 2500 },
+      { name: "Needle, Tube & Reg. Charges",                price: 130  },
+    ],
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════════
