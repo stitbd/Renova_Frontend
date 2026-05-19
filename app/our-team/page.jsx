@@ -213,32 +213,6 @@ export default function TeamsPage() {
       </section>
 
       {/* ══════════════════════════════════════
-          TEAM STATS BANNER
-      ══════════════════════════════════════ */}
-      <section className="page-section page-section--green">
-        <div className="page-section__container">
-          <div className="teams-stats-grid">
-            <div className="teams-stat-item">
-              <p className="teams-stat-value">18+</p>
-              <p className="teams-stat-label">Management Staff</p>
-            </div>
-            <div className="teams-stat-item">
-              <p className="teams-stat-value">8</p>
-              <p className="teams-stat-label">Departments</p>
-            </div>
-            <div className="teams-stat-item">
-              <p className="teams-stat-value">100%</p>
-              <p className="teams-stat-label">Trained Professionals</p>
-            </div>
-            <div className="teams-stat-item">
-              <p className="teams-stat-value">24/7</p>
-              <p className="teams-stat-label">Operational Support</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
           EXECUTIVE LEADERSHIP
       ══════════════════════════════════════ */}
       <section className="page-section">
@@ -372,10 +346,9 @@ export default function TeamsPage() {
       {/* ══════════════════════════════════════
           JOIN OUR TEAM CTA
       ══════════════════════════════════════ */}
-      <section className="page-section page-section--white">
+      <section className="page-section page-section--green">
         <div className="page-section__container">
           <div className="teams-cta-card">
-            <span className="teams-cta-icon">🤝</span>
             <h2>Join Our Management Team</h2>
             <p>
               Are you an experienced administrator, operations professional, or support specialist? 

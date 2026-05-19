@@ -74,6 +74,10 @@
   color: white;
 }
 
+.btn-primary:hover{
+    color: var(--color-white);
+}
+
 /* Video Actions */
 .video-actions {
   display: flex;
