@@ -326,7 +326,48 @@ export const doctors = [
     gender: "Female",
     branch: "Gulshan Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ CORRECTED FIELDS FOR DOCTOR #1
+    title: "Senior Cardiologist",
+    department: "Cardiology",
+    reviewCount: 128,
+    languages: ["Bengali", "English"],
+    bio: "Dr. Fariha Rahman is a board-certified cardiologist with over 18 years of experience in diagnosing and treating complex heart conditions. She completed her MD at Bangabandhu Sheikh Mujib Medical University and received advanced training in interventional cardiology at Apollo Hospitals, India.",
+    specialties: ["Heart Failure", "Interventional Cardiology", "Preventive Cardiology"],
+    availableDays: ["Mon", "Wed", "Thu"],
+    availableTimes: ["9:00 AM - 1:00 PM", "5:00 PM - 8:00 PM"],
+    consultationFee: 1500,
+    education: [
+      { year: "2005", degree: "MBBS", institution: "Dhaka Medical College" },
+      { year: "2010", degree: "MD (Cardiology)", institution: "BSMMU, Dhaka" },
+      { year: "2015", degree: "FCPS", institution: "College of Physicians & Surgeons, Bangladesh" },
+    ],
+    certifications: [
+      "BMDC Registered (A-12345)",
+      "Fellow of the American College of Cardiology (FACC)",
+      "Certified in Advanced Cardiac Life Support (ACLS)",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Rina Begum",
+        date: "2025-04-10",
+        rating: 5,
+        comment: "Dr. Fariha explained my condition very clearly. The treatment plan worked perfectly. Highly recommended!",
+      },
+      {
+        id: 2,
+        patient: "Kamal Hossain",
+        date: "2025-03-28",
+        rating: 5,
+        comment: "Very professional and caring. Took time to answer all my questions. Excellent service.",
+      },
+    ],
+    location: "House #12, Gulshan 2, Dhaka-1212, Bangladesh",
+    phone: "+880 1700-000000",
+    email: "dr.fariha@renovalifecare.com",
   },
+  
   {
     id: 2,
     name: "Tasnim Farin",
@@ -340,7 +381,48 @@ export const doctors = [
     gender: "Female",
     branch: "Gulshan Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #2 - NEUROLOGIST
+    title: "Senior Neurologist",
+    department: "Neurology",
+    reviewCount: 96,
+    languages: ["Bengali", "English", "Hindi"],
+    bio: "Dr. Tasnim Farin is a distinguished neurologist specializing in epilepsy, stroke, and movement disorders. She completed her PhD in Neuroscience at University of Tokyo and has published over 40 research papers.",
+    specialties: ["Epilepsy Management", "Stroke Care", "Parkinson's Disease", "Neuropathy"],
+    availableDays: ["Sun", "Mon", "Sat"],
+    availableTimes: ["10:00 AM - 2:00 PM", "6:00 PM - 9:00 PM"],
+    consultationFee: 1800,
+    education: [
+      { year: "2003", degree: "MBBS", institution: "Dhaka Medical College" },
+      { year: "2008", degree: "MD (Neurology)", institution: "BSMMU, Dhaka" },
+      { year: "2012", degree: "PhD (Neuroscience)", institution: "University of Tokyo, Japan" },
+    ],
+    certifications: [
+      "BMDC Registered (A-23456)",
+      "Member of Bangladesh Neurological Society",
+      "Certified in Stroke Management (AHA)",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Abdullah Al-Mamun",
+        date: "2025-04-05",
+        rating: 5,
+        comment: "Dr. Tasnim is incredibly knowledgeable. She diagnosed my father's condition quickly and the treatment is working well.",
+      },
+      {
+        id: 2,
+        patient: "Nasrin Akter",
+        date: "2025-03-20",
+        rating: 4,
+        comment: "Very thorough examination. Explained everything in simple terms. Highly recommend for neurological issues.",
+      },
+    ],
+    location: "House #12, Gulshan 2, Dhaka-1212, Bangladesh",
+    phone: "+880 1700-000001",
+    email: "dr.tasnim@renovalifecare.com",
   },
+  
   {
     id: 3,
     name: "Aysha Aktar Tripti",
@@ -354,7 +436,48 @@ export const doctors = [
     gender: "Female",
     branch: "Mirpur Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #3 - PEDIATRICIAN
+    title: "Senior Pediatrician",
+    department: "Pediatrics",
+    reviewCount: 215,
+    languages: ["Bengali", "English"],
+    bio: "Dr. Aysha Aktar Tripti is a compassionate pediatrician dedicated to children's health from newborn to adolescence. She specializes in vaccination, nutrition, and developmental care.",
+    specialties: ["Newborn Care", "Child Vaccination", "Growth & Development", "Pediatric Nutrition"],
+    availableDays: ["Tue", "Wed", "Sat"],
+    availableTimes: ["8:00 AM - 12:00 PM", "4:00 PM - 7:00 PM"],
+    consultationFee: 1200,
+    education: [
+      { year: "2009", degree: "MBBS", institution: "Sir Salimullah Medical College" },
+      { year: "2012", degree: "DCH", institution: "Bangladesh College of Physicians & Surgeons" },
+      { year: "2015", degree: "FCPS (Pediatrics)", institution: "BCPS, Dhaka" },
+    ],
+    certifications: [
+      "BMDC Registered (A-34567)",
+      "Certified in Pediatric Advanced Life Support (PALS)",
+      "Member of Bangladesh Pediatric Association",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Rafiqul Karim",
+        date: "2025-04-12",
+        rating: 5,
+        comment: "Dr. Aysha is amazing with kids! My son was scared of doctors but she made him feel comfortable. Great care!",
+      },
+      {
+        id: 2,
+        patient: "Sadia Islam",
+        date: "2025-04-01",
+        rating: 5,
+        comment: "Very patient and knowledgeable. She answered all my questions about my baby's development. Highly recommended!",
+      },
+    ],
+    location: "House #45, Mirpur-10, Dhaka-1216, Bangladesh",
+    phone: "+880 1700-000002",
+    email: "dr.aysha@renovalifecare.com",
   },
+  
   {
     id: 4,
     name: "Humayon Kabir",
@@ -368,6 +491,46 @@ export const doctors = [
     gender: "Male",
     branch: "Gulshan Branch",
     consultationType: "Face to Face",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #4 - ORTHOPEDIC SURGEON
+    title: "Senior Orthopedic Surgeon",
+    department: "Orthopedics",
+    reviewCount: 87,
+    languages: ["Bengali", "English"],
+    bio: "Dr. Humayon Kabir is an expert orthopedic surgeon specializing in joint replacement, sports injuries, and trauma care. He has performed over 2,000 successful surgeries.",
+    specialties: ["Joint Replacement", "Sports Injury", "Spine Surgery", "Fracture Care"],
+    availableDays: ["Mon", "Thu", "Sat"],
+    availableTimes: ["9:00 AM - 1:00 PM", "4:00 PM - 7:00 PM"],
+    consultationFee: 2000,
+    education: [
+      { year: "2004", degree: "MBBS", institution: "Rajshahi Medical College" },
+      { year: "2009", degree: "MS (Orthopedics)", institution: "BSMMU, Dhaka" },
+      { year: "2014", degree: "FRCS", institution: "Royal College of Surgeons, UK" },
+    ],
+    certifications: [
+      "BMDC Registered (A-45678)",
+      "Fellow of the Royal College of Surgeons (FRCS)",
+      "Certified in Arthroscopic Surgery",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Sumaiya Jahan",
+        date: "2025-04-08",
+        rating: 5,
+        comment: "After years of knee pain, Dr. Humayon's surgery gave me my life back. Professional and caring. Thank you!",
+      },
+      {
+        id: 2,
+        patient: "Mahmud Hasan",
+        date: "2025-03-25",
+        rating: 4,
+        comment: "Very skilled surgeon. Explained the procedure clearly. Recovery was smooth. Recommended!",
+      },
+    ],
+    location: "House #12, Gulshan 2, Dhaka-1212, Bangladesh",
+    phone: "+880 1700-000003",
+    email: "dr.humayon@renovalifecare.com",
   },
   
   {
@@ -383,7 +546,48 @@ export const doctors = [
     gender: "Female",
     branch: "Gulshan Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #5 - CARDIOLOGIST
+    title: "Senior Cardiologist",
+    department: "Cardiology",
+    reviewCount: 142,
+    languages: ["Bengali", "English"],
+    bio: "Dr. Nasreen Akter specializes in preventive cardiology and women's heart health. She focuses on early detection and personalized treatment plans for cardiovascular diseases.",
+    specialties: ["Preventive Cardiology", "Women's Heart Health", "Hypertension Management", "Lipid Disorders"],
+    availableDays: ["Mon", "Wed", "Thu"],
+    availableTimes: ["10:00 AM - 2:00 PM", "5:00 PM - 8:00 PM"],
+    consultationFee: 1500,
+    education: [
+      { year: "2006", degree: "MBBS", institution: "Dhaka Medical College" },
+      { year: "2011", degree: "MD (Cardiology)", institution: "BSMMU, Dhaka" },
+      { year: "2016", degree: "FCPS", institution: "College of Physicians & Surgeons, Bangladesh" },
+    ],
+    certifications: [
+      "BMDC Registered (A-56789)",
+      "Certified in Echocardiography",
+      "Member of Bangladesh Cardiac Society",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Rina Begum",
+        date: "2025-04-10",
+        rating: 5,
+        comment: "Dr. Nasreen is wonderful! She took time to explain my heart condition and the treatment options. Very caring!",
+      },
+      {
+        id: 2,
+        patient: "Kamal Hossain",
+        date: "2025-03-30",
+        rating: 5,
+        comment: "Excellent cardiologist. My blood pressure is now under control thanks to her guidance. Highly recommend!",
+      },
+    ],
+    location: "House #12, Gulshan 2, Dhaka-1212, Bangladesh",
+    phone: "+880 1700-000004",
+    email: "dr.nasreen@renovalifecare.com",
   },
+  
   {
     id: 6,
     name: "Dr. Katrina Kaif",
@@ -397,7 +601,48 @@ export const doctors = [
     gender: "Female",
     branch: "Gulshan Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #6 - NEUROLOGIST
+    title: "Consultant Neurologist",
+    department: "Neurology",
+    reviewCount: 103,
+    languages: ["Bengali", "English", "Urdu"],
+    bio: "Dr. Katrina Kaif is a renowned neurologist with expertise in headache disorders, multiple sclerosis, and neuro-rehabilitation. She advocates for holistic patient care.",
+    specialties: ["Headache & Migraine", "Multiple Sclerosis", "Neuro-Rehabilitation", "Sleep Disorders"],
+    availableDays: ["Sun", "Mon", "Sat"],
+    availableTimes: ["11:00 AM - 3:00 PM", "6:00 PM - 9:00 PM"],
+    consultationFee: 1700,
+    education: [
+      { year: "2002", degree: "MBBS", institution: "Chittagong Medical College" },
+      { year: "2007", degree: "MD (Neurology)", institution: "BSMMU, Dhaka" },
+      { year: "2013", degree: "PhD (Neurology)", institution: "King's College London, UK" },
+    ],
+    certifications: [
+      "BMDC Registered (A-67890)",
+      "Certified in Neuro-Rehabilitation",
+      "Member of World Federation of Neurology",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Tahmina Akter",
+        date: "2025-04-07",
+        rating: 5,
+        comment: "Dr. Katrina helped me manage my migraines effectively. Very empathetic and knowledgeable. Thank you!",
+      },
+      {
+        id: 2,
+        patient: "Rahim Uddin",
+        date: "2025-03-22",
+        rating: 4,
+        comment: "Good consultation. She explained my condition clearly and the treatment is helping. Recommended!",
+      },
+    ],
+    location: "House #12, Gulshan 2, Dhaka-1212, Bangladesh",
+    phone: "+880 1700-000005",
+    email: "dr.katrina@renovalifecare.com",
   },
+  
   {
     id: 7,
     name: "Alifa Aktar",
@@ -411,7 +656,48 @@ export const doctors = [
     gender: "Female",
     branch: "Mirpur Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #7 - PEDIATRICIAN
+    title: "Pediatric Consultant",
+    department: "Pediatrics",
+    reviewCount: 189,
+    languages: ["Bengali", "English"],
+    bio: "Dr. Alifa Aktar is a gentle and experienced pediatrician focusing on infant care, childhood illnesses, and adolescent health. She believes in family-centered care.",
+    specialties: ["Infant Care", "Childhood Asthma", "Adolescent Health", "Developmental Screening"],
+    availableDays: ["Tue", "Wed", "Sat"],
+    availableTimes: ["9:00 AM - 1:00 PM", "5:00 PM - 8:00 PM"],
+    consultationFee: 1200,
+    education: [
+      { year: "2010", degree: "MBBS", institution: "Sylhet MAG Osmani Medical College" },
+      { year: "2013", degree: "DCH", institution: "Bangladesh College of Physicians & Surgeons" },
+      { year: "2016", degree: "FCPS (Pediatrics)", institution: "BCPS, Dhaka" },
+    ],
+    certifications: [
+      "BMDC Registered (A-78901)",
+      "Certified in Pediatric Asthma Management",
+      "Member of Bangladesh Pediatric Association",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Fatema Khatun",
+        date: "2025-04-11",
+        rating: 5,
+        comment: "Dr. Alifa is so kind with children! My daughter loves visiting her. Very thorough and caring doctor.",
+      },
+      {
+        id: 2,
+        patient: "Mohammad Ali",
+        date: "2025-04-02",
+        rating: 5,
+        comment: "Excellent pediatrician. She diagnosed my son's allergy quickly and the treatment worked perfectly!",
+      },
+    ],
+    location: "House #45, Mirpur-10, Dhaka-1216, Bangladesh",
+    phone: "+880 1700-000006",
+    email: "dr.alifa@renovalifecare.com",
   },
+  
   {
     id: 8,
     name: "Maria Hoque",
@@ -425,6 +711,46 @@ export const doctors = [
     gender: "Female",
     branch: "Dhanmondi Branch",
     consultationType: "Video / Audio Call",
+    
+    // ✅ UNIQUE DATA FOR DOCTOR #8 - ORTHOPEDIC SURGEON
+    title: "Orthopedic Consultant",
+    department: "Orthopedics",
+    reviewCount: 76,
+    languages: ["Bengali", "English"],
+    bio: "Dr. Maria Hoque is a skilled orthopedic surgeon specializing in minimally invasive procedures, pediatric orthopedics, and sports medicine. She prioritizes patient recovery and mobility.",
+    specialties: ["Minimally Invasive Surgery", "Pediatric Orthopedics", "Sports Medicine", "Hand Surgery"],
+    availableDays: ["Mon", "Thu", "Sat"],
+    availableTimes: ["10:00 AM - 2:00 PM", "5:00 PM - 8:00 PM"],
+    consultationFee: 1900,
+    education: [
+      { year: "2005", degree: "MBBS", institution: "Dhaka Medical College" },
+      { year: "2010", degree: "MS (Orthopedics)", institution: "BSMMU, Dhaka" },
+      { year: "2015", degree: "FRCS", institution: "Royal College of Surgeons, Edinburgh" },
+    ],
+    certifications: [
+      "BMDC Registered (A-89012)",
+      "Certified in Arthroscopic & Minimally Invasive Surgery",
+      "Member of Bangladesh Orthopaedic Association",
+    ],
+    reviews: [
+      {
+        id: 1,
+        patient: "Karim Ahmed",
+        date: "2025-04-09",
+        rating: 5,
+        comment: "Dr. Maria performed my wrist surgery with great skill. Recovery was faster than expected. Very professional!",
+      },
+      {
+        id: 2,
+        patient: "Nusrat Jahan",
+        date: "2025-03-27",
+        rating: 4,
+        comment: "Good experience. She explained the treatment options clearly. My shoulder pain has improved significantly.",
+      },
+    ],
+    location: "House #78, Dhanmondi-32, Dhaka-1209, Bangladesh",
+    phone: "+880 1700-000007",
+    email: "dr.maria@renovalifecare.com",
   },
 ];
 

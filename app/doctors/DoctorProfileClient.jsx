@@ -390,7 +390,7 @@ export default function DoctorProfileClient({ doctor }) {
               <div>
                 <strong>Emergency?</strong>
                 <p>For urgent cardiac concerns, visit our Emergency Ward or call:</p>
-                <a href="tel:+8801711123456" className="emergency-phone">+880 1711-123456</a>
+                <a href="tel:+8801700000000" className="emergency-phone">+880 1700-000000</a>
               </div>
             </div>
           </aside>
