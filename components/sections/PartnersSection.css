@@ -3,7 +3,7 @@
 /* ===== SECTION BASE - White Background ===== */
 .partners-section {
   position: relative;
-  padding: 4rem 0;
+  padding: 2.5rem 0;
   overflow: hidden;
   background: #ffffff;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
@@ -11,11 +11,11 @@
 }
 
 @media (min-width: 768px) {
-  .partners-section { padding: 5rem 0; }
+  .partners-section { padding: 3rem 0; }
 }
 
 @media (min-width: 1024px) {
-  .partners-section { padding: 6rem 0; }
+  .partners-section { padding: 4rem 0; }
 }
 
 /* ===== BACKGROUND ANIMATIONS - Light Theme Adapted ===== */
@@ -138,7 +138,7 @@
   color: #1e293b;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  margin: 0 auto 3rem;
+  margin: 0 auto 1.5rem;
   font-family: 'Sen', sans-serif;
   position: relative;
   display: inline-block;
@@ -281,47 +281,81 @@
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .partners-label {
-    font-size: 0.75rem;
-    margin-bottom: 2rem;
-    letter-spacing: 0.1em;
-    padding: 0.4rem 1.2rem;
+    font-size: 0.7rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 1rem;
   }
-  
+
   .partners-label::before,
   .partners-label::after {
-    width: 40px;
+    width: 30px;
   }
-  
+
   .partners-slider-track {
-    gap: 2.5rem;
+    gap: 1.5rem;
     animation-duration: 30s;
   }
-  
-  .partner-slide-item {
-    width: 130px;
-    height: 70px;
-  }
-  
-  .partner-logo-img {
-    height: 2.5rem;
-  }
-}
 
-@media (max-width: 480px) {
-  .partners-section { padding: 3rem 0; }
-  
-  .partners-slider-track {
-    gap: 2rem;
-    animation-duration: 25s;
-  }
-  
   .partner-slide-item {
     width: 110px;
     height: 60px;
   }
-  
-  .partner-content { padding: 0.75rem; }
-  .partner-logo-img { height: 2rem; }
+
+  .partner-content {
+    padding: 0.6rem;
+    border-radius: 8px;
+  }
+
+  .partner-logo-img {
+    height: 2rem;
+  }
+
+  .partner-fallback-text {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .partners-section {
+    padding: 1.5rem 0;
+  }
+
+  .partners-label {
+    font-size: 0.65rem;
+    margin-bottom: 0.875rem;
+    padding: 0.3rem 0.875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .partners-label::before,
+  .partners-label::after {
+    display: none;
+  }
+
+  .partners-slider-track {
+    gap: 1rem;
+    animation-duration: 22s;
+  }
+
+  .partner-slide-item {
+    width: 90px;
+    height: 52px;
+  }
+
+  .partner-content {
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-shadow: none;
+  }
+
+  .partner-logo-img {
+    height: 1.75rem;
+  }
+
+  .partner-fallback-text {
+    font-size: 0.62rem;
+  }
 }
 
 /* ===== ACCESSIBILITY ===== */
