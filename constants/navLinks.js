@@ -68,9 +68,9 @@ export const footerLinks = {
   ],
   support: [
     { label: "Book Appointment", href: "/appointment" },
-    { label: "Patient Portal", href: "/patient-portal/pportal" },
-    { label: "Doctor Portal", href: "/doctor-portal/dportal" },
-    { label: "Outlet Portal", href: "/outlet-portal/oportal" },
+    { label: "Doctor Portal", href: "/doctor-portal/doctor-signin" },
+    // { label: "Patient Portal", href: "/patient-portal/patient-signin" },
+    // { label: "Outlet Portal", href: "/outlet-portal/outlet-signin" },
     { label: "FAQ", href: "/faq" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
