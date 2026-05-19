@@ -333,7 +333,7 @@ export default function ShopSection() {
         >
           <SectionHeader
             label="Our Shop"
-            title="Health Products, <span class='text-primary'>Delivered to Your Door</span>"
+            title="Health Products, <span class='section-heading-accent'>Delivered to Your Door</span>"
             subtitle="Trusted medical devices, supplements, and health kits from certified brands — all in one place."
           />
         </motion.div>

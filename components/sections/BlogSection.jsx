@@ -25,7 +25,7 @@ export default function BlogSection() {
       >
         <SectionHeader
           label="Health Insights"
-          title="Stay Informed,  <span class='text-primary'>Stay Healthy</span>"
+          title="Stay Informed,  <span class='section-heading-accent'>Stay Healthy</span>"
           subtitle="Expert articles and health tips from our specialist team — written in easy-to-understand language."
         />
       </motion.div>

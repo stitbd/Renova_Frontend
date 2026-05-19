@@ -104,7 +104,7 @@
 .appt__container {
   position: relative;
   z-index: 2;
-  max-width: 1220px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 var(--space-6);
 }
@@ -164,7 +164,7 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-authority);
+  color: var(--color-black);
 }
 
 /* Headline */
@@ -182,11 +182,11 @@
   font-style: italic;
   font-weight: var(--font-weight-regular);
   color: rgba(255,255,255,0.8);
-  display: block;
+  display: inline;
 }
 
 .appt__headline-accent {
-  display: block;
+  display: inline;
   background: var(--gradient-authority);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -266,7 +266,7 @@
   font-family: var(--font-heading);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-2xl);
-  color: var(--color-authority);
+  color: var(--color-white);
   line-height: 1;
   display: block;
 }

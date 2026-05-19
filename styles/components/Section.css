@@ -109,12 +109,19 @@
 
 /* Title */
 .section-header__title {
-  font-family: 'Sen', sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--color-primary);
-  font-size: clamp(1.4rem, 5vw, 2.8rem);
-  margin-bottom: 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-heading);
+  line-height: 1.15;
+  margin-bottom: var(--space-4);
+}
+
+.section-heading-accent {
+  background: linear-gradient(135deg, var(--color-authority), var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Subtitle */

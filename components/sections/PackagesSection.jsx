@@ -396,7 +396,7 @@ export default function PackagesSection() {
       >
         <SectionHeader
           label="Health Packages"
-          title="Health Packages <span class='text-primary'>& Discounts</span>"
+          title="Health Packages <span class='section-heading-accent'>& Discounts</span>"
           subtitle="Comprehensive diagnostic packages for your family's well-being. All prices in BDT."
         />
       </motion.div>

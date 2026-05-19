@@ -84,7 +84,7 @@ export default function AboutSection() {
         >
           <SectionHeader
             label="About Us"
-            title="Compassionate Care, <span class='text-primary'>Expert Medicine</span>"
+            title="Compassionate Care, <span class='section-heading-accent'>Expert Medicine</span>"
             subtitle={siteConfig.description}
             align="left"
             titleClassName="!text-left"

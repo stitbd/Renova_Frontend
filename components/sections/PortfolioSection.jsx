@@ -29,7 +29,7 @@ export default function PortfolioSection() {
     <Section id="portfolio">
       <SectionHeader
         label="Our Facilities"
-        title="World-Class <span class='text-primary'>Infrastructure</span>"
+        title="World-Class <span class='section-heading-accent'>Infrastructure</span>"
         subtitle="State-of-the-art facilities designed for your comfort, safety, and the best medical outcomes."
       />
 

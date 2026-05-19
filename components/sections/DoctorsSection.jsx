@@ -98,8 +98,8 @@ export default function DoctorsSection() {
         transition={{ duration: 0.6 }}
       >
         <SectionHeader
-          label="Meet Our Team"
-          title="Expert Specialists, <span class='text-primary'>Compassionate Care</span>"
+          label="Meet Our Medical Team"
+          title="Expert Specialists, <span class='section-heading-accent'>Compassionate Care</span>"
           subtitle="Our doctors bring decades of experience and international training to
             deliver the best healthcare in Bangladesh."
         />
