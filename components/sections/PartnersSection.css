@@ -181,7 +181,7 @@
 /* Slider Track */
 .partners-slider-track {
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
   width: max-content;
   animation: scrollPartners 40s linear infinite;
 }
@@ -193,7 +193,9 @@
 /* Individual Partner Slide Item */
 .partner-slide-item {
   flex-shrink: 0;
-  width: 160px;
+  width: calc((min(1536px, 100vw) - 4rem - 2rem * 7) / 8);
+  min-width: 120px;
+  max-width: 180px;
   height: 80px;
   display: flex;
   align-items: center;
@@ -298,8 +300,8 @@
   }
 
   .partner-slide-item {
-    width: 110px;
-    height: 60px;
+    width: calc((100vw - 4rem - (4rem * 7)) / 8);
+    height: 80px;
   }
 
   .partner-content {

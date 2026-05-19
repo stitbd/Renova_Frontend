@@ -48,7 +48,7 @@ export default function PartnersSection() {
           Trusted Corporate Partners
         </p>
         
-        <div className="partners-slider-wrapper">
+        <div className="partners-slider-wrapper" style={{ '--item-width': '160px', '--gap': '2rem' }}>
           <div className="partners-slider-track">
             {/* First set of partners */}
             {partners.map((partner) => (
