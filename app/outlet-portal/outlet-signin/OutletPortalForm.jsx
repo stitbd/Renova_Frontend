@@ -16,7 +16,7 @@ export default function OutletPortalForm() {
     setError("");
 
     // Basic validation
-    if (!uhid.trim() || !password.trim()) {
+    if (!outletId.trim() || !password.trim()) {
       setError("Please enter both Outlet ID and password");
       return;
     }
@@ -37,7 +37,7 @@ export default function OutletPortalForm() {
       //   throw new Error(data.message || "Login failed");
       // }
 
-      console.log("Outlet signing in with:", { uhid, password });
+      console.log("Outlet signing in with:", { outletId, password });
 
       // SUCCESS LOGIN → REDIRECT
       router.push("/outlet-portal/dashboard");
