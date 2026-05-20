@@ -2,7 +2,6 @@
    PATIENT PORTAL STYLES — Renova Life Care Ltd.
    Uses design tokens from global.css
    ═══════════════════════════════════════════════════════════════ */
-/* Add these to your existing patient-portal.css */
 
 /* Standalone page wrapper */
 .patient-portal-standalone {
@@ -28,8 +27,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
   border-top: 1px solid var(--color-border-muted);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
@@ -87,7 +86,7 @@
   z-index: 2;
   background: var(--color-white);
   border-radius: var(--radius-lg);
-  padding: var(--space-8);
+  padding: var(--space-5);
   width: 100%;
   max-width: 480px;
   box-shadow: var(--shadow-lg);
@@ -108,7 +107,7 @@
 /* ─── 🏷️ Logo Section ────────────────────────────────────────── */
 .patient-portal__logo-section {
   text-align: center;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
 }
 
 .patient-portal__logos {
@@ -120,7 +119,7 @@
 }
 
 .patient-portal__logo {
-  height: 40px;
+  height: 32px;
   width: auto;
   object-fit: contain;
 }
@@ -128,20 +127,20 @@
 /* ───  Header & Typography ─────────────────────────────────── */
 .patient-portal__header {
   text-align: center;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-4);
 }
 
 .patient-portal__title {
   font-family: var(--font-heading);
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-heading);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 .patient-portal__subtitle {
   font-family: var(--font-body);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   font-weight: var(--font-weight-regular);
 }
@@ -150,7 +149,7 @@
 .patient-portal__form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-3);
 }
 
 .patient-portal__input-group {
@@ -159,16 +158,15 @@
 
 .patient-portal__input {
   width: 100%;
-  padding: var(--space-4) var(--space-12);
+  padding: var(--space-3) var(--space-12);
   border: var(--border-default);
   border-radius: var(--radius-md);
   font-family: var(--font-body);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   background: var(--color-white);
   transition: var(--transition-fast);
 }
-
 .patient-portal__input:focus {
   outline: none;
   border-color: var(--color-primary);
@@ -199,8 +197,8 @@
 
 .btn-patient-portal {
   flex: 1;
-  min-width: 100px;
-  padding: var(--space-3) var(--space-5);
+  min-width: 80px;
+  padding: var(--space-2) var(--space-4);
   border: none;
   border-radius: var(--radius-md);
   font-family: var(--font-body);
@@ -266,28 +264,93 @@
 
 /* ───  Responsive Styles ───────────────────────────────────── */
 @media (max-width: 640px) {
+  .patient-portal-container {
+    padding: var(--space-3);
+    align-items: center;
+  }
+
   .patient-portal__card {
-    padding: var(--space-6);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    max-width: 100%;
+  }
+
+  .patient-portal__logo-section {
+    margin-bottom: var(--space-2);
+  }
+
+  .patient-portal__logo {
+    height: 28px;
+  }
+
+  .patient-portal__logos {
+    flex-direction: row;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+
+  .patient-portal__header {
+    margin-bottom: var(--space-3);
   }
 
   .patient-portal__title {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-1);
+  }
+
+  .patient-portal__subtitle {
+    font-size: 0.78rem;
+  }
+
+  .patient-portal__form {
+    gap: var(--space-2);
+  }
+
+  .patient-portal__input {
+    padding: var(--space-2) var(--space-10);
+    font-size: 0.82rem;
+    height: 42px;
+  }
+
+  .patient-portal__icon {
+    width: 16px;
+    height: 16px;
+    right: var(--space-3);
   }
 
   .patient-portal__buttons {
     flex-direction: column;
+    gap: var(--space-2);
   }
 
   .btn-patient-portal {
     width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.82rem;
   }
 
-  .patient-portal__logos {
-    flex-direction: column;
-    gap: var(--space-2);
+  .patient-portal__help {
+    margin-top: var(--space-1);
+    padding-top: var(--space-1);
+  }
+
+  .patient-portal__help-link {
+    font-size: 0.78rem;
+  }
+
+  .patient-portal__security-notice {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    font-size: 0.65rem;
+    gap: var(--space-1);
+  }
+
+  .patient-portal__error {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.78rem;
+    margin-bottom: var(--space-2);
   }
 }
-
 /* ─── ♿ Accessibility ───────────────────────────────────────── */
 .patient-portal__input:focus-visible {
   outline: 2px solid var(--color-primary);
