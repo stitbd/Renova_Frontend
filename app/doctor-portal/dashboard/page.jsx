@@ -1,4 +1,7 @@
 // app/doctor-portal/page.jsx
+"use client";
+
+import { useState } from "react";
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/doctor-dashboard.css";
 import StatCard from "@/components/doctor-dashboard/StatCard";
@@ -9,128 +12,51 @@ import RecentConsultations from "@/components/doctor-dashboard/RecentConsultatio
 import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescriptions";
 import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 
-export const metadata = {
-  title: `Doctor Dashboard | ${siteConfig.name}`,
-  description: "Doctor dashboard - Manage patients, appointments, and consultations",
-};
-
 // Mock data - Replace with actual API calls
 const dashboardData = {
   stats: {
-    newPatients: { count: "05", label: "In Queue" },
-    appointments: { count: "12", label: "Scheduled" },
+    newPatients:   { count: "05", label: "In Queue" },
+    appointments:  { count: "12", label: "Scheduled" },
     consultations: { count: "18", label: "Completed" },
     prescriptions: { count: "07", label: "Pending" },
-    earnings: { amount: "8,450", currency: "৳" },
+    earnings:      { amount: "8,450", currency: "৳" },
   },
   patientQueue: [
-    {
-      id: 1,
-      name: "Masud Rana",
-      age: 32,
-      gender: "Male",
-      issue: "Chest pain, Breathing problem",
-      time: "10:24 AM",
-      waitingTime: "02:15",
-      avatar: "/images/patients/01.jpg",
-    },
-    {
-      id: 2,
-      name: "Farhana Akter",
-      age: 28,
-      gender: "Female",
-      issue: "Heart palpitations, Anxiety",
-      time: "10:28 AM",
-      waitingTime: "01:48",
-      avatar: "/images/patients/02.jpg",
-    },
-    {
-      id: 3,
-      name: "Abdullah Al Mamun",
-      age: 45,
-      gender: "Male",
-      issue: "High BP, Headache",
-      time: "10:31 AM",
-      waitingTime: "01:32",
-      avatar: "/images/patients/03.jpg",
-    },
-    {
-      id: 4,
-      name: "Sumiya Rahman",
-      age: 30,
-      gender: "Female",
-      issue: "Shortness of breath",
-      time: "10:35 AM",
-      waitingTime: "00:58",
-      avatar: "/images/patients/04.jpg",
-    },
-    {
-      id: 5,
-      name: "Rafiq Hasan",
-      age: 50,
-      gender: "Male",
-      issue: "ECG review",
-      time: "10:35 AM",
-      waitingTime: "00:32",
-      avatar: "/images/patients/05.jpg",
-    },
+    { id: 1, name: "Masud Rana",       age: 32, gender: "Male",   issue: "Chest pain, Breathing problem",  time: "10:24 AM", waitingTime: "02:15", avatar: "/images/patients/01.jpg" },
+    { id: 2, name: "Farhana Akter",    age: 28, gender: "Female", issue: "Heart palpitations, Anxiety",    time: "10:28 AM", waitingTime: "01:48", avatar: "/images/patients/02.jpg" },
+    { id: 3, name: "Abdullah Al Mamun",age: 45, gender: "Male",   issue: "High BP, Headache",              time: "10:31 AM", waitingTime: "01:32", avatar: "/images/patients/03.jpg" },
+    { id: 4, name: "Sumiya Rahman",    age: 30, gender: "Female", issue: "Shortness of breath",            time: "10:35 AM", waitingTime: "00:58", avatar: "/images/patients/04.jpg" },
+    { id: 5, name: "Rafiq Hasan",      age: 50, gender: "Male",   issue: "ECG review",                     time: "10:35 AM", waitingTime: "00:32", avatar: "/images/patients/05.jpg" },
   ],
   appointments: [
-    { time: "11:00 AM", name: "Jannatul Ferdous", type: "Follow-up", status: "Confirmed" },
-    { time: "11:30 AM", name: "Sohel Mahmud", type: "Regular Checkup", status: "Confirmed" },
-    { time: "12:00 PM", name: "Nusrat Jahan", type: "ECG Report Review", status: "Confirmed" },
-    { time: "12:30 PM", name: "Kamal Hossain", type: "Consultation", status: "Upcoming" },
-    { time: "01:00 PM", name: "Mst. Joya Akter", type: "Follow-up", status: "Upcoming" },
+    { time: "11:00 AM", name: "Jannatul Ferdous", type: "Follow-up",         status: "Confirmed" },
+    { time: "11:30 AM", name: "Sohel Mahmud",     type: "Regular Checkup",   status: "Confirmed" },
+    { time: "12:00 PM", name: "Nusrat Jahan",     type: "ECG Report Review", status: "Confirmed" },
+    { time: "12:30 PM", name: "Kamal Hossain",    type: "Consultation",      status: "Upcoming"  },
+    { time: "01:00 PM", name: "Mst. Joya Akter",  type: "Follow-up",         status: "Upcoming"  },
   ],
   schedule: [
-    { time: "09:00 AM", event: "Chamber Start", status: "Completed" },
+    { time: "09:00 AM", event: "Chamber Start",       status: "Completed" },
     { time: "09:30 AM", event: "Patient Consultation", status: "Completed" },
     { time: "10:00 AM", event: "Patient Consultation", status: "Completed" },
-    { time: "11:00 AM", event: "Jannatul Ferdous", status: "Confirmed" },
-    { time: "11:30 AM", event: "Sohel Mahmud", status: "Confirmed" },
-    { time: "12:00 PM", event: "Nusrat Jahan", status: "Confirmed" },
-    { time: "01:00 PM", event: "Lunch Break", status: "Break" },
-    { time: "02:00 PM", event: "Next Appointments", status: "Upcoming" },
+    { time: "11:00 AM", event: "Jannatul Ferdous",     status: "Confirmed" },
+    { time: "11:30 AM", event: "Sohel Mahmud",         status: "Confirmed" },
+    { time: "12:00 PM", event: "Nusrat Jahan",         status: "Confirmed" },
+    { time: "01:00 PM", event: "Lunch Break",          status: "Break"     },
+    { time: "02:00 PM", event: "Next Appointments",    status: "Upcoming"  },
   ],
   recentConsultations: [
-    {
-      name: "Khalid Hasan",
-      age: 45,
-      gender: "Male",
-      condition: "Hypertension",
-      date: "10 May 2025",
-      time: "09:15 AM",
-      fee: "500",
-      status: "Completed",
-    },
-    {
-      name: "Maliha Islam",
-      age: 29,
-      gender: "Female",
-      condition: "Anxiety Disorder",
-      date: "10 May 2025",
-      time: "08:30 AM",
-      fee: "500",
-      status: "Completed",
-    },
-    {
-      name: "Rashidul Alam",
-      age: 52,
-      gender: "Male",
-      condition: "ECG Review",
-      date: "09 May 2025",
-      time: "07:45 PM",
-      fee: "600",
-      status: "Completed",
-    },
+    { name: "Khalid Hasan",  age: 45, gender: "Male",   condition: "Hypertension",    date: "10 May 2025", time: "09:15 AM", fee: "500", status: "Completed" },
+    { name: "Maliha Islam",  age: 29, gender: "Female", condition: "Anxiety Disorder", date: "10 May 2025", time: "08:30 AM", fee: "500", status: "Completed" },
+    { name: "Rashidul Alam", age: 52, gender: "Male",   condition: "ECG Review",       date: "09 May 2025", time: "07:45 PM", fee: "600", status: "Completed" },
   ],
   pendingPrescriptions: [
-    { name: "Masud Rana", time: "10:24 AM", type: "New Prescription", status: "Pending" },
-    { name: "Farhana Akter", time: "10:28 AM", type: "New Prescription", status: "Pending" },
+    { name: "Masud Rana",        time: "10:24 AM", type: "New Prescription", status: "Pending" },
+    { name: "Farhana Akter",     time: "10:28 AM", type: "New Prescription", status: "Pending" },
     { name: "Abdullah Al Mamun", time: "10:31 AM", type: "New Prescription", status: "Pending" },
   ],
   earningsData: {
-    total: "42,850",
+    total:  "42,850",
     growth: "+12.5%",
     period: "This Week",
     chartData: [
@@ -146,26 +72,39 @@ const dashboardData = {
 };
 
 export default function DashboardPage() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const closeSidebar = () => setSidebarOpen(false);
+
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
-      <aside className="dashboard-sidebar">
+
+      {/* Mobile overlay */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
+        onClick={closeSidebar}
+      />
+
+      {/* ── SIDEBAR ───────────────────────────────────────────── */}
+      <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : ""}`}>
+
+        {/* Logo — image only, no text */}
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <img
               src="/images/logo2.png"
               alt="Renova Life Care"
-              style={{ height: '52px', objectFit: 'contain' }}
             />
           </div>
         </div>
 
+        {/* Doctor profile */}
         <div className="sidebar-profile">
           <div className="profile-avatar">
             <img
               src="/images/doctors/doctor-2.jpg"
-              alt="Renova Life Care"
-              style={{ height: '52px', objectFit: 'contain' }}
+              alt="Dr. Ahsan Rahman"
+              onError={(e) => { e.target.style.display = "none"; }}
             />
           </div>
           <div className="profile-info">
@@ -178,6 +117,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Navigation */}
         <nav className="sidebar-nav">
           <a href="/dashboard" className="nav-item active">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -188,6 +128,7 @@ export default function DashboardPage() {
             </svg>
             <span>Dashboard</span>
           </a>
+
           <a href="/dashboard/patients" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -198,6 +139,7 @@ export default function DashboardPage() {
             <span>Patient Queue</span>
             <span className="nav-badge">5</span>
           </a>
+
           <a href="/dashboard/appointments" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -207,16 +149,17 @@ export default function DashboardPage() {
             </svg>
             <span>Appointments</span>
           </a>
+
           <a href="/dashboard/consultations" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
               <line x1="16" y1="13" x2="8" y2="13" />
               <line x1="16" y1="17" x2="8" y2="17" />
-              <polyline points="10 9 9 9 8 9" />
             </svg>
             <span>Consultations</span>
           </a>
+
           <a href="/dashboard/patients" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -224,12 +167,14 @@ export default function DashboardPage() {
             </svg>
             <span>Patients</span>
           </a>
+
           <a href="/dashboard/prescriptions" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" />
             </svg>
             <span>Prescriptions</span>
           </a>
+
           <a href="/dashboard/reports" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -237,8 +182,9 @@ export default function DashboardPage() {
               <line x1="16" y1="13" x2="8" y2="13" />
               <line x1="16" y1="17" x2="8" y2="17" />
             </svg>
-            <span>Reports & Documents</span>
+            <span>Reports &amp; Documents</span>
           </a>
+
           <a href="/dashboard/earnings" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="1" x2="12" y2="23" />
@@ -246,6 +192,7 @@ export default function DashboardPage() {
             </svg>
             <span>Earnings</span>
           </a>
+
           <a href="/dashboard/calendar" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -255,6 +202,7 @@ export default function DashboardPage() {
             </svg>
             <span>Calendar</span>
           </a>
+
           <a href="/dashboard/messages" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
@@ -262,6 +210,7 @@ export default function DashboardPage() {
             <span>Messages</span>
             <span className="nav-badge">3</span>
           </a>
+
           <a href="/dashboard/settings" className="nav-item">
             <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="3" />
@@ -271,10 +220,11 @@ export default function DashboardPage() {
           </a>
         </nav>
 
+        {/* Support */}
         <div className="sidebar-footer">
           <button className="support-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
             <div className="support-text">
               <span>Need Support?</span>
@@ -284,15 +234,20 @@ export default function DashboardPage() {
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* ── MAIN CONTENT ──────────────────────────────────────── */}
       <main className="dashboard-main">
+
         {/* Header */}
         <header className="dashboard-header">
           <div className="header-left">
-            <button className="menu-toggle">
+            <button
+              className="menu-toggle"
+              onClick={() => setSidebarOpen((prev) => !prev)}
+              aria-label="Toggle sidebar"
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6"  x2="21" y2="6"  />
                 <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="6" x2="21" y2="6" />
                 <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
@@ -301,24 +256,28 @@ export default function DashboardPage() {
               <p className="greeting-subtitle">Here's what's happening with your practice today.</p>
             </div>
           </div>
+
           <div className="header-right">
             <div className="status-toggle">
               <span className="status-indicator online" />
               <span>Online</span>
             </div>
-            <button className="header-icon-btn">
+
+            <button className="header-icon-btn" aria-label="Notifications">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.73 21a2 2 0 0 1-3.46 0" />
               </svg>
               <span className="notification-badge">5</span>
             </button>
-            <button className="header-icon-btn">
+
+            <button className="header-icon-btn" aria-label="Messages">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
               </svg>
-              <span className="notification-badge">2</span>
+              <span className="notification-badge" style={{ background: "#014fa1" }}>2</span>
             </button>
+
             <div className="header-profile">
               <div className="profile-avatar-small">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -330,74 +289,44 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        {/* Stats Grid */}
-        <div className="stats-grid">
-          <StatCard
-            icon="patients"
-            title="New Patients"
-            count={dashboardData.stats.newPatients.count}
-            label={dashboardData.stats.newPatients.label}
-            variant="primary"
-            linkText="View Queue"
-          />
-          <StatCard
-            icon="calendar"
-            title="Today's Appointments"
-            count={dashboardData.stats.appointments.count}
-            label={dashboardData.stats.appointments.label}
-            variant="secondary"
-            linkText="View All"
-          />
-          <StatCard
-            icon="consultation"
-            title="Consultations"
-            count={dashboardData.stats.consultations.count}
-            label={dashboardData.stats.consultations.label}
-            variant="tertiary"
-            linkText="View All"
-          />
-          <StatCard
-            icon="prescription"
-            title="Prescriptions"
-            count={dashboardData.stats.prescriptions.count}
-            label={dashboardData.stats.prescriptions.label}
-            variant="quaternary"
-            linkText="View All"
-          />
-          <StatCard
-            icon="earnings"
-            title="Today's Earnings"
-            count={`${dashboardData.stats.earnings.currency} ${dashboardData.stats.earnings.amount}`}
-            label=""
-            variant="quinary"
-            linkText="View Earnings"
-          />
-        </div>
+        {/* Dashboard content */}
+        <div className="dashboard-content">
 
-        {/* Main Grid - 3 Columns */}
-        <div className="dashboard-grid">
-          <div className="dashboard-column">
-            <PatientQueueList patients={dashboardData.patientQueue} />
+          {/* Stats */}
+          <div className="stats-grid">
+            <StatCard icon="patients"     title="New Patients"         count={dashboardData.stats.newPatients.count}   label={dashboardData.stats.newPatients.label}   variant="primary"    linkText="View Queue"    />
+            <StatCard icon="calendar"     title="Today's Appointments" count={dashboardData.stats.appointments.count}  label={dashboardData.stats.appointments.label}  variant="secondary"  linkText="View All"      />
+            <StatCard icon="consultation" title="Consultations"        count={dashboardData.stats.consultations.count} label={dashboardData.stats.consultations.label} variant="tertiary"   linkText="View All"      />
+            <StatCard icon="prescription" title="Prescriptions"        count={dashboardData.stats.prescriptions.count} label={dashboardData.stats.prescriptions.label} variant="quaternary" linkText="View All"      />
+            <StatCard icon="earnings"     title="Today's Earnings"     count={`${dashboardData.stats.earnings.currency} ${dashboardData.stats.earnings.amount}`} label="" variant="quinary" linkText="View Earnings" />
           </div>
-          <div className="dashboard-column">
-            <AppointmentsList appointments={dashboardData.appointments} />
-          </div>
-          <div className="dashboard-column">
-            <ScheduleTimeline schedule={dashboardData.schedule} />
-          </div>
-        </div>
 
-        {/* Bottom Grid */}
-        <div className="bottom-grid">
-          <div className="bottom-column">
-            <RecentConsultations consultations={dashboardData.recentConsultations} />
+          {/* Middle 3-column grid */}
+          <div className="dashboard-grid">
+            <div className="dashboard-column">
+              <PatientQueueList patients={dashboardData.patientQueue} />
+            </div>
+            <div className="dashboard-column">
+              <AppointmentsList appointments={dashboardData.appointments} />
+            </div>
+            <div className="dashboard-column">
+              <ScheduleTimeline schedule={dashboardData.schedule} />
+            </div>
           </div>
-          <div className="bottom-column">
-            <PendingPrescriptions prescriptions={dashboardData.pendingPrescriptions} />
+
+          {/* Bottom 3-column grid */}
+          <div className="bottom-grid">
+            <div className="bottom-column">
+              <RecentConsultations consultations={dashboardData.recentConsultations} />
+            </div>
+            <div className="bottom-column">
+              <PendingPrescriptions prescriptions={dashboardData.pendingPrescriptions} />
+            </div>
+            <div className="bottom-column">
+              <EarningsOverview data={dashboardData.earningsData} />
+            </div>
           </div>
-          <div className="bottom-column">
-            <EarningsOverview data={dashboardData.earningsData} />
-          </div>
+
         </div>
       </main>
     </div>

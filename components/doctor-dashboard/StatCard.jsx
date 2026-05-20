@@ -1,17 +1,7 @@
-// components/dashboard/StatCard.jsx
+// components/doctor-dashboard/StatCard.jsx
 import Link from "next/link";
 
 export default function StatCard({ icon, title, count, label, variant, linkText }) {
-  const variants = {
-    primary: { bg: "bg-blue-50", border: "border-blue-100", icon: "text-blue-600" },
-    secondary: { bg: "bg-green-50", border: "border-green-100", icon: "text-green-600" },
-    tertiary: { bg: "bg-purple-50", border: "border-purple-100", icon: "text-purple-600" },
-    quaternary: { bg: "bg-orange-50", border: "border-orange-100", icon: "text-orange-600" },
-    quinary: { bg: "bg-cyan-50", border: "border-cyan-100", icon: "text-cyan-600" },
-  };
-
-  const currentVariant = variants[variant] || variants.primary;
-
   const icons = {
     patients: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -48,9 +38,9 @@ export default function StatCard({ icon, title, count, label, variant, linkText 
   };
 
   return (
-    <div className={`stat-card ${currentVariant.bg} ${currentVariant.border}`}>
+    <div className={`stat-card ${variant}`}>
       <div className="stat-card-header">
-        <div className={`stat-icon ${currentVariant.icon}`}>
+        <div className="stat-icon">
           {icons[icon]}
         </div>
         <div className="stat-info">
