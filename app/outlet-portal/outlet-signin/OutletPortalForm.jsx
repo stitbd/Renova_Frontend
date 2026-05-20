@@ -1,27 +1,50 @@
 // src/app/outlet-portal/outlet-signin/OutletPortalForm.jsx
 "use client";
-
+import { useRouter } from "next/navigation"; // ADD THIS
 import { useState } from "react";
 import Image from "next/image";
 import "./outlet-portal.css";
 
 export default function OutletPortalForm() {
+  const router = useRouter(); // ADD THIS
   const [outletId, setOutletId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
-    
+
     // Basic validation
-    if (!outletId.trim() || !password.trim()) {
+    if (!uhid.trim() || !password.trim()) {
       setError("Please enter both Outlet ID and password");
       return;
     }
-    
-    // Handle sign in logic (replace with actual API call)
-    console.log("Signing in with:", { outletId, password });
+
+    try {
+      // Example API Login Logic
+      // const response = await fetch("/api/outlet-login", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ uhid, password }),
+      // });
+
+      // const data = await response.json();
+
+      // if (!response.ok) {
+      //   throw new Error(data.message || "Login failed");
+      // }
+
+      console.log("Outlet signing in with:", { uhid, password });
+
+      // SUCCESS LOGIN → REDIRECT
+      router.push("/outlet-portal/dashboard");
+
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    }
   };
 
   const handleReset = () => {

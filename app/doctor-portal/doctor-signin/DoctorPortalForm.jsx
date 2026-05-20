@@ -1,27 +1,50 @@
 // src/app/doctor-portal/doctor-signin/DoctorPortalForm.jsx
 "use client";
-
+import { useRouter } from "next/navigation"; // ADD THIS
 import { useState } from "react";
 import Image from "next/image";
 import "./doctor-portal.css";
 
 export default function DoctorPortalForm() {
+  const router = useRouter(); // ADD THIS
   const [uhid, setUhid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
-    
+
     // Basic validation
     if (!uhid.trim() || !password.trim()) {
       setError("Please enter both Doctor ID and password");
       return;
     }
-    
-    // Handle sign in logic (replace with actual API call)
-    console.log("Doctor signing in with:", { uhid, password });
+
+    try {
+      // Example API Login Logic
+      // const response = await fetch("/api/doctor-login", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ uhid, password }),
+      // });
+
+      // const data = await response.json();
+
+      // if (!response.ok) {
+      //   throw new Error(data.message || "Login failed");
+      // }
+
+      console.log("Doctor signing in with:", { uhid, password });
+
+      // SUCCESS LOGIN → REDIRECT
+      router.push("/doctor-portal/dashboard");
+
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    }
   };
 
   const handleReset = () => {
