@@ -114,22 +114,12 @@ export default function Sidebar() {
 
   return (
     <aside className="outlet-sidebar">
-      <div className="sidebar-logo">
-        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="40" fill="url(#logoGradient)" />
-          <path d="M40 20V60M20 40H60" stroke="white" strokeWidth="4" strokeLinecap="round" />
-          <defs>
-            <linearGradient id="logoGradient" x1="0" y1="0" x2="80" y2="80">
-              <stop stopColor="#428a26" />
-              <stop offset="1" stopColor="#4CAF50" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <div className="logo-text">
-          <span className="logo-name">Renova</span>
-          <span className="logo-tagline">LIFE CARE LTD</span>
-          <span className="logo-slogan">Caring Today, Healthy Tomorrow</span>
-        </div>
+        <div className="sidebar-logo">
+        <img
+          src="/images/logo2.png"
+          alt="Renova Life Care"
+          style={{ height: '52px', objectFit: 'contain' }}
+        />
       </div>
 
       <nav className="sidebar-nav">

@@ -152,21 +152,11 @@ export default function DashboardPage() {
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="20" fill="url(#gradient)" />
-              <path d="M20 10V30M10 20H30" stroke="white" strokeWidth="3" strokeLinecap="round" />
-              <defs>
-                <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40">
-                  <stop stopColor="#428a26" />
-                  <stop offset="1" stopColor="#4CAF50" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div className="logo-text">
-              <span className="logo-name">Renova</span>
-              <span className="logo-tagline">LIFE CARE LTD</span>
-              <span className="logo-slogan">Caring Today, Healthy Tomorrow</span>
-            </div>
+            <img
+              src="/images/logo2.png"
+              alt="Renova Life Care"
+              style={{ height: '52px', objectFit: 'contain' }}
+            />
           </div>
         </div>
 

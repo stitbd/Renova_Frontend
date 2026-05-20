@@ -32,7 +32,7 @@
   .sidebar-logo {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    justify-content: center;  /* was: gap + flex-start */
   }
   
   .sidebar-logo svg {
@@ -371,7 +371,7 @@
   /* Stats Grid */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: var(--space-6);
     margin-bottom: var(--space-6);
   }
@@ -625,6 +625,11 @@
     background: rgba(1, 79, 161, 0.1);
   }
   
+  .appointment-status.ongoing {
+    color: var(--color-status-warning);
+    background: rgba(245, 158, 11, 0.1);
+  }
+
   /* Schedule Timeline */
   .schedule-timeline {
     display: flex;
