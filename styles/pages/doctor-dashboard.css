@@ -14,8 +14,7 @@
    SIDEBAR
    ══════════════════════════════════════════════════════════════ */
 .dashboard-sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: 280px;
   background: linear-gradient(180deg, #014fa1 0%, #05417d 100%);
   color: #fff;
   display: flex;
@@ -234,11 +233,12 @@
    ══════════════════════════════════════════════════════════════ */
 .dashboard-main {
   flex: 1;
-  margin-left: 240px;
+  margin-left: 280px;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  overflow-x: hidden;
+  overflow: hidden;              /* ← ADDED: Prevent main from scrolling */
+  height: 100vh;                 /* ← ADDED: Full viewport height */
 }
 
 /* ── Header ────────────────────────────────────────────────────── */
@@ -253,6 +253,7 @@
   top: 0;
   z-index: 50;
   gap: 12px;
+  flex-shrink: 0;                /* ← ADDED: Prevent header from shrinking */
 }
 
 .header-left {
@@ -391,6 +392,8 @@
 .dashboard-content {
   padding: 20px 24px;
   flex: 1;
+  overflow-y: auto;              /* ← ADDED: Enable vertical scroll */
+  min-height: 0;                 /* ← ADDED: Fix flex overflow bug */
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -861,7 +864,7 @@
   display: flex;
   gap: 10px;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 
 .schedule-item::before {
@@ -1351,6 +1354,7 @@
 
   .dashboard-main {
     margin-left: 0;
+    height: 100vh;               /* ← ADDED: Ensure full height on mobile */
   }
 
   /* Show hamburger */
@@ -1394,6 +1398,7 @@
 
   .dashboard-content {
     padding: 14px 16px;
+    min-height: 0;               /* ← ADDED: Same flex fix for mobile */
   }
 }
 
