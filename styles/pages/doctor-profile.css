@@ -13,8 +13,8 @@
 .doctor-header {
   background: var(--color-white);
   border-radius: var(--radius-xl);
-  padding: var(--space-8);
-  margin: var(--space-8) 0;
+  padding: var(--space-5);
+  margin: var(--space-4) 0;
   box-shadow: var(--shadow-card);
 }
 
@@ -94,7 +94,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
 }
 
 @media (max-width: 768px) {
@@ -123,7 +123,7 @@
 .doctor-header__quick-info {
   display: flex;
   gap: var(--space-4);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
   flex-wrap: wrap;
 }
 
@@ -169,8 +169,8 @@
 .doctor-content-grid {
   display: grid;
   grid-template-columns: 1fr 340px;
-  gap: var(--space-8);
-  margin: var(--space-8) 0;
+  gap: var(--space-5);
+  margin: var(--space-4) 0;
 }
 
 @media (max-width: 1024px) {
@@ -228,7 +228,7 @@
 
 /* ── About Section ───────────────────────────────────────────── */
 .doctor-bio {
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-5);
 }
 
 .doctor-bio h3 {
@@ -244,7 +244,7 @@
 
 /* Specialties */
 .doctor-specialties {
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-5);
 }
 
 .doctor-specialties h3 {
@@ -316,7 +316,7 @@
 /* ── Education Section ───────────────────────────────────────── */
 .education-section,
 .certifications-section {
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-5);
 }
 
 .education-section h3,
@@ -590,7 +590,7 @@
 .doctor-sidebar {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-3);
   position: sticky;
   top: var(--space-8);
   height: fit-content;
@@ -833,43 +833,194 @@
 
 @media (max-width: 768px) {
   .doctor-header {
-    margin: var(--space-6) 0;
-    padding: var(--space-5);
+    margin: var(--space-3) 0;
+    padding: var(--space-4);
   }
-  
+
+  .doctor-header__content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--space-4);
+  }
+
+  .doctor-header__image {
+    max-width: 140px;
+    margin: 0 auto;
+  }
+
   .doctor-header__name {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-xl);
   }
-  
+
   .doctor-header__title {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-sm);
   }
-  
-  .doctor-tabs {
+
+  .doctor-header__titles {
+    margin-bottom: var(--space-2);
+  }
+
+  .doctor-header__rating {
+    justify-content: center;
+    margin-bottom: var(--space-2);
+  }
+
+  .doctor-header__quick-info {
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .quick-info-item {
+    font-size: 0.78rem;
+  }
+
+  .doctor-header__actions {
     justify-content: center;
   }
-  
+
+  .doctor-tabs {
+    justify-content: center;
+    margin-bottom: var(--space-4);
+    gap: 0;
+  }
+
+  .doctor-tab {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.82rem;
+  }
+
+  .doctor-content-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin: var(--space-3) 0;
+  }
+
   .doctor-sidebar {
     position: static;
+    gap: var(--space-3);
+  }
+
+  .doctor-sidebar__card {
+    padding: var(--space-4);
+  }
+
+  .doctor-sidebar__card h4 {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-3);
+  }
+
+  .doctor-bio h3,
+  .doctor-specialties h3,
+  .doctor-consultation-info h3,
+  .education-section h3,
+  .certifications-section h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .reviews-summary {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .reviews-average {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-default);
+    padding-bottom: var(--space-4);
+  }
+
+  .reviews-score {
+    font-size: var(--font-size-3xl);
+  }
+
+  .review-card {
+    padding: var(--space-4);
   }
 }
 
 @media (max-width: 480px) {
+  .doctor-header {
+    padding: var(--space-3);
+    margin: var(--space-2) 0;
+  }
+
+  .doctor-header__name {
+    font-size: var(--font-size-lg);
+  }
+
+  .doctor-header__image {
+    max-width: 110px;
+  }
+
   .doctor-header__actions {
     flex-direction: column;
+    gap: var(--space-2);
   }
-  
+
   .doctor-cta-btn {
     width: 100%;
     justify-content: center;
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
   }
-  
+
   .consultation-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-3);
   }
-  
-  .reviews-summary {
-    padding: var(--space-4);
+
+  .consultation-item {
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .specialties-grid {
+    gap: var(--space-1);
+  }
+
+  .specialty-tag {
+    padding: var(--space-1) var(--space-3);
+    font-size: 0.72rem;
+  }
+
+  .timeline {
+    padding-left: var(--space-6);
+  }
+
+  .timeline-content {
+    padding: var(--space-3);
+  }
+
+  .timeline-content h4 {
+    font-size: 0.85rem;
+  }
+
+  .doctor-sidebar__emergency {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .emergency-phone {
+    font-size: var(--font-size-base);
+  }
+
+  .review-card {
+    padding: var(--space-3);
+  }
+
+  .review-comment {
+    font-size: var(--font-size-sm);
+  }
+
+  .dfilter-card {
+    padding: 0.65rem;
+  }
+
+  .dfilter-selects {
+    grid-template-columns: 1fr;
   }
 }
 
