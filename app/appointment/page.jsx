@@ -2,6 +2,7 @@
    app/appointment/page.jsx  —  Next.js Server Component
    ═══════════════════════════════════════════════════════════════ */
 
+import { Suspense } from "react";
 import { siteConfig } from "@/constants/siteData";
 import AppointmentForm from "./AppointmentForm";
 import "@/styles/components/HeroSection.css";
@@ -65,10 +66,22 @@ export default function AppointmentPage() {
           • appt-body grid (form + sidebar)
           • All 3 steps + confirmation view
       */}
-      <AppointmentForm
-        phone={siteConfig.phone}
-        email={siteConfig.email}
-      />
+      <Suspense fallback={
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: "400px", gap: "16px", color: "var(--appt-ink)" }}>
+          <div className="appt-spinner" style={{ width: "40px", height: "40px", borderRadius: "50%", border: "3px solid #e0f4f1", borderTopColor: "#1e6faf", animation: "spin 1s linear infinite" }}></div>
+          <style>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          `}</style>
+          <p style={{ fontWeight: 500, color: "var(--appt-ink2)" }}>Loading appointment form...</p>
+        </div>
+      }>
+        <AppointmentForm
+          phone={siteConfig.phone}
+          email={siteConfig.email}
+        />
+      </Suspense>
 
       {/* ── FOOTER TRUST BAR ────────────────────────────────────── */}
       <footer className="page-section page-section--green appt-trust-bar" aria-label="Trust indicators">
