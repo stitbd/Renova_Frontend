@@ -162,12 +162,11 @@ export default function DashboardPage() {
 
         <div className="sidebar-profile">
           <div className="profile-avatar">
-            <div className="avatar-placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </div>
+            <img
+              src="/images/doctors/doctor-2.jpg"
+              alt="Renova Life Care"
+              style={{ height: '52px', objectFit: 'contain' }}
+            />
           </div>
           <div className="profile-info">
             <h3 className="profile-name">Dr. Ahsan Rahman</h3>
