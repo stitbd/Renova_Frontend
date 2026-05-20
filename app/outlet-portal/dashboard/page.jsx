@@ -2,15 +2,15 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/outlet-dashboard.css";
-import Sidebar from "@/components/outlet/Sidebar";
-import Header from "@/components/outlet/Header";
-import StatsGrid from "@/components/outlet/StatsGrid";
-import PatientRegistrations from "@/components/outlet/PatientRegistrations";
-import DeviceStatus from "@/components/outlet/DeviceStatus";
-import TodayAppointments from "@/components/outlet/TodayAppointments";
-import PharmacySales from "@/components/outlet/PharmacySales";
-import RecentActivities from "@/components/outlet/RecentActivities";
-import OutletPerformance from "@/components/outlet/OutletPerformance";
+import Sidebar from "@/components/outlet-dashboard/Sidebar";
+import Header from "@/components/outlet-dashboard/Header";
+import StatsGrid from "@/components/outlet-dashboard/StatsGrid";
+import PatientRegistrations from "@/components/outlet-dashboard/PatientRegistrations";
+import DeviceStatus from "@/components/outlet-dashboard/DeviceStatus";
+import TodayAppointments from "@/components/outlet-dashboard/TodayAppointments";
+import PharmacySales from "@/components/outlet-dashboard/PharmacySales";
+import RecentActivities from "@/components/outlet-dashboard/RecentActivities";
+import OutletPerformance from "@/components/outlet-dashboard/OutletPerformance";
 
 export const metadata = {
   title: `Outlet Dashboard | ${siteConfig.name}`,

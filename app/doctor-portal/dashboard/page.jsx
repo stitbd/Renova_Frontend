@@ -1,13 +1,13 @@
 // app/doctor-portal/page.jsx
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/doctor-dashboard.css";
-import StatCard from "@/components/dashboard/StatCard";
-import PatientQueueList from "@/components/dashboard/PatientQueueList";
-import AppointmentsList from "@/components/dashboard/AppointmentsList";
-import ScheduleTimeline from "@/components/dashboard/ScheduleTimeline";
-import RecentConsultations from "@/components/dashboard/RecentConsultations";
-import PendingPrescriptions from "@/components/dashboard/PendingPrescriptions";
-import EarningsOverview from "@/components/dashboard/EarningsOverview";
+import StatCard from "@/components/doctor-dashboard/StatCard";
+import PatientQueueList from "@/components/doctor-dashboard/PatientQueueList";
+import AppointmentsList from "@/components/doctor-dashboard/AppointmentsList";
+import ScheduleTimeline from "@/components/doctor-dashboard/ScheduleTimeline";
+import RecentConsultations from "@/components/doctor-dashboard/RecentConsultations";
+import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescriptions";
+import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 
 export const metadata = {
   title: `Doctor Dashboard | ${siteConfig.name}`,

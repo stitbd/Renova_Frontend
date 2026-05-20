@@ -2,13 +2,13 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/patient-dashboard.css";
-import Sidebar from "@/components/patient/Sidebar";
-import Header from "@/components/patient/Header";
-import ProfileHeader from "@/components/patient/ProfileHeader";
-import StatsGrid from "@/components/patient/StatsGrid";
-import HealthTimeline from "@/components/patient/HealthTimeline";
-import UpcomingAppointment from "@/components/patient/UpcomingAppointment";
-import QuickActions from "@/components/patient/QuickActions";
+import Sidebar from "@/components/patient-dashboard/Sidebar";
+import Header from "@/components/patient-dashboard/Header";
+import ProfileHeader from "@/components/patient-dashboard/ProfileHeader";
+import StatsGrid from "@/components/patient-dashboard/StatsGrid";
+import HealthTimeline from "@/components/patient-dashboard/HealthTimeline";
+import UpcomingAppointment from "@/components/patient-dashboard/UpcomingAppointment";
+import QuickActions from "@/components/patient-dashboard/QuickActions";
 
 export const metadata = {
   title: `Patient Dashboard | ${siteConfig.name}`,
