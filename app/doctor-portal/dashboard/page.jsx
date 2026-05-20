@@ -103,12 +103,12 @@ export default function DashboardPage() {
           <div className="profile-avatar">
             <img
               src="/images/doctors/doctor-2.jpg"
-              alt="Dr. Ahsan Rahman"
+              alt="Dr. Tasnim Farin"
               onError={(e) => { e.target.style.display = "none"; }}
             />
           </div>
           <div className="profile-info">
-            <h3 className="profile-name">Dr. Ahsan Rahman</h3>
+            <h3 className="profile-name">Dr. Tasnim Farin</h3>
             <p className="profile-specialty">Cardiologist</p>
             <span className="profile-status online">
               <span className="status-dot" />
@@ -252,7 +252,7 @@ export default function DashboardPage() {
               </svg>
             </button>
             <div className="header-greeting">
-              <h1 className="greeting-title">Good Morning, Dr. Ahsan Rahman 👋</h1>
+              <h1 className="greeting-title">Good Morning, Dr. Tasnim Farin 👋</h1>
               <p className="greeting-subtitle">Here's what's happening with your practice today.</p>
             </div>
           </div>

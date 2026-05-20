@@ -129,13 +129,13 @@ const dashboardData = {
     {
       type: "consultation",
       title: "Consultation completed",
-      description: "Dr. Ahsan Rahman",
+      description: "Dr. Tasnim Farin",
       time: "09:30 AM",
     },
     {
       type: "prescription",
       title: "Prescription added",
-      description: "By Dr. Ahsan Rahman",
+      description: "By Dr. Tasnim Farin",
       time: "09:25 AM",
     },
   ],
