@@ -10,7 +10,7 @@ import PendingPrescriptions from "@/components/dashboard/PendingPrescriptions";
 import EarningsOverview from "@/components/dashboard/EarningsOverview";
 
 export const metadata = {
-  title: `Dashboard | ${siteConfig.name}`,
+  title: `Doctor Dashboard | ${siteConfig.name}`,
   description: "Doctor dashboard - Manage patients, appointments, and consultations",
 };
 

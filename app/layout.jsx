@@ -1,10 +1,8 @@
 import "@/styles/globals.css";
 import "@/styles/pages.css";
 import { siteConfig } from "@/constants/siteData";
-import Navbar from "@/components/common/Navbar";
-import Footer from "@/components/common/Footer";
-import MobileBottomNav from "@/components/common/MobileBottomNav";
 import { CartProvider } from "@/context/CartContext";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -77,12 +75,9 @@ export default function RootLayout({ children }) {
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
         <CartProvider>
-          <Navbar />
-          <main id="main-content">
+          <LayoutWrapper>
             {children}
-          </main>
-          <MobileBottomNav />
-          <Footer />
+          </LayoutWrapper>
         </CartProvider>
       </body>
     </html>
