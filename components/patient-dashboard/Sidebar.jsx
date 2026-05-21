@@ -4,11 +4,11 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
 
   return (
-    <aside className="patient-sidebar">
+    <aside className={`patient-sidebar${isOpen ? " open" : ""}`}>
       {/* Logo — image only */}
       <div className="sidebar-logo">
         <img

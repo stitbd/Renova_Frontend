@@ -107,9 +107,7 @@ export default function PatientDashboardPage() {
       />
 
       {/* Sidebar */}
-      <div className={sidebarOpen ? "open" : ""}>
-        <Sidebar />
-      </div>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main */}
       <div className="patient-main-content">
