@@ -4,10 +4,11 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Layout ────────────────────────────────────────────────────── */
-.dashboard-container {
-  display: flex;
-  min-height: 100vh;
-  background-color: var(--color-bg-light, #f0f4f8);
+.dashboard-content {
+  padding: 20px 24px;
+  flex: 1;
+  overflow-y: auto;          /* KEEP */
+  min-height: 0;             /* KEEP — critical for flex scroll */
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -228,6 +229,14 @@
   opacity: 0.78;
 }
 
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;           /* ADD THIS */
+  overflow: hidden;         /* ADD THIS */
+  background-color: var(--color-bg-light, #f0f4f8);
+}
+
 /* ══════════════════════════════════════════════════════════════
    MAIN CONTENT
    ══════════════════════════════════════════════════════════════ */
@@ -237,8 +246,8 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  overflow: hidden;              /* ← ADDED: Prevent main from scrolling */
-  height: 100vh;                 /* ← ADDED: Full viewport height */
+  overflow: hidden;
+  height: 100%;             /* CHANGE from 100vh → 100% */
 }
 
 /* ── Header ────────────────────────────────────────────────────── */
@@ -392,8 +401,8 @@
 .dashboard-content {
   padding: 20px 24px;
   flex: 1;
-  overflow-y: auto;              /* ← ADDED: Enable vertical scroll */
-  min-height: 0;                 /* ← ADDED: Fix flex overflow bug */
+  overflow-y: auto;          /* KEEP */
+  min-height: 0;             /* KEEP — critical for flex scroll */
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1354,7 +1363,7 @@
 
   .dashboard-main {
     margin-left: 0;
-    height: 100vh;               /* ← ADDED: Ensure full height on mobile */
+    height: 100%;             /* CHANGE from 100vh → 100% */
   }
 
   /* Show hamburger */
