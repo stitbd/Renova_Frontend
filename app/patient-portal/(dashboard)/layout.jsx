@@ -194,8 +194,8 @@ export default function PatientPortalLayout({ children }) {
               </svg>
             </button>
             <div className="header-greeting">
-              <h1 className="greeting-title">Hello, Rakib 👋</h1>
-              <p className="greeting-subtitle">Here's your health overview today.</p>
+              <h1 className="greeting-title" id="header-title">Hello, Rakib 👋</h1>
+              <p className="greeting-subtitle" id="header-sub">Here's your health overview today.</p>
             </div>
           </div>
 
