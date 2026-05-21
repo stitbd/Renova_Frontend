@@ -77,7 +77,7 @@ export default function DashboardPage() {
   const closeSidebar = () => setSidebarOpen(false);
 
     return (
-    <div className="dashboard-content">
+    <div className="">
 
           {/* Stats */}
           <div className="stats-grid">

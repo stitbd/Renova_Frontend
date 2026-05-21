@@ -1,6 +1,7 @@
 // app/patient/dashboard/page.jsx
-import { Metadata } from "next";
-import { siteConfig } from "@/constants/siteData";
+"use client";
+
+import { useState } from "react";
 import "@/styles/pages/patient-dashboard.css";
 import Sidebar from "@/components/patient-dashboard/Sidebar";
 import Header from "@/components/patient-dashboard/Header";
@@ -10,12 +11,7 @@ import HealthTimeline from "@/components/patient-dashboard/HealthTimeline";
 import UpcomingAppointment from "@/components/patient-dashboard/UpcomingAppointment";
 import QuickActions from "@/components/patient-dashboard/QuickActions";
 
-export const metadata = {
-  title: `Patient Dashboard | ${siteConfig.name}`,
-  description: "Manage your health records, appointments, and prescriptions",
-};
-
-// Mock data - Replace with actual API calls
+// Mock data — replace with actual API calls
 const patientData = {
   profile: {
     name: "Md. Rakib Hasan",
@@ -100,14 +96,30 @@ const patientData = {
 };
 
 export default function PatientDashboardPage() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="patient-dashboard-container">
-      <Sidebar />
+      {/* Mobile overlay */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
+      {/* Sidebar */}
+      <div className={sidebarOpen ? "open" : ""}>
+        <Sidebar />
+      </div>
+
+      {/* Main */}
       <div className="patient-main-content">
-        <Header />
+        <Header onMenuToggle={() => setSidebarOpen((v) => !v)} />
+
         <div className="patient-dashboard-content">
           <ProfileHeader profile={patientData.profile} />
+
           <StatsGrid stats={patientData.stats} />
+
           <div className="dashboard-grid-layout">
             <div className="dashboard-left-column">
               <HealthTimeline timeline={patientData.timeline} />
