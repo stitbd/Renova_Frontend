@@ -1821,3 +1821,44 @@
 }
 
 
+/* ── Timeline icon color additions ── */
+.timeline-icon.orange { background: rgba(245,158,11,.1); color: #d97706; }
+.timeline-icon.purple { background: rgba(124,58,237,.1); color: #7c3aed; }
+.detail-type.orange   { color: #d97706; }
+.detail-type.blue     { color: #014fa1; }
+
+/* ── Profile page success banner ── */
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.success-message svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+
+/* ── Stats circular chart fix (uses cx/cy instead of viewBox path) ── */
+.circular-chart { display: block; width: 58px; height: 58px; transform: rotate(-90deg); }
+.circle-bg      { fill: none; stroke: #e2e8f0; stroke-width: 6; }
+.circle         { fill: none; stroke: #16a34a; stroke-width: 6; stroke-linecap: round; transition: stroke-dasharray 1s ease; }
+
+/* ── Quick actions 4th button full-width row ── */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.quick-action-btn:nth-child(4) {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: center;
+  padding: 11px 16px;
+}
+
+/* ── Load more toggle chevron ── */
+.load-more-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; }
