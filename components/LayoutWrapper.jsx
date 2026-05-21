@@ -8,11 +8,11 @@ import MobileBottomNav from "@/components/common/MobileBottomNav";
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname();
 
-  // Hide header and footer on dashboard routes
+  // Hide header and footer on all portal routes
   const isDashboardRoute =
-    pathname.includes("/doctor-portal/dashboard") ||
-    pathname.includes("/patient-portal/dashboard") ||
-    pathname.includes("/outlet-portal/dashboard");
+    pathname.startsWith("/doctor-portal") ||
+    pathname.startsWith("/patient-portal") ||
+    pathname.startsWith("/outlet-portal");
 
   return (
     <>
