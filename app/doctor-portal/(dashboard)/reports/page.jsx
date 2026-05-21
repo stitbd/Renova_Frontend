@@ -12,7 +12,6 @@ const reportsData = [
 ];
 
 export default function ReportsPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
     <div className="dashboard-content">

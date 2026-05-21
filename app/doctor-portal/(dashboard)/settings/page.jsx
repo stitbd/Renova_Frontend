@@ -269,14 +269,6 @@ export default function SettingsPage() {
     dataSharing: false
   });
 
-  // Appearance settings
-  const [appearance, setAppearance] = useState({
-    theme: "light",
-    language: "en",
-    dateFormat: "DD/MM/YYYY",
-    timeFormat: "12h"
-  });
-
   // Handlers
   const handleProfileChange = (field, value) => {
     setProfile(prev => ({ ...prev, [field]: value }));
@@ -292,10 +284,6 @@ export default function SettingsPage() {
 
   const handlePrivacyChange = (field, value) => {
     setPrivacy(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleAppearanceChange = (field, value) => {
-    setAppearance(prev => ({ ...prev, [field]: value }));
   };
 
   const handleFileUpload = (field) => {
@@ -318,7 +306,6 @@ export default function SettingsPage() {
     { id: "account", label: "Account", icon: <Icon.Settings /> },
     { id: "chamber", label: "Chamber", icon: <Icon.Calendar /> },
     { id: "privacy", label: "Privacy", icon: <Icon.Shield /> },
-    { id: "appearance", label: "Appearance", icon: <Icon.Settings /> }
   ];
 
   const specializationOptions = [
@@ -1025,127 +1012,6 @@ export default function SettingsPage() {
                   <h3 className="group-title danger">Danger Zone</h3>
                   <p className="group-description">Once you delete your account, there is no going back.</p>
                   <button className="btn-danger">Delete Account</button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ========== APPEARANCE TAB ========== */}
-          {activeTab === "appearance" && (
-            <div className="settings-section">
-              <div className="section-header">
-                <h2 className="section-title">Appearance & Preferences</h2>
-                <button 
-                  className={`btn-edit ${isEditing ? "btn-save" : ""}`}
-                  onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-                >
-                  {isEditing ? "Save" : "Edit"}
-                </button>
-              </div>
-
-              <div className="appearance-settings">
-                <div className="settings-group">
-                  <h3 className="group-title">Theme</h3>
-                  
-                  <div className="theme-options">
-                    <label className={`theme-option ${appearance.theme === "light" ? "selected" : ""}`}>
-                      <input 
-                        type="radio" 
-                        name="theme"
-                        value="light"
-                        checked={appearance.theme === "light"}
-                        onChange={(e) => handleAppearanceChange("theme", e.target.value)}
-                      />
-                      <div className="theme-preview light">
-                        <div className="theme-preview-header" />
-                        <div className="theme-preview-content" />
-                      </div>
-                      <span className="theme-label">Light</span>
-                    </label>
-
-                    <label className={`theme-option ${appearance.theme === "dark" ? "selected" : ""}`}>
-                      <input 
-                        type="radio" 
-                        name="theme"
-                        value="dark"
-                        checked={appearance.theme === "dark"}
-                        onChange={(e) => handleAppearanceChange("theme", e.target.value)}
-                      />
-                      <div className="theme-preview dark">
-                        <div className="theme-preview-header" />
-                        <div className="theme-preview-content" />
-                      </div>
-                      <span className="theme-label">Dark</span>
-                    </label>
-
-                    <label className={`theme-option ${appearance.theme === "system" ? "selected" : ""}`}>
-                      <input 
-                        type="radio" 
-                        name="theme"
-                        value="system"
-                        checked={appearance.theme === "system"}
-                        onChange={(e) => handleAppearanceChange("theme", e.target.value)}
-                      />
-                      <div className="theme-preview system">
-                        <div className="theme-preview-header" />
-                        <div className="theme-preview-content" />
-                      </div>
-                      <span className="theme-label">System</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="settings-group">
-                  <h3 className="group-title">Language & Region</h3>
-                  
-                  <div className="form-row">
-                    <label className="form-label">Language</label>
-                    {isEditing ? (
-                      <select 
-                        className="form-select"
-                        value={appearance.language}
-                        onChange={(e) => handleAppearanceChange("language", e.target.value)}
-                      >
-                        <option value="en">English</option>
-                        <option value="bn">বাংলা (Bengali)</option>
-                      </select>
-                    ) : (
-                      <p className="form-value">{appearance.language === "en" ? "English" : "বাংলা"}</p>
-                    )}
-                  </div>
-
-                  <div className="form-row">
-                    <label className="form-label">Date Format</label>
-                    {isEditing ? (
-                      <select 
-                        className="form-select"
-                        value={appearance.dateFormat}
-                        onChange={(e) => handleAppearanceChange("dateFormat", e.target.value)}
-                      >
-                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                      </select>
-                    ) : (
-                      <p className="form-value">{appearance.dateFormat}</p>
-                    )}
-                  </div>
-
-                  <div className="form-row">
-                    <label className="form-label">Time Format</label>
-                    {isEditing ? (
-                      <select 
-                        className="form-select"
-                        value={appearance.timeFormat}
-                        onChange={(e) => handleAppearanceChange("timeFormat", e.target.value)}
-                      >
-                        <option value="12h">12-hour (AM/PM)</option>
-                        <option value="24h">24-hour</option>
-                      </select>
-                    ) : (
-                      <p className="form-value">{appearance.timeFormat === "12h" ? "12-hour (AM/PM)" : "24-hour"}</p>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>

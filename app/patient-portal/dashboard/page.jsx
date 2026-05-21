@@ -23,7 +23,7 @@ const patientData = {
     bloodGroup: "B+",
     mobile: "01712-345678",
     outlet: "Dhammondi Outlet",
-    avatar: "/images/patients/avatar.jpg",
+    avatar: "/images/patients/01.jpg",
   },
   stats: {
     totalReports: 12,

@@ -139,7 +139,7 @@ export default function DoctorPortalDashboardLayout({ children }) {
   const pathname = usePathname();
 
   return (
-    <div className="dashboard-container">
+    <div className="">
       <div
         className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
         onClick={() => setSidebarOpen(false)}
@@ -255,7 +255,7 @@ export default function DoctorPortalDashboardLayout({ children }) {
           </div>
         </header>
 
-        <div className="dashboard-content">{children}</div>
+        <div className="">{children}</div>
       </main>
     </div>
   );
