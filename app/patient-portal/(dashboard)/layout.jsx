@@ -224,7 +224,7 @@ export default function PatientPortalLayout({ children }) {
         </header>
 
         {/* Page Content */}
-        <div className="">{children}</div>
+        <div className="patient-dashboard-content">{children}</div>
       </main>
     </div>
   );
