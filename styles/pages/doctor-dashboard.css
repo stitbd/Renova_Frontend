@@ -9,6 +9,7 @@
   flex: 1;
   overflow-y: auto;          /* KEEP */
   min-height: 0;             /* KEEP — critical for flex scroll */
+  background-color: #f0f4f8;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -240,15 +241,15 @@
 /* ══════════════════════════════════════════════════════════════
    MAIN CONTENT
    ══════════════════════════════════════════════════════════════ */
-.dashboard-main {
-  flex: 1;
-  margin-left: 280px;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  overflow: hidden;
-  height: 100%;             /* CHANGE from 100vh → 100% */
-}
+   .dashboard-main {
+    flex: 1;                    /* ✓ Fill available horizontal space */
+    margin-left: 280px;         /* Sidebar width */
+    display: flex;
+    flex-direction: column;     /* ✅ CRITICAL: Stack header + content vertically */
+    min-width: 0;               /* ✓ Prevent flex overflow */
+    overflow: hidden;           /* ✓ Contain scroll to child */
+    height: 100%;               /* ✅ CRITICAL: Fill parent (100vh), NOT 100vh again */
+  }
 
 /* ── Header ────────────────────────────────────────────────────── */
 .dashboard-header {
@@ -258,11 +259,11 @@
   padding: 12px 24px;
   background: #fff;
   border-bottom: 1px solid #e2e8f0;
-  position: sticky;
-  top: 0;
-  z-index: 50;
   gap: 12px;
-  flex-shrink: 0;                /* ← ADDED: Prevent header from shrinking */
+  position: sticky;           /* ✅ CRITICAL: Enable sticky behavior */
+  top: 0;                     /* ✅ Stick to top of .dashboard-main */
+  z-index: 50;                /* ✅ Stay above scrolling content */
+  flex-shrink: 0;             /* ✅ CRITICAL: Prevent header from shrinking */
 }
 
 .header-left {
@@ -400,9 +401,9 @@
 /* ── Content Wrapper ───────────────────────────────────────────── */
 .dashboard-content {
   padding: 20px 24px;
-  flex: 1;
-  overflow-y: auto;          /* KEEP */
-  min-height: 0;             /* KEEP — critical for flex scroll */
+  flex: 1;                    /* ✅ CRITICAL: Take remaining vertical space */
+  overflow-y: auto;           /* ✅ Enable vertical scrolling */
+  min-height: 0;              /* ✅ CRITICAL: Allow flex item to shrink below content */
 }
 
 /* ══════════════════════════════════════════════════════════════
