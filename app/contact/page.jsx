@@ -1,6 +1,7 @@
 import { siteConfig } from "@/constants/siteData";
 import ContactForm from "./ContactForm";
 import "@/styles/components/HeroSection.css";
+import "@/styles/pages/contact.css";
 
 export const metadata = {
   title: `Contact Us | ${siteConfig.name}`,
@@ -38,4 +39,3 @@ export default function ContactPage() {
     </>
   );
 }
-
