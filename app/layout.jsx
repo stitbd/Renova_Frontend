@@ -3,6 +3,7 @@ import "@/styles/pages.css";
 import { siteConfig } from "@/constants/siteData";
 import { CartProvider } from "@/context/CartContext";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import ReduxProvider from "@/components/ReduxProvider";
 
 export const metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -74,11 +75,11 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/images/favicon.png" sizes="any" />
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
-        <CartProvider>
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
-        </CartProvider>
+        <ReduxProvider>
+          <CartProvider>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </CartProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
