@@ -8,18 +8,18 @@ export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
 
   const menuItems = [
-    { icon: "dashboard",    label: "Dashboard",            href: "/outlet/dashboard",   badge: null },
-    { icon: "patients",     label: "Patients",             href: "/outlet/patients",    badge: null },
-    { icon: "appointments", label: "Appointments",         href: "/outlet/appointments",badge: 12   },
-    { icon: "consultations",label: "Consultations",        href: "/outlet/consultations",badge: 8   },
-    { icon: "devices",      label: "Devices & Reports",    href: "/outlet/devices",     badge: null },
-    { icon: "pharmacy",     label: "Pharmacy / POS",       href: "/outlet/pharmacy",    badge: null },
-    { icon: "inventory",    label: "Inventory",            href: "/outlet/inventory",   badge: null },
-    { icon: "sales",        label: "Sales",                href: "/outlet/sales",       badge: null },
-    { icon: "earnings",     label: "Earnings & Commission",href: "/outlet/earnings",    badge: null },
-    { icon: "performance",  label: "Outlet Performance",   href: "/outlet/performance", badge: null },
-    { icon: "users",        label: "Users & Roles",        href: "/outlet/users",       badge: null },
-    { icon: "settings",     label: "Settings",             href: "/outlet/settings",    badge: null },
+    { icon: "dashboard", label: "Dashboard", href: "/outlet-portal/dashboard", badge: null },
+    { icon: "patients", label: "Patients", href: "/outlet-portal/patients", badge: null },
+    { icon: "appointments", label: "Appointments", href: "/outlet-portal/appointments", badge: 12 },
+    { icon: "consultations", label: "Consultations", href: "/outlet-portal/consultations", badge: 8 },
+    { icon: "devices", label: "Devices & Reports", href: "/outlet-portal/devices", badge: null },
+    { icon: "pharmacy", label: "Pharmacy / POS", href: "/outlet-portal/pharmacy", badge: null },
+    { icon: "inventory", label: "Inventory", href: "/outlet-portal/inventory", badge: null },
+    { icon: "sales", label: "Sales", href: "/outlet-portal/sales", badge: null },
+    { icon: "earnings", label: "Earnings & Commission", href: "/outlet-portal/earnings", badge: null },
+    { icon: "performance", label: "Outlet Performance", href: "/outlet-portal/performance", badge: null },
+    { icon: "users", label: "Users & Roles", href: "/outlet-portal/users", badge: null },
+    { icon: "settings", label: "Settings", href: "/outlet-portal/settings", badge: null },
   ];
 
   const icons = {
