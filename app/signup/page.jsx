@@ -30,7 +30,7 @@ export default function SignUpSelectionPage() {
       </section> */}
 
       {/* Selection Cards */}
-      <section class="page-section page-section--slate">
+      <section className="page-section page-section--slate">
         <style>{`
           .panel-card:hover {
             transform: translateY(-5px) !important;
