@@ -1,4 +1,7 @@
+// app/patient/profile/page.jsx
 "use client";
+
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 const initialProfile = {
@@ -14,6 +17,23 @@ const initialProfile = {
   avatar: "/images/patients/01.jpg",
 };
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: "spring", stiffness: 100 }
+  }
+};
+
 export default function MyProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState(initialProfile);
@@ -21,31 +41,55 @@ export default function MyProfilePage() {
   const [saved, setSaved] = useState(false);
 
   const handleEdit = () => { setDraft({ ...profile }); setIsEditing(true); };
-
   const handleSave = () => {
     setProfile({ ...draft });
     setIsEditing(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
-
   const handleCancel = () => { setDraft({ ...profile }); setIsEditing(false); };
-
   const set = (field) => (e) => setDraft((p) => ({ ...p, [field]: e.target.value }));
 
   return (
-    <div className="profile-page">
-
-      {saved && (
-        <div className="success-message">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
-          Profile updated successfully!
-        </div>
-      )}
+    <motion.div 
+      className="profile-page"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      <AnimatePresence>
+        {saved && (
+          <motion.div 
+            className="success-message"
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <motion.svg 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.1, type: "spring" }}
+            >
+              <polyline points="20 6 9 17 4 12"/>
+            </motion.svg>
+            Profile updated successfully!
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Header card */}
-      <div className="profile-header-card">
-        <div className="profile-avatar-wrapper" style={{ position: "relative", display: "inline-block" }}>
+      <motion.div className="profile-header-card" variants={item}>
+        <motion.div 
+          className="profile-avatar-wrapper" 
+          style={{ position: "relative", display: "inline-block" }}
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
           <img
             src={profile.avatar}
             alt={profile.name}
@@ -54,129 +98,239 @@ export default function MyProfilePage() {
             style={{ width: 80, height: 80, borderRadius: "50%", border: "3px solid #e2e8f0", objectFit: "cover" }}
           />
           {isEditing && (
-            <label className="edit-avatar-btn" style={{ cursor: "pointer" }}>
+            <motion.label 
+              className="edit-avatar-btn" 
+              style={{ cursor: "pointer" }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="17 8 12 3 7 8"/>
                 <line x1="12" y1="3" x2="12" y2="15"/>
               </svg>
               <input type="file" accept="image/*" style={{ display: "none" }} />
-            </label>
+            </motion.label>
           )}
-        </div>
+        </motion.div>
 
         <div className="profile-details">
           <div className="profile-name-row">
             {isEditing ? (
-              <input
+              <motion.input
                 className="profile-name-input"
                 value={draft.name}
                 onChange={set("name")}
+                whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
               />
             ) : (
-              <h2 className="profile-name">{profile.name}</h2>
+              <motion.h2 
+                className="profile-name"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                {profile.name}
+              </motion.h2>
             )}
-            <span className="status-badge active">Active</span>
+            <motion.span 
+              className="status-badge active"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring" }}
+            >
+              Active
+            </motion.span>
           </div>
           <p className="profile-id-label">Patient ID</p>
-          <p className="profile-id">{profile.patientId}</p>
+          <motion.p 
+            className="profile-id"
+            initial={{ width: 0 }}
+            animate={{ width: "auto" }}
+            transition={{ duration: 0.4 }}
+          >
+            {profile.patientId}
+          </motion.p>
         </div>
 
         <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
           {isEditing ? (
             <>
-              <button className="edit-profile-btn" onClick={handleSave} style={{ background: "#014fa1", color: "#fff", borderColor: "#014fa1" }}>
+              <motion.button 
+                className="edit-profile-btn" 
+                onClick={handleSave} 
+                style={{ background: "#014fa1", color: "#fff", borderColor: "#014fa1" }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
                 Save Changes
-              </button>
-              <button className="edit-profile-btn" onClick={handleCancel} style={{ color: "#ef4444", borderColor: "#fca5a5" }}>
+              </motion.button>
+              <motion.button 
+                className="edit-profile-btn" 
+                onClick={handleCancel} 
+                style={{ color: "#ef4444", borderColor: "#fca5a5" }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Cancel
-              </button>
+              </motion.button>
             </>
           ) : (
-            <button className="edit-profile-btn" onClick={handleEdit}>
+            <motion.button 
+              className="edit-profile-btn" 
+              onClick={handleEdit}
+              whileHover={{ scale: 1.05, x: 2 }}
+              whileTap={{ scale: 0.98 }}
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
               </svg>
               Edit Profile
-            </button>
+            </motion.button>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Info cards */}
-      <div className="profile-info-grid">
-        <div className="info-card">
-          <h3>Personal Information</h3>
+      <motion.div 
+        className="profile-info-grid"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div className="info-card" variants={item}>
+          <motion.h3
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            Personal Information
+          </motion.h3>
 
-          <div className="info-field">
-            <label>Full Name</label>
-            {isEditing ? <input type="text" value={draft.name} onChange={set("name")} /> : <p>{profile.name}</p>}
-          </div>
-          <div className="info-field">
-            <label>Email</label>
-            {isEditing ? <input type="email" value={draft.email} onChange={set("email")} /> : <p>{profile.email}</p>}
-          </div>
-          <div className="info-field">
-            <label>Phone</label>
-            {isEditing ? <input type="tel" value={draft.phone} onChange={set("phone")} /> : <p>{profile.phone}</p>}
-          </div>
-          <div className="info-field">
-            <label>Date of Birth</label>
-            <p>{profile.dob}</p>
-          </div>
-          <div className="info-field">
-            <label>Gender</label>
-            {isEditing ? (
-              <select value={draft.gender} onChange={set("gender")}>
-                <option>Male</option><option>Female</option><option>Other</option>
-              </select>
-            ) : <p>{profile.gender}</p>}
-          </div>
-          <div className="info-field">
-            <label>Blood Group</label>
-            {isEditing ? (
-              <select value={draft.bloodGroup} onChange={set("bloodGroup")}>
-                {["A+","A-","B+","B-","AB+","AB-","O+","O-"].map(bg => <option key={bg}>{bg}</option>)}
-              </select>
-            ) : <p>{profile.bloodGroup}</p>}
-          </div>
-        </div>
+          {[
+            { label: "Full Name", key: "name", type: "text" },
+            { label: "Email", key: "email", type: "email" },
+            { label: "Phone", key: "phone", type: "tel" },
+            { label: "Date of Birth", key: "dob", type: "text", disabled: true },
+            { label: "Gender", key: "gender", type: "select", options: ["Male", "Female", "Other"] },
+            { label: "Blood Group", key: "bloodGroup", type: "select", options: ["A+","A-","B+","B-","AB+","AB-","O+","O-"] },
+          ].map((field, i) => (
+            <motion.div 
+              key={field.key} 
+              className="info-field"
+              variants={item}
+              whileHover={{ backgroundColor: "#f8fafc" }}
+            >
+              <label>{field.label}</label>
+              {isEditing && !field.disabled ? (
+                field.type === "select" ? (
+                  <motion.select 
+                    value={draft[field.key]} 
+                    onChange={set(field.key)}
+                    whileFocus={{ borderColor: "#014fa1" }}
+                  >
+                    {field.options.map(opt => <option key={opt}>{opt}</option>)}
+                  </motion.select>
+                ) : (
+                  <motion.input 
+                    type={field.type} 
+                    value={draft[field.key]} 
+                    onChange={set(field.key)}
+                    whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
+                  />
+                )
+              ) : (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                >
+                  {profile[field.key]}
+                </motion.p>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
 
-        <div className="info-card">
-          <h3>Address & Contact</h3>
-          <div className="info-field full">
+        <motion.div className="info-card" variants={item}>
+          <motion.h3
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            Address & Contact
+          </motion.h3>
+          
+          <motion.div 
+            className="info-field full"
+            variants={item}
+            whileHover={{ backgroundColor: "#f8fafc" }}
+          >
             <label>Address</label>
             {isEditing ? (
-              <textarea value={draft.address} onChange={set("address")} rows={3} />
-            ) : <p>{profile.address}</p>}
-          </div>
-          <div className="info-field">
+              <motion.textarea 
+                value={draft.address} 
+                onChange={set("address")} 
+                rows={3}
+                whileFocus={{ borderColor: "#014fa1" }}
+              />
+            ) : (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                {profile.address}
+              </motion.p>
+            )}
+          </motion.div>
+          
+          <motion.div 
+            className="info-field"
+            variants={item}
+            whileHover={{ backgroundColor: "#f8fafc" }}
+          >
             <label>Emergency Contact</label>
             {isEditing ? (
-              <input type="tel" value={draft.emergencyContact} onChange={set("emergencyContact")} />
-            ) : <p>{profile.emergencyContact}</p>}
-          </div>
+              <motion.input 
+                type="tel" 
+                value={draft.emergencyContact} 
+                onChange={set("emergencyContact")}
+                whileFocus={{ borderColor: "#014fa1" }}
+              />
+            ) : (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                {profile.emergencyContact}
+              </motion.p>
+            )}
+          </motion.div>
 
           {isEditing && (
-            <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-              <button
+            <motion.div 
+              style={{ marginTop: 16, display: "flex", gap: 8 }}
+              variants={item}
+            >
+              <motion.button
                 onClick={handleSave}
                 style={{ flex: 1, padding: "10px", background: "#014fa1", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: "pointer" }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Save Changes
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 onClick={handleCancel}
                 style={{ flex: 1, padding: "10px", background: "#fff", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: "pointer" }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Cancel
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           )}
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }

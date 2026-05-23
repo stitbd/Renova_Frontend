@@ -1,7 +1,26 @@
 // app/patient/appointments/page.jsx
 "use client";
 
+import { motion } from "framer-motion";
 import { useState } from "react";
+
+// Animation variants
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: "spring", stiffness: 100, damping: 15 }
+  }
+};
 
 const appointmentsData = [
   { id: 1, doctor: "Dr. Afsana Rahman", specialty: "Dermatologist", date: "16 May 2025", time: "11:30 AM", location: "Dhanmondi Outlet", status: "Confirmed", type: "Follow-up" },
@@ -13,52 +32,109 @@ export default function AppointmentsPage() {
   const [viewMode, setViewMode] = useState("list");
 
   return (
-    <>
-      <div className="appointments-header">
-        <div className="view-toggle">
-          <button className={`view-btn ${viewMode === "list" ? "active" : ""}`} onClick={() => setViewMode("list")}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="8" y1="6" x2="21" y2="6" />
-              <line x1="8" y1="12" x2="21" y2="12" />
-              <line x1="8" y1="18" x2="21" y2="18" />
-              <line x1="3" y1="6" x2="3.01" y2="6" />
-              <line x1="3" y1="12" x2="3.01" y2="12" />
-              <line x1="3" y1="18" x2="3.01" y2="18" />
-            </svg>
-            List
-          </button>
-          <button className={`view-btn ${viewMode === "calendar" ? "active" : ""}`} onClick={() => setViewMode("calendar")}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-            Calendar
-          </button>
-        </div>
-        <button className="btn-book-appointment">
+    <motion.div 
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      <motion.div className="appointments-header" variants={item}>
+        <motion.div className="view-toggle">
+          {[
+            { mode: "list", icon: (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="8" y1="6" x2="21" y2="6" />
+                <line x1="8" y1="12" x2="21" y2="12" />
+                <line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" />
+                <line x1="3" y1="12" x2="3.01" y2="12" />
+                <line x1="3" y1="18" x2="3.01" y2="18" />
+              </svg>
+            ), label: "List" },
+            { mode: "calendar", icon: (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+            ), label: "Calendar" }
+          ].map(btn => (
+            <motion.button
+              key={btn.mode}
+              className={`view-btn ${viewMode === btn.mode ? "active" : ""}`}
+              onClick={() => setViewMode(btn.mode)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              {btn.icon}
+              {btn.label}
+            </motion.button>
+          ))}
+        </motion.div>
+        
+        <motion.button 
+          className="btn-book-appointment"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
           Book New Appointment
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       {viewMode === "list" ? (
-        <div className="appointments-list">
-          {appointmentsData.map((apt) => (
-            <div key={apt.id} className="appointment-card">
-              <div className="appointment-date-block">
-                <span className="appointment-day">{apt.date.split(" ")[0]}</span>
+        <motion.div className="appointments-list">
+          {appointmentsData.map((apt, index) => (
+            <motion.div
+              key={apt.id}
+              className="appointment-card"
+              variants={item}
+              whileHover={{ 
+                y: -4, 
+                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                transition: { duration: 0.2 }
+              }}
+            >
+              <motion.div 
+                className="appointment-date-block"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <motion.span 
+                  className="appointment-day"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.1 + index * 0.05, type: "spring" }}
+                >
+                  {apt.date.split(" ")[0]}
+                </motion.span>
                 <span className="appointment-month">{apt.date.split(" ")[1].toUpperCase()}</span>
-              </div>
+              </motion.div>
+              
               <div className="appointment-content">
                 <div className="appointment-doctor">
-                  <h3 className="doctor-name">{apt.doctor}</h3>
+                  <motion.h3 
+                    className="doctor-name"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                  >
+                    {apt.doctor}
+                  </motion.h3>
                   <p className="doctor-specialty">{apt.specialty}</p>
-                  <span className="appointment-type">{apt.type}</span>
+                  <motion.span 
+                    className="appointment-type"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 + index * 0.05 }}
+                  >
+                    {apt.type}
+                  </motion.span>
                 </div>
                 <div className="appointment-details">
                   <div className="detail-row">
@@ -77,28 +153,76 @@ export default function AppointmentsPage() {
                   </div>
                 </div>
               </div>
+              
               <div className="appointment-status-actions">
-                <span className={`appointment-status status-${apt.status.toLowerCase()}`}>{apt.status}</span>
+                <motion.span 
+                  className={`appointment-status status-${apt.status.toLowerCase()}`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 + index * 0.05, type: "spring" }}
+                >
+                  {apt.status}
+                </motion.span>
                 <div className="appointment-btns">
                   {apt.status === "Confirmed" && (
                     <>
-                      <button className="btn-join">Join Call</button>
-                      <button className="btn-reschedule">Reschedule</button>
+                      <motion.button 
+                        className="btn-join"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Join Call
+                      </motion.button>
+                      <motion.button 
+                        className="btn-reschedule"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Reschedule
+                      </motion.button>
                     </>
                   )}
-                  {apt.status === "Scheduled" && <button className="btn-confirm">Confirm</button>}
-                  {apt.status === "Pending" && <button className="btn-cancel">Cancel</button>}
+                  {apt.status === "Scheduled" && (
+                    <motion.button 
+                      className="btn-confirm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Confirm
+                    </motion.button>
+                  )}
+                  {apt.status === "Pending" && (
+                    <motion.button 
+                      className="btn-cancel"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Cancel
+                    </motion.button>
+                  )}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
-        <div className="calendar-view">
-          {/* Calendar component would go here */}
-          <div className="calendar-placeholder">Calendar view coming soon</div>
-        </div>
+        <motion.div 
+          className="calendar-view"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div 
+            className="calendar-placeholder"
+            animate={{ 
+              y: [0, -10, 0],
+              transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+            }}
+          >
+            Calendar view coming soon
+          </motion.div>
+        </motion.div>
       )}
-    </>
+    </motion.div>
   );
 }

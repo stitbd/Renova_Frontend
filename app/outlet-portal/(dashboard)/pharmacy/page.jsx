@@ -9,12 +9,12 @@ export default function PharmacyPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const products = [
-    { id: 1, name: "Organic Spirulina 500mg", price: 450, stock: 45, category: "Supplements", image: "/images/products/01.jpg" },
-    { id: 2, name: "Vitamin D3 1000IU", price: 320, stock: 32, category: "Supplements", image: "/images/products/02.jpg" },
-    { id: 3, name: "Digital Thermometer", price: 850, stock: 12, category: "Devices", image: "/images/products/03.jpg" },
-    { id: 4, name: "Face Mask (Pack of 50)", price: 280, stock: 89, category: "Personal Care", image: "/images/products/04.jpg" },
-    { id: 5, name: "Hand Sanitizer 500ml", price: 180, stock: 156, category: "Personal Care", image: "/images/products/05.jpg" },
-    { id: 6, name: "Blood Pressure Monitor", price: 2450, stock: 8, category: "Devices", image: "/images/products/06.jpg" },
+    { id: 1, name: "Organic Spirulina 500mg", price: 450, stock: 45, category: "Supplements", image: "/images/shop/image1.jpg" },
+    { id: 2, name: "Vitamin D3 1000IU", price: 320, stock: 32, category: "Supplements", image: "/images/shop/image2.jpg" },
+    { id: 3, name: "Digital Thermometer", price: 850, stock: 12, category: "Devices", image: "/images/shop/image3.jpg" },
+    { id: 4, name: "Face Mask (Pack of 50)", price: 280, stock: 89, category: "Personal Care", image: "/images/shop/image4.jpg" },
+    { id: 5, name: "Hand Sanitizer 500ml", price: 180, stock: 156, category: "Personal Care", image: "/images/shop/image1.jpg" },
+    { id: 6, name: "Blood Pressure Monitor", price: 2450, stock: 8, category: "Devices", image: "/images/shop/image2.jpg" },
   ];
 
   const addToCart = (product) => {
