@@ -30,7 +30,7 @@ export default function SignInSelectionPage() {
       </section> */}
 
       {/* Selection Cards */}
-      <section class="page-section page-section--slate">
+      <section className="page-section page-section--slate">
         <style>{`
           .panel-card:hover {
             transform: translateY(-5px) !important;
@@ -38,7 +38,7 @@ export default function SignInSelectionPage() {
           }
         `}</style>
         <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-          
+
           <Link href="/patient-portal/patient-signin" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className="panel-card" style={{ background: '#fff', borderRadius: '1rem', padding: '2.5rem 1.5rem', textAlign: 'center', boxShadow: 'var(--shadow-md)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>

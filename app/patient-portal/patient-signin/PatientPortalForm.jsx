@@ -5,46 +5,50 @@ import { useRouter } from "next/navigation"; // ADD THIS
 import { useState } from "react";
 import Image from "next/image";
 import "./patient-signin.css";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { setToken, setUser } from "@/redux/features/auth/authSlice";
+
 
 export default function PatientPortalForm() {
   const router = useRouter(); // ADD THIS
   const [uhid, setUhid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
+
+
+  const user = useAppSelector((state) => state.auth.accessToken);
+  console.log('patient form redux', user);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!uhid.trim() || !password.trim()) {
       setError("Please enter both UHID and password");
       return;
     }
 
     try {
-      // Example API Login Logic
-      // const response = await fetch("/api/patient-login", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ uhid, password }),
-      // });
+      const res = await login({
+        phone: uhid.trim(),
+        password,
+        userType: "PATIENT",
+      }).unwrap();
 
-      // const data = await response.json();
+      dispatch(setUser(res.data.user));
+      dispatch(setToken(res.data.accessToken));
 
-      // if (!response.ok) {
-      //   throw new Error(data.message || "Login failed");
-      // }
-
-      console.log("Patient signing in with:", { uhid, password });
-
-      // SUCCESS LOGIN → REDIRECT
       router.push("/patient-portal/dashboard");
-
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      const message =
+        err?.data?.message ||
+        err?.error ||
+        "Invalid credentials. Please try again.";
+
+      setError(message);
     }
   };
 
@@ -187,7 +191,7 @@ export default function PatientPortalForm() {
         {/* Security Notice */}
         <div className="patient-portal__security-notice">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           <span>Your connection is secure. Never share your credentials.</span>
         </div>

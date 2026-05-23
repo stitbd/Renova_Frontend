@@ -1,49 +1,60 @@
-// src/app/doctor-portal/doctor-signin/DoctorPortalForm.jsx
 "use client";
-import { useRouter } from "next/navigation"; // ADD THIS
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
 import "./doctor-signin.css";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { setToken, setUser } from "@/redux/features/auth/authSlice";
 
 export default function DoctorPortalForm() {
-  const router = useRouter(); // ADD THIS
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const [uhid, setUhid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const user = useAppSelector((state) => state.auth.user);
+  console.log('doctor form redux', user);
+
+
+
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!uhid.trim() || !password.trim()) {
       setError("Please enter both Doctor ID and password");
       return;
     }
 
     try {
-      // Example API Login Logic
-      // const response = await fetch("/api/doctor-login", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ uhid, password }),
-      // });
+      const res = await login({
+        phone: uhid.trim(),
+        password,
+        userType: "DOCTOR",
+      }).unwrap();
 
-      // const data = await response.json();
+      // console.log("login res ", res);
 
-      // if (!response.ok) {
-      //   throw new Error(data.message || "Login failed");
-      // }
+      dispatch(setUser(res.data.user));
 
-      console.log("Doctor signing in with:", { uhid, password });
+      dispatch(setToken(res.data.accessToken));
 
-      // SUCCESS LOGIN → REDIRECT
       router.push("/doctor-portal/dashboard");
-
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      const message =
+        err?.data?.message ||
+        err?.error ||
+        "Invalid credentials. Please try again.";
+
+      setError(message);
     }
   };
 
@@ -155,8 +166,13 @@ export default function DoctorPortalForm() {
           </div>
 
           <div className="doctor-portal__buttons">
-            <button type="submit" className="btn-doctor-portal btn-signin">
-              Sign In
+            {/* only update submit button */}
+            <button
+              type="submit"
+              className="btn-doctor-portal btn-signin"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing In..." : "Sign In"}
             </button>
             <button
               type="button"
@@ -186,7 +202,7 @@ export default function DoctorPortalForm() {
         {/* Security Notice */}
         <div className="doctor-portal__security-notice">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           <span>Your connection is secure. Never share your credentials.</span>
         </div>
