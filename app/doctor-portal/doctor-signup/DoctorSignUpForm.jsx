@@ -584,6 +584,7 @@ export default function DoctorSignUpForm() {
       })),
     };
 
+   
     const body = new FormData();
     body.append("data", JSON.stringify(payload));
 
@@ -599,6 +600,9 @@ export default function DoctorSignUpForm() {
     try {
       setLoading(true);
 
+
+    
+
       const response = await fetch(`${API_BASE_URL}/doctors/create`, {
         method: "POST",
         body,
@@ -607,6 +611,8 @@ export default function DoctorSignUpForm() {
 
       const result = await getSafeJsonResponse(response);
 
+      // conslole.log("API Response:", { status: response.status, body: result }); 
+  // conslole.log("Submitting registration with payload:", payload);
       if (!response.ok || result?.success === false) {
         const fallbackMessage = response.status >= 500
           ? "Server error occurred while creating doctor. Please try again later."

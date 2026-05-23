@@ -78,7 +78,7 @@ export default function PatientDashboardPage() {
   const visible = showAll ? dashboardData.timeline : dashboardData.timeline.slice(0, 4);
 
   return (
-    <div className="patient-dashboard-content">
+    <div className="">
 
       {/* ── Profile Header ── */}
       <div className="profile-header-card">

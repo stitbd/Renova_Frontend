@@ -1,6 +1,8 @@
 // app/patient/health-summary/page.jsx
 "use client";
 
+import { motion } from "framer-motion";
+
 const healthData = {
   score: 85,
   status: "Good",
@@ -23,76 +25,261 @@ const healthData = {
   ],
 };
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: "spring", stiffness: 100 }
+  }
+};
+
 export default function HealthSummaryPage() {
   return (
-    <div className="health-summary">
+    <motion.div 
+      className="health-summary"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
       {/* Health Score Card */}
-      <div className="health-score-card">
-        <div className="score-circle">
+      <motion.div 
+        className="health-score-card"
+        variants={item}
+        whileHover={{ 
+          boxShadow: "0 8px 24px rgba(22, 163, 74, 0.15)",
+          transition: { duration: 0.3 }
+        }}
+      >
+        <motion.div 
+          className="score-circle"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
           <svg className="circular-chart" viewBox="0 0 100 100">
-            <circle className="circle-bg" cx="50" cy="50" r="45" />
-            <circle className="circle" cx="50" cy="50" r="45" strokeDasharray={`${healthData.score}, 100`} />
+            <motion.circle 
+              className="circle-bg" 
+              cx="50" 
+              cy="50" 
+              r="45"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            />
+            <motion.circle 
+              className="circle" 
+              cx="50" 
+              cy="50" 
+              r="45" 
+              strokeDasharray={`${healthData.score}, 100`}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
+            />
           </svg>
-          <span className="score-value">{healthData.score}</span>
-        </div>
+          <motion.span 
+            className="score-value"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 1, type: "spring", stiffness: 200 }}
+          >
+            {healthData.score}
+          </motion.span>
+        </motion.div>
         <div className="score-info">
-          <h3>Health Score</h3>
-          <p className="score-status">{healthData.status}</p>
-          <p className="score-description">Based on your recent checkups and vitals</p>
+          <motion.h3
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            Health Score
+          </motion.h3>
+          <motion.p 
+            className="score-status"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            {healthData.status}
+          </motion.p>
+          <motion.p 
+            className="score-description"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Based on your recent checkups and vitals
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Vitals Grid */}
-      <div className="vitals-grid">
+      <motion.div 
+        className="vitals-grid"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
         {healthData.vitals.map((vital, idx) => (
-          <div key={idx} className="vital-card">
-            <span className="vital-label">{vital.label}</span>
-            <span className="vital-value">
+          <motion.div 
+            key={idx} 
+            className="vital-card"
+            variants={item}
+            whileHover={{ 
+              y: -4,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              transition: { duration: 0.2 }
+            }}
+          >
+            <motion.span 
+              className="vital-label"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 + idx * 0.05 }}
+            >
+              {vital.label}
+            </motion.span>
+            <motion.span 
+              className="vital-value"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 + idx * 0.05, type: "spring" }}
+            >
               {vital.value}
               {vital.unit && <span className="vital-unit">{vital.unit}</span>}
-            </span>
-            <span className={`vital-status status-${vital.status}`}>{vital.status}</span>
-          </div>
+            </motion.span>
+            <motion.span 
+              className={`vital-status status-${vital.status}`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 + idx * 0.05, type: "spring" }}
+            >
+              {vital.status}
+            </motion.span>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Trends Charts */}
-      <div className="trends-section">
-        <h3>Health Trends</h3>
-        <div className="trends-grid">
+      <motion.div 
+        className="trends-section"
+        variants={item}
+      >
+        <motion.h3
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          Health Trends
+        </motion.h3>
+        <motion.div 
+          className="trends-grid"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {healthData.trends.map((trend, idx) => (
-            <div key={idx} className="trend-card">
-              <h4>{trend.label}</h4>
+            <motion.div 
+              key={idx} 
+              className="trend-card"
+              variants={item}
+              whileHover={{ y: -4 }}
+            >
+              <motion.h4
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                {trend.label}
+              </motion.h4>
               <div className="trend-chart">
-                {/* Simple bar chart visualization */}
-                <div className="chart-bars">
+                <motion.div 
+                  className="chart-bars"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
                   {trend.data.map((val, i) => (
-                    <div key={i} className="chart-bar" style={{ height: `${(val / Math.max(...trend.data)) * 100}%` }}>
-                      <span className="bar-value">{val}</span>
-                    </div>
+                    <motion.div 
+                      key={i} 
+                      className="chart-bar" 
+                      style={{ height: `${(val / Math.max(...trend.data)) * 100}%` }}
+                      initial={{ height: 0 }}
+                      animate={{ height: `${(val / Math.max(...trend.data)) * 100}%` }}
+                      transition={{ 
+                        duration: 0.8, 
+                        delay: 0.3 + i * 0.1,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <motion.span 
+                        className="bar-value"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 + i * 0.1 }}
+                      >
+                        {val}
+                      </motion.span>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
                 <span className="chart-unit">{trend.unit}</span>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Recommendations */}
-      <div className="recommendations-card">
-        <h3>Personalized Recommendations</h3>
-        <ul className="recommendations-list">
+      <motion.div 
+        className="recommendations-card"
+        variants={item}
+        whileHover={{ 
+          boxShadow: "0 8px 24px rgba(66, 138, 38, 0.1)",
+          transition: { duration: 0.3 }
+        }}
+      >
+        <motion.h3
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          Personalized Recommendations
+        </motion.h3>
+        <motion.ul 
+          className="recommendations-list"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {healthData.recommendations.map((rec, idx) => (
-            <li key={idx} className="recommendation-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <motion.li 
+              key={idx} 
+              className="recommendation-item"
+              variants={item}
+              whileHover={{ x: 4 }}
+            >
+              <motion.svg 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                transition={{ duration: 0.2 }}
+              >
                 <polyline points="20 6 9 17 4 12" />
-              </svg>
+              </motion.svg>
               {rec}
-            </li>
+            </motion.li>
           ))}
-        </ul>
-      </div>
-    </div>
+        </motion.ul>
+      </motion.div>
+    </motion.div>
   );
 }
