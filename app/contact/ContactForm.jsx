@@ -200,7 +200,7 @@ export default function ContactForm() {
                     />
                   </div>
 
-                  <button type="submit" className="page-cta-btn page-form-submit">
+                  <button type="submit" className="btn btn-primary page-form-submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <line x1="22" y1="2" x2="11" y2="13" />
                       <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -213,19 +213,6 @@ export default function ContactForm() {
 
             {/* Map + Department Info */}
             <div className="page-contact-sidebar">
-              <div className="page-contact-map-wrapper">
-                <iframe
-                  title="Renova Life Care Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9!2d90.4125!3d23.7905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQ3JzI1LjgiTiA5MMKwMjQnNDUuMCJF!5e0!3m2!1sen!2sbd!4v1600000000000!5m2!1sen!2sbd"
-                  width="100%"
-                  height="260"
-                  style={{ border: 0, borderRadius: "12px" }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
-
               <div className="page-contact-depts">
                 <h3 className="page-contact-depts-title">Department Contacts</h3>
                 {[
@@ -239,6 +226,18 @@ export default function ContactForm() {
                     <a href={`tel:${d.phone}`} className="page-contact-dept-phone">{d.phone}</a>
                   </div>
                 ))}
+              </div>
+              <div className="page-contact-map-wrapper">
+                <iframe
+                  title="Renova Life Care Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9!2d90.4125!3d23.7905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQ3JzI1LjgiTiA5MMKwMjQnNDUuMCJF!5e0!3m2!1sen!2sbd!4v1600000000000!5m2!1sen!2sbd"
+                  width="100%"
+                  height="260"
+                  style={{ border: 0, borderRadius: "12px" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
             </div>
 

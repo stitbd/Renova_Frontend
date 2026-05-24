@@ -70,6 +70,16 @@ export default function SignInSelectionPage() {
               <span className="btn btn-primary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign In</span>
             </div>
           </Link>
+          <Link href="/supar-admin-panel/supar-admin-signin" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div className="panel-card" style={{ background: '#fff', borderRadius: '1rem', padding: '2.5rem 1.5rem', textAlign: 'center', boxShadow: 'var(--shadow-md)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Super Admin Panel</h3>
+              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Access your health records and appointments.</p>
+              <span className="btn btn-primary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign In</span>
+            </div>
+          </Link>
 
         </div>
       </section>

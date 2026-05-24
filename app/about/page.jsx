@@ -1,18 +1,26 @@
 // app/about/page.jsx
+"use client";
+import { motion } from "framer-motion";
 import { SectionHeader } from "@/components/common/Section";
 import { siteConfig, stats } from "@/constants/siteData";
 import Image from "next/image";
 import "@/styles/pages/about.css";
 import "@/styles/components/HeroSection.css";
 
-export const metadata = {
-  title: `About Us | ${siteConfig.name}`,
-  description: `Learn about ${siteConfig.name} — our mission, vision, history, and the dedicated team behind Bangladesh's most trusted healthcare provider.`,
-  openGraph: {
-    title: `About Us | ${siteConfig.name}`,
-    description: siteConfig.description,
-    url: `${siteConfig.url}/about`,
-  },
+// Animation variants (matching AboutSection.jsx pattern)
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 // ── Management team data ────────────────────────────────────────────────────
@@ -30,31 +38,31 @@ const managementTeam = [
     name: "Prof. Nasrin Akter",
     role: "Medical Director",
     specialty: "MBBS, MS (Gynaecology)",
-    image: "/images/team/01.jpg",  // 🔄 UPDATED: member1.jpg → 1.jpg (Line 20)
+    image: "/images/team/01.jpg",
   },
   {
     name: "Dr. Kamrun Nahar",
     role: "Chief Operations Officer",
     specialty: "MBA (Healthcare Management)",
-    image: "/images/team/02.jpg",  // 🔄 UPDATED: member2.jpg → 2.jpg (Line 26)
+    image: "/images/team/02.jpg",
   },
   {
     name: "Dr. Shirin Sultana",
     role: "Head of Diagnostics",
     specialty: "MBBS, MD (Pathology)",
-    image: "/images/team/03.jpg",  // 🔄 UPDATED: member3.jpg → 3.jpg (Line 32)
+    image: "/images/team/03.jpg",
   },
   {
     name: "Dr. Shehreen Amin Monami",
     role: "Chief Financial Officer",
     specialty: "CA, MBA (Finance)",
-    image: "/images/team/04.jpg",  // 🔄 UPDATED: member4.jpg → 4.jpg (Line 38)
+    image: "/images/team/04.jpg",
   },
   {
     name: "Dr. Farhana Begum",
     role: "Head of Nursing",
     specialty: "BSc Nursing, MPH",
-    image: "/images/team/05.jpg",  // 🔄 UPDATED: member5.jpg → 5.jpg (Line 44)
+    image: "/images/team/05.jpg",
   },
 ];
 
@@ -66,23 +74,51 @@ export default function AboutPage() {
       {/* ══════════════════════════════════════
           PAGE HERO BANNER
       ══════════════════════════════════════ */}
-      <section className="page-hero">
+      <motion.section 
+        className="page-hero"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="page-hero__container">
-          <span className="page-hero__label">Who We Are</span>
-          <h1 className="page-hero__title">
+          <motion.span 
+            className="page-hero__label"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Who We Are
+          </motion.span>
+          <motion.h1 
+            className="page-hero__title"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             About <span className="page-hero__highlight">Renova Life Care</span>
-          </h1>
-          <p className="page-hero__subtitle">
+          </motion.h1>
+          <motion.p 
+            className="page-hero__subtitle"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
             Delivering compassionate, world-class medicine to the people of Bangladesh since{" "}
             {siteConfig.established}.
-          </p>
-          <nav aria-label="Breadcrumb" className="page-hero__breadcrumb">
+          </motion.p>
+          <motion.nav 
+            aria-label="Breadcrumb" 
+            className="page-hero__breadcrumb"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
             <a href="/">Home</a>
             <span aria-hidden="true"> / </span>
             <span aria-current="page">About</span>
-          </nav>
+          </motion.nav>
         </div>
-      </section>
+      </motion.section>
 
       {/* ══════════════════════════════════════
           ABOUT SECTION
@@ -92,7 +128,13 @@ export default function AboutPage() {
           <div className="about-grid">
 
             {/* Left — Image */}
-            <div className="about-image-wrapper anim-fade-left">
+            <motion.div
+              className="about-image-wrapper anim-fade-left"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div className="about-image-container">
                 <Image
                   src="/images/about.jpg"
@@ -128,7 +170,13 @@ export default function AboutPage() {
               </div>
 
               {/* Floating Stats Card */}
-              <div className="about-floating-card anim-fade-up-d2">
+              <motion.div 
+                className="about-floating-card anim-fade-up-d2"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
                 <div className="about-floating-content">
                   <div className="about-floating-stat">
                     <p className="about-floating-value">15+</p>
@@ -140,11 +188,17 @@ export default function AboutPage() {
                     <p className="about-floating-label">Patients</p>
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Right — Content */}
-            <div className="about-content anim-fade-right">
+            <motion.div
+              className="about-content anim-fade-right"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <SectionHeader
                 label="About Us"
                 title="Compassionate Care, <span class='text-primary'>Expert Medicine</span>"
@@ -159,29 +213,44 @@ export default function AboutPage() {
                   { icon: "🏥", title: "Modern Facilities",      desc: "State-of-the-art equipment and hygienic environment" },
                   { icon: "💙", title: "Patient-First Approach", desc: "Compassionate care tailored to your needs" },
                 ].map((item, i) => (
-                  <div
+                  <motion.div
                     key={item.title}
                     className={`about-feature-item anim-fade-up anim-d${i + 1}`}
+                    variants={fadeInUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
                   >
                     <span className="about-feature-icon">{item.icon}</span>
                     <div>
                       <h4 className="about-feature-title">{item.title}</h4>
                       <p className="about-feature-description">{item.desc}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Stats */}
-              <div className="about-stats-grid">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="about-stat-item">
+              <motion.div 
+                className="about-stats-grid"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {stats.map((stat, i) => (
+                  <motion.div 
+                    key={stat.label} 
+                    className="about-stat-item"
+                    variants={fadeInUp}
+                    transition={{ delay: i * 0.1 }}
+                  >
                     <p className="about-stat-value">{stat.value}</p>
                     <p className="about-stat-label">{stat.label}</p>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -191,8 +260,17 @@ export default function AboutPage() {
       ══════════════════════════════════════ */}
       <section className="page-section page-section--slate">
         <div className="page-section__container">
-          <div className="page-mv-grid">
-            <div className="page-mv-card page-mv-card--mission anim-fade-up anim-d1">
+          <motion.div 
+            className="page-mv-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div 
+              className="page-mv-card page-mv-card--mission anim-fade-up anim-d1"
+              variants={fadeInUp}
+              transition={{ delay: 0.1 }}
+            >
               <div className="page-mv-icon">🎯</div>
               <h2 className="page-mv-title">Our Mission</h2>
               <p className="page-mv-text">
@@ -200,24 +278,32 @@ export default function AboutPage() {
                 Bangladesh — ensuring no one is left without expert medical attention regardless of
                 their background.
               </p>
-            </div>
-            <div className="page-mv-card page-mv-card--vision anim-fade-up anim-d2">
+            </motion.div>
+            <motion.div 
+              className="page-mv-card page-mv-card--vision anim-fade-up anim-d2"
+              variants={fadeInUp}
+              transition={{ delay: 0.2 }}
+            >
               <div className="page-mv-icon">🔭</div>
               <h2 className="page-mv-title">Our Vision</h2>
               <p className="page-mv-text">
                 To be the most trusted and comprehensive healthcare network in South Asia — setting
                 new standards in patient care, medical innovation, and community wellness.
               </p>
-            </div>
-            <div className="page-mv-card page-mv-card--values anim-fade-up anim-d3">
+            </motion.div>
+            <motion.div 
+              className="page-mv-card page-mv-card--values anim-fade-up anim-d3"
+              variants={fadeInUp}
+              transition={{ delay: 0.3 }}
+            >
               <div className="page-mv-icon">💎</div>
               <h2 className="page-mv-title">Our Values</h2>
               <p className="page-mv-text">
                 Integrity, compassion, excellence, and continuous learning — these are the pillars
                 that define every decision we make and every patient interaction we have.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -226,14 +312,24 @@ export default function AboutPage() {
       ══════════════════════════════════════ */}
       <section className="page-section page-section--green">
         <div className="page-section__container">
-          <div className="page-stats-grid">
-            {stats.map((stat) => (
-              <div key={stat.label} className="page-stat-item">
+          <motion.div 
+            className="page-stats-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {stats.map((stat, i) => (
+              <motion.div 
+                key={stat.label} 
+                className="page-stat-item"
+                variants={fadeInUp}
+                transition={{ delay: i * 0.1 }}
+              >
                 <p className="page-stat-value">{stat.value}</p>
                 <p className="page-stat-label">{stat.label}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -250,7 +346,13 @@ export default function AboutPage() {
             <div className="md-grid">
 
               {/* Left — Photo */}
-              <div className="md-photo-col anim-fade-left">
+              <motion.div 
+                className="md-photo-col anim-fade-left"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
                 <div className="md-photo-frame">
                   <div className="md-photo-ring" />
                   <div className="md-photo-img-wrap">
@@ -277,26 +379,56 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div className="md-identity">
+                <motion.div 
+                  className="md-identity"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
                   <h3 className="md-name">{md.name}</h3>
                   <p className="md-role">{md.role}</p>
                   <p className="md-specialty">{md.specialty}</p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* Right — Message */}
-              <div className="md-message-col anim-fade-right">
-                <div className="md-label-row">
+              <motion.div 
+                className="md-message-col anim-fade-right"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <motion.div 
+                  className="md-label-row"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                >
                   <span className="md-label-dot" />
                   <span className="md-label-text">Message from our MD</span>
-                </div>
+                </motion.div>
 
-                <h2 className="md-heading">
+                <motion.h2 
+                  className="md-heading"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                >
                   A Word From Our{" "}
                   <span className="md-heading-accent">Managing Director</span>
-                </h2>
+                </motion.h2>
 
-                <div className="md-quote-wrap">
+                <motion.div 
+                  className="md-quote-wrap"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                >
                   <svg
                     className="md-open-quote"
                     viewBox="0 0 44 32"
@@ -306,23 +438,39 @@ export default function AboutPage() {
                     <path d="M0 32V19.2C0 8.96 6.187 2.773 18.56 0L20.907 4.48C15.04 5.76 11.733 8.96 10.667 13.867H17.067V32H0ZM26.133 32V19.2C26.133 8.96 32.32 2.773 44.693 0L47.04 4.48C41.173 5.76 37.867 8.96 36.8 13.867H43.2V32H26.133Z" />
                   </svg>
                   <p className="md-message-text">{md.message}</p>
-                </div>
+                </motion.div>
 
-                <div className="md-divider" />
+                <motion.div 
+                  className="md-divider"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                />
 
-                <div className="md-stats-row">
+                <motion.div 
+                  className="md-stats-row"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   {[
                     { value: "15+",  label: "Years Leading" },
                     { value: "50K+", label: "Lives Touched" },
                     { value: "98%",  label: "Patient Satisfaction" },
-                  ].map((s) => (
-                    <div key={s.label} className="md-stat-pill">
+                  ].map((s, i) => (
+                    <motion.div 
+                      key={s.label} 
+                      className="md-stat-pill"
+                      variants={fadeInUp}
+                      transition={{ delay: 0.7 + i * 0.1 }}
+                    >
                       <strong className="md-stat-val">{s.value}</strong>
                       <span className="md-stat-lbl">{s.label}</span>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -335,22 +483,47 @@ export default function AboutPage() {
         <div className="page-section__container">
 
           {/* Section header */}
-          <div className="mgmt-header">
-            <span className="mgmt-header__label">Our Leadership</span>
-            <h2 className="mgmt-header__title">
+          <motion.div 
+            className="mgmt-header"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.span 
+              className="mgmt-header__label"
+              variants={fadeInUp}
+            >
+              Our Leadership
+            </motion.span>
+            <motion.h2 
+              className="mgmt-header__title"
+              variants={fadeInUp}
+              transition={{ delay: 0.1 }}
+            >
               The Team Behind{" "}
               <span className="mgmt-header__accent">Our Excellence</span>
-            </h2>
-            <p className="mgmt-header__subtitle">
+            </motion.h2>
+            <motion.p 
+              className="mgmt-header__subtitle"
+              variants={fadeInUp}
+              transition={{ delay: 0.2 }}
+            >
               Experienced leaders driving innovation, compassion, and quality across every department.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
-          <div className="mgmt-grid">
+          <motion.div 
+            className="mgmt-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {teamMembers.map((member, i) => (
-              <div
+              <motion.div
                 key={member.name}
                 className={`mgmt-card anim-fade-up anim-d${(i % 5) + 1}`}
+                variants={fadeInUp}
+                transition={{ delay: i * 0.1 }}
               >
                 {/* Green top bar */}
                 <div className="mgmt-card-accent" />
@@ -377,7 +550,13 @@ export default function AboutPage() {
                 </div>
 
                 {/* Social */}
-                <div className="mgmt-social">
+                <motion.div 
+                  className="mgmt-social"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 + 0.3 }}
+                >
                   <a href="#" className="mgmt-social-btn" aria-label="LinkedIn">
                     <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
                       <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
@@ -390,10 +569,10 @@ export default function AboutPage() {
                       <polyline points="22,6 12,13 2,6" />
                     </svg>
                   </a>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
     </>

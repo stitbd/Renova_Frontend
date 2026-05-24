@@ -12,7 +12,8 @@ export default function LayoutWrapper({ children }) {
   const isDashboardRoute =
     pathname.startsWith("/doctor-portal") ||
     pathname.startsWith("/patient-portal") ||
-    pathname.startsWith("/outlet-portal");
+    pathname.startsWith("/outlet-portal") ||
+    pathname.startsWith("/supar-admin-panel");
 
   return (
     <>
