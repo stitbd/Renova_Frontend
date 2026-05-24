@@ -86,18 +86,19 @@ const PAGE_TREE = [
     icon: "shop",
     sections: ["hero", "products", "categories", "seo"],
   },
-  {
-    id: "media",
-    label: "Media",
-    href: "/media",
-    icon: "blog",
-    sections: ["hero", "seo"],
-    children: [
-      { id: "blog", label: "Blog", href: "/blog" },
-      { id: "news", label: "News", href: "/news" },
-      { id: "photos", label: "Photos Gallery", href: "/photos" },
-      { id: "videos", label: "Videos Gallery", href: "/videos" },
-    ],
+  
+  { 
+    id: "blog", label: "Blog", href: "/blog" 
+
+  },
+  { 
+    id: "news", label: "News", href: "/news" 
+  },
+  { 
+    id: "photos", label: "Photos Gallery", href: "/photos" 
+  },
+  { 
+    id: "videos", label: "Videos Gallery", href: "/videos" 
   },
   {
     id: "contact",
