@@ -1,4 +1,7 @@
-// components/admin/ConsultationsOverview.jsx
+"use client";
+
+import { motion } from "framer-motion"; // ✅ Added
+
 export default function ConsultationsOverview({ data }) {
   const consultations = [
     { label: "Video Call", count: data.videoCall.count, percentage: data.videoCall.percentage, color: "#014fa1" },
@@ -6,7 +9,6 @@ export default function ConsultationsOverview({ data }) {
     { label: "Chat/SMS", count: data.chatSMS.count, percentage: data.chatSMS.percentage, color: "#64748b" },
   ];
 
-  // Calculate donut chart segments
   let cumulativePercent = 0;
   const segments = consultations.map((item) => {
     const startPercent = cumulativePercent;
@@ -19,13 +21,23 @@ export default function ConsultationsOverview({ data }) {
   });
 
   return (
-    <div className="consultations-card">
+    <motion.div 
+      className="consultations-card"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <div className="card-header">
         <h3 className="card-title">Consultations Overview</h3>
       </div>
 
       <div className="donut-chart-wrapper">
-        <div className="donut-chart">
+        <motion.div 
+          className="donut-chart"
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.15, duration: 0.4, type: "spring", stiffness: 200 }}
+        >
           <svg viewBox="0 0 100 100">
             {segments.map((segment, index) => {
               const startAngle = (segment.startPercent / 100) * 360;
@@ -37,24 +49,44 @@ export default function ConsultationsOverview({ data }) {
               const largeArc = segment.percentage > 50 ? 1 : 0;
 
               return (
-                <path
+                <motion.path
                   key={index}
                   d={`M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z`}
                   fill={segment.color}
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
                 />
               );
             })}
             <circle cx="50" cy="50" r="25" fill="white" />
           </svg>
-          <div className="donut-center">
+          <motion.div 
+            className="donut-center"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.3 }}
+          >
             <span className="total-count">{data.total.toLocaleString()}</span>
             <span className="total-label">Total</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="chart-legend">
+        <motion.div 
+          className="chart-legend"
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.35, duration: 0.4 }}
+        >
           {consultations.map((item, index) => (
-            <div key={index} className="legend-item">
+            <motion.div 
+              key={index} 
+              className="legend-item"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + index * 0.08, duration: 0.3 }}
+              whileHover={{ x: 3, transition: { duration: 0.15 } }}
+            >
               <span className="legend-dot" style={{ backgroundColor: item.color }} />
               <div className="legend-info">
                 <span className="legend-label">{item.label}</span>
@@ -62,10 +94,10 @@ export default function ConsultationsOverview({ data }) {
                   {item.count.toLocaleString()} ({item.percentage}%)
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,8 +1,9 @@
-// components/supar-admin-dashboard/StatsGrid.jsx
+"use client";
+
+import { motion } from "framer-motion"; // ✅ Added
 import Link from "next/link";
 
 export default function StatsGrid({ stats }) {
-  // ✅ Icons object defined INSIDE component (proper scope)
   const icons = {
     patients: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -35,7 +36,6 @@ export default function StatsGrid({ stats }) {
     ),
   };
 
-  // ✅ statCards array with Outlet-style structure
   const statCards = [
     {
       icon: "patients",
@@ -73,43 +73,60 @@ export default function StatsGrid({ stats }) {
       icon: "approvals",
       title: "Pending Approvals",
       count: stats.pendingApprovals.count,
-      label: null, // No change label for approvals
+      label: null,
       variant: "quinary",
       linkText: "View all",
     },
   ];
 
+  // ✅ Animation variants for staggered grid items
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.08,
+        duration: 0.35,
+        ease: "easeOut",
+      },
+    }),
+  };
+
   return (
-    <div className="stats-grid">
+    <motion.div 
+      className="stats-grid"
+      initial="hidden"
+      animate="visible"
+    >
       {statCards.map((stat, index) => (
-        <div key={index} className={`stat-card ${stat.variant}`}>
-          
-          {/* Header section */}
+        <motion.div 
+          key={index} 
+          className={`stat-card ${stat.variant}`}
+          custom={index}
+          variants={itemVariants}
+          whileHover={{ y: -3, transition: { duration: 0.2 } }}
+        >
           <div className="stat-card-header">
-            
-            {/* Icon section */}
             <div className="stat-icon">
               {icons[stat.icon]}
             </div>
-            
-            {/* Info section */}
             <div className="stat-info">
               <h3 className="stat-title">{stat.title}</h3>
               <p className="stat-count">{stat.count}</p>
               {stat.label && <p className="stat-label">{stat.label}</p>}
             </div>
           </div>
-          
-          {/* Link section using Next.js Link */}
-          <Link href="#" className="stat-link">
-            {stat.linkText}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </Link>
-          
-        </div>
+          <motion.div whileHover={{ opacity: 0.75 }}>
+            <Link href="#" className="stat-link">
+              {stat.linkText}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </Link>
+          </motion.div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }
