@@ -1,10 +1,13 @@
+import { useRouter } from "next/navigation";
+
 // components/doctor-dashboard/AppointmentsList.jsx
 export default function AppointmentsList({ appointments }) {
+  const router = useRouter()
   return (
     <div>
       <div className="section-header-dashboard">
         <h2 className="section-title">Today's Appointments</h2>
-        <a href="#" className="view-all-link">
+        <a href="#" onClick={() => router.push('/doctor-portal/appointments')} className="view-all-link">
           View All
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="9 18 15 12 9 6" />
@@ -27,12 +30,12 @@ export default function AppointmentsList({ appointments }) {
             </div>
             <span
               className={`rounded-full px-2 py-1 text-[11px] font-medium ${apt?.status?.toLowerCase() === "pending"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : apt?.status?.toLowerCase() === "confirmed"
-                    ? "bg-green-100 text-green-700"
-                    : apt?.status?.toLowerCase() === "cancelled"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-gray-100 text-gray-700"
+                ? "bg-yellow-100 text-yellow-700"
+                : apt?.status?.toLowerCase() === "confirmed"
+                  ? "bg-green-100 text-green-700"
+                  : apt?.status?.toLowerCase() === "cancelled"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-gray-100 text-gray-700"
                 }`}
             >
               {apt?.status}
@@ -41,7 +44,7 @@ export default function AppointmentsList({ appointments }) {
         ))}
       </div>
 
-      <button className="view-full-schedule-btn">View Full Schedule</button>
+      <button onClick={() => router.push("/doctor-portal/appointments")} className="view-full-schedule-btn">View Full Schedule</button>
     </div>
   );
 }

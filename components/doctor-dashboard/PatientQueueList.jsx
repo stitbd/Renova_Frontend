@@ -1,6 +1,11 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 // components/doctor-dashboard/PatientQueueList.jsx
 export default function PatientQueueList({ appointments }) {
-  // console.log('patient ', appointments);
+  const router = useRouter();
+
   return (
     <div>
       <div className="section-header-dashboard">
@@ -8,8 +13,16 @@ export default function PatientQueueList({ appointments }) {
           Pending Patients
           <span className="section-count-badge">{appointments?.length}</span>
         </h2>
-        <a href="#" className="view-all-link">
+        <a
+          href="/doctor-portal/patient-queue"
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/doctor-portal/patient-queue");
+          }}
+          className="view-all-link"
+        >
           View All
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="9 18 15 12 9 6" />
           </svg>
@@ -94,7 +107,9 @@ export default function PatientQueueList({ appointments }) {
         ))}
       </div>
 
-      <button className="view-all-queue-btn">View All Queue</button>
+      <button onClick={() => router.push("/doctor-portal/patient-queue")}
+        className="view-all-queue-btn">View All Queue
+      </button>
     </div>
   );
 }

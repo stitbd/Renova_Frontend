@@ -1,73 +1,79 @@
-// components/admin/Sidebar.jsx
+// components/supar-admin-dashboard/Sidebar.jsx
 "use client";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
 
   const menuSections = [
     {
       title: null,
       items: [
-        { icon: "dashboard", label: "Dashboard", href: "/admin/dashboard" },
+        { icon: "dashboard", label: "Dashboard", href: "/supar-admin-panel/dashboard" },
       ],
     },
     {
       title: "USER MANAGEMENT",
       items: [
-        { icon: "patients", label: "Patients", href: "/admin/patients" },
-        { icon: "doctors", label: "Doctors", href: "/admin/doctors" },
-        { icon: "staff", label: "Outlet Staff", href: "/admin/staff" },
+        { icon: "patients", label: "Patients", href: "/supar-admin-panel/patients" },
+        { icon: "doctors", label: "Doctors", href: "/supar-admin-panel/doctors" },
+        { icon: "staff", label: "Outlet Staff", href: "/supar-admin-panel/staff" },
       ],
     },
     {
       title: "OUTLET MANAGEMENT",
       items: [
-        { icon: "outlets", label: "All Outlets", href: "/admin/outlets" },
-        { icon: "create", label: "Create Outlet", href: "/admin/outlets/create" },
-        { icon: "settings", label: "Outlet Settings", href: "/admin/outlets/settings" },
+        { icon: "outlets", label: "All Outlets", href: "/supar-admin-panel/outlets" },
+        { icon: "create", label: "Create Outlet", href: "/supar-admin-panel/outlets/create" },
+        { icon: "settings", label: "Outlet Settings", href: "/supar-admin-panel/outlets/settings" },
       ],
     },
     {
       title: "DOCTOR MANAGEMENT",
       items: [
-        { icon: "approval", label: "Doctor Approval", href: "/admin/doctors/approvals" },
-        { icon: "specialization", label: "Specialization", href: "/admin/specializations" },
-        { icon: "commission", label: "Commission Setup", href: "/admin/commissions" },
+        { icon: "approval", label: "Doctor Approval", href: "/supar-admin-panel/doctors/approvals" },
+        { icon: "specialization", label: "Specialization", href: "/supar-admin-panel/specializations" },
+        { icon: "commission", label: "Commission Setup", href: "/supar-admin-panel/commissions" },
       ],
     },
     {
       title: "FINANCE",
       items: [
-        { icon: "revenue", label: "Revenue", href: "/admin/revenue" },
-        { icon: "commissions", label: "Commissions", href: "/admin/commissions" },
-        { icon: "settlements", label: "Settlements", href: "/admin/settlements" },
+        { icon: "revenue", label: "Revenue", href: "/supar-admin-panel/revenue" },
+        { icon: "commissions", label: "Commissions", href: "/supar-admin-panel/commissions" },
+        { icon: "settlements", label: "Settlements", href: "/supar-admin-panel/settlements" },
       ],
     },
     {
       title: "ANALYTICS",
       items: [
-        { icon: "outlet-analytics", label: "Outlet Performance", href: "/admin/analytics/outlets" },
-        { icon: "doctor-analytics", label: "Doctor Performance", href: "/admin/analytics/doctors" },
-        { icon: "trends", label: "Patient Trends", href: "/admin/analytics/trends" },
+        { icon: "outlet-analytics", label: "Outlet Performance", href: "/supar-admin-panel/analytics/outlets" },
+        { icon: "doctor-analytics", label: "Doctor Performance", href: "/supar-admin-panel/analytics/doctors" },
+        { icon: "trends", label: "Patient Trends", href: "/supar-admin-panel/analytics/trends" },
       ],
     },
     {
       title: "ACCESS CONTROL",
       items: [
-        { icon: "roles", label: "Roles & Permissions", href: "/admin/roles" },
-        { icon: "audit", label: "Audit Logs", href: "/admin/audit-logs" },
+        { icon: "roles", label: "Roles & Permissions", href: "/supar-admin-panel/roles" },
+        { icon: "audit", label: "Audit Logs", href: "/supar-admin-panel/audit-logs" },
+      ],
+    },
+    {
+      title: "WEBSITE CONTENT",
+      items: [
+        { icon: "website", label: "Website Content", href: "/supar-admin-panel/website-content" },
       ],
     },
     {
       title: "SYSTEM SETTINGS",
       items: [
-        { icon: "pricing", label: "Pricing Rules", href: "/admin/settings/pricing" },
-        { icon: "notifications", label: "Notification Templates", href: "/admin/settings/notifications" },
-        { icon: "toggles", label: "Feature Toggles", href: "/admin/settings/features" },
-        { icon: "config", label: "System Configuration", href: "/admin/settings/config" },
+        { icon: "pricing", label: "Pricing Rules", href: "/supar-admin-panel/settings/pricing" },
+        { icon: "notifications", label: "Notification Templates", href: "/supar-admin-panel/settings/notifications" },
+        { icon: "toggles", label: "Feature Toggles", href: "/supar-admin-panel/settings/features" },
+        { icon: "config", label: "System Configuration", href: "/supar-admin-panel/settings/config" },
       ],
     },
   ];
@@ -214,6 +220,13 @@ export default function Sidebar() {
           <line x1="12" y1="17" x2="12" y2="21" />
         </svg>
       ),
+      website: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="2" y1="12" x2="22" y2="12" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+      ),
       config: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="3" />
@@ -225,15 +238,15 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="admin-sidebar">
-    {/* Logo — image only */}
-    <div className="sidebar-logo">
-      <img
-        src="/images/logo2.png"
-        alt="Renova Life Care"
-        onError={(e) => { e.target.style.display = "none"; }}
-      />
-    </div>
+    <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
+      {/* Logo — image only */}
+      <div className="sidebar-logo">
+        <img
+          src="/images/logo2.png"
+          alt="Renova Life Care"
+          onError={(e) => { e.target.style.display = "none"; }}
+        />
+      </div>
 
       <nav className="sidebar-nav">
         {menuSections.map((section, sectionIndex) => (
@@ -246,6 +259,7 @@ export default function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={`nav-item ${pathname === item.href ? "active" : ""}`}
+                onClick={onClose}
               >
                 <span className="nav-icon">{renderIcon(item.icon)}</span>
                 <span className="nav-label">{item.label}</span>

@@ -1,10 +1,7 @@
-// app/supar-admin-dashboard/dashboard/page.jsx
+// app/supar-admin-panel/(dashboard)/dashboard/page.jsx
 "use client";
 
-import { useState } from "react";
 import "@/styles/pages/super-admin-dashboard.css";
-import Sidebar from "@/components/supar-admin-dashboard/Sidebar";
-import Header from "@/components/supar-admin-dashboard/Header";
 import StatsGrid from "@/components/supar-admin-dashboard/StatsGrid";
 import RevenueOverview from "@/components/supar-admin-dashboard/RevenueOverview";
 import ConsultationsOverview from "@/components/supar-admin-dashboard/ConsultationsOverview";
@@ -43,12 +40,12 @@ const dashboardData = {
     chatSMS:   { count: 3370,  percentage: 18.0 },
   },
   quickActions: [
-    { label: "Add New Doctor",        icon: "plus",     action: "/admin/doctors/add"         },
-    { label: "Create New Outlet",     icon: "plus",     action: "/admin/outlets/create"      },
-    { label: "Approve Doctors",       icon: "check",    action: "/admin/doctors/approvals", badge: 8 },
-    { label: "View Reports",          icon: "chart",    action: "/admin/reports"             },
-    { label: "System Settings",       icon: "settings", action: "/admin/settings"            },
-    { label: "Notification Templates",icon: "bell",     action: "/admin/notifications"       },
+    { label: "Add New Doctor",        icon: "plus",     action: "/supar-admin-panel/doctors/add"         },
+    { label: "Create New Outlet",     icon: "plus",     action: "/supar-admin-panel/outlets/create"      },
+    { label: "Approve Doctors",       icon: "check",    action: "/supar-admin-panel/doctors/approvals", badge: 8 },
+    { label: "View Reports",          icon: "chart",    action: "/supar-admin-panel/reports"             },
+    { label: "System Settings",       icon: "settings", action: "/supar-admin-panel/settings"            },
+    { label: "Notification Templates",icon: "bell",     action: "/supar-admin-panel/notifications"       },
   ],
   recentActivities: [
     { type: "outlet",  title: 'New outlet "Renova Dhanmondi" has been created',        user: "Super Admin",       time: "10 mins ago"  },
@@ -74,50 +71,32 @@ const dashboardData = {
 };
 
 export default function AdminDashboardPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <div className="admin-dashboard-container">
-      {/* Mobile overlay */}
-      <div
-        className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
-        onClick={() => setSidebarOpen(false)}
-      />
+    <>
+      <StatsGrid stats={dashboardData.stats} />
 
-      {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-      {/* Main */}
-      <div className="admin-main-content">
-        <Header onMenuToggle={() => setSidebarOpen((v) => !v)} />
-
-        <div className="admin-dashboard-content">
-          <StatsGrid stats={dashboardData.stats} />
-
-          <div className="dashboard-charts-grid">
-            <RevenueOverview data={dashboardData.revenue} />
-            <div className="charts-right-column">
-              <div className="charts-right-inner">
-                <ConsultationsOverview data={dashboardData.consultations} />
-                <QuickActions actions={dashboardData.quickActions} />
-              </div>
-            </div>
-          </div>
-
-          <div className="dashboard-bottom-grid">
-            <RecentActivities activities={dashboardData.recentActivities} />
-            <OutletPerformance data={dashboardData.outletPerformance} />
-            <SystemSummary data={dashboardData.systemSummary} />
+      <div className="dashboard-charts-grid">
+        <RevenueOverview data={dashboardData.revenue} />
+        <div className="charts-right-column">
+          <div className="charts-right-inner">
+            <ConsultationsOverview data={dashboardData.consultations} />
+            <QuickActions actions={dashboardData.quickActions} />
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="admin-footer">
-          <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
-          <span>Developed by <span className="highlight">STITBD</span></span>
-          <span>Version 1.0.0</span>
-        </footer>
       </div>
-    </div>
+
+      <div className="dashboard-bottom-grid">
+        <RecentActivities activities={dashboardData.recentActivities} />
+        <OutletPerformance data={dashboardData.outletPerformance} />
+        <SystemSummary data={dashboardData.systemSummary} />
+      </div>
+
+      {/* Footer */}
+      <footer className="admin-footer">
+        <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
+        <span>Developed by <span className="highlight">STITBD</span></span>
+        <span>Version 1.0.0</span>
+      </footer>
+    </>
   );
 }
