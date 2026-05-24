@@ -59,17 +59,33 @@ export default function ConsultationsOverview({ data }) {
                 />
               );
             })}
-            <circle cx="50" cy="50" r="25" fill="white" />
+            <circle cx="50" cy="50" r="26" fill="white" />
+              {/* Center text rendered inside SVG to avoid rotation issues */}
+              <text
+                x="50"
+                y="47"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize="10"
+                fontWeight="800"
+                fill="#1a202c"
+                style={{ transform: "rotate(90deg)", transformOrigin: "50px 50px" }}
+              >
+                {data.total.toLocaleString()}
+              </text>
+              <text
+                x="50"
+                y="57"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize="5.5"
+                fontWeight="400"
+                fill="#718096"
+                style={{ transform: "rotate(90deg)", transformOrigin: "50px 50px" }}
+              >
+                Total
+              </text>
           </svg>
-          <motion.div 
-            className="donut-center"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.3 }}
-          >
-            <span className="total-count">{data.total.toLocaleString()}</span>
-            <span className="total-label">Total</span>
-          </motion.div>
         </motion.div>
 
         <motion.div 
