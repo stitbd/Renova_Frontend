@@ -1,6 +1,6 @@
-// app/supar-admin-panel/(dashboard)/dashboard/page.jsx
 "use client";
 
+import { motion } from "framer-motion"; // ✅ Added
 import "@/styles/pages/super-admin-dashboard.css";
 import StatsGrid from "@/components/supar-admin-dashboard/StatsGrid";
 import RevenueOverview from "@/components/supar-admin-dashboard/RevenueOverview";
@@ -70,33 +70,83 @@ const dashboardData = {
   },
 };
 
+// ✅ Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
+
 export default function AdminDashboardPage() {
   return (
-    <>
-      <StatsGrid stats={dashboardData.stats} />
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div variants={itemVariants}>
+        <StatsGrid stats={dashboardData.stats} />
+      </motion.div>
 
-      <div className="dashboard-charts-grid">
-        <RevenueOverview data={dashboardData.revenue} />
+      <motion.div 
+        className="dashboard-charts-grid"
+        variants={itemVariants}
+      >
+        <motion.div variants={itemVariants}>
+          <RevenueOverview data={dashboardData.revenue} />
+        </motion.div>
         <div className="charts-right-column">
           <div className="charts-right-inner">
-            <ConsultationsOverview data={dashboardData.consultations} />
-            <QuickActions actions={dashboardData.quickActions} />
+            <motion.div variants={itemVariants}>
+              <ConsultationsOverview data={dashboardData.consultations} />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <QuickActions actions={dashboardData.quickActions} />
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="dashboard-bottom-grid">
-        <RecentActivities activities={dashboardData.recentActivities} />
-        <OutletPerformance data={dashboardData.outletPerformance} />
-        <SystemSummary data={dashboardData.systemSummary} />
-      </div>
+      <motion.div 
+        className="dashboard-bottom-grid"
+        variants={itemVariants}
+      >
+        <motion.div variants={itemVariants}>
+          <RecentActivities activities={dashboardData.recentActivities} />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <OutletPerformance data={dashboardData.outletPerformance} />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <SystemSummary data={dashboardData.systemSummary} />
+        </motion.div>
+      </motion.div>
 
       {/* Footer */}
-      <footer className="admin-footer">
+      <motion.footer 
+        className="admin-footer"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.3 }}
+      >
         <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
         <span>Developed by <span className="highlight">STITBD</span></span>
         <span>Version 1.0.0</span>
-      </footer>
-    </>
+      </motion.footer>
+    </motion.div>
   );
 }

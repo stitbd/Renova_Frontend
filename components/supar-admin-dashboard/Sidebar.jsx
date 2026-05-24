@@ -35,7 +35,6 @@ export default function Sidebar({ isOpen, onClose }) {
       items: [
         { icon: "approval", label: "Doctor Approval", href: "/supar-admin-panel/doctors/approvals" },
         { icon: "specialization", label: "Specialization", href: "/supar-admin-panel/specializations" },
-        { icon: "commission", label: "Commission Setup", href: "/supar-admin-panel/commissions" },
       ],
     },
     {

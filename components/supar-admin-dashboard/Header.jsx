@@ -1,15 +1,29 @@
-// components/supar-admin-dashboard/Header.jsx
+"use client";
+
+import { motion } from "framer-motion"; // ✅ Added
+
 export default function Header({ onMenuToggle }) {
   return (
-    <header className="admin-header">
+    <motion.header 
+      className="admin-header"
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <div className="header-left">
-        <button className="menu-toggle" onClick={onMenuToggle}>
+        <motion.button 
+          className="menu-toggle" 
+          onClick={onMenuToggle}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400 }}
+        >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="3" y1="12" x2="21" y2="12" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
-        </button>
+        </motion.button>
         <div className="header-greeting">
           <h1 className="greeting-title">
             Welcome back, <span className="highlight">Super Admin</span> 👋
@@ -29,14 +43,22 @@ export default function Header({ onMenuToggle }) {
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
         </div>
-        <button className="notification-btn">
+        <motion.button 
+          className="notification-btn"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
             <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
           <span className="notification-badge">12</span>
-        </button>
-        <div className="user-profile">
+        </motion.button>
+        <motion.div 
+          className="user-profile"
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 400 }}
+        >
           <div className="user-avatar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -50,8 +72,8 @@ export default function Header({ onMenuToggle }) {
           <svg className="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="6 9 12 15 18 9" />
           </svg>
-        </div>
+        </motion.div>
       </div>
-    </header>
+    </motion.header>
   );
 }
