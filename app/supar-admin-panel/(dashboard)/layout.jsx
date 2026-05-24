@@ -231,11 +231,6 @@ const navItems = [
     icon: "specialization",
   },
   {
-    href: "/supar-admin-panel/commissions",
-    label: "Commission Setup",
-    icon: "commission",
-  },
-  {
     type: "section",
     label: "FINANCE",
   },
