@@ -27,7 +27,7 @@ const PAGE_TREE = [
     label: "Doctors",
     href: "/doctors",
     icon: "doctors",
-    sections: ["hero", "doctor-listing", "specializations", "seo"],
+    sections: ["hero", "doctor-listing", "career-cta", "seo"],
   },
   {
     id: "services",
@@ -88,8 +88,8 @@ const PAGE_TREE = [
   },
   { id: "blog", label: "Blog", href: "/blog" },
   { id: "news", label: "News", href: "/news" },
-  { id: "photos", label: "Photos Gallery", href: "/photos" },
-  { id: "videos", label: "Videos Gallery", href: "/videos" },
+  { id: "photos", label: "Photos Gallery", href: "/photos", icon: "image", sections: ["hero", "photo-gallery", "seo"] },
+  { id: "videos", label: "Videos Gallery", href: "/videos", icon: "layout", sections: ["hero", "video-gallery", "seo"] },
   {
     id: "contact",
     label: "Contact",
@@ -118,14 +118,20 @@ const SECTION_DEFS = {
   "company-history": { label: "Company History", icon: "clock", desc: "Timeline and milestones" },
   
 
+  "doctor-listing": { label: "Doctor Listing", icon: "list", desc: "All doctor cards & filters" },
+  specializations: { label: "Specializations", icon: "tag", desc: "Filter by specialty" },
+  "career-cta": { label: "Career CTA", icon: "user-plus", desc: "Are You a Medical Professional section" },
+  "packages-listing": { label: "Packages List", icon: "list", desc: "All health packages with pricing" },
+  "photo-gallery": { label: "Photo Gallery", icon: "image", desc: "Gallery categories & images" },
+  "video-gallery": { label: "Video Gallery", icon: "layout", desc: "Video categories & video cards" },
+
+
   "about-snippet": { label: "About Snippet", icon: "info", desc: "Homepage about preview" },
   "services-grid": { label: "Services Grid", icon: "grid", desc: "Service cards display" },
   doctors: { label: "Featured Doctors", icon: "user", desc: "Doctor listing on homepage" },
   shop: { label: "Shop Section", icon: "shopping-bag", desc: "Product showcase" },
   packages: { label: "Packages Section", icon: "package", desc: "Health packages display" },
   blog: { label: "Blog / News", icon: "file-text", desc: "Latest articles section" },
-  "doctor-listing": { label: "Doctor Listing", icon: "list", desc: "All doctor cards" },
-  specializations: { label: "Specializations", icon: "tag", desc: "Filter by specialty" },
   features: { label: "Features / Why Us", icon: "star", desc: "Key differentiators" },
   "packages-listing": { label: "Packages List", icon: "list", desc: "All health packages" },
   products: { label: "Products", icon: "shopping-bag", desc: "Product grid" },
@@ -345,11 +351,339 @@ const INITIAL_DATA = {
       robots: "index, follow",
       keywords: "about Renova, healthcare Bangladesh"
     }
+},
+  doctors: {
+    hero: {
+      trust_badge_text: "OUR MEDICAL TEAM",
+      headline: "Meet Our Specialist Doctors",
+      description: "Internationally trained, BMDC-certified doctors dedicated to delivering the highest standard of patient care.",
+      background_images: ["/images/sliders/01.jpg"],
+      patient_images: [],
+      stats: [],
+    },
+    "doctor-listing": {
+      search_placeholder: "Search by doctor name...",
+      filter_genders: ["All Genders", "Male", "Female"],
+      filter_specialties_label: "All Specialties",
+      filter_branches_label: "All Branches",
+      filter_consultation_label: "Consultation Type",
+      doctors: [
+        { id: "doc1", name: "Dr. Fariha Rahman", specialty: "Cardiologist", credentials: "MBBS, MD (Cardiology), FCPS", experience: "18 Years", rating: "4.9", patients: "3,200++", available: true, photo: "/images/doctors/01.jpg" },
+        { id: "doc2", name: "Dr. Tasnim Farin", specialty: "Neurologist", credentials: "MBBS, MD (Neurology), PhD", experience: "22 Years", rating: "4.8", patients: "2,800++", available: true, photo: "/images/doctors/02.jpg" },
+        { id: "doc3", name: "Dr. Aysha Aktar Tripti", specialty: "Pediatrician", credentials: "MBBS, DCH, FCPS (Pediatrics)", experience: "15 Years", rating: "4.9", patients: "4,100++", available: true, photo: "/images/doctors/03.jpg" },
+        { id: "doc4", name: "Dr. Humayon Kabir", specialty: "Orthopedic Surgeon", credentials: "MBBS, MS (Orthopedics), FRCS", experience: "20 Years", rating: "4.7", patients: "2,500++", available: true, photo: "/images/doctors/04.jpg" },
+        { id: "doc5", name: "Dr. Nasreen Akter", specialty: "Cardiologist", credentials: "MBBS, MD (Cardiology), FCPS", experience: "18 Years", rating: "4.9", patients: "3,200++", available: true, photo: "/images/doctors/05.jpg" },
+        { id: "doc6", name: "Dr. Katrina Kaif", specialty: "Neurologist", credentials: "MBBS, MD (Neurology), PhD", experience: "22 Years", rating: "4.8", patients: "2,800++", available: true, photo: "/images/doctors/06.jpg" },
+        { id: "doc7", name: "Dr. Alifa Aktar", specialty: "Pediatrician", credentials: "MBBS, DCH, FCPS (Pediatrics)", experience: "15 Years", rating: "4.9", patients: "4,100++", available: true, photo: "/images/doctors/07.jpg" },
+        { id: "doc8", name: "Dr. Maria Hoque", specialty: "Orthopedic Surgeon", credentials: "MBBS, MS (Orthopedics), FRCS", experience: "20 Years", rating: "4.7", patients: "2,500++", available: true, photo: "/images/doctors/08.jpg" },
+      ],
+    },
+    "career-cta": {
+      section_label: "CAREER OPPORTUNITIES",
+      heading: "Are You a Medical Professional?",
+      description: "We are always looking for talented, passionate doctors and healthcare workers to join our growing team. If you are dedicated to making a difference in patient lives, we want to hear from you.",
+      button_text: "Apply Now",
+      button_url: "/careers",
+      features: [
+        "Competitive salary and benefits",
+        "Modern, well-equipped facilities",
+        "International training opportunities",
+        "Collaborative and supportive team",
+      ],
+      stats: [
+        { label: "SPECIALISTS", value: "50+" },
+        { label: "DEPARTMENTS", value: "15+" },
+        { label: "BMDC CERTIFIED", value: "100%" },
+      ],
+    },
+    seo: {
+      meta_title: "Our Specialist Doctors | Renova Life Care Ltd.",
+      meta_description: "Meet our team of BMDC-certified specialist doctors at Renova Life Care. Expert cardiologists, neurologists, pediatricians and more.",
+      og_title: "Meet Our Specialist Doctors",
+      og_description: "Internationally trained, BMDC-certified doctors dedicated to patient care.",
+      og_image: "/images/og-doctors.jpg",
+      canonical_url: "https://renovalifecare.com/doctors",
+      robots: "index, follow",
+      keywords: "specialist doctors Bangladesh, BMDC certified doctors, cardiologist Dhaka",
+    },
+  },
+  packages: {
+    hero: {
+      trust_badge_text: "HEALTH PACKAGES",
+      headline: "Our Health Packages & Discounts",
+      description: "Comprehensive diagnostic packages for your family's well-being. All prices in BDT.",
+      background_images: ["/images/sliders/01.jpg"],
+      patient_images: [],
+      stats: [],
+    },
+    "packages-listing": {
+      custom_note: "Custom packages available for corporate health programs.",
+      contact_link_text: "Contact us →",
+      contact_link_url: "/contact",
+      packages: [
+        {
+          id: "pkg1", name: "Package-1", badge: "SAVE 13%", type: "Essential health screening",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Random Blood Sugar", price: "BDT 200.00" },
+            { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+            { test: "Blood Grouping & RH Factor", price: "BDT 300.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 110.00" },
+          ],
+          total_cost: "BDT 7,710.00", discounted_price: "BDT 5,900.00",
+        },
+        {
+          id: "pkg2", name: "Package-2", badge: "SAVE 24%", type: "Comprehensive wellness check",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 400.00" },
+            { test: "HbA1c", price: "BDT 1,400.00" },
+            { test: "Lipid Profile (Fasting)", price: "BDT 1,400.00" },
+            { test: "Liver Function Test", price: "BDT 1,000.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "Serum Uric Acid", price: "BDT 600.00" },
+            { test: "Serum Electrolytes", price: "BDT 1,000.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "PSA", price: "BDT 1,400.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 130.00" },
+          ],
+          total_cost: "BDT 14,030.00", discounted_price: "BDT 10,650.00",
+        },
+        {
+          id: "pkg3", name: "Package-3", badge: "SAVE 23%", type: "Advanced full-body package",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 400.00" },
+            { test: "HbA1c", price: "BDT 1,400.00" },
+            { test: "Lipid Profile (Fasting)", price: "BDT 1,400.00" },
+            { test: "Liver Function Test", price: "BDT 1,000.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "Serum Uric Acid", price: "BDT 600.00" },
+            { test: "Serum Electrolytes", price: "BDT 1,000.00" },
+            { test: "TSH", price: "BDT 1,000.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "Pap Smear", price: "BDT 1,200.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Mammography of Both Breast", price: "BDT 3,000.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 230.00" },
+          ],
+          total_cost: "BDT 16,930.00", discounted_price: "BDT 12,850.00",
+        },
+        {
+          id: "pkg4", name: "Package-4", badge: "SAVE 13%", type: "Essential health screening",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Random Blood Sugar", price: "BDT 200.00" },
+            { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+            { test: "Blood Grouping & RH Factor", price: "BDT 300.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 110.00" },
+          ],
+          total_cost: "BDT 7,710.00", discounted_price: "BDT 5,900.00",
+        },
+        {
+          id: "pkg5", name: "Package-5", badge: "SAVE 24%", type: "Comprehensive wellness check",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 400.00" },
+            { test: "HbA1c", price: "BDT 1,400.00" },
+            { test: "Lipid Profile (Fasting)", price: "BDT 1,400.00" },
+            { test: "Liver Function Test", price: "BDT 1,000.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "Serum Uric Acid", price: "BDT 600.00" },
+            { test: "Serum Electrolytes", price: "BDT 1,000.00" },
+            { test: "TSH", price: "BDT 1,000.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "PSA", price: "BDT 1,400.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 130.00" },
+          ],
+          total_cost: "BDT 14,030.00", discounted_price: "BDT 10,650.00",
+        },
+        {
+          id: "pkg6", name: "Package-6", badge: "SAVE 23%", type: "Advanced full-body package",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 400.00" },
+            { test: "HbA1c", price: "BDT 1,400.00" },
+            { test: "Lipid Profile (Fasting)", price: "BDT 1,400.00" },
+            { test: "Liver Function Test", price: "BDT 1,000.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "Serum Uric Acid", price: "BDT 600.00" },
+            { test: "Serum Electrolytes", price: "BDT 1,000.00" },
+            { test: "TSH", price: "BDT 1,000.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "Pap Smear", price: "BDT 1,200.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Mammography of Both Breast", price: "BDT 3,000.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 230.00" },
+          ],
+          total_cost: "BDT 16,990.00", discounted_price: "BDT 12,850.00",
+        },
+        {
+          id: "pkg7", name: "Package-7", badge: "SAVE 13%", type: "Essential health screening",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Random Blood Sugar", price: "BDT 200.00" },
+            { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+            { test: "Blood Grouping & RH Factor", price: "BDT 300.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 110.00" },
+          ],
+          total_cost: "BDT 7,710.00", discounted_price: "BDT 5,900.00",
+        },
+        {
+          id: "pkg8", name: "Package-8", badge: "SAVE 24%", type: "Comprehensive wellness check",
+          items: [
+            { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+            { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 400.00" },
+            { test: "HbA1c", price: "BDT 1,400.00" },
+            { test: "Lipid Profile (Fasting)", price: "BDT 1,400.00" },
+            { test: "Liver Function Test", price: "BDT 1,000.00" },
+            { test: "Serum Creatinine", price: "BDT 400.00" },
+            { test: "Serum Uric Acid", price: "BDT 600.00" },
+            { test: "Serum Electrolytes", price: "BDT 1,000.00" },
+            { test: "TSH", price: "BDT 1,000.00" },
+            { test: "HBsAg", price: "BDT 1,000.00" },
+            { test: "PSA", price: "BDT 1,400.00" },
+            { test: "Urine R/E", price: "BDT 400.00" },
+            { test: "ECG", price: "BDT 400.00" },
+            { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 600.00" },
+            { test: "Ultrasonography of Whole Abdomen", price: "BDT 2,500.00" },
+            { test: "Needle, Tube & Reg. Charges", price: "BDT 130.00" },
+          ],
+          total_cost: "BDT 14,030.00", discounted_price: "BDT 10,650.00",
+        },
+      ],
+    },
+    seo: {
+      meta_title: "Health Packages & Discounts | Renova Life Care Ltd.",
+      meta_description: "Comprehensive diagnostic packages for your family's well-being. All prices in BDT. View our health checkup packages.",
+      og_title: "Our Health Packages & Discounts",
+      og_description: "Comprehensive diagnostic packages for your family's well-being.",
+      og_image: "/images/og-packages.jpg",
+      canonical_url: "https://renovalifecare.com/packages",
+      robots: "index, follow",
+      keywords: "health packages Bangladesh, diagnostic packages, health checkup BDT",
+    },
+  },
+  photos: {
+    hero: {
+      trust_badge_text: "PHOTO GALLERY",
+      headline: "Explore Our Medical Facilities",
+      description: "A visual journey through our state-of-the-art healthcare center, expert medical team, and commitment to patient care.",
+      background_images: ["/images/sliders/01.jpg"],
+      patient_images: [],
+      stats: [],
+    },
+    "photo-gallery": {
+      categories: [
+        { id: "all", label: "All Photos", count: 26 },
+        { id: "facilities", label: "Facilities", count: 8 },
+        { id: "doctors", label: "Doctors", count: 6 },
+        { id: "equipment", label: "Equipment", count: 7 },
+        { id: "events", label: "Events", count: 5 },
+      ],
+      photos: [
+        { id: "ph1", image: "/images/gallery/01.jpg", category: "doctors", alt: "Doctor 1" },
+        { id: "ph2", image: "/images/gallery/02.jpg", category: "doctors", alt: "Doctor 2" },
+        { id: "ph3", image: "/images/gallery/03.jpg", category: "doctors", alt: "Doctor 3" },
+        { id: "ph4", image: "/images/gallery/04.jpg", category: "doctors", alt: "Doctor 4" },
+        { id: "ph5", image: "/images/gallery/05.jpg", category: "facilities", alt: "Facility 1" },
+        { id: "ph6", image: "/images/gallery/06.jpg", category: "facilities", alt: "Facility 2" },
+      ],
+      cta_heading: "Want to see more?",
+      cta_description: "Visit our facility or schedule a virtual tour to experience our healthcare excellence firsthand.",
+      cta_primary_btn: "Book a Visit",
+      cta_primary_url: "/contact",
+      cta_secondary_btn: "Contact Us",
+      cta_secondary_url: "/contact",
+    },
+    seo: {
+      meta_title: "Photo Gallery — Medical Facilities | Renova Life Care",
+      meta_description: "Explore our state-of-the-art medical facilities through our photo gallery.",
+      og_title: "Photo Gallery | Renova Life Care",
+      og_description: "A visual journey through our healthcare center.",
+      og_image: "/images/og-gallery.jpg",
+      canonical_url: "https://renovalifecare.com/photos",
+      robots: "index, follow",
+      keywords: "Renova Life Care gallery, medical facilities photos",
+    },
+  },
+  videos: {
+    hero: {
+      trust_badge_text: "VIDEO LIBRARY",
+      headline: "Watch & Learn: Medical Videos",
+      description: "Expert insights, patient stories, and health education — all in one place. Empowering you with knowledge for better health decisions.",
+      background_images: ["/images/sliders/01.jpg"],
+      patient_images: [],
+      stats: [],
+    },
+    "video-gallery": {
+      categories: [
+        { id: "all", label: "All Videos", count: 12 },
+        { id: "procedures", label: "Procedures", count: 3 },
+        { id: "testimonials", label: "Testimonials", count: 3 },
+        { id: "health-education", label: "Health Education", count: 4 },
+        { id: "events", label: "Events", count: 2 },
+      ],
+      videos: [
+        { id: "v1", title: "Understanding Cardiac Catheterization", description: "Dr. Rahman explains this minimally invasive heart procedure step-by-step.", thumbnail: "/images/videos/01.jpg", doctor: "Dr. Fatima Rahman", views: "12.5K views", date: "Mar 15, 2024", duration: "", category: "procedures" },
+        { id: "v2", title: "Patient Success: Recovery Journey", description: "Mohammed shares his experience with our orthopedic care team.", thumbnail: "/images/videos/02.jpg", doctor: "Mohammed Ahmed", views: "8.2K views", date: "Mar 10, 2024", duration: "", category: "testimonials" },
+        { id: "v3", title: "Diabetes Management Tips", description: "Essential lifestyle changes for better blood sugar control.", thumbnail: "/images/videos/03.jpg", doctor: "Dr. Ayesha Khan", views: "25.3K views", date: "Mar 5, 2024", duration: "", category: "health-education" },
+        { id: "v4", title: "Laparoscopic Surgery Explained", description: "How minimally invasive surgery reduces recovery time.", thumbnail: "/images/videos/04.jpg", doctor: "Dr. Kamal Uddin", views: "18.7K views", date: "Feb 28, 2024", duration: "", category: "procedures" },
+        { id: "v5", title: "Annual Health Camp Highlights", description: "Free screenings and consultations for our community.", thumbnail: "/images/videos/05.jpg", doctor: "", views: "5.3K views", date: "Feb 20, 2024", duration: "6:40", category: "events" },
+        { id: "v6", title: "Understanding Hypertension", description: "Causes, symptoms, and prevention strategies overview.", thumbnail: "/images/videos/06.jpg", doctor: "Dr. Nusrat Jahan", views: "31.2K views", date: "Feb 11, 2024", duration: "9:55", category: "health-education" },
+        { id: "v7", title: "Maternity Care Experience", description: "A new mother shares her journey with our OB-GYN team.", thumbnail: "/images/videos/07.jpg", doctor: "Sadia Islam", views: "9.8K views", date: "Feb 10, 2024", duration: "7:10", category: "testimonials" },
+        { id: "v8", title: "Endoscopy: What to Expect", description: "Preparation, procedure, and aftercare guidance.", thumbnail: "/images/videos/08.jpg", doctor: "Dr. Tahmid Hassan", views: "14.6K views", date: "Feb 5, 2024", duration: "11:20", category: "procedures" },
+      ],
+    },
+    seo: {
+      meta_title: "Medical Videos — Watch & Learn | Renova Life Care",
+      meta_description: "Watch expert medical videos, patient stories, and health education content from Renova Life Care.",
+      og_title: "Medical Video Library | Renova Life Care",
+      og_description: "Expert insights, patient stories, and health education videos.",
+      og_image: "/images/og-videos.jpg",
+      canonical_url: "https://renovalifecare.com/videos",
+      robots: "index, follow",
+      keywords: "medical videos Bangladesh, health education, patient stories Renova",
+    },
   },
 };
 
 /* ══════════════════════════════════════════════════════════════
    ICONS
+
+
    ══════════════════════════════════════════════════════════════ */
 const Icon = ({ name, size = 14, className = "" }) => {
   const paths = {
@@ -1583,6 +1917,483 @@ const CertificationsEditor = ({ data, onChange }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════
+   DOCTOR LISTING EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const DoctorListingEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addDoctor = () => ({
+    id: `doc-${Date.now()}`,
+    name: "Dr. New Doctor",
+    specialty: "Specialist",
+    credentials: "MBBS",
+    experience: "5 Years",
+    rating: "4.5",
+    patients: "500++",
+    available: true,
+    photo: "",
+  });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="search" size={15} /> Search & Filter Labels</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Search Placeholder Text</label>
+              <input className="wc-input" value={data?.search_placeholder || ""} onChange={e => set("search_placeholder", e.target.value)} placeholder="Search by doctor name..." />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Specialty Filter Label</label>
+              <input className="wc-input" value={data?.filter_specialties_label || ""} onChange={e => set("filter_specialties_label", e.target.value)} placeholder="All Specialties" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Branch Filter Label</label>
+              <input className="wc-input" value={data?.filter_branches_label || ""} onChange={e => set("filter_branches_label", e.target.value)} placeholder="All Branches" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Consultation Filter Label</label>
+              <input className="wc-input" value={data?.filter_consultation_label || ""} onChange={e => set("filter_consultation_label", e.target.value)} placeholder="Consultation Type" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Doctor Cards</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <Repeater
+            label="Doctors"
+            hint="Add/edit doctor cards shown on the listing page"
+            items={data?.doctors || []}
+            onChange={v => set("doctors", v)}
+            onAdd={addDoctor}
+            className="wc-repeater-testimonials"
+            renderItem={(doc, i, update, remove) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: doc.available ? "#16a34a" : "#94a3b8", background: doc.available ? "#f0fdf4" : "#f1f5f9", padding: "3px 10px", borderRadius: 20, border: `1px solid ${doc.available ? "#bbf7d0" : "#e2e8f0"}` }}>
+                    {doc.available ? "● AVAILABLE" : "○ UNAVAILABLE"}
+                  </span>
+                  <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
+                    <Icon name="trash" size={13} />
+                  </button>
+                </div>
+                <ImageUploadField label="Doctor Photo" value={doc.photo} onChange={v => update(i, { ...doc, photo: v })} hint="Recommended: 300×300px circular" />
+                <input className="wc-input" value={doc.name} onChange={e => update(i, { ...doc, name: e.target.value })} placeholder="Dr. Full Name" />
+                <input className="wc-input" value={doc.specialty} onChange={e => update(i, { ...doc, specialty: e.target.value })} placeholder="Specialty (e.g. Cardiologist)" />
+                <input className="wc-input" value={doc.credentials} onChange={e => update(i, { ...doc, credentials: e.target.value })} placeholder="Credentials (e.g. MBBS, MD, FCPS)" />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#94a3b8", display: "block", marginBottom: 4 }}>Experience</label>
+                    <input className="wc-input" value={doc.experience} onChange={e => update(i, { ...doc, experience: e.target.value })} placeholder="18 Years" />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#94a3b8", display: "block", marginBottom: 4 }}>Rating</label>
+                    <input className="wc-input" value={doc.rating} onChange={e => update(i, { ...doc, rating: e.target.value })} placeholder="4.9" />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#94a3b8", display: "block", marginBottom: 4 }}>Patients</label>
+                    <input className="wc-input" value={doc.patients} onChange={e => update(i, { ...doc, patients: e.target.value })} placeholder="3,200++" />
+                  </div>
+                </div>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" }}>
+                  <input type="checkbox" checked={doc.available} onChange={e => update(i, { ...doc, available: e.target.checked })} />
+                  Mark as Available
+                </label>
+              </div>
+            )}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   CAREER CTA EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const CareerCTAEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="user-plus" size={15} /> Career CTA Section</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field">
+              <label className="wc-field-label">Section Label <span className="wc-field-hint">— small text above heading</span></label>
+              <input className="wc-input" value={data?.section_label || ""} onChange={e => set("section_label", e.target.value)} placeholder="CAREER OPPORTUNITIES" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Heading <span className="required">*</span></label>
+              <input className="wc-input" value={data?.heading || ""} onChange={e => set("heading", e.target.value)} placeholder="Are You a Medical Professional?" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Description</label>
+              <textarea className="wc-textarea" value={data?.description || ""} onChange={e => set("description", e.target.value)} rows={3} placeholder="We are always looking for talented, passionate doctors..." />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Button Text</label>
+              <input className="wc-input" value={data?.button_text || ""} onChange={e => set("button_text", e.target.value)} placeholder="Apply Now" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Button URL</label>
+              <input className="wc-input" value={data?.button_url || ""} onChange={e => set("button_url", e.target.value)} placeholder="/careers" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="check" size={15} /> Feature Bullets (4 items)</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <Repeater
+            label="Features"
+            hint="The 4 bullet points shown in 2 columns"
+            items={data?.features || []}
+            onChange={v => set("features", v)}
+            renderItem={(feat, i, update, remove) => (
+              <>
+                <input className="wc-input" value={feat} onChange={e => update(i, e.target.value)} placeholder="Feature text" style={{ flex: 1 }} />
+                <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ marginTop: 4 }}>
+                  <Icon name="x" size={13} /> Remove
+                </button>
+              </>
+            )}
+          />
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Stats (3 Items)</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-stat-inputs" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+            {(data?.stats || []).map((stat, i) => (
+              <div key={i} className="wc-stat-input-item">
+                <label>{stat.label}</label>
+                <input value={stat.value} onChange={e => { const s = [...(data.stats||[])]; s[i]={...s[i],value:e.target.value}; set("stats",s); }} placeholder="50+" />
+                <div className="wc-stat-sub">
+                  <input value={stat.label} onChange={e => { const s=[...(data.stats||[])]; s[i]={...s[i],label:e.target.value}; set("stats",s); }} placeholder="Label" style={{width:"100%",border:"none",background:"transparent",fontSize:11,color:"#94a3b8",outline:"none",fontFamily:"inherit"}} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   PACKAGES LISTING EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const PackagesListingEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addPackage = () => ({
+    id: `pkg-${Date.now()}`,
+    name: "Package-New",
+    badge: "SAVE 10%",
+    type: "Health screening",
+    items: [{ test: "Complete Blood Count (CBC)", price: "BDT 400.00" }],
+    total_cost: "BDT 0.00",
+    discounted_price: "BDT 0.00",
+  });
+  const addItem = () => ({ test: "", price: "" });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="info" size={15} /> Bottom Note</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Custom Package Note</label>
+              <input className="wc-input" value={data?.custom_note || ""} onChange={e => set("custom_note", e.target.value)} placeholder="Custom packages available for corporate health programs." />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Contact Link Text</label>
+              <input className="wc-input" value={data?.contact_link_text || ""} onChange={e => set("contact_link_text", e.target.value)} placeholder="Contact us →" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Contact Link URL</label>
+              <input className="wc-input" value={data?.contact_link_url || ""} onChange={e => set("contact_link_url", e.target.value)} placeholder="/contact" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="package" size={15} /> Health Packages</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <Repeater
+            label="Packages"
+            hint="Add/edit health packages with test items and pricing"
+            items={data?.packages || []}
+            onChange={v => set("packages", v)}
+            onAdd={addPackage}
+            className="wc-repeater-testimonials"
+            renderItem={(pkg, i, update, remove) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#014fa1", background: "#eff6ff", padding: "3px 10px", borderRadius: 20, border: "1px solid #dbeafe" }}>{pkg.badge}</span>
+                  <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
+                    <Icon name="trash" size={13} />
+                  </button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#94a3b8", display: "block", marginBottom: 4 }}>Package Name</label>
+                    <input className="wc-input" value={pkg.name} onChange={e => update(i, { ...pkg, name: e.target.value })} placeholder="Package-1" />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#94a3b8", display: "block", marginBottom: 4 }}>Badge (e.g. SAVE 13%)</label>
+                    <input className="wc-input" value={pkg.badge} onChange={e => update(i, { ...pkg, badge: e.target.value })} placeholder="SAVE 13%" />
+                  </div>
+                </div>
+                <input className="wc-input" value={pkg.type} onChange={e => update(i, { ...pkg, type: e.target.value })} placeholder="Package type description" />
+                
+                <div style={{ background: "#f8fafc", borderRadius: 8, padding: 12, border: "1px solid #e2e8f0" }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, color: "#374151", display: "block", marginBottom: 8 }}>Test Items</label>
+                  {(pkg.items || []).map((item, j) => (
+                    <div key={j} style={{ display: "flex", gap: 6, marginBottom: 6 }}>
+                      <input className="wc-input" value={item.test} onChange={e => { const items = [...pkg.items]; items[j] = { ...items[j], test: e.target.value }; update(i, { ...pkg, items }); }} placeholder="Test name" style={{ flex: 2 }} />
+                      <input className="wc-input" value={item.price} onChange={e => { const items = [...pkg.items]; items[j] = { ...items[j], price: e.target.value }; update(i, { ...pkg, items }); }} placeholder="BDT 400.00" style={{ flex: 1 }} />
+                      <button onClick={() => { const items = pkg.items.filter((_, idx) => idx !== j); update(i, { ...pkg, items }); }} style={{ background: "#fee2e2", border: "1px solid #fecaca", borderRadius: 6, color: "#dc2626", cursor: "pointer", padding: "6px 8px", fontSize: 12 }}>✕</button>
+                    </div>
+                  ))}
+                  <button onClick={() => update(i, { ...pkg, items: [...(pkg.items || []), { test: "", price: "" }] })} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "1px dashed #cbd5e1", borderRadius: 6, padding: "6px 12px", fontSize: 12, color: "#64748b", cursor: "pointer", width: "100%", justifyContent: "center", marginTop: 4 }}>
+                    <Icon name="plus" size={12} /> Add Test Item
+                  </button>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#94a3b8", display: "block", marginBottom: 4 }}>Total Cost (strikethrough)</label>
+                    <input className="wc-input" value={pkg.total_cost} onChange={e => update(i, { ...pkg, total_cost: e.target.value })} placeholder="BDT 7,710.00" />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 11, color: "#014fa1", fontWeight: 700, display: "block", marginBottom: 4 }}>Discounted Price</label>
+                    <input className="wc-input" value={pkg.discounted_price} onChange={e => update(i, { ...pkg, discounted_price: e.target.value })} placeholder="BDT 5,900.00" style={{ borderColor: "#014fa1" }} />
+                  </div>
+                </div>
+              </div>
+            )}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   PHOTO GALLERY EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const PhotoGalleryEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addPhoto = () => ({
+    id: `ph-${Date.now()}`,
+    image: "",
+    title: "",
+    subtitle: "",
+    date: "",
+  });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="image" size={15} /> Photo Gallery Items</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-gallery-grid">
+            {(data?.photos || []).map((photo, i) => {
+              const update = (val) => {
+                const arr = [...(data.photos || [])];
+                arr[i] = val;
+                set("photos", arr);
+              };
+              const remove = () => set("photos", (data.photos || []).filter((_, idx) => idx !== i));
+              return (
+                <div key={photo.id || i} className="wc-gallery-item">
+                  <div className="wc-gallery-item-image" onClick={() => document.getElementById(`photo-upload-${i}`).click()}>
+                    {photo.image ? (
+                      <img src={photo.image} alt={photo.title || "photo"} />
+                    ) : (
+                      <div className="wc-gallery-item-placeholder">
+                        <Icon name="image" size={28} />
+                        <span>Click to upload</span>
+                      </div>
+                    )}
+                    <input
+                      id={`photo-upload-${i}`}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) update({ ...photo, image: URL.createObjectURL(file) });
+                        e.target.value = "";
+                      }}
+                    />
+                    {photo.image && (
+                      <div className="wc-gallery-item-overlay">
+                        <button className="wc-gallery-overlay-btn" onClick={e => { e.stopPropagation(); document.getElementById(`photo-upload-${i}`).click(); }} title="Change image">
+                          <Icon name="upload" size={14} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="wc-gallery-item-fields">
+                    <input
+                      className="wc-input"
+                      value={photo.title || ""}
+                      onChange={e => update({ ...photo, title: e.target.value })}
+                      placeholder="Title"
+                    />
+                    <input
+                      className="wc-input"
+                      value={photo.subtitle || ""}
+                      onChange={e => update({ ...photo, subtitle: e.target.value })}
+                      placeholder="Subtitle"
+                    />
+                    <input
+                      className="wc-input"
+                      type="date"
+                      value={photo.date || ""}
+                      onChange={e => update({ ...photo, date: e.target.value })}
+                    />
+                    <button className="wc-gallery-delete-btn" onClick={remove}>
+                      <Icon name="trash" size={13} /> Delete
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+            <div className="wc-gallery-add-item" onClick={() => set("photos", [...(data?.photos || []), addPhoto()])}>
+              <Icon name="plus" size={28} />
+              <span>Add Photo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   VIDEO GALLERY EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const VideoGalleryEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addVideo = () => ({
+    id: `v-${Date.now()}`,
+    thumbnail: "",
+    title: "",
+    subtitle: "",
+    date: "",
+  });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="layout" size={15} /> Video Gallery Items</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-gallery-grid">
+            {(data?.videos || []).map((vid, i) => {
+              const update = (val) => {
+                const arr = [...(data.videos || [])];
+                arr[i] = val;
+                set("videos", arr);
+              };
+              const remove = () => set("videos", (data.videos || []).filter((_, idx) => idx !== i));
+              return (
+                <div key={vid.id || i} className="wc-gallery-item">
+                  <div className="wc-gallery-item-image wc-gallery-item-video" onClick={() => document.getElementById(`video-upload-${i}`).click()}>
+                    {vid.thumbnail ? (
+                      <>
+                        <img src={vid.thumbnail} alt={vid.title || "video thumbnail"} />
+                        <div className="wc-video-play-badge"><Icon name="layout" size={18} /></div>
+                      </>
+                    ) : (
+                      <div className="wc-gallery-item-placeholder">
+                        <Icon name="layout" size={28} />
+                        <span>Click to upload thumbnail</span>
+                      </div>
+                    )}
+                    <input
+                      id={`video-upload-${i}`}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) update({ ...vid, thumbnail: URL.createObjectURL(file) });
+                        e.target.value = "";
+                      }}
+                    />
+                    {vid.thumbnail && (
+                      <div className="wc-gallery-item-overlay">
+                        <button className="wc-gallery-overlay-btn" onClick={e => { e.stopPropagation(); document.getElementById(`video-upload-${i}`).click(); }} title="Change thumbnail">
+                          <Icon name="upload" size={14} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="wc-gallery-item-fields">
+                    <input
+                      className="wc-input"
+                      value={vid.title || ""}
+                      onChange={e => update({ ...vid, title: e.target.value })}
+                      placeholder="Title"
+                    />
+                    <input
+                      className="wc-input"
+                      value={vid.subtitle || ""}
+                      onChange={e => update({ ...vid, subtitle: e.target.value })}
+                      placeholder="Subtitle"
+                    />
+                    <input
+                      className="wc-input"
+                      type="date"
+                      value={vid.date || ""}
+                      onChange={e => update({ ...vid, date: e.target.value })}
+                    />
+                    <button className="wc-gallery-delete-btn" onClick={remove}>
+                      <Icon name="trash" size={13} /> Delete
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+            <div className="wc-gallery-add-item" onClick={() => set("videos", [...(data?.videos || []), addVideo()])}>
+              <Icon name="plus" size={28} />
+              <span>Add Video</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
    SECTION RENDERER
    ══════════════════════════════════════════════════════════════ */
 const SectionEditor = ({ pageId, sectionId, data, onChange }) => {
@@ -1597,6 +2408,11 @@ const SectionEditor = ({ pageId, sectionId, data, onChange }) => {
   if (sectionId === "stats-bar") return <StatsBarEditor data={data} onChange={onChange} />;
   if (sectionId === "company-history") return <CompanyHistoryEditor data={data} onChange={onChange} />;
   if (sectionId === "certifications") return <CertificationsEditor data={data} onChange={onChange} />;
+  if (sectionId === "doctor-listing") return <DoctorListingEditor data={data} onChange={onChange} />;
+  if (sectionId === "career-cta") return <CareerCTAEditor data={data} onChange={onChange} />;
+  if (sectionId === "packages-listing") return <PackagesListingEditor data={data} onChange={onChange} />;
+  if (sectionId === "photo-gallery") return <PhotoGalleryEditor data={data} onChange={onChange} />;
+  if (sectionId === "video-gallery") return <VideoGalleryEditor data={data} onChange={onChange} />;
   if (sectionId === "seo") return <SeoEditor data={data} onChange={onChange} />;
   return null;
 };
