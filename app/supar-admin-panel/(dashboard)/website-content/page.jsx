@@ -15,12 +15,12 @@ const PAGE_TREE = [
     icon: "home",
     sections: ["hero", "appointment-cta", "testimonials", "partners", "seo"],
   },
-  {
+{
     id: "about",
     label: "About",
     href: "/about",
     icon: "info",
-    sections: ["hero", "mission-vision", "team", "history", "certifications", "seo"],
+    sections: ["about-hero", "mission-vision", "stats-bar", "managing-director", "company-history", "certifications", "seo"],
   },
   {
     id: "doctors",
@@ -108,17 +108,22 @@ const SECTION_DEFS = {
   testimonials: { label: "Testimonials", icon: "message-circle", desc: "Patient reviews & satisfaction stats" },
   partners: { label: "Partners & Affiliations", icon: "award", desc: "Partner logos and affiliations" },
   seo: { label: "SEO & Meta", icon: "search", desc: "Title, description, OG tags" },
+
+
+  "about-hero": { label: "Hero Section", icon: "layout", desc: "Header, about content, features & stats" },
+  "mission-vision": { label: "Mission & Vision", icon: "target", desc: "Mission, Vision & Values text" },
+  "managing-director": { label: "Managing Director", icon: "user", desc: "MD photo, message, quote & stats" },
+  "stats-bar": { label: "Stats Bar", icon: "list", desc: "4 key statistics" },
+  "certifications": { label: "Certifications", icon: "award", desc: "Accreditations & certificates" },
+  "company-history": { label: "Company History", icon: "clock", desc: "Timeline and milestones" },
   
+
   "about-snippet": { label: "About Snippet", icon: "info", desc: "Homepage about preview" },
   "services-grid": { label: "Services Grid", icon: "grid", desc: "Service cards display" },
   doctors: { label: "Featured Doctors", icon: "user", desc: "Doctor listing on homepage" },
   shop: { label: "Shop Section", icon: "shopping-bag", desc: "Product showcase" },
   packages: { label: "Packages Section", icon: "package", desc: "Health packages display" },
   blog: { label: "Blog / News", icon: "file-text", desc: "Latest articles section" },
-  "mission-vision": { label: "Mission & Vision", icon: "target", desc: "Company mission and vision" },
-  team: { label: "Our Team", icon: "users", desc: "Team member profiles" },
-  history: { label: "Company History", icon: "clock", desc: "Timeline and milestones" },
-  certifications: { label: "Certifications", icon: "award", desc: "Accreditations & certificates" },
   "doctor-listing": { label: "Doctor Listing", icon: "list", desc: "All doctor cards" },
   specializations: { label: "Specializations", icon: "tag", desc: "Filter by specialty" },
   features: { label: "Features / Why Us", icon: "star", desc: "Key differentiators" },
@@ -254,6 +259,93 @@ const INITIAL_DATA = {
       keywords: "healthcare Bangladesh, diagnostic center, lab test, specialist doctor, Renova Life Care",
     },
   },
+  about: {
+    "about-hero": {
+      about_image: "/images/about/hero.jpg",
+      section_header_title: "About Renova Life Care",
+      section_header_subtitle: "Delivering compassionate, world-class medicine to the people of Bangladesh since 2010.",
+      about_title: "Compassionate Care, Expert Medicine",
+      about_description: "Renova Life Care Ltd. delivers world-class healthcare services across Bangladesh. From general checkups to specialized treatments, our expert doctors are here for you.",
+      features: [
+        { icon: "user-plus", title: "Expert Doctors", description: "BMDC-certified specialists with international training" },
+        { icon: "layout", title: "Modern Facilities", description: "State-of-the-art equipment and hygienic environment" },
+        { icon: "heart", title: "Patient-First Approach", description: "Compassionate care tailored to your needs" }
+      ],
+      stats: [
+        { label: "Happy Patients", value: "15,000+" },
+        { label: "Network in South Asia", value: "120+" },
+        { label: "Setting new standards", value: "Excellence" }
+      ]
+    },
+    "mission-vision": {
+      mission: { title: "Our Mission", text: "To provide accessible, affordable, and high-quality healthcare to every individual in Bangladesh." },
+      vision: { title: "Our Vision", text: "To be the most trusted and comprehensive healthcare network in South Asia." },
+      values: { title: "Our Values", text: "Integrity, compassion, excellence, and continuous learning." }
+    },
+    "team": {
+      section_title: "Our Leadership",
+      section_subtitle: "The Team Behind Our Excellence",
+      description: "Experienced leaders driving innovation, compassion, and quality across every department.",
+      members: [
+        { id: "md-1", name: "Dr. Homayon Kabir", role: "MANAGING DIRECTOR", specialty: "MBBS, FCPS (Medicine)", photo: "/images/team/md.jpg", quote: "At Renova Life Care, our mission has always been simple: to deliver world-class healthcare with a human touch." },
+        { id: "md-2", name: "Prof. Nasrin Akter", role: "MEDICAL DIRECTOR", specialty: "MBBS, MS (Gynaecology)", photo: "/images/team/medical-director.jpg", quote: "" },
+        { id: "coo-1", name: "Dr. Kamrun Nahar", role: "CHIEF OPERATIONS OFFICER", specialty: "MBA (Healthcare Management)", photo: "/images/team/coo.jpg", quote: "" },
+        { id: "hod-1", name: "Dr. Shirin Sultana", role: "HEAD OF DIAGNOSTICS", specialty: "MBBS, MD (Pathology)", photo: "/images/team/hod-diagnostics.jpg", quote: "" },
+        { id: "cfo-1", name: "Dr. Shehreen Amin Monami", role: "CHIEF FINANCIAL OFFICER", specialty: "CA, MBA (Finance)", photo: "/images/team/cfo.jpg", quote: "" },
+        { id: "hon-1", name: "Dr. Farhana Begum", role: "HEAD OF NURSING", specialty: "BSc Nursing, MPH", photo: "/images/team/hod-nursing.jpg", quote: "" }
+      ]
+    },
+    "stats-bar": {
+      happy_patients: "15,000+",
+      expert_doctors: "120+",
+      departments: "35+",
+      years_experience: "14"
+    },
+    "managing-director": {
+      md_photo: "/images/team/md.jpg",
+      md_name: "Dr. Homayon Kabir",
+      md_role: "MANAGING DIRECTOR",
+      md_specialty: "MBBS, FCPS (Medicine)",
+      md_badge: "BMDC Verified",
+      section_label: "MESSAGE FROM OUR MD",
+      heading: "A Word From Our",
+      heading_highlight: "Managing Director",
+      quote: "At Renova Life Care, our mission has always been simple: to deliver world-class healthcare with a human touch. Every patient who walks through our doors deserves the best medical expertise paired with genuine compassion. We are committed to continuous growth, ethical practice, and making quality care accessible to all.",
+      stats: [
+        { label: "Years Leading", value: "15+" },
+        { label: "Lives Touched", value: "50K+" },
+        { label: "Patient Satisfaction", value: "98%" }
+      ]
+    },
+    "company-history": {
+      heading: "Our Journey",
+      subheading: "A decade of compassionate care and innovation",
+      milestones: [
+        { year: "2010", title: "Founded", description: "Renova Life Care was established in Dhaka." },
+        { year: "2015", title: "Expanded", description: "Opened 5 new branches across Bangladesh." },
+        { year: "2020", title: "Digital Transformation", description: "Launched online consultation and digital reporting." },
+        { year: "2024", title: "15,000+ Patients", description: "Reached a milestone of 15,000 happy patients." }
+      ]
+    },
+    "certifications": {
+      heading: "Accreditations & Certifications",
+      subheading: "Recognized by leading healthcare organizations",
+      items: [
+        { id: "cert-1", title: "ISO 9001:2015", description: "Quality Management System", image: "/images/certs/iso.png" },
+        { id: "cert-2", title: "DGDA Approved", description: "Directorate General of Drug Administration", image: "/images/certs/dgda.png" }
+      ]
+    },
+    "seo": {
+      meta_title: "About Renova Life Care — Compassionate Healthcare in Bangladesh",
+      meta_description: "Learn about Renova Life Care's mission, vision, and leadership team.",
+      og_title: "About Renova Life Care Ltd.",
+      og_description: "Compassionate Care, Expert Medicine — Serving Bangladesh since 2010.",
+      og_image: "/images/og-about.jpg",
+      canonical_url: "https://renovalifecare.com/about",
+      robots: "index, follow",
+      keywords: "about Renova, healthcare Bangladesh"
+    }
+  },
 };
 
 /* ══════════════════════════════════════════════════════════════
@@ -300,6 +392,10 @@ const Icon = ({ name, size = 14, className = "" }) => {
     x: <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>,
     link: <><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></>,
     image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></>,
+    "user-plus": <><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></>,
+    heart: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>,
+    target: <><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>,
+    clock: <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>,
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1042,13 +1138,465 @@ const AddPageModal = ({ isOpen, onClose, onAdd, parentPageId }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════
+   ABOUT HERO EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const AboutHeroEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addFeature = () => ({ icon: "heart", title: "New Feature", description: "Feature description" });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="layout" size={15} /> Hero Section Header</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Section Header Title</label>
+              <input className="wc-input" value={data?.section_header_title || ""} onChange={e => set("section_header_title", e.target.value)} placeholder="About Renova Life Care" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Section Header Subtitle</label>
+              <textarea className="wc-textarea" value={data?.section_header_subtitle || ""} onChange={e => set("section_header_subtitle", e.target.value)} rows={2} placeholder="Delivering compassionate, world-class medicine..." />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="image" size={15} /> About Section Image</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <ImageUploadField
+            label="About Hero Image"
+            hint="Recommended: 600×500px. The main image shown on the left side of the about section."
+            value={data?.about_image || ""}
+            onChange={v => set("about_image", v)}
+          />
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="info" size={15} /> About Content</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">About Title</label>
+              <input className="wc-input" value={data?.about_title || ""} onChange={e => set("about_title", e.target.value)} placeholder="Compassionate Care, Expert Medicine" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">About Description</label>
+              <textarea className="wc-textarea" value={data?.about_description || ""} onChange={e => set("about_description", e.target.value)} rows={4} placeholder="Description about the company..." />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="star" size={15} /> Features (3 Items)</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <Repeater
+            label="Features"
+            hint="The 3 feature bullet points shown below the description"
+            items={data?.features || []}
+            onChange={v => set("features", v)}
+            onAdd={addFeature}
+            className="wc-repeater-features"
+            renderItem={(feature, i, update, remove) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <select className="wc-select" value={feature.icon} onChange={e => update(i, { ...feature, icon: e.target.value })} style={{ width: "auto", minWidth: 140 }}>
+                    <option value="user-plus">Expert Doctors</option>
+                    <option value="layout">Modern Facilities</option>
+                    <option value="heart">Patient-First</option>
+                    <option value="star">Star</option>
+                    <option value="clock">Clock</option>
+                    <option value="award">Award</option>
+                  </select>
+                  <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
+                    <Icon name="trash" size={13} />
+                  </button>
+                </div>
+                <input className="wc-input" value={feature.title} onChange={e => update(i, { ...feature, title: e.target.value })} placeholder="Feature Title" />
+                <textarea className="wc-textarea" value={feature.description} onChange={e => update(i, { ...feature, description: e.target.value })} placeholder="Feature description" rows={2} />
+              </div>
+            )}
+          />
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Hero Stats (shown below features)</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-stat-inputs">
+            {(data?.stats || []).map((stat, i) => (
+              <div key={i} className="wc-stat-input-item">
+                <label>{stat.label}</label>
+                <input value={stat.value} onChange={e => { const s = [...(data.stats||[])]; s[i]={...s[i],value:e.target.value}; set("stats",s); }} placeholder="Value" />
+                <div className="wc-stat-sub">
+                  <input value={stat.label} onChange={e => { const s=[...(data.stats||[])]; s[i]={...s[i],label:e.target.value}; set("stats",s); }} placeholder="Label" style={{width:"100%",border:"none",background:"transparent",fontSize:11,color:"#94a3b8",outline:"none",fontFamily:"inherit"}} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   MISSION & VISION EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const MissionVisionEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  return (
+    <div>
+      {[
+        { key: "mission", label: "Mission", icon: "target" },
+        { key: "vision", label: "Vision", icon: "eye" },
+        { key: "values", label: "Values", icon: "award" },
+      ].map(({ key, label, icon }) => (
+        <div className="wc-editor-card" key={key}>
+          <div className="wc-editor-card-header">
+            <h3 className="wc-editor-card-title"><Icon name={icon} size={15} /> {label}</h3>
+          </div>
+          <div className="wc-editor-card-body">
+            <div className="wc-field">
+              <label className="wc-field-label">{label} Title</label>
+              <input className="wc-input" value={data?.[key]?.title || ""} onChange={e => set(key, { ...data?.[key], title: e.target.value })} placeholder={`Our ${label}`} />
+            </div>
+            <div className="wc-field" style={{ marginTop: 12 }}>
+              <label className="wc-field-label">{label} Text</label>
+              <textarea className="wc-textarea" value={data?.[key]?.text || ""} onChange={e => set(key, { ...data?.[key], text: e.target.value })} rows={4} placeholder={`${label} statement...`} />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   TEAM EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const TeamEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addMember = () => ({ id: `member-${Date.now()}`, name: "New Member", role: "ROLE", specialty: "Credentials", photo: "", quote: "" });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Team Section Header</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Section Title</label>
+              <input className="wc-input" value={data?.section_title || ""} onChange={e => set("section_title", e.target.value)} placeholder="Our Leadership" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Section Subtitle</label>
+              <input className="wc-input" value={data?.section_subtitle || ""} onChange={e => set("section_subtitle", e.target.value)} placeholder="The Team Behind Our Excellence" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Description</label>
+              <textarea className="wc-textarea" value={data?.description || ""} onChange={e => set("description", e.target.value)} rows={2} placeholder="Team description..." />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Team Members</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <Repeater
+            label="Team Members"
+            hint="Add/edit leadership team members"
+            items={data?.members || []}
+            onChange={v => set("members", v)}
+            onAdd={addMember}
+            className="wc-repeater-testimonials"
+            renderItem={(member, i, update, remove) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
+                    <Icon name="trash" size={13} /> Remove
+                  </button>
+                </div>
+                <ImageUploadField label="Photo" value={member.photo} onChange={v => update(i, { ...member, photo: v })} hint="Recommended: 400×400px" />
+                <input className="wc-input" value={member.name} onChange={e => update(i, { ...member, name: e.target.value })} placeholder="Full Name" />
+                <input className="wc-input" value={member.role} onChange={e => update(i, { ...member, role: e.target.value })} placeholder="Role (e.g., MANAGING DIRECTOR)" />
+                <input className="wc-input" value={member.specialty} onChange={e => update(i, { ...member, specialty: e.target.value })} placeholder="Credentials (e.g., MBBS, FCPS)" />
+                <textarea className="wc-textarea" value={member.quote || ""} onChange={e => update(i, { ...member, quote: e.target.value })} placeholder="Quote (optional)" rows={3} />
+              </div>
+            )}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   MANAGING DIRECTOR EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const ManagingDirectorEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="user" size={15} /> MD Section Labels</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Section Label <span className="wc-field-hint">— small text above heading</span></label>
+              <input className="wc-input" value={data?.section_label || ""} onChange={e => set("section_label", e.target.value)} placeholder="MESSAGE FROM OUR MD" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Heading</label>
+              <input className="wc-input" value={data?.heading || ""} onChange={e => set("heading", e.target.value)} placeholder="A Word From Our" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Heading Highlight <span className="wc-field-hint">— green colored part</span></label>
+              <input className="wc-input" value={data?.heading_highlight || ""} onChange={e => set("heading_highlight", e.target.value)} placeholder="Managing Director" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="user" size={15} /> MD Profile</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <ImageUploadField
+                label="MD Photo"
+                hint="Recommended: 400×400px. Shown on the left side."
+                value={data?.md_photo || ""}
+                onChange={v => set("md_photo", v)}
+              />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Full Name</label>
+              <input className="wc-input" value={data?.md_name || ""} onChange={e => set("md_name", e.target.value)} placeholder="Dr. Homayon Kabir" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Role / Title</label>
+              <input className="wc-input" value={data?.md_role || ""} onChange={e => set("md_role", e.target.value)} placeholder="MANAGING DIRECTOR" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Specialty / Credentials</label>
+              <input className="wc-input" value={data?.md_specialty || ""} onChange={e => set("md_specialty", e.target.value)} placeholder="MBBS, FCPS (Medicine)" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Badge Text <span className="wc-field-hint">— e.g. BMDC Verified</span></label>
+              <input className="wc-input" value={data?.md_badge || ""} onChange={e => set("md_badge", e.target.value)} placeholder="BMDC Verified" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="message-circle" size={15} /> MD Quote / Message</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field">
+            <label className="wc-field-label">Quote Text <span className="wc-field-hint">— displayed in blockquote style</span></label>
+            <textarea className="wc-textarea lg" value={data?.quote || ""} onChange={e => set("quote", e.target.value)} rows={5} placeholder="At Renova Life Care, our mission has always been simple..." />
+          </div>
+        </div>
+      </div>
+
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> MD Stats (3 Items)</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-stat-inputs" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+            {(data?.stats || []).map((stat, i) => (
+              <div key={i} className="wc-stat-input-item">
+                <label>{stat.label}</label>
+                <input
+                  value={stat.value}
+                  onChange={e => {
+                    const s = [...(data.stats || [])];
+                    s[i] = { ...s[i], value: e.target.value };
+                    set("stats", s);
+                  }}
+                  placeholder="15+"
+                />
+                <div className="wc-stat-sub">
+                  <input
+                    value={stat.label}
+                    onChange={e => {
+                      const s = [...(data.stats || [])];
+                      s[i] = { ...s[i], label: e.target.value };
+                      set("stats", s);
+                    }}
+                    placeholder="Label"
+                    style={{ width: "100%", border: "none", background: "transparent", fontSize: 11, color: "#94a3b8", outline: "none", fontFamily: "inherit" }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   STATS BAR EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const StatsBarEditor = ({ data, onChange }) => {
+  const fields = [
+    { key: "happy_patients", label: "Happy Patients", placeholder: "15,000+" },
+    { key: "expert_doctors", label: "Expert Doctors", placeholder: "120+" },
+    { key: "departments", label: "Departments", placeholder: "35+" },
+    { key: "years_experience", label: "Years Experience", placeholder: "14" },
+  ];
+  return (
+    <div className="wc-editor-card">
+      <div className="wc-editor-card-header">
+        <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Stats Bar (4 Items)</h3>
+      </div>
+      <div className="wc-editor-card-body">
+        <div className="wc-stat-inputs" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
+          {fields.map(({ key, label, placeholder }) => (
+            <div key={key} className="wc-stat-input-item">
+              <label>{label}</label>
+              <input value={data?.[key] || ""} onChange={e => onChange({ ...data, [key]: e.target.value })} placeholder={placeholder} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   COMPANY HISTORY EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const CompanyHistoryEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addMilestone = () => ({ year: "", title: "", description: "" });
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="clock" size={15} /> Company History</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Heading</label>
+              <input className="wc-input" value={data?.heading || ""} onChange={e => set("heading", e.target.value)} placeholder="Our Journey" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Subheading</label>
+              <input className="wc-input" value={data?.subheading || ""} onChange={e => set("subheading", e.target.value)} placeholder="A decade of compassionate care" />
+            </div>
+          </div>
+          <Repeater
+            label="Milestones"
+            items={data?.milestones || []}
+            onChange={v => set("milestones", v)}
+            onAdd={addMilestone}
+            renderItem={(m, i, update, remove) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <input className="wc-input" value={m.year} onChange={e => update(i, { ...m, year: e.target.value })} placeholder="Year (e.g. 2010)" style={{ width: 100 }} />
+                  <input className="wc-input" value={m.title} onChange={e => update(i, { ...m, title: e.target.value })} placeholder="Milestone Title" style={{ flex: 1 }} />
+                </div>
+                <textarea className="wc-textarea" value={m.description} onChange={e => update(i, { ...m, description: e.target.value })} placeholder="Description" rows={2} />
+                <button className="wc-repeater-remove" onClick={() => remove(i)}><Icon name="trash" size={13} /> Remove</button>
+              </div>
+            )}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
+   CERTIFICATIONS EDITOR
+   ══════════════════════════════════════════════════════════════ */
+const CertificationsEditor = ({ data, onChange }) => {
+  const set = (k, v) => onChange({ ...data, [k]: v });
+  const addCert = () => ({ id: `cert-${Date.now()}`, title: "", description: "", image: "" });
+  return (
+    <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Icon name="award" size={15} /> Certifications</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Heading</label>
+              <input className="wc-input" value={data?.heading || ""} onChange={e => set("heading", e.target.value)} placeholder="Accreditations & Certifications" />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Subheading</label>
+              <input className="wc-input" value={data?.subheading || ""} onChange={e => set("subheading", e.target.value)} placeholder="Recognized by leading healthcare organizations" />
+            </div>
+          </div>
+          <Repeater
+            label="Certifications"
+            items={data?.items || []}
+            onChange={v => set("items", v)}
+            onAdd={addCert}
+            className="wc-repeater-testimonials"
+            renderItem={(cert, i, update, remove) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <ImageUploadField label="Logo/Badge" value={cert.image} onChange={v => update(i, { ...cert, image: v })} hint="PNG transparent recommended" />
+                <input className="wc-input" value={cert.title} onChange={e => update(i, { ...cert, title: e.target.value })} placeholder="Certification Title (e.g. ISO 9001:2015)" />
+                <input className="wc-input" value={cert.description} onChange={e => update(i, { ...cert, description: e.target.value })} placeholder="Description" />
+                <button className="wc-repeater-remove" onClick={() => remove(i)}><Icon name="trash" size={13} /> Remove</button>
+              </div>
+            )}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
    SECTION RENDERER
    ══════════════════════════════════════════════════════════════ */
 const SectionEditor = ({ pageId, sectionId, data, onChange }) => {
   if (sectionId === "hero") return <HeroEditor data={data} onChange={onChange} />;
+  if (sectionId === "about-hero") return <AboutHeroEditor data={data} onChange={onChange} />;
   if (sectionId === "appointment-cta") return <AppointmentCTAEditor data={data} onChange={onChange} />;
   if (sectionId === "testimonials") return <TestimonialsEditor data={data} onChange={onChange} />;
   if (sectionId === "partners") return <PartnersEditor data={data} onChange={onChange} />;
+  if (sectionId === "mission-vision") return <MissionVisionEditor data={data} onChange={onChange} />;
+  if (sectionId === "team") return <TeamEditor data={data} onChange={onChange} />;
+  if (sectionId === "managing-director") return <ManagingDirectorEditor data={data} onChange={onChange} />;
+  if (sectionId === "stats-bar") return <StatsBarEditor data={data} onChange={onChange} />;
+  if (sectionId === "company-history") return <CompanyHistoryEditor data={data} onChange={onChange} />;
+  if (sectionId === "certifications") return <CertificationsEditor data={data} onChange={onChange} />;
   if (sectionId === "seo") return <SeoEditor data={data} onChange={onChange} />;
   return null;
 };

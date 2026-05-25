@@ -1706,3 +1706,9 @@
 .wc-sidebar-note svg {
   flex-shrink: 0;
 }
+
+
+
+.wc-repeater-features {
+  grid-template-columns: repeat(3, 1fr);
+}
