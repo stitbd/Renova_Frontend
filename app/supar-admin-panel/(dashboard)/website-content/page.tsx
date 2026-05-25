@@ -131,7 +131,7 @@ const SECTION_DEFS = {
 };
 
 /* ══════════════════════════════════════════════════════════════
-   INITIAL DATA (UPDATED WITH CORRECT IMAGE PATHS)
+   INITIAL DATA
    ══════════════════════════════════════════════════════════════ */
 const INITIAL_DATA = {
   home: {
@@ -298,9 +298,6 @@ const Icon = ({ name, size = 14, className = "" }) => {
     check: <polyline points="20 6 9 17 4 12"/>,
     drag: <><line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/></>,
     x: <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>,
-    bold: null,
-    italic: null,
-    underline: null,
     link: <><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></>,
     image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></>,
   };
@@ -944,6 +941,107 @@ const SeoEditor = ({ data, onChange }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════
+   ADD PAGE MODAL COMPONENT
+   ══════════════════════════════════════════════════════════════ */
+const AddPageModal = ({ isOpen, onClose, onAdd, parentPageId }) => {
+  const [pageLabel, setPageLabel] = useState("");
+  const [pageId, setPageId] = useState("");
+  const [pageHref, setPageHref] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLabelChange = (label) => {
+    setPageLabel(label);
+    const generatedId = label
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    setPageId(`${parentPageId}-${generatedId}`);
+    setPageHref(`/${parentPageId}/${generatedId}`);
+    setError("");
+  };
+
+  const handleSubmit = () => {
+    if (!pageLabel.trim()) {
+      setError("Page label is required");
+      return;
+    }
+    if (!pageId.trim()) {
+      setError("Page ID is required");
+      return;
+    }
+    
+    onAdd({
+      id: pageId,
+      label: pageLabel,
+      href: pageHref,
+    });
+    
+    setPageLabel("");
+    setPageId("");
+    setPageHref("");
+    setError("");
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="wc-modal-overlay" onClick={onClose}>
+      <div className="wc-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="wc-modal-header">
+          <h3>Add New Service Page</h3>
+          <button className="wc-modal-close" onClick={onClose}>
+            <Icon name="x" size={18} />
+          </button>
+        </div>
+        <div className="wc-modal-body">
+          <div className="wc-field">
+            <label className="wc-field-label">Page Label <span className="required">*</span></label>
+            <input
+              className="wc-input"
+              value={pageLabel}
+              onChange={(e) => handleLabelChange(e.target.value)}
+              placeholder="e.g., CT Scan Services"
+              autoFocus
+            />
+            <span className="wc-field-hint">This will be displayed in the menu</span>
+          </div>
+          <div className="wc-field">
+            <label className="wc-field-label">Page ID (Auto-generated)</label>
+            <input
+              className="wc-input"
+              value={pageId}
+              readOnly
+              style={{ background: "#f1f5f9", cursor: "not-allowed" }}
+            />
+            <span className="wc-field-hint">Unique identifier for the page</span>
+          </div>
+          <div className="wc-field">
+            <label className="wc-field-label">URL Path (Auto-generated)</label>
+            <input
+              className="wc-input"
+              value={pageHref}
+              readOnly
+              style={{ background: "#f1f5f9", cursor: "not-allowed" }}
+            />
+            <span className="wc-field-hint">The page will be accessible at this URL</span>
+          </div>
+          {error && <div className="wc-modal-error">{error}</div>}
+        </div>
+        <div className="wc-modal-footer">
+          <button className="wc-btn wc-btn-ghost" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="wc-btn wc-btn-primary" onClick={handleSubmit}>
+            <Icon name="plus" size={14} /> Add Page
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════
    SECTION RENDERER
    ══════════════════════════════════════════════════════════════ */
 const SectionEditor = ({ pageId, sectionId, data, onChange }) => {
@@ -960,12 +1058,14 @@ const SectionEditor = ({ pageId, sectionId, data, onChange }) => {
    ══════════════════════════════════════════════════════════════ */
 export default function WebsiteContentPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [openParents, setOpenParents] = useState({ home: true, services: false, media: false });
+  const [openParents, setOpenParents] = useState({ home: true, services: true, media: false });
   const [selectedPage, setSelectedPage] = useState("home");
   const [selectedSection, setSelectedSection] = useState("hero");
   const [pageData, setPageData] = useState(INITIAL_DATA);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [pageTree, setPageTree] = useState(PAGE_TREE);
   const toastTimeout = useRef(null);
 
   const showToast = useCallback((msg, type = "success") => {
@@ -982,7 +1082,7 @@ export default function WebsiteContentPage() {
   };
 
   const handlePreview = () => {
-    const page = PAGE_TREE.find(p => p.id === selectedPage) || PAGE_TREE.flatMap(p => p.children || []).find(c => c.id === selectedPage);
+    const page = pageTree.find(p => p.id === selectedPage) || pageTree.flatMap(p => p.children || []).find(c => c.id === selectedPage);
     if (page) window.open(page.href, "_blank");
   };
 
@@ -993,10 +1093,54 @@ export default function WebsiteContentPage() {
     setSelectedSection(firstSection || "hero");
   };
 
-  const currentPageDef = PAGE_TREE.find(p => p.id === selectedPage)
-    || PAGE_TREE.flatMap(p => p.children || []).find(c => c.id === selectedPage);
+  const handleAddSubPage = (newPage) => {
+    setPageTree(prevTree => {
+      return prevTree.map(page => {
+        if (page.id === "services") {
+          return {
+            ...page,
+            children: [...(page.children || []), newPage]
+          };
+        }
+        return page;
+      });
+    });
+    
+    setPageData(prev => ({
+      ...prev,
+      [newPage.id]: {
+        hero: {
+          trust_badge_text: "New Service",
+          headline: newPage.label,
+          description: `Welcome to our ${newPage.label} service.`,
+          background_images: [],
+          patient_images: [],
+          stats: [
+            { label: "Happy Patients", value: "0+", suffix: "" },
+            { label: "Expert Care", value: "100%", suffix: "" },
+          ],
+        },
+        seo: {
+          meta_title: `${newPage.label} | Renova Life Care`,
+          meta_description: `Professional ${newPage.label} services at Renova Life Care.`,
+          og_title: newPage.label,
+          og_description: `Quality ${newPage.label} services`,
+          og_image: "/images/og-default.jpg",
+          canonical_url: `https://renovalifecare.com${newPage.href}`,
+          robots: "index, follow",
+          keywords: newPage.label.toLowerCase(),
+        },
+      }
+    }));
+    
+    selectPage(newPage.id, "hero");
+    showToast(`${newPage.label} page added successfully!`, "success");
+  };
 
-  const currentParentDef = PAGE_TREE.find(p =>
+  const currentPageDef = pageTree.find(p => p.id === selectedPage)
+    || pageTree.flatMap(p => p.children || []).find(c => c.id === selectedPage);
+
+  const currentParentDef = pageTree.find(p =>
     p.id === selectedPage || (p.children || []).some(c => c.id === selectedPage)
   );
 
@@ -1015,7 +1159,7 @@ export default function WebsiteContentPage() {
   };
 
   const filteredTree = searchQuery
-    ? PAGE_TREE.map(p => {
+    ? pageTree.map(p => {
         const matchParent = p.label.toLowerCase().includes(searchQuery.toLowerCase());
         const matchedChildren = (p.children || []).filter(c => c.label.toLowerCase().includes(searchQuery.toLowerCase()));
         if (matchParent || matchedChildren.length > 0) {
@@ -1023,7 +1167,7 @@ export default function WebsiteContentPage() {
         }
         return null;
       }).filter(Boolean)
-    : PAGE_TREE;
+    : pageTree;
 
   const pageIcons = {
     home: "home", info: "info", doctors: "doctors", services: "services",
@@ -1082,6 +1226,15 @@ export default function WebsiteContentPage() {
                         {child.label}
                       </button>
                     ))}
+                    {page.id === "services" && (
+                      <button
+                        className="wc-tree-add-btn"
+                        onClick={() => setIsAddModalOpen(true)}
+                      >
+                        <Icon name="plus" size={12} />
+                        Add New Service
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
@@ -1090,12 +1243,10 @@ export default function WebsiteContentPage() {
         </div>
 
         <div className="wc-sidebar-footer">
-          <button className="wc-new-page-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            Add New Page
-          </button>
+          <div className="wc-sidebar-note">
+            <Icon name="info" size={10} />
+            <span>Only Services subpages can be added</span>
+          </div>
         </div>
       </aside>
 
@@ -1196,6 +1347,13 @@ export default function WebsiteContentPage() {
           </div>
         </div>
       </div>
+
+      <AddPageModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAdd={handleAddSubPage}
+        parentPageId="services"
+      />
 
       <div className={`wc-toast ${toast.type} ${toast.show ? "show" : ""}`}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
