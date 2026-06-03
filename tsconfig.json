@@ -40,7 +40,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/supar-admin-panel/(dashboard)/website-content/components/pages/AboutPage.jsx"  ],
   "exclude": [
     "node_modules"
   ]
