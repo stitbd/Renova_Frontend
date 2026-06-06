@@ -148,14 +148,14 @@ const INITIAL_ABOUT_DATA = {
 /* ══════════════════════════════════════════════════════════════
    FIELD COMPONENTS
    ══════════════════════════════════════════════════════════════ */
-const ImageUploadField = ({ label, hint, value, onChange }: any) => {
+const ImageUploadField = ({ label, hint, value, onChange }) => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     const files = Array.from(e.target.files ?? []);
     if (files.length > 0 && onChange) {
       const url = URL.createObjectURL(files[0]);
