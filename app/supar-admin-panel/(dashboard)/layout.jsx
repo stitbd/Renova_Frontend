@@ -354,7 +354,7 @@ export default function SuperAdminLayout({ children }) {
                 </div>
               );
             }
-            
+
             // Render nav item
             const active = isActivePath(pathname, item.href);
             return (
@@ -419,7 +419,9 @@ export default function SuperAdminLayout({ children }) {
         </header>
 
         {/* Page Content */}
-        <div className="admin-dashboard-content">{children}</div>
+        <div className="admin-dashboard-content">
+          {children}
+        </div>
       </main>
     </div>
   );
