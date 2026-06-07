@@ -13,19 +13,19 @@ import "@/styles/pages/appointment.css";
    ═══════════════════════════════════════════════════════════════ */
 const SVG_PROPS = { fill: "none", stroke: "currentColor", strokeWidth: "1.8" };
 
-const IconUser     = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
-const IconMail     = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
-const IconPhone    = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.08 4.18 2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z"/></svg>;
-const IconCalendar = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
-const IconPin      = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
-const IconCheck    = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>;
-const IconArrowR   = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
-const IconArrowL   = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
-const IconLock     = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-const IconInfo     = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>;
-const IconDownload = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
-const IconSearch   = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
-const IconX        = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+const IconUser = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+const IconMail = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>;
+const IconPhone = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.08 4.18 2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z" /></svg>;
+const IconCalendar = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+const IconPin = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>;
+const IconCheck = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>;
+const IconArrowR = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>;
+const IconArrowL = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>;
+const IconLock = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>;
+const IconInfo = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
+const IconDownload = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>;
+const IconSearch = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
+const IconX = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
 
 /* ═══════════════════════════════════════════════════════════════
    FIELD WRAPPER — label + icon + error message
@@ -106,8 +106,8 @@ const PRIVACY_CONTENT = (
    DOCTOR DROPDOWN — searchable select replacing radio list
    ═══════════════════════════════════════════════════════════════ */
 function DoctorDropdown({ doctors, value, onChange }) {
-  const [open, setOpen]       = useState(false);
-  const [query, setQuery]     = useState("");
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
 
   const filtered = doctors.filter(d =>
     d.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -126,10 +126,10 @@ function DoctorDropdown({ doctors, value, onChange }) {
         aria-expanded={open}
       >
         {selected
-          ? <><div className="appt-doc-avatar" style={{ width:28, height:28, fontSize:".65rem" }}>{selected.avatar}</div><span>{selected.name}</span><span className="appt-doc-dd__meta">{selected.title}</span></>
+          ? <><div className="appt-doc-avatar" style={{ width: 28, height: 28, fontSize: ".65rem" }}>{selected.avatar}</div><span>{selected.name}</span><span className="appt-doc-dd__meta">{selected.title}</span></>
           : <span className="appt-doc-dd__placeholder">Search & select a doctor…</span>
         }
-        <span className="appt-doc-dd__chevron" style={{ marginLeft:"auto", color:"var(--appt-ink3)" }}>▾</span>
+        <span className="appt-doc-dd__chevron" style={{ marginLeft: "auto", color: "var(--appt-ink3)" }}>▾</span>
       </button>
 
       {/* Dropdown panel */}
@@ -164,12 +164,12 @@ function DoctorDropdown({ doctors, value, onChange }) {
                 className={`appt-doc-dd__item${value === doc.id ? " sel" : ""}`}
                 onClick={() => { onChange(doc.id); setOpen(false); setQuery(""); }}
               >
-                <div className="appt-doc-avatar" style={{ width:36, height:36, fontSize:".7rem", flexShrink:0 }}>{doc.avatar}</div>
+                <div className="appt-doc-avatar" style={{ width: 36, height: 36, fontSize: ".7rem", flexShrink: 0 }}>{doc.avatar}</div>
                 <div>
                   <div className="appt-doc-name">{doc.name}</div>
                   <div className="appt-doc-meta">{doc.title} · {doc.exp} experience</div>
                 </div>
-                {value === doc.id && <span style={{ marginLeft:"auto", color:"var(--appt-teal)", fontWeight:700 }}>✓</span>}
+                {value === doc.id && <span style={{ marginLeft: "auto", color: "var(--appt-teal)", fontWeight: 700 }}>✓</span>}
               </div>
             ))}
           </div>
@@ -183,20 +183,22 @@ function DoctorDropdown({ doctors, value, onChange }) {
    INVOICE — printable/downloadable on confirmation
    ═══════════════════════════════════════════════════════════════ */
 function InvoicePrint({ data, bookingRef }) {
-  const dept   = DEPARTMENTS.find(d => d.id === data.dept);
+  const dept = DEPARTMENTS.find(d => d.id === data.dept);
   const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor  = doctors.find(d => d.id === data.doctor);
-  const branch  = BRANCHES.find(b => b.id === data.branch);
+  const doctor = doctors.find(d => d.id === data.doctor);
+  const branch = BRANCHES.find(b => b.id === data.branch);
 
-  const FEE = { cardiology:2000, orthopedics:1800, general:800, pediatrics:900,
-                dental:1200, neurology:2500, dermatology:1500, "eye-care":1400 };
-  const consultFee  = FEE[data.dept] || 1000;
-  const serviceFee  = data.mode === "online" ? 100 : 0;
-  const total       = consultFee + serviceFee;
+  const FEE = {
+    cardiology: 2000, orthopedics: 1800, general: 800, pediatrics: 900,
+    dental: 1200, neurology: 2500, dermatology: 1500, "eye-care": 1400
+  };
+  const consultFee = FEE[data.dept] || 1000;
+  const serviceFee = data.mode === "online" ? 100 : 0;
+  const total = consultFee + serviceFee;
   const isOnlinePay = data.paymentMethod === "bkash" || data.paymentMethod === "card";
-  const today       = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" });
+  const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
-const handlePrint = () => {
+  const handlePrint = () => {
     const el = document.getElementById("appt-invoice");
     if (!el) return;
     const w = window.open("", "_blank");
@@ -270,10 +272,10 @@ const handlePrint = () => {
         </div>
       </div>
       </body></html>`);
-          w.document.close();
-          w.focus();
-          setTimeout(() => { w.print(); }, 400);
-      };
+    w.document.close();
+    w.focus();
+    setTimeout(() => { w.print(); }, 400);
+  };
 
   return (
     <>
@@ -282,7 +284,7 @@ const handlePrint = () => {
         type="button"
         className="appt-btn appt-btn-ghost appt-btn--invoice"
         onClick={handlePrint}
-        style={{ width:"100%", marginTop:10 }}
+        style={{ width: "100%", marginTop: 10 }}
       >
         <IconDownload size={16} /> Download &amp; Print Invoice
       </button>
@@ -392,7 +394,7 @@ function Step1({ data, errors, upd, onNext }) {
      • Offline: Mode → Dept → Branch → Doctor list → Date → Slots
    ═══════════════════════════════════════════════════════════════ */
 function Step2({ data, errors, upd, onNext, onBack, minDate }) {
-  const isOnline  = data.mode === "online";
+  const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
   /* Doctors for the chosen department */
@@ -413,13 +415,13 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
    * Offline: dept + branch both required → show doctor list
    */
   const showDoctorList = data.dept && (isOnline || (isOffline && data.branch));
-  const dateEnabled    = showDoctorList && !!data.doctor;
-  const showSlots      = dateEnabled && !!data.date;
+  const dateEnabled = showDoctorList && !!data.doctor;
+  const showSlots = dateEnabled && !!data.date;
 
   /* step label numbers — branch step only exists offline */
   const stepNum = isOnline
-    ? { dept:1, doctor:2, date:3, slot:4 }
-    : { dept:2, branch:2, doctor:3, date:4, slot:5 };
+    ? { dept: 1, doctor: 2, date: 3, slot: 4 }
+    : { dept: 2, branch: 2, doctor: 3, date: 4, slot: 5 };
 
   return (
     <div className="appt-card">
@@ -441,19 +443,19 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
         <Field label="1. Consultation Type *" error={errors.mode}>
           <div className="appt-mode-group">
             {[
-              { val:"online",  icon:"💻", label:"Online",  sub:"Video / teleconsult" },
-              { val:"offline", icon:"🏥", label:"In-Person", sub:"Visit our branch" },
+              { val: "online", icon: "💻", label: "Online", sub: "Video / teleconsult" },
+              { val: "offline", icon: "🏥", label: "In-Person", sub: "Visit our branch" },
             ].map(({ val, icon, label, sub }) => (
               <button
                 key={val}
                 type="button"
                 className={`appt-mode-card${data.mode === val ? " sel" : ""}`}
                 onClick={() => {
-                  upd("mode",   val);
+                  upd("mode", val);
                   upd("branch", "");
                   upd("doctor", "");
-                  upd("date",   "");
-                  upd("slot",   "");
+                  upd("date", "");
+                  upd("slot", "");
                 }}
                 aria-pressed={data.mode === val}
               >
@@ -477,10 +479,10 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
                   type="button"
                   className={`appt-dept-chip${data.dept === dept.id ? " sel" : ""}`}
                   onClick={() => {
-                    upd("dept",   dept.id);
+                    upd("dept", dept.id);
                     upd("doctor", "");
-                    upd("date",   "");
-                    upd("slot",   "");
+                    upd("date", "");
+                    upd("slot", "");
                   }}
                   aria-pressed={data.dept === dept.id}
                 >
@@ -501,8 +503,8 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
               onChange={e => {
                 upd("branch", e.target.value);
                 upd("doctor", "");
-                upd("date",   "");
-                upd("slot",   "");
+                upd("date", "");
+                upd("slot", "");
               }}
               aria-invalid={!!errors.branch}
             >
@@ -611,10 +613,10 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
    STEP 3 — Review & Confirm
    ═══════════════════════════════════════════════════════════════ */
 function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
-  const dept   = DEPARTMENTS.find(d => d.id === data.dept);
+  const dept = DEPARTMENTS.find(d => d.id === data.dept);
   const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor  = doctors.find(d => d.id === data.doctor);
-  const branch  = BRANCHES.find(b => b.id === data.branch);
+  const doctor = doctors.find(d => d.id === data.doctor);
+  const branch = BRANCHES.find(b => b.id === data.branch);
 
   return (
     <form className="appt-card" onSubmit={onSubmit}>
@@ -663,8 +665,8 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
             {data.mode === "online" ? (
               <>
                 {[
-                  { val:"bkash", icon:"📱", label:"bKash / Mobile Banking" },
-                  { val:"card",  icon:"💳", label:"Credit / Debit Card" },
+                  { val: "bkash", icon: "📱", label: "bKash / Mobile Banking" },
+                  { val: "card", icon: "💳", label: "Credit / Debit Card" },
                 ].map(({ val, icon, label }) => (
                   <label
                     key={val}
@@ -759,7 +761,7 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
                   value={data.cardExpiry || ""}
                   onChange={e => {
                     const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
-                    const fmt = raw.length > 2 ? raw.slice(0,2) + " / " + raw.slice(2) : raw;
+                    const fmt = raw.length > 2 ? raw.slice(0, 2) + " / " + raw.slice(2) : raw;
                     upd("cardExpiry", fmt);
                   }}
                 />
@@ -772,7 +774,7 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
                   placeholder="•••"
                   maxLength={4}
                   value={data.cardCvv || ""}
-                  onChange={e => upd("cardCvv", e.target.value.replace(/\D/g, "").slice(0,4))}
+                  onChange={e => upd("cardCvv", e.target.value.replace(/\D/g, "").slice(0, 4))}
                 />
               </Field>
             </div>
@@ -819,11 +821,11 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
 
         {/* Consent + modal state */}
         {(() => {
-          const [termsOpen, setTermsOpen]     = useState(false);
+          const [termsOpen, setTermsOpen] = useState(false);
           const [privacyOpen, setPrivacyOpen] = useState(false);
           return (
             <>
-              <Modal open={termsOpen}   onClose={() => setTermsOpen(false)}   title="Terms of Service">{TERMS_CONTENT}</Modal>
+              <Modal open={termsOpen} onClose={() => setTermsOpen(false)} title="Terms of Service">{TERMS_CONTENT}</Modal>
               <Modal open={privacyOpen} onClose={() => setPrivacyOpen(false)} title="Privacy Policy">{PRIVACY_CONTENT}</Modal>
               <label className={`appt-check-wrap${errors.consent ? " err" : ""}`}>
                 <input type="checkbox" checked={data.consent} onChange={e => upd("consent", e.target.checked)} />
@@ -864,24 +866,24 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
    CONFIRMATION VIEW
    ═══════════════════════════════════════════════════════════════ */
 function Confirmation({ data, bookingRef, onReset }) {
-  const dept   = DEPARTMENTS.find(d => d.id === data.dept);
+  const dept = DEPARTMENTS.find(d => d.id === data.dept);
   const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor  = doctors.find(d => d.id === data.doctor);
-  const branch  = BRANCHES.find(b => b.id === data.branch);
+  const doctor = doctors.find(d => d.id === data.doctor);
+  const branch = BRANCHES.find(b => b.id === data.branch);
 
   const rows = [
-    ["Patient",    data.fullName],
-    ["Mode",       data.mode === "online" ? "🌐 Online" : "🏥 In-Person"],
+    ["Patient", data.fullName],
+    ["Mode", data.mode === "online" ? "🌐 Online" : "🏥 In-Person"],
     ["Department", dept?.name],
-    ["Doctor",     doctor?.name || "To be assigned"],
-    ["Branch",     data.mode === "offline" ? branch?.name : "Online Consultation"],
-    ["Date",       data.date],
-    ["Time",       data.slot],
-    ["Payment",    data.paymentMethod === "bkash" ? "📱 bKash / Mobile Banking"
-                 : data.paymentMethod === "card"  ? "💳 Credit / Debit Card"
-                 : "💵 Cash on Visit"],
-                 
-    ["Amount",       "BDT "+data.ConsultationFee],
+    ["Doctor", doctor?.name || "To be assigned"],
+    ["Branch", data.mode === "offline" ? branch?.name : "Online Consultation"],
+    ["Date", data.date],
+    ["Time", data.slot],
+    ["Payment", data.paymentMethod === "bkash" ? "📱 bKash / Mobile Banking"
+      : data.paymentMethod === "card" ? "💳 Credit / Debit Card"
+        : "💵 Cash on Visit"],
+
+    ["Amount", "BDT " + data.ConsultationFee],
   ];
 
   return (
@@ -890,7 +892,7 @@ function Confirmation({ data, bookingRef, onReset }) {
         <div className="appt-card__body">
           {/* <div className="appt-confirm-icon">✅</div> */}
           <h2 className="appt-confirm-title">Booking Confirmed!</h2>
-          <p style={{ color: "var(--appt-ink3)"}}>Your reference number</p>
+          <p style={{ color: "var(--appt-ink3)" }}>Your reference number</p>
           <div className="appt-confirm-ref">{bookingRef}</div>
 
           <div className="appt-confirm-rows">
@@ -986,13 +988,13 @@ export default function AppointmentForm({
    * the very first render — avoids the flash/race condition.
    */
   const [data, setData] = useState(() => {
-    const preDoctor  = searchParams?.get?.("doctor")   ?? null;
-    const preStep    = searchParams?.get?.("step")     ?? null;
-    const fullName   = searchParams?.get?.("fullName") ?? "";
-    const email      = searchParams?.get?.("email")    ?? "";
-    const phone      = searchParams?.get?.("phone")    ?? "";
-    const dob        = searchParams?.get?.("dob")      ?? "";
-    const gender     = searchParams?.get?.("gender")   ?? "";
+    const preDoctor = searchParams?.get?.("doctor") ?? null;
+    const preStep = searchParams?.get?.("step") ?? null;
+    const fullName = searchParams?.get?.("fullName") ?? "";
+    const email = searchParams?.get?.("email") ?? "";
+    const phone = searchParams?.get?.("phone") ?? "";
+    const dob = searchParams?.get?.("dob") ?? "";
+    const gender = searchParams?.get?.("gender") ?? "";
 
     // CTA pre-fill (step=2, no doctor)
     if (preStep === "2" && !preDoctor) {
@@ -1008,19 +1010,19 @@ export default function AppointmentForm({
     return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: "online", dept: preDept, doctor: preDoctor };
   });
 
-  
+
   /* If data was pre-filled, start on step 2 immediately */
   const [step, setStep] = useState(() => {
-    const preStep  = searchParams?.get?.("step")   ?? null;
+    const preStep = searchParams?.get?.("step") ?? null;
     const preDoctor = searchParams?.get?.("doctor") ?? null;
     if (preStep === "2") return 2;
     if (data.dept && data.doctor) return 2;
     return 1;
   });
   const [errors, setErrors] = useState({});
-  const [busy,   setBusy]   = useState(false);
-  const [done,   setDone]   = useState(false);
-  const [ref,    setRef]    = useState("");
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [ref, setRef] = useState("");
   const [minDate, setMinDate] = useState("");
 
   useEffect(() => {
@@ -1074,9 +1076,9 @@ export default function AppointmentForm({
 
   /* ── PROGRESS BAR ── */
   const STEPS = [
-    { label: "Patient Info",  sub: "Personal details" },
-    { label: "Schedule",      sub: "Date & doctor" },
-    { label: "Confirm",       sub: "Review & book" },
+    { label: "Patient Info", sub: "Personal details" },
+    { label: "Schedule", sub: "Date & doctor" },
+    { label: "Confirm", sub: "Review & book" },
   ];
 
   return (
@@ -1090,7 +1092,7 @@ export default function AppointmentForm({
               const cls = [
                 "appt-progress__step",
                 step === n ? "active" : "",
-                step > n  ? "done"   : "",
+                step > n ? "done" : "",
               ].join(" ").trim();
               return (
                 <div key={n} className={cls}>
