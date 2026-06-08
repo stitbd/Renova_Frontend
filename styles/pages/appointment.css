@@ -1557,6 +1557,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--color-text-muted);
 }
 
+.appt-doc-dd__trigger--locked {
+  cursor: default;
+  background: var(--color-bg-light);
+}
+
+.appt-dept-chip--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    CONFIRMATION — Action Buttons
    ═══════════════════════════════════════════════════════════════ */
