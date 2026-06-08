@@ -134,6 +134,9 @@ export default function VideoCallPage() {
                         <button className="call-patient-btn">
                             <Icon type="profile" /> View Profile
                         </button>
+                        <button className="call-patient-btn">
+                            <Icon type="phone" />
+                        </button>
                     </div>
 
                     {/* Consultation Reason */}
