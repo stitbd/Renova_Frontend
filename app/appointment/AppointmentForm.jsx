@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   DEPARTMENTS, DOCTORS, BRANCHES, DOCTOR_SLOTS,
-  INITIAL_FORM, validateStep1, validateStep2, validateStep3, validatePayment,
+  INITIAL_FORM, validateStep1, validateStep2, validateStep3
 } from "./appointmentData";
 import "@/styles/pages/appointment.css";
 import { useAppSelector } from "@/redux/hook";
@@ -15,26 +15,26 @@ import { API_URL } from "@/config";
    ═══════════════════════════════════════════════════════════════ */
 const convertTo24HourFormat = (timeStr) => {
   if (!timeStr) return timeStr;
-  
+
   // If already in 24-hour format (HH:MM without AM/PM), return as is
   if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
-  
+
   // Parse 12-hour format (e.g., "09:30 AM" or "09:30AM")
   const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)$/);
   if (match) {
     let [, hours, minutes, period] = match;
     hours = parseInt(hours, 10);
     const isPM = period.toUpperCase() === "PM";
-    
+
     if (isPM && hours !== 12) {
       hours += 12;
     } else if (!isPM && hours === 12) {
       hours = 0;
     }
-    
+
     return `${String(hours).padStart(2, "0")}:${minutes}`;
   }
-  
+
   return timeStr;
 };
 
@@ -474,13 +474,15 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
           <div className="appt-mode-group">
             {[
               { val: "online", icon: "💻", label: "Online", sub: "Video / teleconsult" },
-              { val: "offline", icon: "🏥", label: "In-Person", sub: "Visit our branch" },
+              // AFTER
+              { val: "offline", icon: "🏥", label: "In-Person", sub: "Visit our branch", disabled: true },
             ].map(({ val, icon, label, sub }) => (
               <button
                 key={val}
                 type="button"
-                className={`appt-mode-card${data.mode === val ? " sel" : ""}`}
+                className={`appt-mode-card${data.mode === val ? " sel" : ""}${val === "offline" ? " appt-mode-card--disabled" : ""}`}
                 onClick={() => {
+                  if (val === "offline") return;
                   upd("mode", val);
                   upd("branch", "");
                   upd("doctor", "");
@@ -488,6 +490,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
                   upd("slot", "");
                 }}
                 aria-pressed={data.mode === val}
+                aria-disabled={val === "offline"}
               >
                 <span className="appt-mode-icon">{icon}</span>
                 <div>
@@ -967,7 +970,14 @@ export default function AppointmentForm({
       DOCTORS[deptId].some(d => d.id === preDoctor)
     );
     if (!preDept) return INITIAL_FORM;
-    return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: "online", dept: preDept, doctor: preDoctor };
+    // Find the doctor entry to read their consultationType and branchId
+    const allDeptDoctors = DOCTORS[preDept] || [];
+    const preDocEntry = allDeptDoctors.find(d => d.id === preDoctor);
+    const isInPerson = preDocEntry?.consultationType === "Face to Face";
+    const preMode = isInPerson ? "offline" : "online";
+    const preBranch = isInPerson ? (preDocEntry?.branchId || "") : "";
+
+    return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: preMode, dept: preDept, doctor: preDoctor, branch: preBranch };
   });
 
 
@@ -975,8 +985,7 @@ export default function AppointmentForm({
   const [step, setStep] = useState(() => {
     const preStep = searchParams?.get?.("step") ?? null;
     const preDoctor = searchParams?.get?.("doctor") ?? null;
-    if (preStep === "2") return 2;
-    if (data.dept && data.doctor) return 2;
+    if (preStep === "2" && !preDoctor) return 2;
     return 1;
   });
   const [errors, setErrors] = useState({});

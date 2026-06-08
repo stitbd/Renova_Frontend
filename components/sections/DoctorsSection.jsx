@@ -56,9 +56,9 @@ const InitialsFallback = ({ name, accentFrom, accentTo }) => {
     .toUpperCase();
 
   return (
-    <div 
+    <div
       className="dcard__image-wrap"
-      style={{ 
+      style={{
         background: `linear-gradient(135deg, ${accentFrom}, ${accentTo})`,
         display: "flex",
         alignItems: "center",
@@ -89,7 +89,7 @@ export default function DoctorsSection() {
 
   return (
     <Section id="doctors" variant="alternate">
-      
+
       {/* Section Header with Animation */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -129,7 +129,7 @@ export default function DoctorsSection() {
               <div className="dcard__accent-bar" aria-hidden="true" />
 
               {/* Image / Avatar with Animation */}
-              <motion.div 
+              <motion.div
                 className="dcard__visual"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -137,15 +137,15 @@ export default function DoctorsSection() {
                 transition={{ delay: index * 0.1 + 0.1, type: "spring", stiffness: 200 }}
               >
                 <div className="dcard__image-ring" aria-hidden="true" />
-                
+
                 {hasImageError ? (
-                  <InitialsFallback 
-                    name={doc.name} 
-                    accentFrom={accent.from} 
-                    accentTo={accent.to} 
+                  <InitialsFallback
+                    name={doc.name}
+                    accentFrom={accent.from}
+                    accentTo={accent.to}
                   />
                 ) : (
-                  <motion.div 
+                  <motion.div
                     className="dcard__image-wrap"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
@@ -162,9 +162,9 @@ export default function DoctorsSection() {
                 )}
 
                 {/* Availability indicator with Fade-in */}
-                <motion.div 
-                  className="dcard__status" 
-                  role="status" 
+                <motion.div
+                  className="dcard__status"
+                  role="status"
                   aria-label="Available for appointments"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -178,7 +178,7 @@ export default function DoctorsSection() {
 
               {/* Content with Staggered Text Animations */}
               <div className="dcard__body">
-                <motion.h3 
+                <motion.h3
                   className="dcard__name"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -187,8 +187,8 @@ export default function DoctorsSection() {
                 >
                   {doc.name}
                 </motion.h3>
-                
-                <motion.p 
+
+                <motion.p
                   className="dcard__specialty"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -197,8 +197,8 @@ export default function DoctorsSection() {
                 >
                   {doc.specialty}
                 </motion.p>
-                
-                <motion.p 
+
+                <motion.p
                   className="dcard__qualification"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -209,14 +209,14 @@ export default function DoctorsSection() {
                 </motion.p>
 
                 {/* Stats row with Staggered Animation */}
-                <motion.div 
+                <motion.div
                   className="dcard__stats"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 + 0.3 }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="dcard__stat"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -227,7 +227,7 @@ export default function DoctorsSection() {
                     <span className="dcard__stat-label">Experience</span>
                   </motion.div>
                   <div className="dcard__stat-divider" aria-hidden="true" />
-                  <motion.div 
+                  <motion.div
                     className="dcard__stat"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -241,7 +241,7 @@ export default function DoctorsSection() {
                     <span className="dcard__stat-label">Rating</span>
                   </motion.div>
                   <div className="dcard__stat-divider" aria-hidden="true" />
-                  <motion.div 
+                  <motion.div
                     className="dcard__stat"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -254,7 +254,7 @@ export default function DoctorsSection() {
                 </motion.div>
 
                 {/* Two CTA buttons - Stacked with Animation */}
-                <motion.div 
+                <motion.div
                   className="dcard-cta-group"
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}

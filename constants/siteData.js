@@ -60,7 +60,7 @@ export const services = [
     description: "Specialized testing for blood disorders, anemia, clotting issues, and blood cancer screening.",
     icon: "droplets",
     color: "#dc2626",
-    href: "/services/hematology-services",  
+    href: "/services/hematology-services",
   },
   {
     id: 4,
@@ -84,7 +84,7 @@ export const services = [
     description: "High-resolution imaging for bones, chest, and internal organs with minimal radiation exposure.",
     icon: "scan",
     color: "#6366f1",
-    href: "/services/digital-x-ray", 
+    href: "/services/digital-x-ray",
   },
   {
     id: 7,
@@ -116,7 +116,7 @@ export const services = [
     description: "Detailed ultrasound imaging of heart structure and function for comprehensive cardiac assessment.",
     icon: "heart",
     color: "#f43f5e",
-    href: "/services/echocardiography-echo", 
+    href: "/services/echocardiography-echo",
   },
   {
     id: 11,
@@ -124,7 +124,7 @@ export const services = [
     description: "Cross-sectional imaging for detailed views of bones, blood vessels, and soft tissues.",
     icon: "scan",
     color: "#8b5cf6",
-    href: "/services/ct-scan-services", 
+    href: "/services/ct-scan-services",
   },
   {
     id: 12,
@@ -132,7 +132,7 @@ export const services = [
     description: "High-definition magnetic resonance imaging for brain, spine, joints, and soft tissue evaluation.",
     icon: "scan-line",
     color: "#7c3aed",
-    href: "/services/mri-scan-services", 
+    href: "/services/mri-scan-services",
   },
   {
     id: 13,
@@ -164,7 +164,7 @@ export const services = [
     description: "Neurological diagnostics to evaluate brain activity and nerve-muscle function for seizure and neuropathy assessment.",
     icon: "brain",
     color: "#6366f1",
-    href: "/services/eeg-emg-testing", 
+    href: "/services/eeg-emg-testing",
   },
   {
     id: 17,
@@ -196,7 +196,7 @@ export const services = [
     description: "Critical blood panels to assess liver health, detect hepatitis, and monitor treatment effectiveness.",
     icon: "flask-conical",
     color: "#84cc16",
-    href: "/services/liver-function-tests", 
+    href: "/services/liver-function-tests",
   },
   {
     id: 21,
@@ -325,8 +325,9 @@ export const doctors = [
     patients: "3,200+",
     gender: "Female",
     branch: "Gulshan Branch",
+    branchId: "dhaka-main",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ CORRECTED FIELDS FOR DOCTOR #1
     title: "Senior Cardiologist",
     department: "Cardiology",
@@ -367,7 +368,7 @@ export const doctors = [
     phone: "+880 1700-000000",
     email: "dr.fariha@renovalifecare.com",
   },
-  
+
   {
     id: 2,
     name: "Tasnim Farin",
@@ -380,8 +381,9 @@ export const doctors = [
     patients: "2,800+",
     gender: "Female",
     branch: "Gulshan Branch",
+    branchId: "dhaka-main",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #2 - NEUROLOGIST
     title: "Senior Neurologist",
     department: "Neurology",
@@ -422,7 +424,7 @@ export const doctors = [
     phone: "+880 1700-000001",
     email: "dr.tasnim@renovalifecare.com",
   },
-  
+
   {
     id: 3,
     name: "Aysha Aktar Tripti",
@@ -435,8 +437,9 @@ export const doctors = [
     patients: "4,100+",
     gender: "Female",
     branch: "Mirpur Branch",
+    branchId: "mirpur",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #3 - PEDIATRICIAN
     title: "Senior Pediatrician",
     department: "Pediatrics",
@@ -477,7 +480,7 @@ export const doctors = [
     phone: "+880 1700-000002",
     email: "dr.aysha@renovalifecare.com",
   },
-  
+
   {
     id: 4,
     name: "Humayon Kabir",
@@ -490,8 +493,9 @@ export const doctors = [
     patients: "2,500+",
     gender: "Male",
     branch: "Gulshan Branch",
+    branchId: "dhaka-main",
     consultationType: "Face to Face",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #4 - ORTHOPEDIC SURGEON
     title: "Senior Orthopedic Surgeon",
     department: "Orthopedics",
@@ -532,7 +536,7 @@ export const doctors = [
     phone: "+880 1700-000003",
     email: "dr.humayon@renovalifecare.com",
   },
-  
+
   {
     id: 5,
     name: "Nasreen Akter",
@@ -545,8 +549,9 @@ export const doctors = [
     patients: "3,200+",
     gender: "Female",
     branch: "Gulshan Branch",
+    branchId: "dhaka-main",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #5 - CARDIOLOGIST
     title: "Senior Cardiologist",
     department: "Cardiology",
@@ -587,10 +592,10 @@ export const doctors = [
     phone: "+880 1700-000004",
     email: "dr.nasreen@renovalifecare.com",
   },
-  
+
   {
     id: 6,
-    name: "Dr. Katrina Kaif",
+    name: "Katrina Kaif",
     specialty: "Neurologist",
     qualification: "MBBS, MD (Neurology), PhD",
     experience: "22 Years",
@@ -600,8 +605,9 @@ export const doctors = [
     patients: "2,800+",
     gender: "Female",
     branch: "Gulshan Branch",
+    branchId: "dhaka-main",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #6 - NEUROLOGIST
     title: "Consultant Neurologist",
     department: "Neurology",
@@ -642,7 +648,7 @@ export const doctors = [
     phone: "+880 1700-000005",
     email: "dr.katrina@renovalifecare.com",
   },
-  
+
   {
     id: 7,
     name: "Alifa Aktar",
@@ -655,8 +661,9 @@ export const doctors = [
     patients: "4,100+",
     gender: "Female",
     branch: "Mirpur Branch",
+    branchId: "mirpur",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #7 - PEDIATRICIAN
     title: "Pediatric Consultant",
     department: "Pediatrics",
@@ -697,7 +704,7 @@ export const doctors = [
     phone: "+880 1700-000006",
     email: "dr.alifa@renovalifecare.com",
   },
-  
+
   {
     id: 8,
     name: "Maria Hoque",
@@ -710,8 +717,9 @@ export const doctors = [
     patients: "2,500+",
     gender: "Female",
     branch: "Dhanmondi Branch",
+    branchId: "dhanmondi",
     consultationType: "Video / Audio Call",
-    
+
     // ✅ UNIQUE DATA FOR DOCTOR #8 - ORTHOPEDIC SURGEON
     title: "Orthopedic Consultant",
     department: "Orthopedics",

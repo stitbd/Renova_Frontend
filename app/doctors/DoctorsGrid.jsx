@@ -146,7 +146,7 @@ export default function DoctorsGrid() {
               </button>
             )}
           </div>
-          <button className="btn btn-primary" onClick={() => {}}>
+          <button className="btn btn-primary" onClick={() => { }}>
             <SearchIcon /> Search
           </button>
           {activePills.length > 0 && (
@@ -237,11 +237,11 @@ export default function DoctorsGrid() {
                     <InitialsFallback name={doc.name} accentFrom={accent.from} accentTo={accent.to} />
                   ) : (
                     <motion.div
-                        className="dcard__image-wrap"
-                        style={{ position: "relative" }}   // ← ADD THIS LINE
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.3 }}
-                      >
+                      className="dcard__image-wrap"
+                      style={{ position: "relative" }}   // ← ADD THIS LINE
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                    >
                       <Image
                         src={`/images/doctors/doctor-${doc.id}.jpg`}
                         alt={`Portrait of Dr. ${doc.name}`}
