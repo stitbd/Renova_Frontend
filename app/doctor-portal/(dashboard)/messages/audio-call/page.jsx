@@ -81,9 +81,9 @@ export default function AudioCallPage() {
     };
 
     return (
-        <>
-            {/* Custom Topbar — replaces normal dashboard header context */}
-            <div className="call-topbar" style={{ margin: "-18px -22px 0", borderRadius: 0 }}>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+            {/* Custom Topbar */}
+            {/* <div className="call-topbar" style={{ margin: "-18px -22px 0", borderRadius: 0 }}>
                 <div className="call-topbar-left">
                     <h2 className="call-topbar-title">Audio Consultation</h2>
                     <span className="call-live-badge">
@@ -115,7 +115,7 @@ export default function AudioCallPage() {
                 <button className="call-end-btn">
                     End Call
                 </button>
-            </div>
+            </div> */}
 
             <div className="call-page-layout" style={{ marginTop: 0 }}>
                 {/* ── Left: Patient Panel ────────────────────────── */}
@@ -249,7 +249,7 @@ export default function AudioCallPage() {
                         </div>
                     </div>
 
-                    {/* Controls Bar */}
+                    {/* Controls bar — now inside audio-call-display */}
                     <div className="call-controls-bar">
                         {[
                             { icon: "mic", label: "Mute" },
@@ -263,6 +263,11 @@ export default function AudioCallPage() {
                                 <span className="call-ctrl-label">{btn.label}</span>
                             </button>
                         ))}
+                    </div>
+
+
+                    <div className="video-footer-note">
+                        All data is encrypted and stored securely. This consultation is subject to our <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.
                     </div>
                 </div>
 
@@ -333,6 +338,6 @@ export default function AudioCallPage() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

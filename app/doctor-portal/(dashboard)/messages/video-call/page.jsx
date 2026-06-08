@@ -97,35 +97,7 @@ export default function VideoCallPage() {
     };
 
     return (
-        <>
-            {/* Topbar */}
-            <div className="call-topbar" style={{ margin: "-18px -22px 0", borderRadius: 0 }}>
-                <div className="call-topbar-left">
-                    <h2 className="call-topbar-title">Video Consultation</h2>
-                    <span className="call-live-badge">
-                        <span className="call-live-dot" /> Live
-                    </span>
-                </div>
-                <div className="call-topbar-stats">
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Call Duration</span>
-                        <span className="call-stat-value">{fmt(seconds)}</span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Network</span>
-                        <span className="call-stat-value green" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span className="call-network-bars"><span /><span /><span /><span /></span> Good
-                        </span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Recording</span>
-                        <span className="call-stat-value red" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} /> On
-                        </span>
-                    </div>
-                </div>
-                <button className="call-end-btn">End Call</button>
-            </div>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
 
             <div className="call-page-layout" style={{ marginTop: 0 }}>
                 {/* ── Left: Patient Panel ────────────────────────── */}
@@ -243,60 +215,74 @@ export default function VideoCallPage() {
 
                     {/* Video display */}
                     <div className="video-call-display">
-                        {/* Patient video placeholder */}
-                        <div className="video-placeholder">
-                            <div className="video-placeholder-avatar">
-                                <img
-                                    src="/images/patients/01.jpg"
-                                    alt="Patient"
-                                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                                />
-                                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span>
-                            </div>
-                        </div>
+                        <div className="video-main-area">
 
-                        {/* Patient label */}
-                        <div className="video-patient-label">
-                            Patient
-                            <span className="audio-signal-bars" style={{ marginLeft: 4 }}>
-                                <span /><span /><span /><span />
-                            </span>
-                        </div>
-
-                        {/* Doctor PiP */}
-                        <div className="video-pip">
+                            {/* Full-cover patient video */}
                             <img
-                                src="/images/doctors/doctor-2.jpg"
-                                alt="You"
-                                onError={(e) => { e.currentTarget.style.background = "#334155"; e.currentTarget.style.display = "none"; }}
+                                src="/images/patients/01.jpg"
+                                alt="Patient"
+                                onError={e => { e.currentTarget.style.display = "none"; }}
                             />
-                            <div className="video-pip-label">
-                                You
+
+                            {/* Patient label — top left */}
+                            <div className="video-patient-label">
+                                Patient
+                                <span className="video-signal-bars">
+                                    <span /><span /><span /><span />
+                                </span>
                             </div>
-                        </div>
 
-                        {/* Controls */}
-                        <div className="video-call-controls">
-                            {[
-                                { icon: "mic", label: "Mute" },
-                                { icon: "videooff", label: "Stop Video" },
-                                { icon: "screen", label: "Screen Share" },
-                                { icon: "rotateCamera", label: "Switch Camera" },
-                                { icon: "endcall", label: "End Call", end: true },
-                            ].map((btn) => (
-                                <button key={btn.label} className="video-ctrl-btn">
-                                    <div className={`video-ctrl-icon${btn.end ? " end-call" : ""}`}>
-                                        <Icon type={btn.icon} />
+                            {/* Doctor PiP — top right */}
+                            <div className="video-pip">
+                                <img
+                                    src="/images/doctors/doctor-2.jpg"
+                                    alt="You"
+                                    onError={e => { e.currentTarget.style.display = "none"; }}
+                                />
+                                <div className="video-pip-label">
+                                    <span className="video-pip-online-dot" />
+                                    You
+                                </div>
+                            </div>
+
+                            {/* Call Duration — above controls bar */}
+                            <div className="video-call-duration">
+                                <span className="video-call-duration-dot" />
+                                {fmt(seconds)}
+                            </div>
+
+                            {/* Controls bar — inside video, bottom center, pill shape */}
+                            <div className="video-controls-bar">
+                                {[
+                                    { icon: "mic", label: "Mute" },
+                                    { icon: "video", label: "Stop Video" },
+                                    { icon: "screen", label: "Screen Share" },
+                                    { icon: "rotateCamera", label: "Switch Camera" },
+                                ].map((btn) => (
+                                    <button key={btn.label} className="video-ctrl-btn">
+                                        <div className="video-ctrl-icon">
+                                            <Icon type={btn.icon} />
+                                        </div>
+                                        <span className="video-ctrl-label">{btn.label}</span>
+                                    </button>
+                                ))}
+
+                                <div className="video-ctrl-divider" />
+
+                                <button className="video-ctrl-btn">
+                                    <div className="video-ctrl-icon end-call">
+                                        <Icon type="endcall" />
                                     </div>
-                                    <span className="video-ctrl-label">{btn.label}</span>
+                                    <span className="video-ctrl-label">End Call</span>
                                 </button>
-                            ))}
-                        </div>
+                            </div>
 
-                        {/* Expand */}
-                        <button className="video-expand-btn">
-                            <Icon type="expand" />
-                        </button>
+                            {/* Expand — bottom right */}
+                            <button className="video-expand-btn">
+                                <Icon type="expand" />
+                            </button>
+
+                        </div>
                     </div>
 
                     <div className="video-footer-note">
@@ -362,6 +348,6 @@ export default function VideoCallPage() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
