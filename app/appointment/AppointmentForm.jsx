@@ -7,6 +7,36 @@ import {
   INITIAL_FORM, validateStep1, validateStep2, validateStep3, validatePayment,
 } from "./appointmentData";
 import "@/styles/pages/appointment.css";
+import { useAppSelector } from "@/redux/hook";
+import { API_URL } from "@/config";
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY: Convert time format to 24-hour HH:MM format
+   ═══════════════════════════════════════════════════════════════ */
+const convertTo24HourFormat = (timeStr) => {
+  if (!timeStr) return timeStr;
+  
+  // If already in 24-hour format (HH:MM without AM/PM), return as is
+  if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
+  
+  // Parse 12-hour format (e.g., "09:30 AM" or "09:30AM")
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)$/);
+  if (match) {
+    let [, hours, minutes, period] = match;
+    hours = parseInt(hours, 10);
+    const isPM = period.toUpperCase() === "PM";
+    
+    if (isPM && hours !== 12) {
+      hours += 12;
+    } else if (!isPM && hours === 12) {
+      hours = 0;
+    }
+    
+    return `${String(hours).padStart(2, "0")}:${minutes}`;
+  }
+  
+  return timeStr;
+};
 
 /* ═══════════════════════════════════════════════════════════════
    INLINE SVG ICONS
@@ -613,190 +643,74 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
    STEP 3 — Review & Confirm
    ═══════════════════════════════════════════════════════════════ */
 function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
+  const [termsOpen, setTermsOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+
   const dept = DEPARTMENTS.find(d => d.id === data.dept);
-  const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
+  const doctors = data.dept ? DOCTORS[data.dept] || [] : [];
   const doctor = doctors.find(d => d.id === data.doctor);
   const branch = BRANCHES.find(b => b.id === data.branch);
 
   return (
-    <form className="appt-card" onSubmit={onSubmit}>
+    <div className="appt-card">
       <div className="appt-card__head">
         <div className="appt-card__icon">✅</div>
         <div>
           <div className="appt-card__title">Review & Confirm</div>
-          <div className="appt-card__sub">Verify your details before finalising your booking</div>
+          <div className="appt-card__sub">
+            Verify your details before finalising your booking
+          </div>
         </div>
       </div>
 
       <div className="appt-card__body appt-stack">
-        {/* Summary cards */}
         <div className="appt-summary-grid">
           <div className="appt-summ-card">
             <h4>👤 Patient</h4>
-            <p><strong>{data.fullName}</strong><br />{data.email}<br />{data.phone}</p>
+            <p>
+              <strong>{data.fullName}</strong>
+              <br />
+              {data.email}
+              <br />
+              {data.phone}
+            </p>
           </div>
+
           <div className="appt-summ-card">
             <h4>🏥 Appointment</h4>
             <p>
-              <strong>{dept?.name}</strong><br />
-              {doctor?.name || "Doctor to be assigned"}<br />
+              <strong>{dept?.name}</strong>
+              <br />
+              {doctor?.name || "Doctor to be assigned"}
+              <br />
               {data.mode === "online" ? "🌐 Online Consultation" : branch?.name}
             </p>
           </div>
+
           <div className="appt-summ-card">
             <h4>📅 Schedule</h4>
-            <p><strong>{data.date}</strong><br />{data.slot}</p>
+            <p>
+              <strong>{data.date}</strong>
+              <br />
+              {data.slot}
+            </p>
           </div>
+
           <div className="appt-summ-card">
             <h4>👤 Profile</h4>
             <p>
-              DOB: <strong>{data.dob}</strong><br />
-              Gender: <strong style={{ textTransform: "capitalize" }}>{data.gender}</strong>
+              DOB: <strong>{data.dob}</strong>
+              <br />
+              Gender:{" "}
+              <strong style={{ textTransform: "capitalize" }}>
+                {data.gender}
+              </strong>
             </p>
           </div>
         </div>
 
         <div className="appt-divider" />
 
-        {/* ── Payment Method ───────────────────────────────────── */}
-        <Field label="Payment Method *" error={errors.paymentMethod}>
-          <div className="appt-pay-group">
-            {/* Online → bKash + Card only; Offline → Cash only */}
-            {data.mode === "online" ? (
-              <>
-                {[
-                  { val: "bkash", icon: "📱", label: "bKash / Mobile Banking" },
-                  { val: "card", icon: "💳", label: "Credit / Debit Card" },
-                ].map(({ val, icon, label }) => (
-                  <label
-                    key={val}
-                    className={`appt-pay-option${data.paymentMethod === val ? " sel" : ""}`}
-                  >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value={val}
-                      checked={data.paymentMethod === val}
-                      onChange={e => upd("paymentMethod", e.target.value)}
-                    />
-                    <span className="appt-pay-icon">{icon}</span>
-                    <span className="appt-pay-label">{label}</span>
-                  </label>
-                ))}
-              </>
-            ) : (
-              <label className={`appt-pay-option${data.paymentMethod === "cash" ? " sel" : ""}`}>
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="cash"
-                  checked={data.paymentMethod === "cash"}
-                  onChange={e => upd("paymentMethod", e.target.value)}
-                />
-                <span className="appt-pay-icon">💵</span>
-                <span className="appt-pay-label">Cash on Visit</span>
-              </label>
-            )}
-          </div>
-        </Field>
-
-        {/* ── bKash sub-form ───────────────────────────────────── */}
-        {data.paymentMethod === "bkash" && (
-          <div className="appt-pay-subform">
-            <div className="appt-pay-subform__head">📱 bKash / Mobile Banking Details</div>
-            <div className="appt-pay-subform__info">
-              Send payment to: <strong>+880 1700-000000</strong> (bKash Merchant)
-            </div>
-            <Field label="Your bKash / Mobile Number *" error={errors.bkashNumber}>
-              <input
-                className={`appt-inp${errors.bkashNumber ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="tel"
-                placeholder="+880 1XXX-XXXXXX"
-                value={data.bkashNumber || ""}
-                onChange={e => upd("bkashNumber", e.target.value)}
-              />
-            </Field>
-            <Field label="Transaction ID *" error={errors.transactionId}>
-              <input
-                className={`appt-inp${errors.transactionId ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="text"
-                placeholder="e.g. 8N7A3B2C1D"
-                value={data.transactionId || ""}
-                onChange={e => upd("transactionId", e.target.value)}
-              />
-            </Field>
-          </div>
-        )}
-
-        {/* ── Card sub-form ────────────────────────────────────── */}
-        {data.paymentMethod === "card" && (
-          <div className="appt-pay-subform">
-            <div className="appt-pay-subform__head">💳 Card Details</div>
-            <Field label="Card Number *" error={errors.cardNumber}>
-              <input
-                className={`appt-inp${errors.cardNumber ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="text"
-                placeholder="XXXX XXXX XXXX XXXX"
-                maxLength={19}
-                value={data.cardNumber || ""}
-                onChange={e => {
-                  /* auto-insert spaces every 4 digits */
-                  const raw = e.target.value.replace(/\D/g, "").slice(0, 16);
-                  const fmt = raw.match(/.{1,4}/g)?.join(" ") || raw;
-                  upd("cardNumber", fmt);
-                }}
-              />
-            </Field>
-            <div className="appt-grid-2">
-              <Field label="Expiry Date *" error={errors.cardExpiry}>
-                <input
-                  className={`appt-inp${errors.cardExpiry ? " err" : ""}`}
-                  style={{ paddingLeft: "14px" }}
-                  type="text"
-                  placeholder="MM / YY"
-                  maxLength={7}
-                  value={data.cardExpiry || ""}
-                  onChange={e => {
-                    const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
-                    const fmt = raw.length > 2 ? raw.slice(0, 2) + " / " + raw.slice(2) : raw;
-                    upd("cardExpiry", fmt);
-                  }}
-                />
-              </Field>
-              <Field label="CVV *" error={errors.cardCvv}>
-                <input
-                  className={`appt-inp${errors.cardCvv ? " err" : ""}`}
-                  style={{ paddingLeft: "14px" }}
-                  type="password"
-                  placeholder="•••"
-                  maxLength={4}
-                  value={data.cardCvv || ""}
-                  onChange={e => upd("cardCvv", e.target.value.replace(/\D/g, "").slice(0, 4))}
-                />
-              </Field>
-            </div>
-            <Field label="Name on Card *" error={errors.cardName}>
-              <input
-                className={`appt-inp${errors.cardName ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="text"
-                placeholder="As printed on the card"
-                value={data.cardName || ""}
-                onChange={e => upd("cardName", e.target.value)}
-              />
-            </Field>
-            <div className="appt-pay-secure">
-              🔒 Your card details are encrypted and never stored.
-            </div>
-          </div>
-        )}
-
-        <div className="appt-divider" />
-
-        {/* Symptoms */}
         <Field label="Describe Your Symptoms *" error={errors.symptoms}>
           <textarea
             className={`appt-ta${errors.symptoms ? " err" : ""}`}
@@ -808,7 +722,6 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           />
         </Field>
 
-        {/* Medical History */}
         <Field label="Previous Medical History (optional)">
           <textarea
             className="appt-ta"
@@ -819,28 +732,60 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           />
         </Field>
 
-        {/* Consent + modal state */}
-        {(() => {
-          const [termsOpen, setTermsOpen] = useState(false);
-          const [privacyOpen, setPrivacyOpen] = useState(false);
-          return (
-            <>
-              <Modal open={termsOpen} onClose={() => setTermsOpen(false)} title="Terms of Service">{TERMS_CONTENT}</Modal>
-              <Modal open={privacyOpen} onClose={() => setPrivacyOpen(false)} title="Privacy Policy">{PRIVACY_CONTENT}</Modal>
-              <label className={`appt-check-wrap${errors.consent ? " err" : ""}`}>
-                <input type="checkbox" checked={data.consent} onChange={e => upd("consent", e.target.checked)} />
-                <span>
-                  I agree to the{" "}
-                  <button type="button" className="appt-link-btn" onClick={e => { e.preventDefault(); setTermsOpen(true); }}>Terms of Service</button>
-                  {" "}and{" "}
-                  <button type="button" className="appt-link-btn" onClick={e => { e.preventDefault(); setPrivacyOpen(false); setPrivacyOpen(true); }}>Privacy Policy</button>.
-                  I consent to my information being used to facilitate this appointment.
-                </span>
-              </label>
-              {errors.consent && <span className="appt-err-msg">{errors.consent}</span>}
-            </>
-          );
-        })()}
+        <Modal
+          open={termsOpen}
+          onClose={() => setTermsOpen(false)}
+          title="Terms of Service"
+        >
+          {TERMS_CONTENT}
+        </Modal>
+
+        <Modal
+          open={privacyOpen}
+          onClose={() => setPrivacyOpen(false)}
+          title="Privacy Policy"
+        >
+          {PRIVACY_CONTENT}
+        </Modal>
+
+        <label className={`appt-check-wrap${errors.consent ? " err" : ""}`}>
+          <input
+            type="checkbox"
+            checked={data.consent}
+            onChange={e => upd("consent", e.target.checked)}
+          />
+
+          <span>
+            I agree to the{" "}
+            <button
+              type="button"
+              className="appt-link-btn"
+              onClick={e => {
+                e.preventDefault();
+                setTermsOpen(true);
+              }}
+            >
+              Terms of Service
+            </button>{" "}
+            and{" "}
+            <button
+              type="button"
+              className="appt-link-btn"
+              onClick={e => {
+                e.preventDefault();
+                setPrivacyOpen(true);
+              }}
+            >
+              Privacy Policy
+            </button>
+            . I consent to my information being used to facilitate this
+            appointment.
+          </span>
+        </label>
+
+        {errors.consent && (
+          <span className="appt-err-msg">{errors.consent}</span>
+        )}
 
         {errors.submit && (
           <div className="appt-submit-err">⚠️ {errors.submit}</div>
@@ -851,17 +796,29 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
         <button type="button" className="btn btn-secondary" onClick={onBack}>
           <IconArrowL size={16} /> Edit Details
         </button>
-        <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy
-            ? <><span className="appt-spinner" /> Processing…</>
-            : <><IconLock size={15} /> Confirm Booking</>
-          }
+
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={busy}
+          onClick={onSubmit}
+        >
+          {busy ? (
+            <>
+              <span className="appt-spinner" />
+              Creating Appointment...
+            </>
+          ) : (
+            <>
+              <IconLock size={15} />
+              Confirm Appointment
+            </>
+          )}
         </button>
       </div>
-    </form>
+    </div>
   );
 }
-
 /* ═══════════════════════════════════════════════════════════════
    CONFIRMATION VIEW
    ═══════════════════════════════════════════════════════════════ */
@@ -982,6 +939,9 @@ export default function AppointmentForm({
 }) {
   const searchParams = useSearchParams();
 
+  const token = useAppSelector((state) => state.auth.accessToken);
+  console.log('patient token ', token);
+
   /*
    * Lazy initial state — runs once on mount, reads ?doctor= URL param.
    * Using useState lazy init (not useEffect) so data is correct on
@@ -1048,19 +1008,68 @@ export default function AppointmentForm({
   };
 
   /* Final submit */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    console.log("Confirm button clicked");
+
     const errs = validateStep3(data);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    console.log("Step 3 errors:", errs);
+
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
 
     setBusy(true);
     setErrors({});
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1800));
-      setRef(`APPT-${Date.now().toString(36).toUpperCase()}`);
+      const reqBody = {
+        doctorId: data.doctor,
+        appointmentDate: data.date,
+        startTime: convertTo24HourFormat(data.slot),
+        type: data.mode === "online" ? "ONLINE" : "IN_PERSON",
+        reason: data.symptoms,
+        patientName: data.fullName,
+        patientEmail: data.email,
+        patientPhone: data.phone,
+        patientDateOfBirth: data.dob,
+        patientGender: data.gender.toUpperCase(),
+        patientMedicalHistory: data.medHistory,
+      };
+
+      console.log("Patient token:", token);
+      console.log("Request body:", reqBody);
+      console.log("API URL:", API_URL);
+
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const res = await fetch(`${API_URL}/appointments/create`, {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: JSON.stringify(reqBody),
+      });
+
+      const result = await res.json();
+      console.log("API response:", result, "Status:", res.status);
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || `Appointment booking failed (Status: ${res.status})`);
+      }
+
+      setRef(result.data?.appointmentCode || result.data?.id || "Appointment Created");
       setDone(true);
-    } catch {
-      setErrors({ submit: "Booking failed. Please try again or call us directly." });
+    } catch (error) {
+      console.error("Booking error:", error.message);
+      setErrors({
+        submit: error.message || "Booking failed. Please try again.",
+      });
     } finally {
       setBusy(false);
     }

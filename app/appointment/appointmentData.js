@@ -203,12 +203,10 @@ export const validatePayment = (d) => {
 };
 
 /** Step 3 — Confirm */
-export const validateStep3 = (d) => {
-  const e = {};
-  if (!d.paymentMethod) e.paymentMethod = "Select a payment method";
-  if (!d.symptoms?.trim() || d.symptoms.trim().length < 10)
-    e.symptoms = "Describe your symptoms (min 10 characters)";
-  if (!d.consent)
-    e.consent = "You must agree to the terms to proceed";
-  return e;
-};
+export function validateStep3(data) {
+  const errors = {};
+  if (!data.symptoms?.trim()) errors.symptoms = "Please describe your symptoms";
+  if (!data.consent) errors.consent = "You must agree to the terms";
+  // remove paymentMethod validation
+  return errors;
+}
