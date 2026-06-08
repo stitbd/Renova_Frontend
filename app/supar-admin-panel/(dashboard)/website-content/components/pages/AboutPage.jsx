@@ -148,7 +148,7 @@ const INITIAL_ABOUT_DATA = {
 /* ══════════════════════════════════════════════════════════════
    FIELD COMPONENTS
    ══════════════════════════════════════════════════════════════ */
-const ImageUploadField = ({ label, hint, value, onChange, onFileSelect }) => {
+const ImageUploadField = ({ label, hint, value, onChange }) => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
@@ -156,7 +156,7 @@ const ImageUploadField = ({ label, hint, value, onChange, onFileSelect }) => {
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files || []);
+    const files = Array.from(e.target.files ?? []);
     if (files.length > 0 && onChange) {
       const url = URL.createObjectURL(files[0]);
       onChange(url);

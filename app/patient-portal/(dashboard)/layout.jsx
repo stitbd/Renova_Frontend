@@ -159,7 +159,7 @@ export default function PatientPortalLayout({ children }) {
                 </div>
               );
             }
-            
+
             // Render nav item
             const active = isActivePath(pathname, item.href);
             return (
@@ -224,7 +224,14 @@ export default function PatientPortalLayout({ children }) {
         </header>
 
         {/* Page Content */}
-        <div className="patient-dashboard-content">{children}</div>
+        <div className="patient-dashboard-content">
+          {children}
+          <footer className="admin-footer">
+            <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
+            <span>Developed by <span className="highlight">STITBD</span></span>
+            <span>Version 1.0.0</span>
+          </footer>
+        </div>
       </main>
     </div>
   );

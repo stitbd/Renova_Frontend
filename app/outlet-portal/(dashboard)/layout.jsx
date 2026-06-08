@@ -24,7 +24,14 @@ export default function OutletLayout({ children }) {
       {/* Main Content */}
       <main className="outlet-main-content">
         <Header onMenuToggle={() => setSidebarOpen((v) => !v)} />
-        <div className="outlet-dashboard-content">{children}</div>
+        <div className="outlet-dashboard-content">
+          {children}
+          <footer className="admin-footer">
+            <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
+            <span>Developed by <span className="highlight">STITBD</span></span>
+            <span>Version 1.0.0</span>
+          </footer>
+        </div>
       </main>
     </div>
   );
