@@ -3,6 +3,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ export default function Sidebar({ isOpen, onClose }) {
     { icon: "users", label: "Users & Roles", href: "/outlet-portal/users", badge: null },
     { icon: "settings", label: "Settings", href: "/outlet-portal/settings", badge: null },
   ];
+  const prefetchRoute = useRoutePrefetch(menuItems.map((item) => item.href));
 
   const icons = {
     dashboard: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>,
@@ -54,6 +56,9 @@ export default function Sidebar({ isOpen, onClose }) {
             key={item.href}
             href={item.href}
             className={`nav-item ${pathname === item.href ? "active" : ""}`}
+            onMouseEnter={() => prefetchRoute(item.href)}
+            onFocus={() => prefetchRoute(item.href)}
+            onTouchStart={() => prefetchRoute(item.href)}
             onClick={onClose}
           >
             <span className="nav-icon">{icons[item.icon]}</span>

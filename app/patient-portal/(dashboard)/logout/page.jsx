@@ -14,7 +14,7 @@ export default function LogoutPage() {
     
     // Redirect to login after short delay
     const timer = setTimeout(() => {
-      router.push("/patient/login");
+      router.push("/patient-portal/patient-signin");
     }, 1500);
     
     return () => clearTimeout(timer);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import "./doctor-dashboard-massages.css";
 
 const TODAY = new Date().toDateString();
@@ -361,12 +362,12 @@ export default function MessagesPage() {
               </div>
             </div>
             <div className="msg-chat-actions">
-              <a href="/doctor-portal/messages/audio-call" className="msg-action-btn">
+              <Link href="/doctor-portal/messages/audio-call" className="msg-action-btn">
                 {getIcon("phone")}
-              </a>
-              <a href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
+              </Link>
+              <Link href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
                 {getIcon("video")}
-              </a>
+              </Link>
             </div>
           </div>
 
