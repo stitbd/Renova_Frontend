@@ -128,9 +128,9 @@ export default function DoctorProfileClient({ doctor }) {
         <section className="doctor-header">
           <div className="doctor-header__content">
             <div className="doctor-header__image">
-              <img 
-                src={doctor.image} 
-                alt={doctor.name} 
+              <img
+                src={doctor.image}
+                alt={doctor.name}
                 className="doctor-header__photo"
                 loading="eager"
               />
@@ -138,14 +138,14 @@ export default function DoctorProfileClient({ doctor }) {
                 <Icons.Check /> Verified
               </div>
             </div>
-            
+
             <div className="doctor-header__info">
               <div className="doctor-header__titles">
                 <h1 className="doctor-header__name">{doctor.name}</h1>
                 <p className="doctor-header__title">{doctor.title}</p>
                 <span className="doctor-header__department">{doctor.department}</span>
               </div>
-              
+
               <div className="doctor-header__rating">
                 <div className="rating-stars">
                   {renderStars(doctor.rating)}
@@ -153,7 +153,7 @@ export default function DoctorProfileClient({ doctor }) {
                 <span className="rating-value">{doctor.rating}</span>
                 <span className="rating-count">({doctor.reviewCount} reviews)</span>
               </div>
-              
+
               <div className="doctor-header__quick-info">
                 <div className="quick-info-item">
                   <Icons.Award />
@@ -168,7 +168,7 @@ export default function DoctorProfileClient({ doctor }) {
                   <span>{doctor.languages.join(", ")}</span>
                 </div>
               </div>
-              
+
               <div className="doctor-header__actions">
                 <Button variant="primary" href="/appointment" className="doctor-cta-btn">
                   <Icons.Calendar /> Book Appointment
@@ -331,9 +331,9 @@ export default function DoctorProfileClient({ doctor }) {
                         <p className="review-comment">{review.comment}</p>
                       </div>
                     ))}
-                    
+
                     {doctor.reviews.length > 3 && (
-                      <button 
+                      <button
                         className="reviews-load-more"
                         onClick={() => setShowAllReviews(!showAllReviews)}
                       >

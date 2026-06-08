@@ -37,9 +37,9 @@ const InitialsFallback = ({ name, accentFrom, accentTo }) => {
     .toUpperCase();
 
   return (
-    <div 
+    <div
       className="dcard__image-wrap"
-      style={{ 
+      style={{
         background: `linear-gradient(135deg, ${accentFrom}, ${accentTo})`,
         display: "flex",
         alignItems: "center",
@@ -94,12 +94,12 @@ export default function DoctorsGrid({ doctors = [] }) {  // ← ADDED: accept do
                 {/* Image / Avatar */}
                 <div className="dcard__visual">
                   <div className="dcard__image-ring" aria-hidden="true" />
-                  
+
                   {hasImageError ? (
-                    <InitialsFallback 
-                      name={doc.name} 
-                      accentFrom={accent.from} 
-                      accentTo={accent.to} 
+                    <InitialsFallback
+                      name={doc.name}
+                      accentFrom={accent.from}
+                      accentTo={accent.to}
                     />
                   ) : (
                     <div className="dcard__image-wrap">

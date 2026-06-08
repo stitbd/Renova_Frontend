@@ -15,7 +15,7 @@ const PAGE_TREE = [
     icon: "home",
     sections: ["hero", "appointment-cta", "testimonials", "partners", "seo"],
   },
-{
+  {
     id: "about",
     label: "About",
     href: "/about",
@@ -116,7 +116,7 @@ const SECTION_DEFS = {
   "stats-bar": { label: "Stats Bar", icon: "list", desc: "4 key statistics" },
   "certifications": { label: "Certifications", icon: "award", desc: "Accreditations & certificates" },
   "company-history": { label: "Company History", icon: "clock", desc: "Timeline and milestones" },
-  
+
 
   "doctor-listing": { label: "Doctor Listing", icon: "list", desc: "All doctor cards & filters" },
   specializations: { label: "Specializations", icon: "tag", desc: "Filter by specialty" },
@@ -351,7 +351,7 @@ const INITIAL_DATA = {
       robots: "index, follow",
       keywords: "about Renova, healthcare Bangladesh"
     }
-},
+  },
   doctors: {
     hero: {
       trust_badge_text: "OUR MEDICAL TEAM",
@@ -687,49 +687,49 @@ const INITIAL_DATA = {
    ══════════════════════════════════════════════════════════════ */
 const Icon = ({ name, size = 14, className = "" }) => {
   const paths = {
-    home: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>,
-    info: <><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></>,
-    services: <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>,
-    doctors: <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>,
-    package: <><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></>,
-    shop: <><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></>,
-    blog: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></>,
-    contact: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
-    layout: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></>,
-    grid: <><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></>,
-    user: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>,
-    users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>,
-    calendar: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>,
-    "shopping-bag": <><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></>,
-    "message-circle": <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>,
-    "file-text": <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></>,
-    target: <><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>,
-    clock: <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>,
-    award: <><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></>,
-    list: <><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></>,
-    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></>,
-    star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>,
-    phone: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>,
-    "map-pin": <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>,
-    mail: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
-    search: <><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></>,
-    chevron: <polyline points="9 18 15 12 9 6"/>,
-    plus: <><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>,
-    save: <><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></>,
-    eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>,
-    trash: <><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></>,
-    upload: <><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></>,
-    refresh: <><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></>,
-    external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></>,
-    check: <polyline points="20 6 9 17 4 12"/>,
-    drag: <><line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/></>,
-    x: <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>,
-    link: <><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></>,
-    image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></>,
-    "user-plus": <><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></>,
-    heart: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>,
-    target: <><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>,
-    clock: <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>,
+    home: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
+    info: <><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></>,
+    services: <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />,
+    doctors: <path d="M22 12h-4l-3 9L9 3l-3 9H2" />,
+    package: <><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></>,
+    shop: <><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></>,
+    blog: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
+    contact: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></>,
+    layout: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></>,
+    grid: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></>,
+    user: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
+    users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    calendar: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>,
+    "shopping-bag": <><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></>,
+    "message-circle": <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></>,
+    "file-text": <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
+    target: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></>,
+    clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
+    award: <><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></>,
+    list: <><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></>,
+    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></>,
+    star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />,
+    phone: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />,
+    "map-pin": <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></>,
+    mail: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></>,
+    search: <><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></>,
+    chevron: <polyline points="9 18 15 12 9 6" />,
+    plus: <><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>,
+    save: <><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></>,
+    eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>,
+    trash: <><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /></>,
+    upload: <><polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" /></>,
+    refresh: <><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></>,
+    external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></>,
+    check: <polyline points="20 6 9 17 4 12" />,
+    drag: <><line x1="9" y1="5" x2="9" y2="19" /><line x1="15" y1="5" x2="15" y2="19" /></>,
+    x: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
+    link: <><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></>,
+    image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></>,
+    "user-plus": <><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="23" y1="11" x2="17" y2="11" /></>,
+    heart: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />,
+    target: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></>,
+    clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -857,7 +857,7 @@ const Repeater = ({ label, hint, items = [], onChange, renderItem, onAdd, classN
   };
   const remove = i => onChange(items.filter((_, idx) => idx !== i));
   const update = (i, v) => { const n = [...items]; n[i] = v; onChange(n); };
-  
+
   return (
     <div className="wc-field">
       <label className="wc-field-label">{label}</label>
@@ -944,8 +944,8 @@ const HeroEditor = ({ data, onChange }) => {
           <h3 className="wc-editor-card-title"><Icon name="image" size={15} /> Background Images</h3>
         </div>
         <div className="wc-editor-card-body">
-          <ImageUploadField 
-            label="Hero Background Images" 
+          <ImageUploadField
+            label="Hero Background Images"
             hint="Recommended: 1920×800px, max 5MB each. Multiple images for slider/carousel."
             value={data?.background_images || []}
             multiple={true}
@@ -960,17 +960,17 @@ const HeroEditor = ({ data, onChange }) => {
           <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Patient Trust Images</h3>
         </div>
         <div className="wc-editor-card-body">
-          <Repeater 
-            label="Patient/Customer Photos" 
+          <Repeater
+            label="Patient/Customer Photos"
             hint="Add up to 5 patient images (recommended: 80×80px circular)"
-            items={data?.patient_images || []} 
+            items={data?.patient_images || []}
             onChange={v => set("patient_images", v)}
             className="wc-repeater-patient"
             renderItem={(item, i, update, remove) => (
               <>
-                <ImageUploadField 
-                  label="" 
-                  value={item} 
+                <ImageUploadField
+                  label=""
+                  value={item}
                   onChange={v => update(i, v)}
                   hint=""
                 />
@@ -1018,7 +1018,7 @@ const HeroEditor = ({ data, onChange }) => {
    ══════════════════════════════════════════════════════════════ */
 const AppointmentCTAEditor = ({ data, onChange }) => {
   const set = (k, v) => onChange({ ...data, [k]: v });
-  
+
   return (
     <div>
       <div className="wc-editor-card">
@@ -1074,7 +1074,7 @@ const AppointmentCTAEditor = ({ data, onChange }) => {
    ══════════════════════════════════════════════════════════════ */
 const TestimonialsEditor = ({ data, onChange }) => {
   const set = (k, v) => onChange({ ...data, [k]: v });
-  
+
   const addTestimonial = () => ({
     id: `t${Date.now()}`,
     text: "",
@@ -1162,22 +1162,22 @@ const TestimonialsEditor = ({ data, onChange }) => {
                     )}
                   </div>
                   <div className="wc-testimonial-info">
-                    <input 
-                      className="wc-input wc-testimonial-name" 
-                      value={card.customer_name} 
-                      onChange={e => update(i, { ...card, customer_name: e.target.value })} 
+                    <input
+                      className="wc-input wc-testimonial-name"
+                      value={card.customer_name}
+                      onChange={e => update(i, { ...card, customer_name: e.target.value })}
                       placeholder="Customer Name"
                     />
-                    <input 
-                      className="wc-input wc-testimonial-designation" 
-                      value={card.designation} 
-                      onChange={e => update(i, { ...card, designation: e.target.value })} 
+                    <input
+                      className="wc-input wc-testimonial-designation"
+                      value={card.designation}
+                      onChange={e => update(i, { ...card, designation: e.target.value })}
                       placeholder="Designation"
                     />
-                    <input 
-                      className="wc-input wc-testimonial-address" 
-                      value={card.address} 
-                      onChange={e => update(i, { ...card, address: e.target.value })} 
+                    <input
+                      className="wc-input wc-testimonial-address"
+                      value={card.address}
+                      onChange={e => update(i, { ...card, address: e.target.value })}
                       placeholder="Address"
                     />
                   </div>
@@ -1187,7 +1187,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
                 </div>
                 <div className="wc-testimonial-card-body">
                   <div className="wc-testimonial-rating">
-                    {[1,2,3,4,5].map(n => (
+                    {[1, 2, 3, 4, 5].map(n => (
                       <button
                         key={n}
                         className={`wc-star-btn ${n <= card.rating ? 'active' : ''}`}
@@ -1197,16 +1197,16 @@ const TestimonialsEditor = ({ data, onChange }) => {
                       </button>
                     ))}
                   </div>
-                  <textarea 
-                    className="wc-textarea wc-testimonial-text" 
-                    value={card.text} 
-                    onChange={e => update(i, { ...card, text: e.target.value })} 
+                  <textarea
+                    className="wc-textarea wc-testimonial-text"
+                    value={card.text}
+                    onChange={e => update(i, { ...card, text: e.target.value })}
                     placeholder="Write customer testimonial here..."
                     rows={4}
                   />
                 </div>
                 <div className="wc-testimonial-card-footer">
-                  <ImageUploadField 
+                  <ImageUploadField
                     label=""
                     value={card.image}
                     onChange={v => update(i, { ...card, image: v })}
@@ -1227,7 +1227,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
    ══════════════════════════════════════════════════════════════ */
 const PartnersEditor = ({ data, onChange }) => {
   const set = (k, v) => onChange({ ...data, [k]: v });
-  
+
   const addPartner = () => ({
     id: `p${Date.now()}`,
     image: "/images/partners/01.png",
@@ -1273,7 +1273,7 @@ const PartnersEditor = ({ data, onChange }) => {
             className="wc-repeater-partners"
             renderItem={(logo, i, update, remove) => (
               <>
-                <ImageUploadField 
+                <ImageUploadField
                   label=""
                   value={logo.image}
                   onChange={v => update(i, { ...logo, image: v })}
@@ -1399,13 +1399,13 @@ const AddPageModal = ({ isOpen, onClose, onAdd, parentPageId }) => {
       setError("Page ID is required");
       return;
     }
-    
+
     onAdd({
       id: pageId,
       label: pageLabel,
       href: pageHref,
     });
-    
+
     setPageLabel("");
     setPageId("");
     setPageHref("");
@@ -1574,9 +1574,9 @@ const AboutHeroEditor = ({ data, onChange }) => {
             {(data?.stats || []).map((stat, i) => (
               <div key={i} className="wc-stat-input-item">
                 <label>{stat.label}</label>
-                <input value={stat.value} onChange={e => { const s = [...(data.stats||[])]; s[i]={...s[i],value:e.target.value}; set("stats",s); }} placeholder="Value" />
+                <input value={stat.value} onChange={e => { const s = [...(data.stats || [])]; s[i] = { ...s[i], value: e.target.value }; set("stats", s); }} placeholder="Value" />
                 <div className="wc-stat-sub">
-                  <input value={stat.label} onChange={e => { const s=[...(data.stats||[])]; s[i]={...s[i],label:e.target.value}; set("stats",s); }} placeholder="Label" style={{width:"100%",border:"none",background:"transparent",fontSize:11,color:"#94a3b8",outline:"none",fontFamily:"inherit"}} />
+                  <input value={stat.label} onChange={e => { const s = [...(data.stats || [])]; s[i] = { ...s[i], label: e.target.value }; set("stats", s); }} placeholder="Label" style={{ width: "100%", border: "none", background: "transparent", fontSize: 11, color: "#94a3b8", outline: "none", fontFamily: "inherit" }} />
                 </div>
               </div>
             ))}
@@ -2082,9 +2082,9 @@ const CareerCTAEditor = ({ data, onChange }) => {
             {(data?.stats || []).map((stat, i) => (
               <div key={i} className="wc-stat-input-item">
                 <label>{stat.label}</label>
-                <input value={stat.value} onChange={e => { const s = [...(data.stats||[])]; s[i]={...s[i],value:e.target.value}; set("stats",s); }} placeholder="50+" />
+                <input value={stat.value} onChange={e => { const s = [...(data.stats || [])]; s[i] = { ...s[i], value: e.target.value }; set("stats", s); }} placeholder="50+" />
                 <div className="wc-stat-sub">
-                  <input value={stat.label} onChange={e => { const s=[...(data.stats||[])]; s[i]={...s[i],label:e.target.value}; set("stats",s); }} placeholder="Label" style={{width:"100%",border:"none",background:"transparent",fontSize:11,color:"#94a3b8",outline:"none",fontFamily:"inherit"}} />
+                  <input value={stat.label} onChange={e => { const s = [...(data.stats || [])]; s[i] = { ...s[i], label: e.target.value }; set("stats", s); }} placeholder="Label" style={{ width: "100%", border: "none", background: "transparent", fontSize: 11, color: "#94a3b8", outline: "none", fontFamily: "inherit" }} />
                 </div>
               </div>
             ))}
@@ -2166,7 +2166,7 @@ const PackagesListingEditor = ({ data, onChange }) => {
                   </div>
                 </div>
                 <input className="wc-input" value={pkg.type} onChange={e => update(i, { ...pkg, type: e.target.value })} placeholder="Package type description" />
-                
+
                 <div style={{ background: "#f8fafc", borderRadius: 8, padding: 12, border: "1px solid #e2e8f0" }}>
                   <label style={{ fontSize: 11, fontWeight: 700, color: "#374151", display: "block", marginBottom: 8 }}>Test Items</label>
                   {(pkg.items || []).map((item, j) => (
@@ -2469,7 +2469,7 @@ export default function WebsiteContentPage() {
         return page;
       });
     });
-    
+
     setPageData(prev => ({
       ...prev,
       [newPage.id]: {
@@ -2496,7 +2496,7 @@ export default function WebsiteContentPage() {
         },
       }
     }));
-    
+
     selectPage(newPage.id, "hero");
     showToast(`${newPage.label} page added successfully!`, "success");
   };
@@ -2524,13 +2524,13 @@ export default function WebsiteContentPage() {
 
   const filteredTree = searchQuery
     ? pageTree.map(p => {
-        const matchParent = p.label.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchedChildren = (p.children || []).filter(c => c.label.toLowerCase().includes(searchQuery.toLowerCase()));
-        if (matchParent || matchedChildren.length > 0) {
-          return { ...p, children: matchParent ? p.children : matchedChildren };
-        }
-        return null;
-      }).filter(Boolean)
+      const matchParent = p.label.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchedChildren = (p.children || []).filter(c => c.label.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (matchParent || matchedChildren.length > 0) {
+        return { ...p, children: matchParent ? p.children : matchedChildren };
+      }
+      return null;
+    }).filter(Boolean)
     : pageTree;
 
   const pageIcons = {
@@ -2545,7 +2545,7 @@ export default function WebsiteContentPage() {
           <p className="wc-sidebar-title">Website Pages</p>
           <div className="wc-search">
             <svg className="wc-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search pages..." />
           </div>
@@ -2574,7 +2574,7 @@ export default function WebsiteContentPage() {
                   <span className="wc-tree-status" />
                   {hasChildren && (
                     <svg className={`wc-tree-chevron ${isOpen ? "open" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="9 18 15 12 9 6"/>
+                      <polyline points="9 18 15 12 9 6" />
                     </svg>
                   )}
                 </button>
@@ -2619,7 +2619,7 @@ export default function WebsiteContentPage() {
           <div className="wc-breadcrumb">
             <span>Website Content</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6"/>
+              <polyline points="9 18 15 12 9 6" />
             </svg>
             {currentParentDef && currentParentDef.id !== selectedPage && (
               <>
@@ -2627,13 +2627,13 @@ export default function WebsiteContentPage() {
                   {currentParentDef.label}
                 </span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="9 18 15 12 9 6"/>
+                  <polyline points="9 18 15 12 9 6" />
                 </svg>
               </>
             )}
             <span className="current">{currentPageDef?.label || selectedPage}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6"/>
+              <polyline points="9 18 15 12 9 6" />
             </svg>
             <span className="current">{SECTION_DEFS[selectedSection]?.label || selectedSection}</span>
           </div>
@@ -2688,7 +2688,7 @@ export default function WebsiteContentPage() {
               </div>
               <div className="wc-page-info-meta">
                 <span className="wc-meta-tag live">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="11" height="11"><circle cx="12" cy="12" r="10"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="11" height="11"><circle cx="12" cy="12" r="10" /></svg>
                   Published
                 </span>
                 <span className="wc-meta-tag">
@@ -2721,7 +2721,7 @@ export default function WebsiteContentPage() {
 
       <div className={`wc-toast ${toast.type} ${toast.show ? "show" : ""}`}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-          <polyline points="20 6 9 17 4 12"/>
+          <polyline points="20 6 9 17 4 12" />
         </svg>
         {toast.msg}
       </div>
