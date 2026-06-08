@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  DEPARTMENTS, DOCTORS, BRANCHES, DOCTOR_SLOTS,
+  BRANCHES, DOCTOR_SLOTS,
   INITIAL_FORM, validateStep1, validateStep2, validateStep3
 } from "./appointmentData";
 import "@/styles/pages/appointment.css";
@@ -15,26 +15,16 @@ import { API_URL } from "@/config";
    ═══════════════════════════════════════════════════════════════ */
 const convertTo24HourFormat = (timeStr) => {
   if (!timeStr) return timeStr;
-
-  // If already in 24-hour format (HH:MM without AM/PM), return as is
   if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
-
-  // Parse 12-hour format (e.g., "09:30 AM" or "09:30AM")
   const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)$/);
   if (match) {
     let [, hours, minutes, period] = match;
     hours = parseInt(hours, 10);
     const isPM = period.toUpperCase() === "PM";
-
-    if (isPM && hours !== 12) {
-      hours += 12;
-    } else if (!isPM && hours === 12) {
-      hours = 0;
-    }
-
+    if (isPM && hours !== 12) hours += 12;
+    else if (!isPM && hours === 12) hours = 0;
     return `${String(hours).padStart(2, "0")}:${minutes}`;
   }
-
   return timeStr;
 };
 
@@ -58,7 +48,7 @@ const IconSearch = ({ size = 16 }) => <svg width={size} height={size} viewBox="0
 const IconX = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
 
 /* ═══════════════════════════════════════════════════════════════
-   FIELD WRAPPER — label + icon + error message
+   FIELD WRAPPER
    ═══════════════════════════════════════════════════════════════ */
 function Field({ label, error, icon: IconComponent, children }) {
   return (
@@ -79,7 +69,7 @@ function Field({ label, error, icon: IconComponent, children }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MODAL — generic overlay used for Terms / Privacy popups
+   MODAL
    ═══════════════════════════════════════════════════════════════ */
 function Modal({ open, onClose, title, children }) {
   if (!open) return null;
@@ -100,7 +90,7 @@ function Modal({ open, onClose, title, children }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TERMS / PRIVACY CONTENT (inline — no external link needed)
+   TERMS / PRIVACY CONTENT
    ═══════════════════════════════════════════════════════════════ */
 const TERMS_CONTENT = (
   <div className="appt-legal-content">
@@ -133,21 +123,23 @@ const PRIVACY_CONTENT = (
 );
 
 /* ═══════════════════════════════════════════════════════════════
-   DOCTOR DROPDOWN — searchable select replacing radio list
+   DOCTOR DROPDOWN — searchable select
    ═══════════════════════════════════════════════════════════════ */
 function DoctorDropdown({ doctors, value, onChange, locked = false }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const filtered = doctors.filter(d =>
-    d.name.toLowerCase().includes(query.toLowerCase()) ||
-    d.title.toLowerCase().includes(query.toLowerCase())
-  );
-  const selected = doctors.find(d => d.id === value);
+  const filtered = (Array.isArray(doctors) ? doctors : []).filter(d => {
+    if (!d || !d.id) return false;
+    const name = String(d.name ?? "").toLowerCase();
+    const title = String(d.title ?? "").toLowerCase();
+    const q = String(query ?? "").toLowerCase();
+    return name.includes(q) || title.includes(q);
+  });
+  const selected = (Array.isArray(doctors) ? doctors : []).find(d => d && d.id === value);
 
   return (
     <div className="appt-doc-dd" style={{ position: "relative" }}>
-      {/* Trigger */}
       <button
         type="button"
         className={`appt-doc-dd__trigger${open ? " open" : ""}${locked ? " appt-doc-dd__trigger--locked" : ""}`}
@@ -160,24 +152,22 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
           ? <>
             <div className="appt-doc-avatar" style={{ width: 28, height: 28, fontSize: ".65rem", overflow: "hidden", padding: 0 }}>
               <img
-                src={`/images/doctors/doctor-${selected.id}.jpg`}
-                alt={selected.name}
+                src={selected.avatar || `/images/doctors/doctor-${selected.id}.jpg`}
+                alt={selected.fullName || "Doctor"}
                 style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-                onError={e => { e.target.style.display = "none"; e.target.parentNode.textContent = selected.avatar; }}
+              // onError={e => { e.target.style.display = "none"; e.target.parentNode.textContent = selected.initials || "Dr"; }}
               />
             </div>
-            <span>{selected.name}</span>
-            <span className="appt-doc-dd__meta">{selected.title}</span>
+            <span>{selected.fullName || "Unknown"}</span>
+            <span className="appt-doc-dd__meta">{selected.title || ""}</span>
           </>
-          : <span className="appt-doc-dd__placeholder">Search & select a doctor…</span>
+          : <span className="appt-doc-dd__placeholder">Search &amp; select a doctor…</span>
         }
         <span className="appt-doc-dd__chevron" style={{ marginLeft: "auto", color: "var(--appt-ink3)" }}>▾</span>
       </button>
 
-      {/* Dropdown panel */}
       {open && !locked && (
         <div className="appt-doc-dd__panel" role="listbox">
-          {/* Search */}
           <div className="appt-doc-dd__search-wrap">
             <IconSearch size={14} />
             <input
@@ -192,24 +182,22 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
               <button type="button" className="appt-doc-dd__clear" onClick={() => setQuery("")}><IconX size={12} /></button>
             )}
           </div>
-
-          {/* List */}
           <div className="appt-doc-dd__list">
             {filtered.length === 0 && (
               <div className="appt-doc-dd__empty">No doctors found</div>
             )}
             {filtered.map(doc => (
               <div
-                key={doc.id}
+                key={doc.id || doc.name}
                 role="option"
                 aria-selected={value === doc.id}
                 className={`appt-doc-dd__item${value === doc.id ? " sel" : ""}`}
                 onClick={() => { onChange(doc.id); setOpen(false); setQuery(""); }}
               >
-                <div className="appt-doc-avatar" style={{ width: 36, height: 36, fontSize: ".7rem", flexShrink: 0 }}>{doc.avatar}</div>
+                <div className="appt-doc-avatar" style={{ width: 36, height: 36, fontSize: ".7rem", flexShrink: 0 }}>{doc.initials || "Dr"}</div>
                 <div>
-                  <div className="appt-doc-name">{doc.name}</div>
-                  <div className="appt-doc-meta">{doc.title} · {doc.exp} experience</div>
+                  <div className="appt-doc-name">{doc.fullName || "Unknown"}</div>
+                  <div className="appt-doc-meta">{doc.title || ""}{doc.exp ? ` · ${doc.exp} experience` : ""}</div>
                 </div>
                 {value === doc.id && <span style={{ marginLeft: "auto", color: "var(--appt-teal)", fontWeight: 700 }}>✓</span>}
               </div>
@@ -225,24 +213,17 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
    INVOICE — printable/downloadable on confirmation
    ═══════════════════════════════════════════════════════════════ */
 function InvoicePrint({ data, bookingRef }) {
-  const dept = DEPARTMENTS.find(d => d.id === data.dept);
-  const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor = doctors.find(d => d.id === data.doctor);
+  const dept = data._deptObj || {};
+  const doctor = data._doctorObj || {};
   const branch = BRANCHES.find(b => b.id === data.branch);
 
-  const FEE = {
-    cardiology: 2000, orthopedics: 1800, general: 800, pediatrics: 900,
-    dental: 1200, neurology: 2500, dermatology: 1500, "eye-care": 1400
-  };
-  const consultFee = FEE[data.dept] || 1000;
+  const consultFee = data.ConsultationFee || 1000;
   const serviceFee = data.mode === "online" ? 100 : 0;
   const total = consultFee + serviceFee;
   const isOnlinePay = data.paymentMethod === "bkash" || data.paymentMethod === "card";
   const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
   const handlePrint = () => {
-    const el = document.getElementById("appt-invoice");
-    if (!el) return;
     const w = window.open("", "_blank");
     w.document.write(`<!DOCTYPE html><html><head><title>Invoice ${bookingRef}</title>
       <style>
@@ -251,8 +232,6 @@ function InvoicePrint({ data, bookingRef }) {
         .inv{max-width:680px;margin:0 auto}
         .inv-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #1E6FAF}
         .inv-left{display:flex;flex-direction:column;gap:4px}
-        .inv-logo{font-size:1.4rem;font-weight:800;color:#1E6FAF}
-        .inv-logo span{display:block;font-size:.75rem;font-weight:400;color:#6b7b8d;margin-top:2px}
         .inv-logo-img{display:block;max-width:220px;height:auto;object-fit:contain;margin-bottom:8px}
         .inv-phoneAddress{font-size:.72rem;font-weight:400;color:#6b7b8d;line-height:1.5}
         .inv-ref{text-align:right}
@@ -271,7 +250,7 @@ function InvoicePrint({ data, bookingRef }) {
         .amt{text-align:right}
         .total-row td{font-weight:700;font-size:.95rem;background:#f0faf8;color:#1E6FAF}
         .inv-foot{margin-top:28px;padding-top:16px;border-top:1px solid #e2ddd8;font-size:.75rem;color:#6b7b8d;text-align:center;line-height:1.8}
-        @media print{@page{size:A4 portrait;margin:18mm 16mm 18mm 16mm}html,body{width:210mm;margin:0;padding:0;background:#fff}.inv-logo-img{-webkit-print-color-adjust:exact;print-color-adjust:exact}.inv{max-width:100%;padding:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+        @media print{@page{size:A4 portrait;margin:18mm 16mm 18mm 16mm}html,body{width:210mm;margin:0;padding:0;background:#fff}.inv{max-width:100%;padding:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
       </style></head><body>
       <div class="inv">
         <div class="inv-head">
@@ -431,39 +410,26 @@ function Step1({ data, errors, upd, onNext }) {
 
 /* ═══════════════════════════════════════════════════════════════
    STEP 2 — Appointment Details
-   Flow:
-     • Online:  Mode → Dept → Doctor list (scrollable) → Date → Slots
-     • Offline: Mode → Dept → Branch → Doctor list → Date → Slots
    ═══════════════════════════════════════════════════════════════ */
-function Step2({ data, errors, upd, onNext, onBack, minDate }) {
+function Step2({ data, errors, upd, onNext, onBack, minDate, departments, doctorsByDept, loadingDepts, loadingDoctors, availableSlots, loadingSlots }) {
   const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
-  /* Doctors for the chosen department */
+  /* Doctors for the chosen department (from API) */
   const doctors = useMemo(
-    () => (data.dept ? DOCTORS[data.dept] || [] : []),
-    [data.dept]
+    () => (data.dept ? doctorsByDept[data.dept] || [] : []),
+    [data.dept, doctorsByDept]
   );
 
-  /* Time slots for the chosen doctor */
+  /* Time slots — prioritize API slots, fallback to static slots */
   const doctorSlots = useMemo(
-    () => (data.doctor ? DOCTOR_SLOTS[data.doctor] || [] : []),
-    [data.doctor]
+    () => (availableSlots.length > 0 ? availableSlots : (data.doctor ? DOCTOR_SLOTS[data.doctor] || [] : [])),
+    [data.doctor, availableSlots]
   );
 
-  /*
-   * Derived flags
-   * Online:  dept required (no branch) → show doctor list
-   * Offline: dept + branch both required → show doctor list
-   */
   const showDoctorList = data.dept && (isOnline || (isOffline && data.branch));
   const dateEnabled = showDoctorList && !!data.doctor;
   const showSlots = dateEnabled && !!data.date;
-
-  /* step label numbers — branch step only exists offline */
-  const stepNum = isOnline
-    ? { dept: 1, doctor: 2, date: 3, slot: 4 }
-    : { dept: 2, branch: 2, doctor: 3, date: 4, slot: 5 };
 
   return (
     <div className="appt-card">
@@ -486,7 +452,6 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
           <div className="appt-mode-group">
             {[
               { val: "online", icon: "💻", label: "Online", sub: "Video / teleconsult" },
-              // AFTER
               { val: "offline", icon: "🏥", label: "In-Person", sub: "Visit our branch", disabled: true },
             ].map(({ val, icon, label, sub }) => (
               <button
@@ -514,34 +479,40 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
           </div>
         </Field>
 
-        {/* ── 2. Department ───────────────────────────────────── */}
+        {/* ── 2. Department (from API) ─────────────────────────── */}
         {data.mode && (
-          <Field label={`${isOnline ? "2" : "2"}. Select Department *`} error={errors.dept}>
-            <div className="appt-dept-chips">
-              {DEPARTMENTS.map(dept => (
-                <button
-                  key={dept.id}
-                  type="button"
-                  className={`appt-dept-chip${data.dept === dept.id ? " sel" : ""}${data._preDoctor && data.dept !== dept.id ? " appt-dept-chip--disabled" : ""}`}
-                  onClick={() => {
-                    if (data._preDoctor) return;
-                    upd("dept", dept.id);
-                    upd("doctor", "");
-                    upd("date", "");
-                    upd("slot", "");
-                  }}
-                  aria-pressed={data.dept === dept.id}
-                  aria-disabled={!!data._preDoctor && data.dept !== dept.id}
-                >
-                  <span className="appt-dept-chip__icon">{dept.icon}</span>
-                  <span className="appt-dept-chip__name">{dept.name}</span>
-                </button>
-              ))}
-            </div>
+          <Field label="2. Select Department *" error={errors.dept}>
+            {loadingDepts ? (
+              <div className="appt-doc-fallback">Loading departments…</div>
+            ) : (
+              <div className="appt-dept-chips">
+                {departments.map(dept => (
+                  <button
+                    key={dept.id}
+                    type="button"
+                    className={`appt-dept-chip${data.dept === dept.id ? " sel" : ""}${data._preDoctor && data.dept !== dept.id ? " appt-dept-chip--disabled" : ""}`}
+                    onClick={() => {
+                      if (data._preDoctor) return;
+                      upd("dept", dept.id);
+                      upd("_deptObj", dept);
+                      upd("doctor", "");
+                      upd("_doctorObj", null);
+                      upd("date", "");
+                      upd("slot", "");
+                    }}
+                    aria-pressed={data.dept === dept.id}
+                    aria-disabled={!!data._preDoctor && data.dept !== dept.id}
+                  >
+                    <span className="appt-dept-chip__icon">{dept.icon}</span>
+                    <span className="appt-dept-chip__name">{dept.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </Field>
         )}
 
-        {/* ── 3. Branch — OFFLINE only, shown after dept ──────── */}
+        {/* ── 3. Branch — OFFLINE only ─────────────────────────── */}
         {isOffline && data.dept && (
           <Field label="3. Branch Location *" icon={IconPin} error={errors.branch}>
             <select
@@ -550,6 +521,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
               onChange={e => {
                 upd("branch", e.target.value);
                 upd("doctor", "");
+                upd("_doctorObj", null);
                 upd("date", "");
                 upd("slot", "");
               }}
@@ -563,28 +535,36 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
           </Field>
         )}
 
-        {/* ── Doctor list ──────────────────────────────────────── */}
-        {showDoctorList && doctors.length > 0 && (
-          <Field
-            label={`${isOnline ? "3" : "4"}. Select Doctor *`}
-            error={errors.doctor}
-          >
-            <DoctorDropdown
-              doctors={doctors}
-              value={data.doctor}
-              onChange={id => { upd("doctor", id); upd("date", ""); upd("slot", ""); }}
-              locked={!!data._preDoctor}
-            />
-          </Field>
+        {/* ── Doctor list (from API) ────────────────────────────── */}
+        {showDoctorList && (
+          loadingDoctors ? (
+            <div className="appt-doc-fallback">Loading doctors…</div>
+          ) : doctors.length > 0 ? (
+            <Field
+              label={`${isOnline ? "3" : "4"}. Select Doctor *`}
+              error={errors.doctor}
+            >
+              <DoctorDropdown
+                doctors={doctors}
+                value={data.doctor}
+                onChange={id => {
+                  const docObj = doctors.find(d => d.id === id);
+                  upd("doctor", id);
+                  upd("_doctorObj", docObj || null);
+                  upd("date", "");
+                  upd("slot", "");
+                }}
+                locked={!!data._preDoctor}
+              />
+            </Field>
+          ) : (
+            <div className="appt-doc-fallback">
+              Our team will assign the most suitable specialist upon confirmation.
+            </div>
+          )
         )}
 
-        {showDoctorList && doctors.length === 0 && (
-          <div className="appt-doc-fallback">
-            Our team will assign the most suitable specialist upon confirmation.
-          </div>
-        )}
-
-        {/* ── Preferred Date — unlocks after doctor selected ───── */}
+        {/* ── Preferred Date ────────────────────────────────────── */}
         {data.dept && (isOnline || (isOffline && data.branch)) && (
           <Field
             label={`${isOnline ? "4" : "5"}. Preferred Date *`}
@@ -608,39 +588,45 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
           </Field>
         )}
 
-        {/* ── Time Slots — per-doctor, shown after date chosen ─── */}
-        {showSlots && doctorSlots.length > 0 && (
-          <Field
-            label={`${isOnline ? "5" : "6"}. Select Time Slot *`}
-            error={errors.slot}
-          >
-            <div className="appt-time-grid">
-              {doctorSlots.map(({ time, booked }) => (
-                <button
-                  key={time}
-                  type="button"
-                  disabled={booked}
-                  className={[
-                    "appt-slot-btn",
-                    data.slot === time ? "active" : "",
-                    booked ? "booked" : "",
-                  ].join(" ").trim()}
-                  onClick={() => upd("slot", time)}
-                  aria-pressed={data.slot === time}
-                  aria-disabled={booked}
-                >
-                  {time}
-                  {booked && <span className="appt-slot-badge">Full</span>}
-                </button>
-              ))}
+        {/* ── Time Slots ────────────────────────────────────────── */}
+        {showSlots && (
+          loadingSlots ? (
+            <div className="appt-doc-fallback">Loading available time slots…</div>
+          ) : doctorSlots.length > 0 ? (
+            <Field
+              label={`${isOnline ? "5" : "6"}. Select Time Slot *`}
+              error={errors.slot}
+            >
+              <div className="appt-time-grid">
+                {doctorSlots.map(slot => {
+                  const time = typeof slot === "string" ? slot : slot.time;
+                  const booked = typeof slot === "string" ? false : slot.booked;
+                  return (
+                    <button
+                      key={time}
+                      type="button"
+                      disabled={booked}
+                      className={[
+                        "appt-slot-btn",
+                        data.slot === time ? "active" : "",
+                        booked ? "booked" : "",
+                      ].join(" ").trim()}
+                      onClick={() => upd("slot", time)}
+                      aria-pressed={data.slot === time}
+                      aria-disabled={booked}
+                    >
+                      {time}
+                      {booked && <span className="appt-slot-badge">Full</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </Field>
+          ) : (
+            <div className="appt-doc-fallback">
+              No available slots for this doctor on the selected date. Please choose another date or doctor.
             </div>
-          </Field>
-        )}
-
-        {showSlots && doctorSlots.length === 0 && (
-          <div className="appt-doc-fallback">
-            No available slots for this doctor. Please call us to arrange a time.
-          </div>
+          )
         )}
 
       </div>
@@ -664,9 +650,8 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
 
-  const dept = DEPARTMENTS.find(d => d.id === data.dept);
-  const doctors = data.dept ? DOCTORS[data.dept] || [] : [];
-  const doctor = doctors.find(d => d.id === data.doctor);
+  const dept = data._deptObj || {};
+  const doctor = data._doctorObj || {};
   const branch = BRANCHES.find(b => b.id === data.branch);
 
   return (
@@ -674,7 +659,7 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
       <div className="appt-card__head">
         <div className="appt-card__icon">✅</div>
         <div>
-          <div className="appt-card__title">Review & Confirm</div>
+          <div className="appt-card__title">Review &amp; Confirm</div>
           <div className="appt-card__sub">
             Verify your details before finalising your booking
           </div>
@@ -750,19 +735,10 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           />
         </Field>
 
-        <Modal
-          open={termsOpen}
-          onClose={() => setTermsOpen(false)}
-          title="Terms of Service"
-        >
+        <Modal open={termsOpen} onClose={() => setTermsOpen(false)} title="Terms of Service">
           {TERMS_CONTENT}
         </Modal>
-
-        <Modal
-          open={privacyOpen}
-          onClose={() => setPrivacyOpen(false)}
-          title="Privacy Policy"
-        >
+        <Modal open={privacyOpen} onClose={() => setPrivacyOpen(false)} title="Privacy Policy">
           {PRIVACY_CONTENT}
         </Modal>
 
@@ -772,49 +748,27 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
             checked={data.consent}
             onChange={e => upd("consent", e.target.checked)}
           />
-
           <span>
             I agree to the{" "}
-            <button
-              type="button"
-              className="appt-link-btn"
-              onClick={e => {
-                e.preventDefault();
-                setTermsOpen(true);
-              }}
-            >
+            <button type="button" className="appt-link-btn" onClick={e => { e.preventDefault(); setTermsOpen(true); }}>
               Terms of Service
             </button>{" "}
             and{" "}
-            <button
-              type="button"
-              className="appt-link-btn"
-              onClick={e => {
-                e.preventDefault();
-                setPrivacyOpen(true);
-              }}
-            >
+            <button type="button" className="appt-link-btn" onClick={e => { e.preventDefault(); setPrivacyOpen(true); }}>
               Privacy Policy
             </button>
-            . I consent to my information being used to facilitate this
-            appointment.
+            . I consent to my information being used to facilitate this appointment.
           </span>
         </label>
 
-        {errors.consent && (
-          <span className="appt-err-msg">{errors.consent}</span>
-        )}
-
-        {errors.submit && (
-          <div className="appt-submit-err">⚠️ {errors.submit}</div>
-        )}
+        {errors.consent && <span className="appt-err-msg">{errors.consent}</span>}
+        {errors.submit && <div className="appt-submit-err">⚠️ {errors.submit}</div>}
       </div>
 
       <div className="appt-card__foot">
         <button type="button" className="btn btn-secondary" onClick={onBack}>
           <IconArrowL size={16} /> Edit Details
         </button>
-
         <button
           type="button"
           className="btn btn-primary"
@@ -822,28 +776,22 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           onClick={onSubmit}
         >
           {busy ? (
-            <>
-              <span className="appt-spinner" />
-              Creating Appointment...
-            </>
+            <><span className="appt-spinner" />Creating Appointment...</>
           ) : (
-            <>
-              <IconLock size={15} />
-              Confirm Appointment
-            </>
+            <><IconLock size={15} />Confirm Appointment</>
           )}
         </button>
       </div>
     </div>
   );
 }
+
 /* ═══════════════════════════════════════════════════════════════
    CONFIRMATION VIEW
    ═══════════════════════════════════════════════════════════════ */
 function Confirmation({ data, bookingRef, onReset }) {
-  const dept = DEPARTMENTS.find(d => d.id === data.dept);
-  const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor = doctors.find(d => d.id === data.doctor);
+  const dept = data._deptObj || {};
+  const doctor = data._doctorObj || {};
   const branch = BRANCHES.find(b => b.id === data.branch);
 
   const rows = [
@@ -857,15 +805,13 @@ function Confirmation({ data, bookingRef, onReset }) {
     ["Payment", data.paymentMethod === "bkash" ? "📱 bKash / Mobile Banking"
       : data.paymentMethod === "card" ? "💳 Credit / Debit Card"
         : "💵 Cash on Visit"],
-
-    ["Amount", "BDT " + data.ConsultationFee],
+    ["Amount", "BDT " + (data.ConsultationFee || "")],
   ];
 
   return (
     <div className="appt-confirm-wrap">
       <div className="appt-confirm-card appt-card">
         <div className="appt-card__body">
-          {/* <div className="appt-confirm-icon">✅</div> */}
           <h2 className="appt-confirm-title">Booking Confirmed!</h2>
           <p style={{ color: "var(--appt-ink3)" }}>Your reference number</p>
           <div className="appt-confirm-ref">{bookingRef}</div>
@@ -948,78 +894,243 @@ function Sidebar({ phone, email }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   DEPT ICON MAP — fallback icons keyed by specialization name
+   ═══════════════════════════════════════════════════════════════ */
+const DEPT_ICON_MAP = {
+  cardiology: "❤️",
+  orthopedics: "🦴",
+  general: "🩺",
+  "general medicine": "🩺",
+  pediatrics: "👶",
+  dental: "🦷",
+  dentistry: "🦷",
+  neurology: "🧠",
+  dermatology: "🩹",
+  "eye care": "👁️",
+  ophthalmology: "👁️",
+  gynecology: "🌸",
+  urology: "💧",
+  oncology: "🔬",
+  psychiatry: "🧘",
+  radiology: "📡",
+  surgery: "🔪",
+  default: "🏥",
+};
+
+function getDeptIcon(name = "") {
+  const key = name.toLowerCase();
+  for (const [k, v] of Object.entries(DEPT_ICON_MAP)) {
+    if (key.includes(k)) return v;
+  }
+  return DEPT_ICON_MAP.default;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    MAIN EXPORT — AppointmentForm
-   Usage: <AppointmentForm phone="+880 1234-567890" email="appointments@clinic.com" />
    ═══════════════════════════════════════════════════════════════ */
 export default function AppointmentForm({
   phone = "+880 1234-567890",
   email = "appointments@clinic.com",
 }) {
   const searchParams = useSearchParams();
-
   const token = useAppSelector((state) => state.auth.accessToken);
-  console.log('patient token ', token);
 
-  /*
-   * Lazy initial state — runs once on mount, reads ?doctor= URL param.
-   * Using useState lazy init (not useEffect) so data is correct on
-   * the very first render — avoids the flash/race condition.
-   */
+  /* ── Form state (must be declared before any useEffect that reads it) ── */
   const [data, setData] = useState(() => {
     const preDoctor = searchParams?.get?.("doctor") ?? null;
     const preStep = searchParams?.get?.("step") ?? null;
     const fullName = searchParams?.get?.("fullName") ?? "";
-    const email = searchParams?.get?.("email") ?? "";
+    const emailParam = searchParams?.get?.("email") ?? "";
     const phone = searchParams?.get?.("phone") ?? "";
     const dob = searchParams?.get?.("dob") ?? "";
     const gender = searchParams?.get?.("gender") ?? "";
 
-    // CTA pre-fill (step=2, no doctor)
-    if (preStep === "2" && !preDoctor) {
-      return { ...INITIAL_FORM, fullName, email, phone, dob, gender };
-    }
+    const base = {
+      fullName, email: emailParam, phone, dob, gender,
+      mode: "", dept: "", branch: "", doctor: "",
+      date: "", slot: "", symptoms: "", medHistory: "",
+      consent: false, paymentMethod: "cash", ConsultationFee: 0,
+      _preDoctor: null, _deptObj: null, _doctorObj: null,
+    };
 
-    // Doctor deep-link (existing behaviour)
-    if (!preDoctor) return INITIAL_FORM;
-    const preDept = Object.keys(DOCTORS).find(deptId =>
-      DOCTORS[deptId].some(d => d.id === preDoctor)
-    );
-    if (!preDept) return INITIAL_FORM;
-    // Find the doctor entry to read their consultationType and branchId
-    const allDeptDoctors = DOCTORS[preDept] || [];
-    const preDocEntry = allDeptDoctors.find(d => d.id === preDoctor);
-    const isInPerson = preDocEntry?.consultationType === "Face to Face";
-    const preMode = isInPerson ? "offline" : "online";
-    const preBranch = isInPerson ? (preDocEntry?.branchId || "") : "";
+    if (preStep === "2" && !preDoctor) return base;
+    if (!preDoctor) return { ...base, ...INITIAL_FORM };
 
-    return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: preMode, dept: preDept, doctor: preDoctor, branch: preBranch, _preDoctor: preDoctor };
+    return {
+      ...base,
+      ...INITIAL_FORM,
+      fullName, email: emailParam, phone, dob, gender,
+      doctor: preDoctor,
+      _preDoctor: preDoctor,
+    };
   });
 
-
-  /* If data was pre-filled, start on step 2 immediately */
   const [step, setStep] = useState(() => {
     const preStep = searchParams?.get?.("step") ?? null;
     const preDoctor = searchParams?.get?.("doctor") ?? null;
     if (preStep === "2" && !preDoctor) return 2;
     return 1;
   });
+
   const [errors, setErrors] = useState({});
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [ref, setRef] = useState("");
   const [minDate, setMinDate] = useState("");
 
+  /* ── API state ── */
+  const [departments, setDepartments] = useState([]);
+  const [loadingDepts, setLoadingDepts] = useState(false);
+  const [doctorsByDept, setDoctorsByDept] = useState({});
+  const [loadingDoctors, setLoadingDoctors] = useState(false);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
+  /* ── Fetch all specializations on mount ── */
+  useEffect(() => {
+    const fetchDepts = async () => {
+      setLoadingDepts(true);
+      try {
+        const res = await fetch(
+          `${API_URL}/doctor-specializations/getAll`,
+          { credentials: "include" }
+        );
+        const result = await res.json();
+        const raw = result?.data || result || [];
+        const normalized = raw.map(s => ({
+          id: s.id || s._id || s.name,
+          name: s.name || s.specializationName || s.title,
+          icon: getDeptIcon(s.name || s.specializationName || ""),
+          _raw: s,
+        }));
+        setDepartments(normalized);
+      } catch (err) {
+        console.error("Failed to load specializations:", err);
+      } finally {
+        setLoadingDepts(false);
+      }
+    };
+    fetchDepts();
+  }, []);
+
+  /* ── Fetch doctors whenever department changes ── */
+  useEffect(() => {
+    if (!data.dept) return;
+    const selectedDept = departments.find(d => d.id === data.dept);
+    if (!selectedDept) return;
+
+    // Already loaded — skip
+    if (doctorsByDept[data.dept]) return;
+
+    const fetchDoctors = async () => {
+      setLoadingDoctors(true);
+      try {
+        const specializationName = encodeURIComponent(selectedDept.name);
+        const res = await fetch(
+          `${API_URL}/doctors/getDoctorsBySpecialization/${specializationName}`,
+          { credentials: "include" }
+        );
+        const result = await res.json();
+        const raw = result?.data || result || [];
+        const normalized = raw.map(doc => {
+          const firstName = doc.firstName || doc.first_name || "";
+          const lastName = doc.lastName || doc.last_name || "";
+          const fullName = doc.name || doc.fullName || `${firstName} ${lastName}`.trim() || "Dr.";
+          const initials = fullName
+            .split(" ")
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(n => n[0].toUpperCase())
+            .join("");
+          const rawTitle = doc.specialization || doc.specializationName || doc.title || selectedDept.name;
+          const rawExp = doc.yearsOfExperience
+            ? `${doc.yearsOfExperience} yrs`
+            : doc.experience || doc.exp || "N/A";
+          return {
+            id: doc.id || doc._id,
+            name: fullName.startsWith("Dr") ? fullName : `Dr. ${fullName}`,
+            title: String(rawTitle ?? ""),
+            exp: String(rawExp ?? "N/A"),
+            initials,
+            avatar: doc.profileImage || doc.avatar || doc.photo || null,
+            _raw: doc,
+          };
+        });
+        setDoctorsByDept(prev => ({ ...prev, [data.dept]: normalized }));
+      } catch (err) {
+        console.error("Failed to load doctors:", err);
+        setDoctorsByDept(prev => ({ ...prev, [data.dept]: [] }));
+      } finally {
+        setLoadingDoctors(false);
+      }
+    };
+    fetchDoctors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.dept, departments]);
+
+  /* ── Fetch available time slots when doctor and date are selected ── */
+  useEffect(() => {
+    if (!data.doctor || !data.date) {
+      setAvailableSlots([]);
+      return;
+    }
+
+    const fetchAvailableSlots = async () => {
+      setLoadingSlots(true);
+      try {
+        const url = `${API_URL}/appointments/getAvailableSlots/${data.doctor}?date=${data.date}`;
+
+        const headers = {
+          "Content-Type": "application/json",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
+        const res = await fetch(url, {
+          method: "GET",
+          credentials: "include",
+          headers,
+        });
+
+        const result = await res.json();
+
+        // Extract slots from response - handle API response format
+        const slots = result?.data?.slots || result?.slots || result?.data || [];
+        console.log("Raw slots data received:", slots);
+
+        const normalizedSlots = Array.isArray(slots)
+          ? slots.map(slot => ({
+            time: slot.startLabel || slot.time || slot,
+            booked: !slot.isAvailable || slot.isBooked || false,
+          }))
+          : [];
+
+        setAvailableSlots(normalizedSlots);
+        console.log("✅ Available slots loaded:", normalizedSlots.length, "slots");
+      } catch (err) {
+        console.error("❌ Failed to load available slots:", err);
+        setAvailableSlots([]);
+      } finally {
+        setLoadingSlots(false);
+      }
+    };
+
+    fetchAvailableSlots();
+  }, [data.doctor, data.date, token]);
+
   useEffect(() => {
     setMinDate(new Date().toISOString().split("T")[0]);
   }, []);
 
-  /* Field updater — also clears the matching error */
+  /* Field updater */
   const upd = (key, value) => {
     setData(prev => ({ ...prev, [key]: value }));
     if (errors[key]) setErrors(prev => ({ ...prev, [key]: null }));
   };
 
-  /* Advance / retreat step */
+  /* Step navigation */
   const go = (direction) => {
     if (direction === 1) {
       const validators = { 1: validateStep1, 2: validateStep2, 3: validateStep3 };
@@ -1033,45 +1144,32 @@ export default function AppointmentForm({
 
   /* Final submit */
   const handleSubmit = async () => {
-    console.log("Confirm button clicked");
-
     const errs = validateStep3(data);
-    console.log("Step 3 errors:", errs);
 
-    if (Object.keys(errs).length) {
-      setErrors(errs);
-      return;
-    }
+    console.log('phone data', data.phone)
+    if (Object.keys(errs).length) { setErrors(errs); return; }
 
     setBusy(true);
     setErrors({});
 
     try {
       const reqBody = {
-        doctorId: data.doctor,
-        appointmentDate: data.date,
-        startTime: convertTo24HourFormat(data.slot),
-        type: data.mode === "online" ? "ONLINE" : "IN_PERSON",
-        reason: data.symptoms,
         patientName: data.fullName,
         patientEmail: data.email,
         patientPhone: data.phone,
         patientDateOfBirth: data.dob,
         patientGender: data.gender.toUpperCase(),
         patientMedicalHistory: data.medHistory,
+        doctorId: data.doctor,
+        appointmentDate: data.date,
+        startTime: convertTo24HourFormat(data.slot),
+        type: data.mode === "online" ? "ONLINE" : "IN_PERSON",
+        reason: data.symptoms,
       };
+      console.log('Request body:', reqBody);
 
-      console.log("Patient token:", token);
-      console.log("Request body:", reqBody);
-      console.log("API URL:", API_URL);
-
-      const headers = {
-        "Content-Type": "application/json",
-      };
-
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers.Authorization = `Bearer ${token}`;
 
       const res = await fetch(`${API_URL}/appointments/create`, {
         method: "POST",
@@ -1081,7 +1179,8 @@ export default function AppointmentForm({
       });
 
       const result = await res.json();
-      console.log("API response:", result, "Status:", res.status);
+
+      console.log("Booking response:", { result });
 
       if (!res.ok || !result.success) {
         throw new Error(result.message || `Appointment booking failed (Status: ${res.status})`);
@@ -1091,15 +1190,13 @@ export default function AppointmentForm({
       setDone(true);
     } catch (error) {
       console.error("Booking error:", error.message);
-      setErrors({
-        submit: error.message || "Booking failed. Please try again.",
-      });
+      setErrors({ submit: error.message || "Booking failed. Please try again." });
     } finally {
       setBusy(false);
     }
   };
 
-  /* Reset back to step 1 */
+  /* Reset */
   const handleReset = () => {
     setDone(false);
     setStep(1);
@@ -1107,7 +1204,7 @@ export default function AppointmentForm({
     setErrors({});
   };
 
-  /* ── PROGRESS BAR ── */
+  /* Progress steps */
   const STEPS = [
     { label: "Patient Info", sub: "Personal details" },
     { label: "Schedule", sub: "Date & doctor" },
@@ -1116,7 +1213,6 @@ export default function AppointmentForm({
 
   return (
     <>
-      {/* Sticky progress */}
       {!done && (
         <div className="appt-progress-wrap">
           <nav className="appt-progress" aria-label="Booking progress">
@@ -1141,19 +1237,13 @@ export default function AppointmentForm({
         </div>
       )}
 
-      {/* Main body */}
       <div className="appt-body">
         {done && (
           <Confirmation data={data} bookingRef={ref} onReset={handleReset} />
         )}
 
         {!done && step === 1 && (
-          <Step1
-            data={data}
-            errors={errors}
-            upd={upd}
-            onNext={() => go(1)}
-          />
+          <Step1 data={data} errors={errors} upd={upd} onNext={() => go(1)} />
         )}
 
         {!done && step === 2 && (
@@ -1164,6 +1254,12 @@ export default function AppointmentForm({
             onNext={() => go(1)}
             onBack={() => go(-1)}
             minDate={minDate}
+            departments={departments}
+            doctorsByDept={doctorsByDept}
+            loadingDepts={loadingDepts}
+            loadingDoctors={loadingDoctors}
+            availableSlots={availableSlots}
+            loadingSlots={loadingSlots}
           />
         )}
 
@@ -1178,10 +1274,7 @@ export default function AppointmentForm({
           />
         )}
 
-        {/* Sidebar only during form steps */}
-        {!done && (
-          <Sidebar phone={phone} email={email} />
-        )}
+        {!done && <Sidebar phone={phone} email={email} />}
       </div>
     </>
   );
