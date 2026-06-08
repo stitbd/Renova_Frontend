@@ -126,6 +126,14 @@ function getIcon(type, cls = "") {
   return icons[type] || null;
 }
 
+const emojis = [
+  "😊", "😷", "🤒", "💊", "🩺", "🏥", "❤️", "👍", "🙏", "✅",
+  "😌", "🤧", "🩹", "💉", "🧬", "🫀", "🧠", "😴", "🤕", "😟",
+  "👋", "📋", "📅", "⏰", "🔬", "🩻", "💪", "🌡️", "🍎", "💧",
+  "😢", "😰", "🥺", "😔", "🫂", "🤝", "👨‍⚕️", "👩‍⚕️", "🏃", "🧘",
+  "🥗", "🥦", "🫁", "🦷", "👁️", "👂", "🦴", "🤞", "💬", "📞"
+];
+
 const qaColorMap = { blue: "blue", red: "red", orange: "orange", teal: "teal", purple: "purple" };
 
 export default function MessagesPage() {
@@ -133,10 +141,35 @@ export default function MessagesPage() {
   const [selectedConv, setSelectedConv] = useState(conversations[0]);
   const [messageText, setMessageText] = useState("");
   const [charCount, setCharCount] = useState(0);
+  const [attachedFiles, setAttachedFiles] = useState([]);
+  const [showEmoji, setShowEmoji] = useState(false);
 
   const handleTextChange = (e) => {
     setMessageText(e.target.value);
     setCharCount(e.target.value.length);
+  };
+
+  const handleFileAttach = (accept = "*") => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = accept;
+    input.multiple = true;
+    input.onchange = (e) => {
+      const files = Array.from(e.target.files);
+      setAttachedFiles(prev => [...prev, ...files]);
+    };
+    input.click();
+  };
+
+  const handleRemoveFile = (index) => {
+    setAttachedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSend = () => {
+    if (!messageText.trim() && attachedFiles.length === 0) return;
+    setMessageText("");
+    setCharCount(0);
+    setAttachedFiles([]);
   };
 
   return (
@@ -288,8 +321,18 @@ export default function MessagesPage() {
         </div>
 
         {/* Chat Input */}
-        <div className="msg-chat-input-wrap">
+        <div className="msg-chat-input-wrap" style={{ position: "relative" }}>
           <div className="msg-char-count">{charCount}/160</div>
+          {attachedFiles.length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+              {attachedFiles.map((file, index) => (
+                <div key={index} style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 6, fontSize: 11.5, color: "#014fa1" }}>
+                  <span style={{ maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{file.name}</span>
+                  <button onClick={() => handleRemoveFile(index)} style={{ border: "none", background: "none", cursor: "pointer", color: "#64748b", fontSize: 14, lineHeight: 1, padding: 0 }}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="msg-input-box">
             <textarea
               placeholder="Type your message..."
@@ -300,14 +343,44 @@ export default function MessagesPage() {
           </div>
           <div className="msg-input-actions">
             <div className="msg-input-tools">
-              <button className="msg-tool-btn">
+              <button className="msg-tool-btn" onClick={() => handleFileAttach("image/*,application/pdf")}>
                 {getIcon("attach")} Attach File
               </button>
-              <button className="msg-tool-btn">
-                {getIcon("emoji")} Emoji
-              </button>
+              <div>
+                <button className="msg-tool-btn" onClick={() => setShowEmoji(prev => !prev)}>
+                  {getIcon("emoji")} Emoji
+                </button>
+                {showEmoji && (
+                  <div style={{
+                    position: "absolute", bottom: "calc(100% + 8px)", left: 0,
+                    background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)", padding: 10,
+                    marginLeft: "15px",
+                    display: "grid", gridTemplateColumns: "repeat(10, 1fr)", zIndex: 100,
+                  }}>
+                    <div style={{ gridColumn: "1/-1", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: "#64748b" }}>Quick Emojis</span>
+                      <button onClick={() => setShowEmoji(false)} style={{ border: "none", background: "none", cursor: "pointer", fontSize: 16, color: "#94a3b8", lineHeight: 1, padding: 0 }}>×</button>
+                    </div>
+                    {emojis.map((emoji, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setMessageText(prev => { const updated = prev + emoji; setCharCount(updated.length); return updated; });
+                          setShowEmoji(false);
+                        }}
+                        style={{ border: "none", background: "none", cursor: "pointer", fontSize: 20, padding: "4px 2px", borderRadius: 6, transition: "background 0.15s" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "#f1f5f9"}
+                        onMouseLeave={e => e.currentTarget.style.background = "none"}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <button className="msg-send-btn">
+            <button className="msg-send-btn" onClick={handleSend}>
               Send SMS {getIcon("send")}
             </button>
           </div>
@@ -337,7 +410,14 @@ export default function MessagesPage() {
         <div className="msg-quick-actions">
           <p className="msg-info-section-title">Quick Actions</p>
           {quickActions.map((qa) => (
-            <div key={qa.label} className="msg-quick-action-item">
+            <div
+              key={qa.label}
+              className="msg-quick-action-item"
+              onClick={() => {
+                if (qa.label === "Send Prescription") handleFileAttach("application/pdf,image/*");
+                if (qa.label === "Send Report") handleFileAttach("application/pdf,image/*");
+              }}
+            >
               <div className={`msg-qa-icon ${qaColorMap[qa.color]}`}>
                 {getIcon(qa.icon)}
               </div>
