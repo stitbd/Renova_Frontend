@@ -7,25 +7,55 @@ import {
   INITIAL_FORM, validateStep1, validateStep2, validateStep3, validatePayment,
 } from "./appointmentData";
 import "@/styles/pages/appointment.css";
+import { useAppSelector } from "@/redux/hook";
+import { API_URL } from "@/config";
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY: Convert time format to 24-hour HH:MM format
+   ═══════════════════════════════════════════════════════════════ */
+const convertTo24HourFormat = (timeStr) => {
+  if (!timeStr) return timeStr;
+  
+  // If already in 24-hour format (HH:MM without AM/PM), return as is
+  if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
+  
+  // Parse 12-hour format (e.g., "09:30 AM" or "09:30AM")
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)$/);
+  if (match) {
+    let [, hours, minutes, period] = match;
+    hours = parseInt(hours, 10);
+    const isPM = period.toUpperCase() === "PM";
+    
+    if (isPM && hours !== 12) {
+      hours += 12;
+    } else if (!isPM && hours === 12) {
+      hours = 0;
+    }
+    
+    return `${String(hours).padStart(2, "0")}:${minutes}`;
+  }
+  
+  return timeStr;
+};
 
 /* ═══════════════════════════════════════════════════════════════
    INLINE SVG ICONS
    ═══════════════════════════════════════════════════════════════ */
 const SVG_PROPS = { fill: "none", stroke: "currentColor", strokeWidth: "1.8" };
 
-const IconUser     = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
-const IconMail     = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
-const IconPhone    = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.08 4.18 2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z"/></svg>;
-const IconCalendar = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
-const IconPin      = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
-const IconCheck    = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>;
-const IconArrowR   = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
-const IconArrowL   = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
-const IconLock     = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-const IconInfo     = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>;
-const IconDownload = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
-const IconSearch   = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
-const IconX        = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+const IconUser = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+const IconMail = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>;
+const IconPhone = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.08 4.18 2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z" /></svg>;
+const IconCalendar = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+const IconPin = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>;
+const IconCheck = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>;
+const IconArrowR = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>;
+const IconArrowL = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>;
+const IconLock = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>;
+const IconInfo = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
+const IconDownload = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>;
+const IconSearch = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
+const IconX = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
 
 /* ═══════════════════════════════════════════════════════════════
    FIELD WRAPPER — label + icon + error message
@@ -106,8 +136,8 @@ const PRIVACY_CONTENT = (
    DOCTOR DROPDOWN — searchable select replacing radio list
    ═══════════════════════════════════════════════════════════════ */
 function DoctorDropdown({ doctors, value, onChange }) {
-  const [open, setOpen]       = useState(false);
-  const [query, setQuery]     = useState("");
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
 
   const filtered = doctors.filter(d =>
     d.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -126,10 +156,10 @@ function DoctorDropdown({ doctors, value, onChange }) {
         aria-expanded={open}
       >
         {selected
-          ? <><div className="appt-doc-avatar" style={{ width:28, height:28, fontSize:".65rem" }}>{selected.avatar}</div><span>{selected.name}</span><span className="appt-doc-dd__meta">{selected.title}</span></>
+          ? <><div className="appt-doc-avatar" style={{ width: 28, height: 28, fontSize: ".65rem" }}>{selected.avatar}</div><span>{selected.name}</span><span className="appt-doc-dd__meta">{selected.title}</span></>
           : <span className="appt-doc-dd__placeholder">Search & select a doctor…</span>
         }
-        <span className="appt-doc-dd__chevron" style={{ marginLeft:"auto", color:"var(--appt-ink3)" }}>▾</span>
+        <span className="appt-doc-dd__chevron" style={{ marginLeft: "auto", color: "var(--appt-ink3)" }}>▾</span>
       </button>
 
       {/* Dropdown panel */}
@@ -164,12 +194,12 @@ function DoctorDropdown({ doctors, value, onChange }) {
                 className={`appt-doc-dd__item${value === doc.id ? " sel" : ""}`}
                 onClick={() => { onChange(doc.id); setOpen(false); setQuery(""); }}
               >
-                <div className="appt-doc-avatar" style={{ width:36, height:36, fontSize:".7rem", flexShrink:0 }}>{doc.avatar}</div>
+                <div className="appt-doc-avatar" style={{ width: 36, height: 36, fontSize: ".7rem", flexShrink: 0 }}>{doc.avatar}</div>
                 <div>
                   <div className="appt-doc-name">{doc.name}</div>
                   <div className="appt-doc-meta">{doc.title} · {doc.exp} experience</div>
                 </div>
-                {value === doc.id && <span style={{ marginLeft:"auto", color:"var(--appt-teal)", fontWeight:700 }}>✓</span>}
+                {value === doc.id && <span style={{ marginLeft: "auto", color: "var(--appt-teal)", fontWeight: 700 }}>✓</span>}
               </div>
             ))}
           </div>
@@ -183,20 +213,22 @@ function DoctorDropdown({ doctors, value, onChange }) {
    INVOICE — printable/downloadable on confirmation
    ═══════════════════════════════════════════════════════════════ */
 function InvoicePrint({ data, bookingRef }) {
-  const dept   = DEPARTMENTS.find(d => d.id === data.dept);
+  const dept = DEPARTMENTS.find(d => d.id === data.dept);
   const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor  = doctors.find(d => d.id === data.doctor);
-  const branch  = BRANCHES.find(b => b.id === data.branch);
+  const doctor = doctors.find(d => d.id === data.doctor);
+  const branch = BRANCHES.find(b => b.id === data.branch);
 
-  const FEE = { cardiology:2000, orthopedics:1800, general:800, pediatrics:900,
-                dental:1200, neurology:2500, dermatology:1500, "eye-care":1400 };
-  const consultFee  = FEE[data.dept] || 1000;
-  const serviceFee  = data.mode === "online" ? 100 : 0;
-  const total       = consultFee + serviceFee;
+  const FEE = {
+    cardiology: 2000, orthopedics: 1800, general: 800, pediatrics: 900,
+    dental: 1200, neurology: 2500, dermatology: 1500, "eye-care": 1400
+  };
+  const consultFee = FEE[data.dept] || 1000;
+  const serviceFee = data.mode === "online" ? 100 : 0;
+  const total = consultFee + serviceFee;
   const isOnlinePay = data.paymentMethod === "bkash" || data.paymentMethod === "card";
-  const today       = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" });
+  const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
-const handlePrint = () => {
+  const handlePrint = () => {
     const el = document.getElementById("appt-invoice");
     if (!el) return;
     const w = window.open("", "_blank");
@@ -270,10 +302,10 @@ const handlePrint = () => {
         </div>
       </div>
       </body></html>`);
-          w.document.close();
-          w.focus();
-          setTimeout(() => { w.print(); }, 400);
-      };
+    w.document.close();
+    w.focus();
+    setTimeout(() => { w.print(); }, 400);
+  };
 
   return (
     <>
@@ -282,7 +314,7 @@ const handlePrint = () => {
         type="button"
         className="appt-btn appt-btn-ghost appt-btn--invoice"
         onClick={handlePrint}
-        style={{ width:"100%", marginTop:10 }}
+        style={{ width: "100%", marginTop: 10 }}
       >
         <IconDownload size={16} /> Download &amp; Print Invoice
       </button>
@@ -392,7 +424,7 @@ function Step1({ data, errors, upd, onNext }) {
      • Offline: Mode → Dept → Branch → Doctor list → Date → Slots
    ═══════════════════════════════════════════════════════════════ */
 function Step2({ data, errors, upd, onNext, onBack, minDate }) {
-  const isOnline  = data.mode === "online";
+  const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
   /* Doctors for the chosen department */
@@ -413,13 +445,13 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
    * Offline: dept + branch both required → show doctor list
    */
   const showDoctorList = data.dept && (isOnline || (isOffline && data.branch));
-  const dateEnabled    = showDoctorList && !!data.doctor;
-  const showSlots      = dateEnabled && !!data.date;
+  const dateEnabled = showDoctorList && !!data.doctor;
+  const showSlots = dateEnabled && !!data.date;
 
   /* step label numbers — branch step only exists offline */
   const stepNum = isOnline
-    ? { dept:1, doctor:2, date:3, slot:4 }
-    : { dept:2, branch:2, doctor:3, date:4, slot:5 };
+    ? { dept: 1, doctor: 2, date: 3, slot: 4 }
+    : { dept: 2, branch: 2, doctor: 3, date: 4, slot: 5 };
 
   return (
     <div className="appt-card">
@@ -441,19 +473,19 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
         <Field label="1. Consultation Type *" error={errors.mode}>
           <div className="appt-mode-group">
             {[
-              { val:"online",  icon:"💻", label:"Online",  sub:"Video / teleconsult" },
-              { val:"offline", icon:"🏥", label:"In-Person", sub:"Visit our branch" },
+              { val: "online", icon: "💻", label: "Online", sub: "Video / teleconsult" },
+              { val: "offline", icon: "🏥", label: "In-Person", sub: "Visit our branch" },
             ].map(({ val, icon, label, sub }) => (
               <button
                 key={val}
                 type="button"
                 className={`appt-mode-card${data.mode === val ? " sel" : ""}`}
                 onClick={() => {
-                  upd("mode",   val);
+                  upd("mode", val);
                   upd("branch", "");
                   upd("doctor", "");
-                  upd("date",   "");
-                  upd("slot",   "");
+                  upd("date", "");
+                  upd("slot", "");
                 }}
                 aria-pressed={data.mode === val}
               >
@@ -477,10 +509,10 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
                   type="button"
                   className={`appt-dept-chip${data.dept === dept.id ? " sel" : ""}`}
                   onClick={() => {
-                    upd("dept",   dept.id);
+                    upd("dept", dept.id);
                     upd("doctor", "");
-                    upd("date",   "");
-                    upd("slot",   "");
+                    upd("date", "");
+                    upd("slot", "");
                   }}
                   aria-pressed={data.dept === dept.id}
                 >
@@ -501,8 +533,8 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
               onChange={e => {
                 upd("branch", e.target.value);
                 upd("doctor", "");
-                upd("date",   "");
-                upd("slot",   "");
+                upd("date", "");
+                upd("slot", "");
               }}
               aria-invalid={!!errors.branch}
             >
@@ -611,190 +643,74 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
    STEP 3 — Review & Confirm
    ═══════════════════════════════════════════════════════════════ */
 function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
-  const dept   = DEPARTMENTS.find(d => d.id === data.dept);
-  const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor  = doctors.find(d => d.id === data.doctor);
-  const branch  = BRANCHES.find(b => b.id === data.branch);
+  const [termsOpen, setTermsOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+
+  const dept = DEPARTMENTS.find(d => d.id === data.dept);
+  const doctors = data.dept ? DOCTORS[data.dept] || [] : [];
+  const doctor = doctors.find(d => d.id === data.doctor);
+  const branch = BRANCHES.find(b => b.id === data.branch);
 
   return (
-    <form className="appt-card" onSubmit={onSubmit}>
+    <div className="appt-card">
       <div className="appt-card__head">
         <div className="appt-card__icon">✅</div>
         <div>
           <div className="appt-card__title">Review & Confirm</div>
-          <div className="appt-card__sub">Verify your details before finalising your booking</div>
+          <div className="appt-card__sub">
+            Verify your details before finalising your booking
+          </div>
         </div>
       </div>
 
       <div className="appt-card__body appt-stack">
-        {/* Summary cards */}
         <div className="appt-summary-grid">
           <div className="appt-summ-card">
             <h4>👤 Patient</h4>
-            <p><strong>{data.fullName}</strong><br />{data.email}<br />{data.phone}</p>
+            <p>
+              <strong>{data.fullName}</strong>
+              <br />
+              {data.email}
+              <br />
+              {data.phone}
+            </p>
           </div>
+
           <div className="appt-summ-card">
             <h4>🏥 Appointment</h4>
             <p>
-              <strong>{dept?.name}</strong><br />
-              {doctor?.name || "Doctor to be assigned"}<br />
+              <strong>{dept?.name}</strong>
+              <br />
+              {doctor?.name || "Doctor to be assigned"}
+              <br />
               {data.mode === "online" ? "🌐 Online Consultation" : branch?.name}
             </p>
           </div>
+
           <div className="appt-summ-card">
             <h4>📅 Schedule</h4>
-            <p><strong>{data.date}</strong><br />{data.slot}</p>
+            <p>
+              <strong>{data.date}</strong>
+              <br />
+              {data.slot}
+            </p>
           </div>
+
           <div className="appt-summ-card">
             <h4>👤 Profile</h4>
             <p>
-              DOB: <strong>{data.dob}</strong><br />
-              Gender: <strong style={{ textTransform: "capitalize" }}>{data.gender}</strong>
+              DOB: <strong>{data.dob}</strong>
+              <br />
+              Gender:{" "}
+              <strong style={{ textTransform: "capitalize" }}>
+                {data.gender}
+              </strong>
             </p>
           </div>
         </div>
 
         <div className="appt-divider" />
 
-        {/* ── Payment Method ───────────────────────────────────── */}
-        <Field label="Payment Method *" error={errors.paymentMethod}>
-          <div className="appt-pay-group">
-            {/* Online → bKash + Card only; Offline → Cash only */}
-            {data.mode === "online" ? (
-              <>
-                {[
-                  { val:"bkash", icon:"📱", label:"bKash / Mobile Banking" },
-                  { val:"card",  icon:"💳", label:"Credit / Debit Card" },
-                ].map(({ val, icon, label }) => (
-                  <label
-                    key={val}
-                    className={`appt-pay-option${data.paymentMethod === val ? " sel" : ""}`}
-                  >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value={val}
-                      checked={data.paymentMethod === val}
-                      onChange={e => upd("paymentMethod", e.target.value)}
-                    />
-                    <span className="appt-pay-icon">{icon}</span>
-                    <span className="appt-pay-label">{label}</span>
-                  </label>
-                ))}
-              </>
-            ) : (
-              <label className={`appt-pay-option${data.paymentMethod === "cash" ? " sel" : ""}`}>
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="cash"
-                  checked={data.paymentMethod === "cash"}
-                  onChange={e => upd("paymentMethod", e.target.value)}
-                />
-                <span className="appt-pay-icon">💵</span>
-                <span className="appt-pay-label">Cash on Visit</span>
-              </label>
-            )}
-          </div>
-        </Field>
-
-        {/* ── bKash sub-form ───────────────────────────────────── */}
-        {data.paymentMethod === "bkash" && (
-          <div className="appt-pay-subform">
-            <div className="appt-pay-subform__head">📱 bKash / Mobile Banking Details</div>
-            <div className="appt-pay-subform__info">
-              Send payment to: <strong>+880 1700-000000</strong> (bKash Merchant)
-            </div>
-            <Field label="Your bKash / Mobile Number *" error={errors.bkashNumber}>
-              <input
-                className={`appt-inp${errors.bkashNumber ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="tel"
-                placeholder="+880 1XXX-XXXXXX"
-                value={data.bkashNumber || ""}
-                onChange={e => upd("bkashNumber", e.target.value)}
-              />
-            </Field>
-            <Field label="Transaction ID *" error={errors.transactionId}>
-              <input
-                className={`appt-inp${errors.transactionId ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="text"
-                placeholder="e.g. 8N7A3B2C1D"
-                value={data.transactionId || ""}
-                onChange={e => upd("transactionId", e.target.value)}
-              />
-            </Field>
-          </div>
-        )}
-
-        {/* ── Card sub-form ────────────────────────────────────── */}
-        {data.paymentMethod === "card" && (
-          <div className="appt-pay-subform">
-            <div className="appt-pay-subform__head">💳 Card Details</div>
-            <Field label="Card Number *" error={errors.cardNumber}>
-              <input
-                className={`appt-inp${errors.cardNumber ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="text"
-                placeholder="XXXX XXXX XXXX XXXX"
-                maxLength={19}
-                value={data.cardNumber || ""}
-                onChange={e => {
-                  /* auto-insert spaces every 4 digits */
-                  const raw = e.target.value.replace(/\D/g, "").slice(0, 16);
-                  const fmt = raw.match(/.{1,4}/g)?.join(" ") || raw;
-                  upd("cardNumber", fmt);
-                }}
-              />
-            </Field>
-            <div className="appt-grid-2">
-              <Field label="Expiry Date *" error={errors.cardExpiry}>
-                <input
-                  className={`appt-inp${errors.cardExpiry ? " err" : ""}`}
-                  style={{ paddingLeft: "14px" }}
-                  type="text"
-                  placeholder="MM / YY"
-                  maxLength={7}
-                  value={data.cardExpiry || ""}
-                  onChange={e => {
-                    const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
-                    const fmt = raw.length > 2 ? raw.slice(0,2) + " / " + raw.slice(2) : raw;
-                    upd("cardExpiry", fmt);
-                  }}
-                />
-              </Field>
-              <Field label="CVV *" error={errors.cardCvv}>
-                <input
-                  className={`appt-inp${errors.cardCvv ? " err" : ""}`}
-                  style={{ paddingLeft: "14px" }}
-                  type="password"
-                  placeholder="•••"
-                  maxLength={4}
-                  value={data.cardCvv || ""}
-                  onChange={e => upd("cardCvv", e.target.value.replace(/\D/g, "").slice(0,4))}
-                />
-              </Field>
-            </div>
-            <Field label="Name on Card *" error={errors.cardName}>
-              <input
-                className={`appt-inp${errors.cardName ? " err" : ""}`}
-                style={{ paddingLeft: "14px" }}
-                type="text"
-                placeholder="As printed on the card"
-                value={data.cardName || ""}
-                onChange={e => upd("cardName", e.target.value)}
-              />
-            </Field>
-            <div className="appt-pay-secure">
-              🔒 Your card details are encrypted and never stored.
-            </div>
-          </div>
-        )}
-
-        <div className="appt-divider" />
-
-        {/* Symptoms */}
         <Field label="Describe Your Symptoms *" error={errors.symptoms}>
           <textarea
             className={`appt-ta${errors.symptoms ? " err" : ""}`}
@@ -806,7 +722,6 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           />
         </Field>
 
-        {/* Medical History */}
         <Field label="Previous Medical History (optional)">
           <textarea
             className="appt-ta"
@@ -817,28 +732,60 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           />
         </Field>
 
-        {/* Consent + modal state */}
-        {(() => {
-          const [termsOpen, setTermsOpen]     = useState(false);
-          const [privacyOpen, setPrivacyOpen] = useState(false);
-          return (
-            <>
-              <Modal open={termsOpen}   onClose={() => setTermsOpen(false)}   title="Terms of Service">{TERMS_CONTENT}</Modal>
-              <Modal open={privacyOpen} onClose={() => setPrivacyOpen(false)} title="Privacy Policy">{PRIVACY_CONTENT}</Modal>
-              <label className={`appt-check-wrap${errors.consent ? " err" : ""}`}>
-                <input type="checkbox" checked={data.consent} onChange={e => upd("consent", e.target.checked)} />
-                <span>
-                  I agree to the{" "}
-                  <button type="button" className="appt-link-btn" onClick={e => { e.preventDefault(); setTermsOpen(true); }}>Terms of Service</button>
-                  {" "}and{" "}
-                  <button type="button" className="appt-link-btn" onClick={e => { e.preventDefault(); setPrivacyOpen(false); setPrivacyOpen(true); }}>Privacy Policy</button>.
-                  I consent to my information being used to facilitate this appointment.
-                </span>
-              </label>
-              {errors.consent && <span className="appt-err-msg">{errors.consent}</span>}
-            </>
-          );
-        })()}
+        <Modal
+          open={termsOpen}
+          onClose={() => setTermsOpen(false)}
+          title="Terms of Service"
+        >
+          {TERMS_CONTENT}
+        </Modal>
+
+        <Modal
+          open={privacyOpen}
+          onClose={() => setPrivacyOpen(false)}
+          title="Privacy Policy"
+        >
+          {PRIVACY_CONTENT}
+        </Modal>
+
+        <label className={`appt-check-wrap${errors.consent ? " err" : ""}`}>
+          <input
+            type="checkbox"
+            checked={data.consent}
+            onChange={e => upd("consent", e.target.checked)}
+          />
+
+          <span>
+            I agree to the{" "}
+            <button
+              type="button"
+              className="appt-link-btn"
+              onClick={e => {
+                e.preventDefault();
+                setTermsOpen(true);
+              }}
+            >
+              Terms of Service
+            </button>{" "}
+            and{" "}
+            <button
+              type="button"
+              className="appt-link-btn"
+              onClick={e => {
+                e.preventDefault();
+                setPrivacyOpen(true);
+              }}
+            >
+              Privacy Policy
+            </button>
+            . I consent to my information being used to facilitate this
+            appointment.
+          </span>
+        </label>
+
+        {errors.consent && (
+          <span className="appt-err-msg">{errors.consent}</span>
+        )}
 
         {errors.submit && (
           <div className="appt-submit-err">⚠️ {errors.submit}</div>
@@ -849,39 +796,51 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
         <button type="button" className="btn btn-secondary" onClick={onBack}>
           <IconArrowL size={16} /> Edit Details
         </button>
-        <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy
-            ? <><span className="appt-spinner" /> Processing…</>
-            : <><IconLock size={15} /> Confirm Booking</>
-          }
+
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={busy}
+          onClick={onSubmit}
+        >
+          {busy ? (
+            <>
+              <span className="appt-spinner" />
+              Creating Appointment...
+            </>
+          ) : (
+            <>
+              <IconLock size={15} />
+              Confirm Appointment
+            </>
+          )}
         </button>
       </div>
-    </form>
+    </div>
   );
 }
-
 /* ═══════════════════════════════════════════════════════════════
    CONFIRMATION VIEW
    ═══════════════════════════════════════════════════════════════ */
 function Confirmation({ data, bookingRef, onReset }) {
-  const dept   = DEPARTMENTS.find(d => d.id === data.dept);
+  const dept = DEPARTMENTS.find(d => d.id === data.dept);
   const doctors = data.dept ? (DOCTORS[data.dept] || []) : [];
-  const doctor  = doctors.find(d => d.id === data.doctor);
-  const branch  = BRANCHES.find(b => b.id === data.branch);
+  const doctor = doctors.find(d => d.id === data.doctor);
+  const branch = BRANCHES.find(b => b.id === data.branch);
 
   const rows = [
-    ["Patient",    data.fullName],
-    ["Mode",       data.mode === "online" ? "🌐 Online" : "🏥 In-Person"],
+    ["Patient", data.fullName],
+    ["Mode", data.mode === "online" ? "🌐 Online" : "🏥 In-Person"],
     ["Department", dept?.name],
-    ["Doctor",     doctor?.name || "To be assigned"],
-    ["Branch",     data.mode === "offline" ? branch?.name : "Online Consultation"],
-    ["Date",       data.date],
-    ["Time",       data.slot],
-    ["Payment",    data.paymentMethod === "bkash" ? "📱 bKash / Mobile Banking"
-                 : data.paymentMethod === "card"  ? "💳 Credit / Debit Card"
-                 : "💵 Cash on Visit"],
-                 
-    ["Amount",       "BDT "+data.ConsultationFee],
+    ["Doctor", doctor?.name || "To be assigned"],
+    ["Branch", data.mode === "offline" ? branch?.name : "Online Consultation"],
+    ["Date", data.date],
+    ["Time", data.slot],
+    ["Payment", data.paymentMethod === "bkash" ? "📱 bKash / Mobile Banking"
+      : data.paymentMethod === "card" ? "💳 Credit / Debit Card"
+        : "💵 Cash on Visit"],
+
+    ["Amount", "BDT " + data.ConsultationFee],
   ];
 
   return (
@@ -890,7 +849,7 @@ function Confirmation({ data, bookingRef, onReset }) {
         <div className="appt-card__body">
           {/* <div className="appt-confirm-icon">✅</div> */}
           <h2 className="appt-confirm-title">Booking Confirmed!</h2>
-          <p style={{ color: "var(--appt-ink3)"}}>Your reference number</p>
+          <p style={{ color: "var(--appt-ink3)" }}>Your reference number</p>
           <div className="appt-confirm-ref">{bookingRef}</div>
 
           <div className="appt-confirm-rows">
@@ -980,19 +939,22 @@ export default function AppointmentForm({
 }) {
   const searchParams = useSearchParams();
 
+  const token = useAppSelector((state) => state.auth.accessToken);
+  console.log('patient token ', token);
+
   /*
    * Lazy initial state — runs once on mount, reads ?doctor= URL param.
    * Using useState lazy init (not useEffect) so data is correct on
    * the very first render — avoids the flash/race condition.
    */
   const [data, setData] = useState(() => {
-    const preDoctor  = searchParams?.get?.("doctor")   ?? null;
-    const preStep    = searchParams?.get?.("step")     ?? null;
-    const fullName   = searchParams?.get?.("fullName") ?? "";
-    const email      = searchParams?.get?.("email")    ?? "";
-    const phone      = searchParams?.get?.("phone")    ?? "";
-    const dob        = searchParams?.get?.("dob")      ?? "";
-    const gender     = searchParams?.get?.("gender")   ?? "";
+    const preDoctor = searchParams?.get?.("doctor") ?? null;
+    const preStep = searchParams?.get?.("step") ?? null;
+    const fullName = searchParams?.get?.("fullName") ?? "";
+    const email = searchParams?.get?.("email") ?? "";
+    const phone = searchParams?.get?.("phone") ?? "";
+    const dob = searchParams?.get?.("dob") ?? "";
+    const gender = searchParams?.get?.("gender") ?? "";
 
     // CTA pre-fill (step=2, no doctor)
     if (preStep === "2" && !preDoctor) {
@@ -1008,19 +970,19 @@ export default function AppointmentForm({
     return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: "online", dept: preDept, doctor: preDoctor };
   });
 
-  
+
   /* If data was pre-filled, start on step 2 immediately */
   const [step, setStep] = useState(() => {
-    const preStep  = searchParams?.get?.("step")   ?? null;
+    const preStep = searchParams?.get?.("step") ?? null;
     const preDoctor = searchParams?.get?.("doctor") ?? null;
     if (preStep === "2") return 2;
     if (data.dept && data.doctor) return 2;
     return 1;
   });
   const [errors, setErrors] = useState({});
-  const [busy,   setBusy]   = useState(false);
-  const [done,   setDone]   = useState(false);
-  const [ref,    setRef]    = useState("");
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [ref, setRef] = useState("");
   const [minDate, setMinDate] = useState("");
 
   useEffect(() => {
@@ -1046,19 +1008,68 @@ export default function AppointmentForm({
   };
 
   /* Final submit */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    console.log("Confirm button clicked");
+
     const errs = validateStep3(data);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    console.log("Step 3 errors:", errs);
+
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
 
     setBusy(true);
     setErrors({});
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1800));
-      setRef(`APPT-${Date.now().toString(36).toUpperCase()}`);
+      const reqBody = {
+        doctorId: data.doctor,
+        appointmentDate: data.date,
+        startTime: convertTo24HourFormat(data.slot),
+        type: data.mode === "online" ? "ONLINE" : "IN_PERSON",
+        reason: data.symptoms,
+        patientName: data.fullName,
+        patientEmail: data.email,
+        patientPhone: data.phone,
+        patientDateOfBirth: data.dob,
+        patientGender: data.gender.toUpperCase(),
+        patientMedicalHistory: data.medHistory,
+      };
+
+      console.log("Patient token:", token);
+      console.log("Request body:", reqBody);
+      console.log("API URL:", API_URL);
+
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const res = await fetch(`${API_URL}/appointments/create`, {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: JSON.stringify(reqBody),
+      });
+
+      const result = await res.json();
+      console.log("API response:", result, "Status:", res.status);
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || `Appointment booking failed (Status: ${res.status})`);
+      }
+
+      setRef(result.data?.appointmentCode || result.data?.id || "Appointment Created");
       setDone(true);
-    } catch {
-      setErrors({ submit: "Booking failed. Please try again or call us directly." });
+    } catch (error) {
+      console.error("Booking error:", error.message);
+      setErrors({
+        submit: error.message || "Booking failed. Please try again.",
+      });
     } finally {
       setBusy(false);
     }
@@ -1074,9 +1085,9 @@ export default function AppointmentForm({
 
   /* ── PROGRESS BAR ── */
   const STEPS = [
-    { label: "Patient Info",  sub: "Personal details" },
-    { label: "Schedule",      sub: "Date & doctor" },
-    { label: "Confirm",       sub: "Review & book" },
+    { label: "Patient Info", sub: "Personal details" },
+    { label: "Schedule", sub: "Date & doctor" },
+    { label: "Confirm", sub: "Review & book" },
   ];
 
   return (
@@ -1090,7 +1101,7 @@ export default function AppointmentForm({
               const cls = [
                 "appt-progress__step",
                 step === n ? "active" : "",
-                step > n  ? "done"   : "",
+                step > n ? "done" : "",
               ].join(" ").trim();
               return (
                 <div key={n} className={cls}>
