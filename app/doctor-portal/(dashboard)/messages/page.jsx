@@ -99,9 +99,6 @@ const chatMessages = [
 const quickActions = [
   { label: "Send Prescription", icon: "prescription", color: "blue" },
   { label: "Send Report", icon: "report", color: "red" },
-  { label: "Appointment Reminder", icon: "calendar", color: "orange" },
-  { label: "Follow-up Reminder", icon: "clock", color: "teal" },
-  { label: "Custom Message", icon: "message", color: "purple" },
 ];
 
 
@@ -322,7 +319,12 @@ export default function MessagesPage() {
         {/* Patient Card */}
         <div className="msg-patient-card">
           <div className="msg-patient-avatar-lg">
-            {getIcon("user")}
+            <img
+              src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
+              alt={selectedConv?.name}
+              onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+            />
+            <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
           </div>
           <h3>{selectedConv?.name}</h3>
           <p>32 Years, Male</p>
