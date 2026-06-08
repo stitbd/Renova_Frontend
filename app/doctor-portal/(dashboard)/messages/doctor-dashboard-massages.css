@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    MESSAGES & CONSULTATION PAGES — Shared CSS
-   File: styles/pages/doctor-dashboard-massages.css
+   File: ./doctor-dashboard-massages.css"
    ═══════════════════════════════════════════════════════════════ */
 
 /* ══════════════════════════════════════════════════════════════
@@ -10,8 +10,8 @@
     display: grid;
     grid-template-columns: 320px 1fr 300px;
     gap: 0;
-    height: calc(100vh - 110px);
-    min-height: 560px;
+    flex: 1;
+    min-height: 0;
     background: #f0f4f8;
     border-radius: 12px;
     overflow: hidden;

@@ -277,254 +277,256 @@ export default function MessagesPage() {
   });
 
   return (
-    <div className="msg-page-wrap">
-      {/* ── Left: Conversation List ──────────────────────── */}
-      <div className="msg-conv-col">
-        {/* Tabs */}
-        <div className="msg-tabs">
-          <button className={`msg-tab${activeTab === "all" ? " active" : ""}`} onClick={() => setActiveTab("all")}>
-            All Messages
-          </button>
-          <button className={`msg-tab${activeTab === "unread" ? " active" : ""}`} onClick={() => setActiveTab("unread")}>
-            Unread <span className="badge">24</span>
-          </button>
-          <button style={{ marginLeft: "auto", padding: "10px 8px", border: "none", background: "transparent", cursor: "pointer" }}>
-            {getIcon("filter")}
-          </button>
-        </div>
+    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+      <div className="msg-page-wrap">
+        {/* ── Left: Conversation List ──────────────────────── */}
+        <div className="msg-conv-col">
+          {/* Tabs */}
+          <div className="msg-tabs">
+            <button className={`msg-tab${activeTab === "all" ? " active" : ""}`} onClick={() => setActiveTab("all")}>
+              All Messages
+            </button>
+            <button className={`msg-tab${activeTab === "unread" ? " active" : ""}`} onClick={() => setActiveTab("unread")}>
+              Unread <span className="badge">24</span>
+            </button>
+            <button style={{ marginLeft: "auto", padding: "10px 8px", border: "none", background: "transparent", cursor: "pointer" }}>
+              {getIcon("filter")}
+            </button>
+          </div>
 
-        {/* Search */}
-        <div className="msg-search-wrap">
-          <div className="msg-search-box">
-            {getIcon("search")}
-            <input type="text" placeholder="Search conversations..." />
+          {/* Search */}
+          <div className="msg-search-wrap">
+            <div className="msg-search-box">
+              {getIcon("search")}
+              <input type="text" placeholder="Search conversations..." />
+            </div>
+          </div>
+
+          {/* List */}
+          <div className="msg-conv-list">
+            {filteredConversations.map((conv) => (
+              <div
+                key={conv.id}
+                className={`msg-conv-item${selectedConv?.id === conv.id ? " active" : ""}${conv.unread > 0 ? " unread" : ""}`}
+                onClick={() => setSelectedConv(conv)}
+              >
+                <div className="msg-conv-avatar">
+                  <img
+                    src={`/images/patients/${String(conv.id).padStart(2, "0")}.jpg`}
+                    alt={conv.name}
+                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                  />
+                  <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><img
+                    src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
+                    alt={selectedConv?.name}
+                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                  />
+                    <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span></span>
+                  {conv.online && <span className="msg-online-dot" />}
+                </div>
+                <div className="msg-conv-body">
+                  <div className="msg-conv-row">
+                    <p className="msg-conv-name">{conv.name}</p>
+                    <span className="msg-conv-time">{conv.time}</span>
+                  </div>
+                  <p className="msg-conv-preview">{conv.preview}</p>
+                </div>
+                {conv.unread > 0 && (
+                  <span className="msg-unread-badge">{conv.unread}</span>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* List */}
-        <div className="msg-conv-list">
-          {filteredConversations.map((conv) => (
-            <div
-              key={conv.id}
-              className={`msg-conv-item${selectedConv?.id === conv.id ? " active" : ""}${conv.unread > 0 ? " unread" : ""}`}
-              onClick={() => setSelectedConv(conv)}
-            >
-              <div className="msg-conv-avatar">
+        {/* ── Middle: Chat ─────────────────────────────────── */}
+        <div className="msg-chat-col">
+          {/* Chat Header */}
+          <div className="msg-chat-header">
+            <div className="msg-chat-patient">
+              <div className="msg-chat-patient-avatar">
                 <img
-                  src={`/images/patients/${String(conv.id).padStart(2, "0")}.jpg`}
-                  alt={conv.name}
+                  src="/images/patients/01.jpg"
+                  alt="Patient"
                   onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
                 />
-                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><img
-                  src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                  alt={selectedConv?.name}
-                  onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                />
-                  <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span></span>
-                {conv.online && <span className="msg-online-dot" />}
+                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
               </div>
-              <div className="msg-conv-body">
-                <div className="msg-conv-row">
-                  <p className="msg-conv-name">{conv.name}</p>
-                  <span className="msg-conv-time">{conv.time}</span>
-                </div>
-                <p className="msg-conv-preview">{conv.preview}</p>
+              <div className="msg-chat-patient-info">
+                <h4>
+                  {selectedConv?.name}
+                  <span className="msg-verified-badge">Verified Patient</span>
+                </h4>
+                <p>{selectedConv?.phone} • Patient ID: {selectedConv?.patientId}</p>
               </div>
-              {conv.unread > 0 && (
-                <span className="msg-unread-badge">{conv.unread}</span>
-              )}
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="msg-chat-actions">
+              <a href="/doctor-portal/messages/audio-call" className="msg-action-btn">
+                {getIcon("phone")}
+              </a>
+              <a href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
+                {getIcon("video")}
+              </a>
+            </div>
+          </div>
 
-      {/* ── Middle: Chat ─────────────────────────────────── */}
-      <div className="msg-chat-col">
-        {/* Chat Header */}
-        <div className="msg-chat-header">
-          <div className="msg-chat-patient">
-            <div className="msg-chat-patient-avatar">
+          {/* Chat Body */}
+          <div className="msg-chat-body">
+            {chatMessages.map((msg, i) => {
+              const isDoctor = msg.from === "doctor";
+              const showDate = msg.date && (i === 0 || chatMessages[i - 1].date !== msg.date);
+              return (
+                <div key={msg.id}>
+                  {showDate && (
+                    <div className="msg-date-divider">
+                      <span>{msg.date}</span>
+                    </div>
+                  )}
+                  <div className={`msg-bubble-wrap${isDoctor ? " sent" : ""}`}>
+                    {!isDoctor && (
+                      <div className="msg-bubble-avatar">
+                        <img
+                          src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
+                          alt={selectedConv?.name}
+                          onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                        />
+                        <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
+                      </div>
+                    )}
+                    <div>
+                      <div className={`msg-bubble${isDoctor ? " sent" : " received"}`}>
+                        {msg.text}
+                      </div>
+                      <div className={`msg-bubble-meta${isDoctor ? " sent" : ""}`}>
+                        {msg.time}
+                        {isDoctor && (
+                          <span className="msg-double-tick">
+                            {getIcon("tick")}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {isDoctor && (
+                      <div className="msg-bubble-avatar">
+                        <img
+                          src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
+                          alt={selectedConv?.name}
+                          onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                        />
+                        <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Chat Input */}
+          <div className="msg-chat-input-wrap" style={{ position: "relative" }}>
+            <div className="msg-char-count">{charCount}/160</div>
+            {attachedFiles.length > 0 && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+                {attachedFiles.map((file, index) => (
+                  <div key={index} style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 6, fontSize: 11.5, color: "#014fa1" }}>
+                    <span style={{ maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{file.name}</span>
+                    <button onClick={() => handleRemoveFile(index)} style={{ border: "none", background: "none", cursor: "pointer", color: "#64748b", fontSize: 14, lineHeight: 1, padding: 0 }}>×</button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="msg-input-box">
+              <textarea
+                placeholder="Type your message..."
+                value={messageText}
+                onChange={handleTextChange}
+                rows={1}
+              />
+            </div>
+            <div className="msg-input-actions">
+              <div className="msg-input-tools">
+                <button className="msg-tool-btn" onClick={() => handleFileAttach("image/*,application/pdf")}>
+                  {getIcon("attach")} Attach File
+                </button>
+                <div>
+                  <button className="msg-tool-btn" onClick={() => setShowEmoji(prev => !prev)}>
+                    {getIcon("emoji")} Emoji
+                  </button>
+                  {showEmoji && (
+                    <div style={{
+                      position: "absolute", bottom: "calc(100% + 8px)", left: 0,
+                      background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)", padding: 10,
+                      marginLeft: "15px",
+                      display: "grid", gridTemplateColumns: "repeat(10, 1fr)", zIndex: 100,
+                    }}>
+                      <div style={{ gridColumn: "1/-1", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#64748b" }}>Quick Emojis</span>
+                        <button onClick={() => setShowEmoji(false)} style={{ border: "none", background: "none", cursor: "pointer", fontSize: 16, color: "#94a3b8", lineHeight: 1, padding: 0 }}>×</button>
+                      </div>
+                      {emojis.map((emoji, i) => (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            setMessageText(prev => { const updated = prev + emoji; setCharCount(updated.length); return updated; });
+                            setShowEmoji(false);
+                          }}
+                          style={{ border: "none", background: "none", cursor: "pointer", fontSize: 20, padding: "4px 2px", borderRadius: 6, transition: "background 0.15s" }}
+                          onMouseEnter={e => e.currentTarget.style.background = "#f1f5f9"}
+                          onMouseLeave={e => e.currentTarget.style.background = "none"}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <button className="msg-send-btn" onClick={handleSend}>
+                Send SMS {getIcon("send")}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right: Patient Info ──────────────────────────── */}
+        <div className="msg-info-col">
+          {/* Patient Card */}
+          <div className="msg-patient-card">
+            <div className="msg-patient-avatar-lg">
               <img
-                src="/images/patients/01.jpg"
-                alt="Patient"
+                src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
+                alt={selectedConv?.name}
                 onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
               />
               <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
             </div>
-            <div className="msg-chat-patient-info">
-              <h4>
-                {selectedConv?.name}
-                <span className="msg-verified-badge">Verified Patient</span>
-              </h4>
-              <p>{selectedConv?.phone} • Patient ID: {selectedConv?.patientId}</p>
-            </div>
+            <h3>{selectedConv?.name}</h3>
+            <p>32 Years, Male</p>
+            <p className="msg-patient-id">{selectedConv?.phone}</p>
+            <p className="msg-patient-id">{selectedConv?.patientId}</p>
+            <button className="msg-view-profile-btn">View Full Profile</button>
           </div>
-          <div className="msg-chat-actions">
-            <a href="/doctor-portal/messages/audio-call" className="msg-action-btn">
-              {getIcon("phone")}
-            </a>
-            <a href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
-              {getIcon("video")}
-            </a>
-          </div>
-        </div>
 
-        {/* Chat Body */}
-        <div className="msg-chat-body">
-          {chatMessages.map((msg, i) => {
-            const isDoctor = msg.from === "doctor";
-            const showDate = msg.date && (i === 0 || chatMessages[i - 1].date !== msg.date);
-            return (
-              <div key={msg.id}>
-                {showDate && (
-                  <div className="msg-date-divider">
-                    <span>{msg.date}</span>
-                  </div>
-                )}
-                <div className={`msg-bubble-wrap${isDoctor ? " sent" : ""}`}>
-                  {!isDoctor && (
-                    <div className="msg-bubble-avatar">
-                      <img
-                        src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                        alt={selectedConv?.name}
-                        onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                      />
-                      <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-                    </div>
-                  )}
-                  <div>
-                    <div className={`msg-bubble${isDoctor ? " sent" : " received"}`}>
-                      {msg.text}
-                    </div>
-                    <div className={`msg-bubble-meta${isDoctor ? " sent" : ""}`}>
-                      {msg.time}
-                      {isDoctor && (
-                        <span className="msg-double-tick">
-                          {getIcon("tick")}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  {isDoctor && (
-                    <div className="msg-bubble-avatar">
-                      <img
-                        src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                        alt={selectedConv?.name}
-                        onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                      />
-                      <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-                    </div>
-                  )}
+          {/* Quick Actions */}
+          <div className="msg-quick-actions">
+            <p className="msg-info-section-title">Quick Actions</p>
+            {quickActions.map((qa) => (
+              <div
+                key={qa.label}
+                className="msg-quick-action-item"
+                onClick={() => {
+                  if (qa.label === "Send Prescription") handleFileAttach("application/pdf,image/*");
+                  if (qa.label === "Send Report") handleFileAttach("application/pdf,image/*");
+                }}
+              >
+                <div className={`msg-qa-icon ${qaColorMap[qa.color]}`}>
+                  {getIcon(qa.icon)}
                 </div>
+                <span>{qa.label}</span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Chat Input */}
-        <div className="msg-chat-input-wrap" style={{ position: "relative" }}>
-          <div className="msg-char-count">{charCount}/160</div>
-          {attachedFiles.length > 0 && (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-              {attachedFiles.map((file, index) => (
-                <div key={index} style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 6, fontSize: 11.5, color: "#014fa1" }}>
-                  <span style={{ maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{file.name}</span>
-                  <button onClick={() => handleRemoveFile(index)} style={{ border: "none", background: "none", cursor: "pointer", color: "#64748b", fontSize: 14, lineHeight: 1, padding: 0 }}>×</button>
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="msg-input-box">
-            <textarea
-              placeholder="Type your message..."
-              value={messageText}
-              onChange={handleTextChange}
-              rows={1}
-            />
+            ))}
           </div>
-          <div className="msg-input-actions">
-            <div className="msg-input-tools">
-              <button className="msg-tool-btn" onClick={() => handleFileAttach("image/*,application/pdf")}>
-                {getIcon("attach")} Attach File
-              </button>
-              <div>
-                <button className="msg-tool-btn" onClick={() => setShowEmoji(prev => !prev)}>
-                  {getIcon("emoji")} Emoji
-                </button>
-                {showEmoji && (
-                  <div style={{
-                    position: "absolute", bottom: "calc(100% + 8px)", left: 0,
-                    background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)", padding: 10,
-                    marginLeft: "15px",
-                    display: "grid", gridTemplateColumns: "repeat(10, 1fr)", zIndex: 100,
-                  }}>
-                    <div style={{ gridColumn: "1/-1", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: "#64748b" }}>Quick Emojis</span>
-                      <button onClick={() => setShowEmoji(false)} style={{ border: "none", background: "none", cursor: "pointer", fontSize: 16, color: "#94a3b8", lineHeight: 1, padding: 0 }}>×</button>
-                    </div>
-                    {emojis.map((emoji, i) => (
-                      <button
-                        key={i}
-                        onClick={() => {
-                          setMessageText(prev => { const updated = prev + emoji; setCharCount(updated.length); return updated; });
-                          setShowEmoji(false);
-                        }}
-                        style={{ border: "none", background: "none", cursor: "pointer", fontSize: 20, padding: "4px 2px", borderRadius: 6, transition: "background 0.15s" }}
-                        onMouseEnter={e => e.currentTarget.style.background = "#f1f5f9"}
-                        onMouseLeave={e => e.currentTarget.style.background = "none"}
-                      >
-                        {emoji}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            <button className="msg-send-btn" onClick={handleSend}>
-              Send SMS {getIcon("send")}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Right: Patient Info ──────────────────────────── */}
-      <div className="msg-info-col">
-        {/* Patient Card */}
-        <div className="msg-patient-card">
-          <div className="msg-patient-avatar-lg">
-            <img
-              src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-              alt={selectedConv?.name}
-              onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-            />
-            <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-          </div>
-          <h3>{selectedConv?.name}</h3>
-          <p>32 Years, Male</p>
-          <p className="msg-patient-id">{selectedConv?.phone}</p>
-          <p className="msg-patient-id">{selectedConv?.patientId}</p>
-          <button className="msg-view-profile-btn">View Full Profile</button>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="msg-quick-actions">
-          <p className="msg-info-section-title">Quick Actions</p>
-          {quickActions.map((qa) => (
-            <div
-              key={qa.label}
-              className="msg-quick-action-item"
-              onClick={() => {
-                if (qa.label === "Send Prescription") handleFileAttach("application/pdf,image/*");
-                if (qa.label === "Send Report") handleFileAttach("application/pdf,image/*");
-              }}
-            >
-              <div className={`msg-qa-icon ${qaColorMap[qa.color]}`}>
-                {getIcon(qa.icon)}
-              </div>
-              <span>{qa.label}</span>
-            </div>
-          ))}
         </div>
       </div>
     </div>
