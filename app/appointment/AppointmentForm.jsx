@@ -135,7 +135,7 @@ const PRIVACY_CONTENT = (
 /* ═══════════════════════════════════════════════════════════════
    DOCTOR DROPDOWN — searchable select replacing radio list
    ═══════════════════════════════════════════════════════════════ */
-function DoctorDropdown({ doctors, value, onChange }) {
+function DoctorDropdown({ doctors, value, onChange, locked = false }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -150,20 +150,32 @@ function DoctorDropdown({ doctors, value, onChange }) {
       {/* Trigger */}
       <button
         type="button"
-        className={`appt-doc-dd__trigger${open ? " open" : ""}`}
-        onClick={() => setOpen(o => !o)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
+        className={`appt-doc-dd__trigger${open ? " open" : ""}${locked ? " appt-doc-dd__trigger--locked" : ""}`}
+        onClick={() => { if (!locked) setOpen(o => !o); }}
+        aria-haspopup={locked ? undefined : "listbox"}
+        aria-expanded={locked ? undefined : open}
+        aria-disabled={locked}
       >
         {selected
-          ? <><div className="appt-doc-avatar" style={{ width: 28, height: 28, fontSize: ".65rem" }}>{selected.avatar}</div><span>{selected.name}</span><span className="appt-doc-dd__meta">{selected.title}</span></>
+          ? <>
+            <div className="appt-doc-avatar" style={{ width: 28, height: 28, fontSize: ".65rem", overflow: "hidden", padding: 0 }}>
+              <img
+                src={`/images/doctors/doctor-${selected.id}.jpg`}
+                alt={selected.name}
+                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+                onError={e => { e.target.style.display = "none"; e.target.parentNode.textContent = selected.avatar; }}
+              />
+            </div>
+            <span>{selected.name}</span>
+            <span className="appt-doc-dd__meta">{selected.title}</span>
+          </>
           : <span className="appt-doc-dd__placeholder">Search & select a doctor…</span>
         }
         <span className="appt-doc-dd__chevron" style={{ marginLeft: "auto", color: "var(--appt-ink3)" }}>▾</span>
       </button>
 
       {/* Dropdown panel */}
-      {open && (
+      {open && !locked && (
         <div className="appt-doc-dd__panel" role="listbox">
           {/* Search */}
           <div className="appt-doc-dd__search-wrap">
@@ -510,14 +522,16 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
                 <button
                   key={dept.id}
                   type="button"
-                  className={`appt-dept-chip${data.dept === dept.id ? " sel" : ""}`}
+                  className={`appt-dept-chip${data.dept === dept.id ? " sel" : ""}${data._preDoctor && data.dept !== dept.id ? " appt-dept-chip--disabled" : ""}`}
                   onClick={() => {
+                    if (data._preDoctor) return;
                     upd("dept", dept.id);
                     upd("doctor", "");
                     upd("date", "");
                     upd("slot", "");
                   }}
                   aria-pressed={data.dept === dept.id}
+                  aria-disabled={!!data._preDoctor && data.dept !== dept.id}
                 >
                   <span className="appt-dept-chip__icon">{dept.icon}</span>
                   <span className="appt-dept-chip__name">{dept.name}</span>
@@ -559,6 +573,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate }) {
               doctors={doctors}
               value={data.doctor}
               onChange={id => { upd("doctor", id); upd("date", ""); upd("slot", ""); }}
+              locked={!!data._preDoctor}
             />
           </Field>
         )}
@@ -977,7 +992,7 @@ export default function AppointmentForm({
     const preMode = isInPerson ? "offline" : "online";
     const preBranch = isInPerson ? (preDocEntry?.branchId || "") : "";
 
-    return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: preMode, dept: preDept, doctor: preDoctor, branch: preBranch };
+    return { ...INITIAL_FORM, fullName, email, phone, dob, gender, mode: preMode, dept: preDept, doctor: preDoctor, branch: preBranch, _preDoctor: preDoctor };
   });
 
 
