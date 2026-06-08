@@ -3,10 +3,13 @@
 import { useState } from "react";
 import "./doctor-dashboard-massages.css";
 
+const TODAY = new Date().toDateString();
+
 const conversations = [
   {
     id: 1,
     name: "Masud Rana",
+    lastMessageDate: new Date().toDateString(),
     preview: "Thank you doctor. I will follow...",
     time: "10:35 AM",
     unread: 2,
@@ -17,6 +20,7 @@ const conversations = [
   {
     id: 2,
     name: "Sadia Afrin",
+    lastMessageDate: new Date().toDateString(),
     preview: "Ok doctor, see you tomorrow.",
     time: "10:20 AM",
     unread: 1,
@@ -27,6 +31,7 @@ const conversations = [
   {
     id: 3,
     name: "Rashed Hasan",
+    lastMessageDate: new Date().toDateString(),
     preview: "Prescription ta pathiye diben?",
     time: "09:45 AM",
     unread: 0,
@@ -37,8 +42,9 @@ const conversations = [
   {
     id: 4,
     name: "Farzana Akter",
+    lastMessageDate: new Date().toDateString(),
     preview: "Thank you so much doctor.",
-    time: "Yesterday",
+    time: "10:45 AM",
     unread: 0,
     online: false,
     patientId: "PT-2025-00061",
@@ -47,8 +53,9 @@ const conversations = [
   {
     id: 5,
     name: "Mahmudul Islam",
+    lastMessageDate: new Date().toDateString(),
     preview: "BP check korar age ki ki khabo na?",
-    time: "Yesterday",
+    time: "11:45 AM",
     unread: 1,
     online: true,
     patientId: "PT-2025-00055",
@@ -57,8 +64,9 @@ const conversations = [
   {
     id: 6,
     name: "Jannatul Ferdous",
+    lastMessageDate: new Date().toDateString(),
     preview: "Appointment confirm korlam.",
-    time: "12 May",
+    time: "12:45 PM",
     unread: 0,
     online: false,
     patientId: "PT-2025-00044",
@@ -67,8 +75,9 @@ const conversations = [
   {
     id: 7,
     name: "Abdullah Al Mamun",
+    lastMessageDate: new Date().toDateString(),
     preview: "Report ready hoyeche?",
-    time: "11 May",
+    time: "01:45 PM",
     unread: 0,
     online: false,
     patientId: "PT-2025-00038",
@@ -77,8 +86,97 @@ const conversations = [
   {
     id: 8,
     name: "Tanjina Rahman",
+    lastMessageDate: new Date().toDateString(),
     preview: "Follow up kobe korbo?",
-    time: "10 May",
+    time: "02:45 PM",
+    unread: 0,
+    online: false,
+    patientId: "PT-2025-00031",
+    phone: "01711-223366",
+  },
+  {
+    id: 9,
+    name: "Masud Rana",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Thank you doctor. I will follow...",
+    time: "10:35 AM",
+    unread: 2,
+    online: true,
+    patientId: "PT-2025-00123",
+    phone: "01712-345678",
+  },
+  {
+    id: 10,
+    name: "Sadia Afrin",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Ok doctor, see you tomorrow.",
+    time: "10:20 AM",
+    unread: 1,
+    online: false,
+    patientId: "PT-2025-00098",
+    phone: "01811-223344",
+  },
+  {
+    id: 11,
+    name: "Rashed Hasan",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Prescription ta pathiye diben?",
+    time: "09:45 AM",
+    unread: 0,
+    online: false,
+    patientId: "PT-2025-00075",
+    phone: "01912-556677",
+  },
+  {
+    id: 12,
+    name: "Farzana Akter",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Thank you so much doctor.",
+    time: "10:45 AM",
+    unread: 0,
+    online: false,
+    patientId: "PT-2025-00061",
+    phone: "01712-998877",
+  },
+  {
+    id: 13,
+    name: "Mahmudul Islam",
+    lastMessageDate: new Date().toDateString(),
+    preview: "BP check korar age ki ki khabo na?",
+    time: "11:45 AM",
+    unread: 1,
+    online: true,
+    patientId: "PT-2025-00055",
+    phone: "01611-445566",
+  },
+  {
+    id: 14,
+    name: "Jannatul Ferdous",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Appointment confirm korlam.",
+    time: "12:45 PM",
+    unread: 0,
+    online: false,
+    patientId: "PT-2025-00044",
+    phone: "01922-334455",
+  },
+  {
+    id: 15,
+    name: "Abdullah Al Mamun",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Report ready hoyeche?",
+    time: "01:45 PM",
+    unread: 0,
+    online: false,
+    patientId: "PT-2025-00038",
+    phone: "01812-667788",
+  },
+  {
+    id: 16,
+    name: "Tanjina Rahman",
+    lastMessageDate: new Date().toDateString(),
+    preview: "Follow up kobe korbo?",
+    time: "02:45 PM",
     unread: 0,
     online: false,
     patientId: "PT-2025-00031",
@@ -172,6 +270,12 @@ export default function MessagesPage() {
     setAttachedFiles([]);
   };
 
+  const filteredConversations = conversations.filter(conv => {
+    if (activeTab === "unread") return conv.unread > 0;
+    if (activeTab === "all") return conv.lastMessageDate === TODAY;
+    return true;
+  });
+
   return (
     <div className="msg-page-wrap">
       {/* ── Left: Conversation List ──────────────────────── */}
@@ -199,7 +303,7 @@ export default function MessagesPage() {
 
         {/* List */}
         <div className="msg-conv-list">
-          {conversations.map((conv) => (
+          {filteredConversations.map((conv) => (
             <div
               key={conv.id}
               className={`msg-conv-item${selectedConv?.id === conv.id ? " active" : ""}${conv.unread > 0 ? " unread" : ""}`}
@@ -231,9 +335,6 @@ export default function MessagesPage() {
               )}
             </div>
           ))}
-          <button className="msg-load-more">
-            Load more conversations {getIcon("chevrondown")}
-          </button>
         </div>
       </div>
 
