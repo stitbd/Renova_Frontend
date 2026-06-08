@@ -16,6 +16,13 @@ const prevPrescriptions = [
     { label: "25 Apr 2025", sub: "Regular follow up" },
 ];
 
+const summaryRows = [
+    { key: "Blood Group", val: "B+" },
+    { key: "Height / Weight", val: "5'8\" / 72 kg" },
+    { key: "Allergies", val: "No Known Allergies" },
+    { key: "Chronic Condition", val: "Hypertension" },
+];
+
 const chatMessages = [
     { id: 1, from: "doctor", name: "Dr. Ahsan Rahman", text: "Hello Masud, how are you feeling now?", time: "10:31 AM" },
     { id: 2, from: "patient", name: "Masud Rana", text: "I am better than before, but still have slight pain.", time: "10:32 AM" },
@@ -147,9 +154,6 @@ export default function AudioCallPage() {
                         <button className="call-patient-btn">
                             <Icon type="profile" /> View Profile
                         </button>
-                        <button className="call-patient-btn">
-                            <Icon type="phone" />
-                        </button>
                     </div>
 
                     {/* Consultation Reason */}
@@ -157,6 +161,23 @@ export default function AudioCallPage() {
                         <p className="call-section-label">Consultation Reason</p>
                         <p className="call-reason-text">Chest pain, Breathing problem</p>
                         <p className="call-started-text">Started at 10:30 AM</p>
+                    </div>
+
+
+                    {/* Patient Summary */}
+                    <div>
+                        <div className="call-panel-list-header">
+                            <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
+                        </div>
+                        {summaryRows.map((r) => (
+                            <div key={r.key} className="call-summary-row">
+                                <span className="call-summary-key">{r.key}</span>
+                                <span className="call-summary-val">{r.val}</span>
+                            </div>
+                        ))}
+                        <a href="#" className="call-view-history">
+                            View Medical History <Icon type="arrowright" />
+                        </a>
                     </div>
 
                     {/* Recent Reports */}

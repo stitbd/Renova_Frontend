@@ -130,14 +130,10 @@ export default function VideoCallPage() {
                         </div>
                     </div>
 
-                    {/* Patient contact */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4, paddingBottom: 14, borderBottom: "1px solid #f1f5f9" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b" }}>
-                            <Icon type="phone" /><span>01712-345678</span>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b" }}>
-                            <Icon type="doc" /><span>masud.rana@email.com</span>
-                        </div>
+                    <div className="call-patient-actions">
+                        <button className="call-patient-btn">
+                            <Icon type="profile" /> View Profile
+                        </button>
                     </div>
 
                     {/* Consultation Reason */}
@@ -151,7 +147,6 @@ export default function VideoCallPage() {
                     <div>
                         <div className="call-panel-list-header">
                             <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
-                            <button className="call-view-all">View Full Profile →</button>
                         </div>
                         {summaryRows.map((r) => (
                             <div key={r.key} className="call-summary-row">
