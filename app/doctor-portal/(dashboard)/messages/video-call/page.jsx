@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import "../doctor-dashboard-massages.css";
@@ -85,6 +85,39 @@ export default function VideoCallPage() {
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
     const [adaptive, setAdaptive] = useState(true);
+    const [messageText, setMessageText] = useState("");
+    const [charCount, setCharCount] = useState(0);
+    const [attachedFiles, setAttachedFiles] = useState([]);
+    const [messages, setMessages] = useState(chatMessages);
+    const [inputText, setInputText] = useState("");
+    const [pendingFiles, setPendingFiles] = useState([]);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const router = useRouter();
+
+    const handleSend = () => {
+        if (!inputText.trim() && pendingFiles.length === 0) return;
+        const newMsgs = [];
+        if (inputText.trim()) {
+            newMsgs.push({ id: Date.now(), from: "doctor", text: inputText.trim(), time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+        }
+        pendingFiles.forEach((f, i) => {
+            newMsgs.push({ id: Date.now() + i + 1, from: "doctor", file: f, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+        });
+        setMessages(prev => [...prev, ...newMsgs]);
+        setInputText("");
+        setPendingFiles([]);
+    };
+
+    const handleAttach = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*,application/pdf";
+        input.multiple = true;
+        input.onchange = (e) => {
+            setPendingFiles(prev => [...prev, ...Array.from(e.target.files)]);
+        };
+        input.click();
+    };
 
     useEffect(() => {
         const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
@@ -133,9 +166,6 @@ export default function VideoCallPage() {
                     <div className="call-patient-actions">
                         <button className="call-patient-btn" style={{ flex: 2 }}>
                             <Icon type="profile" /> View Profile
-                        </button>
-                        <button className="call-patient-btn">
-                            <Icon type="phone" />
                         </button>
                     </div>
 
@@ -212,7 +242,7 @@ export default function VideoCallPage() {
                 <div className="call-center-col">
 
                     {/* Video display */}
-                    <div className="video-call-display">
+                    <div className="video-call-display" style={isExpanded ? { position: "fixed", inset: 0, margin: 0, borderRadius: 0, zIndex: 1000, width: "100vw", height: "100vh" } : {}}>
                         <div className="video-main-area">
 
                             {/* Full-cover patient video */}
@@ -267,7 +297,7 @@ export default function VideoCallPage() {
 
                                 <div className="video-ctrl-divider" />
 
-                                <button className="video-ctrl-btn">
+                                <button className="video-ctrl-btn" onClick={() => router.push("/doctor-portal/messages?activeConv=masud-rana")}>
                                     <div className="video-ctrl-icon end-call">
                                         <Icon type="endcall" />
                                     </div>
@@ -276,15 +306,24 @@ export default function VideoCallPage() {
                             </div>
 
                             {/* Expand — bottom right */}
-                            <button className="video-expand-btn">
-                                <Icon type="expand" />
+                            <button className="video-expand-btn" onClick={() => setIsExpanded(prev => !prev)}>
+                                {isExpanded ? (
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" width="14" height="14">
+                                        <polyline points="4 14 10 14 10 20" />
+                                        <polyline points="20 10 14 10 14 4" />
+                                        <line x1="10" y1="14" x2="3" y2="21" />
+                                        <line x1="21" y1="3" x2="14" y2="10" />
+                                    </svg>
+                                ) : (
+                                    <Icon type="expand" />
+                                )}
                             </button>
 
                         </div>
                     </div>
 
                     <div className="video-footer-note">
-                        All data is encrypted and stored securely. This consultation is subject to our <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.
+                        All data is encrypted and stored securely. This consultation is subject to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.
                     </div>
                 </div>
 
@@ -306,7 +345,7 @@ export default function VideoCallPage() {
                         <>
                             <div className="call-chat-body">
                                 <div className="call-chat-date">Today</div>
-                                {chatMessages.map((msg) => {
+                                {messages.map((msg) => {
                                     const isDoctor = msg.from === "doctor";
                                     return (
                                         <div key={msg.id} className={`call-chat-bubble-wrap${isDoctor ? " sent" : ""}`}>
@@ -326,12 +365,33 @@ export default function VideoCallPage() {
                             </div>
 
                             <div className="call-chat-input-wrap">
+                                {pendingFiles.length > 0 && (
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: "6px 4px 8px" }}>
+                                        {pendingFiles.map((f, i) => (
+                                            <div key={i} style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 4, background: "#f1f5f9", borderRadius: 6, padding: "3px 8px", fontSize: 11, color: "#475569" }}>
+                                                {f.type.startsWith("image/") ? (
+                                                    <img src={URL.createObjectURL(f)} alt={f.name} style={{ width: 28, height: 28, objectFit: "cover", borderRadius: 4 }} />
+                                                ) : (
+                                                    <Icon type="doc" />
+                                                )}
+                                                <span style={{ maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.name}</span>
+                                                <button onClick={() => setPendingFiles(prev => prev.filter((_, j) => j !== i))} style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                                 <div className="call-chat-input-row">
-                                    <input type="text" placeholder="Type a message..." />
-                                    <span className="call-chat-attach-icon">
+                                    <input
+                                        type="text"
+                                        placeholder="Type a message..."
+                                        value={inputText}
+                                        onChange={e => setInputText(e.target.value)}
+                                        onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+                                    />
+                                    <span className="call-chat-attach-icon" onClick={handleAttach} style={{ cursor: "pointer" }}>
                                         <Icon type="attach" />
                                     </span>
-                                    <div className="call-chat-input-icon">
+                                    <div className="call-chat-input-icon" onClick={handleSend} style={{ cursor: "pointer" }}>
                                         <Icon type="send" />
                                     </div>
                                 </div>
