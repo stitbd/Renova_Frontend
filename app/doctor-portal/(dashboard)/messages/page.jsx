@@ -634,7 +634,13 @@ export default function MessagesPage() {
             <p>32 Years, Male</p>
             <p className="msg-patient-id">{selectedConv?.phone}</p>
             <p className="msg-patient-id">{selectedConv?.patientId}</p>
-            <button className="msg-view-profile-btn">View Full Profile</button>
+            <Link
+              href={`/doctor-portal/patients/patient-profile?id=${selectedConv?.patientId}&from=/doctor-portal/messages`}
+              className="msg-view-profile-btn"
+              style={{ display: "block", textAlign: "center", textDecoration: "none" }}
+            >
+              View Full Profile
+            </Link>
           </div>
 
 

@@ -164,9 +164,13 @@ export default function VideoCallPage() {
                     </div>
 
                     <div className="call-patient-actions">
-                        <button className="call-patient-btn" style={{ flex: 2 }}>
+                        <Link
+                            href="/doctor-portal/patients/patient-profile?id=PT-2025-00123&from=/doctor-portal/messages/video-call"
+                            className="call-patient-btn"
+                            style={{ flex: 2, display: "flex", alignItems: "center", gap: 6, textDecoration: "none", justifyContent: "center" }}
+                        >
                             <Icon type="profile" /> View Profile
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Consultation Reason */}
