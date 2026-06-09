@@ -1019,7 +1019,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 32px 32px 80px;
+    padding: 32px 32px 100px;
     position: relative;
     overflow: hidden;
 }
@@ -1223,70 +1223,6 @@
     border-radius: 50%;
     background: #22c55e;
     display: inline-block;
-}
-
-/* Call Controls Bar */
-.call-controls-bar {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    background: rgba(20, 20, 30, 0.75);
-    backdrop-filter: blur(8px);
-    border-radius: 50px;
-    padding: 8px 18px;
-    z-index: 20;
-    white-space: nowrap;
-}
-
-.call-ctrl-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.call-ctrl-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-}
-
-.call-ctrl-icon:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.call-ctrl-icon.end-call {
-    background: #ef4444;
-}
-
-.call-ctrl-icon.end-call:hover {
-    background: #dc2626;
-}
-
-.call-ctrl-icon svg {
-    width: 20px;
-    height: 20px;
-    stroke: #fff;
-    fill: none;
-}
-
-.call-ctrl-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.75);
-    font-weight: 500;
 }
 
 /* ── Right Call Panel: Chat, Files, Reports ────────────── */

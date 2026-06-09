@@ -47,6 +47,7 @@ function Icon({ type }) {
         settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>,
         note: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
         history: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
+        arrowright: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>,
         reminder: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>,
         file: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
         send: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>,
@@ -89,42 +90,7 @@ export default function AudioCallPage() {
 
     return (
         <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-            {/* Custom Topbar */}
-            {/* <div className="call-topbar" style={{ margin: "-18px -22px 0", borderRadius: 0 }}>
-                <div className="call-topbar-left">
-                    <h2 className="call-topbar-title">Audio Consultation</h2>
-                    <span className="call-live-badge">
-                        <span className="call-live-dot" /> Live
-                    </span>
-                </div>
-                <div className="call-topbar-stats">
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Call Duration</span>
-                        <span className="call-stat-value">{fmt(seconds)}</span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Network</span>
-                        <span className="call-stat-value green" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span className="call-network-bars">
-                                <span /><span /><span /><span />
-                            </span>
-                            Good
-                        </span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Recording</span>
-                        <span className="call-stat-value red" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
-                            On
-                        </span>
-                    </div>
-                </div>
-                <button className="call-end-btn">
-                    End Call
-                </button>
-            </div> */}
-
-            <div className="call-page-layout" style={{ marginTop: 0 }}>
+            <div className="msg-page-wrap">
                 {/* ── Left: Patient Panel ────────────────────────── */}
                 <div className="call-patient-panel">
                     <Link href="/doctor-portal/messages" className="call-back-link">
@@ -151,7 +117,7 @@ export default function AudioCallPage() {
                     </div>
 
                     <div className="call-patient-actions">
-                        <button className="call-patient-btn">
+                        <button className="call-patient-btn" style={{ flex: 2 }}>
                             <Icon type="profile" /> View Profile
                         </button>
                         <button className="call-patient-btn">
@@ -178,6 +144,7 @@ export default function AudioCallPage() {
                                 <span className="call-summary-val">{r.val}</span>
                             </div>
                         ))}
+
                         <a href="#" className="call-view-history">
                             View Medical History <Icon type="arrowright" />
                         </a>
@@ -262,31 +229,29 @@ export default function AudioCallPage() {
                         <p className="audio-patient-role">Patient</p>
                         <p className="audio-timer">{fmt(seconds)}</p>
 
-                        <div className="audio-connection-status">
-                            <span className="audio-connection-text">You are connected via audio</span>
-                            <span className="audio-connection-quality">
-                                <span /> Good Connection
-                                <span className="call-network-bars" style={{ marginLeft: 4 }}>
-                                    <span /><span /><span /><span />
-                                </span>
-                            </span>
-                        </div>
-                    </div>
+                        {/* Controls bar — inside video, bottom center, pill shape */}
+                        <div className="video-controls-bar">
+                            {[
+                                { icon: "mic", label: "Mute" },
+                                { icon: "speaker", label: "Speaker" },
+                            ].map((btn) => (
+                                <button key={btn.label} className="video-ctrl-btn">
+                                    <div className="video-ctrl-icon">
+                                        <Icon type={btn.icon} />
+                                    </div>
+                                    <span className="video-ctrl-label">{btn.label}</span>
+                                </button>
+                            ))}
 
-                    {/* Controls bar — now inside audio-call-display */}
-                    <div className="call-controls-bar">
-                        {[
-                            { icon: "mic", label: "Mute" },
-                            { icon: "endcall", label: "End Call", end: true },
-                            { icon: "speaker", label: "Speaker" },
-                        ].map((btn) => (
-                            <button key={btn.label} className="call-ctrl-btn">
-                                <div className={`call-ctrl-icon${btn.end ? " end-call" : ""}`}>
-                                    <Icon type={btn.icon} />
+                            <div className="video-ctrl-divider" />
+
+                            <button className="video-ctrl-btn">
+                                <div className="video-ctrl-icon end-call">
+                                    <Icon type="endcall" />
                                 </div>
-                                <span className="call-ctrl-label">{btn.label}</span>
+                                <span className="video-ctrl-label">End Call</span>
                             </button>
-                        ))}
+                        </div>
                     </div>
 
 
