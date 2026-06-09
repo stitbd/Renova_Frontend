@@ -227,7 +227,7 @@ export default function AppointmentSuccess() {
                 {/* ── Actions ── */}
                 <div className="as-actions">
                     <a href="/appointment" className="as-btn as-btn--secondary">
-                        Book another
+                        Book another appointment
                     </a>
                     <a href="/" className="as-btn as-btn--primary">
                         Go to homepage
