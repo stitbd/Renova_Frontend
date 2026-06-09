@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { doctors } from "@/constants/siteData";
 import Button from "@/components/common/Button";
+
+const API_URL = "http://localhost:5001/api/v1";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -40,7 +41,8 @@ const StarIcon = () => (
 
 const SearchIcon = () => (
   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
 );
 
@@ -52,24 +54,58 @@ const ChevronIcon = () => (
 
 const XIcon = () => (
   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
 );
 
 const InitialsFallback = ({ name, accentFrom, accentTo }) => {
-  const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
+  const initials = name
+    ?.replace(/^Dr\.?\s*/i, "")
+    ?.split(" ")
+    ?.map((n) => n[0])
+    ?.slice(0, 2)
+    ?.join("")
+    ?.toUpperCase();
+
   return (
-    <div className="dcard__image-wrap" style={{ background: `linear-gradient(135deg, ${accentFrom}, ${accentTo})`, display: "flex", alignItems: "center", justifyContent: "center" }} aria-label={`Avatar for ${name}`}>
-      <span className="initials-fallback">{initials}</span>
+    <div
+      className="dcard__image-wrap"
+      style={{
+        background: `linear-gradient(135deg, ${accentFrom}, ${accentTo})`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      aria-label={`Avatar for ${name}`}
+    >
+      <span className="initials-fallback">{initials || "DR"}</span>
     </div>
   );
 };
 
-// ── Specialties & branches derived from data ──────────────────
-const SPECIALTIES = [...new Set(doctors.map((d) => d.specialty))];
-const BRANCHES = ["Gulshan Branch", "Mirpur Branch", "Dhanmondi Branch"]; // update as needed
 const CONSULTATION_TYPES = ["Face to Face", "Video / Audio Call"];
 const GENDERS = ["Male", "Female"];
+
+const mapDoctorFromApi = (doctor) => {
+  const cleanName = doctor.fullName?.replace(/^Dr\.?\s*/i, "") || "Unknown Doctor";
+
+  return {
+    id: doctor.id,
+    name: cleanName,
+    fullName: doctor.fullName || `Dr. ${cleanName}`,
+    specialty: doctor.specialization?.name || doctor.subSpecialization || "General Physician",
+    qualification: doctor.qualification || "N/A",
+    experience: `${doctor.experienceYears || 0}+ Years`,
+    rating: "5.0",
+    patients: "500",
+    gender: doctor.gender || "",
+    branch: doctor.outlet?.name || "",
+    consultationType: doctor.onlineStatus === "ONLINE" ? "Video / Audio Call" : "Face to Face",
+    status: doctor.status,
+    raw: doctor,
+  };
+};
 
 export default function DoctorsGrid() {
   const accentColors = [
@@ -79,16 +115,61 @@ export default function DoctorsGrid() {
     { from: "var(--color-secondary)", to: "var(--color-primary-dark)" },
   ];
 
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState("");
   const [imageErrors, setImageErrors] = useState({});
 
-  // ── Filter state ──────────────────────────────────────────────
   const [nameQuery, setNameQuery] = useState("");
   const [gender, setGender] = useState("");
   const [specialty, setSpecialty] = useState("");
   const [branch, setBranch] = useState("");
   const [consultType, setConsultType] = useState("");
 
-  // ── Active filter pills ───────────────────────────────────────
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        setLoading(true);
+        setApiError("");
+
+        const res = await fetch(`${API_URL}/doctors/getAll`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const result = await res.json();
+
+        if (!res.ok || !result.success) {
+          throw new Error(result.message || "Failed to fetch doctors.");
+        }
+
+        const mappedDoctors = Array.isArray(result.data)
+          ? result.data.map(mapDoctorFromApi)
+          : [];
+
+        setDoctors(mappedDoctors);
+      } catch (error) {
+        setApiError(error.message || "Something went wrong while loading doctors.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+  const SPECIALTIES = useMemo(() => {
+    return [...new Set(doctors.map((d) => d.specialty).filter(Boolean))];
+  }, [doctors]);
+
+  const BRANCHES = useMemo(() => {
+    const apiBranches = [...new Set(doctors.map((d) => d.branch).filter(Boolean))];
+
+    return apiBranches.length > 0
+      ? apiBranches
+      : ["Gulshan Branch", "Mirpur Branch", "Dhanmondi Branch"];
+  }, [doctors]);
+
   const activePills = [
     nameQuery && { label: `Name: ${nameQuery}`, clear: () => setNameQuery("") },
     gender && { label: gender, clear: () => setGender("") },
@@ -98,28 +179,26 @@ export default function DoctorsGrid() {
   ].filter(Boolean);
 
   const clearAll = () => {
-    setNameQuery(""); setGender(""); setSpecialty(""); setBranch(""); setConsultType("");
+    setNameQuery("");
+    setGender("");
+    setSpecialty("");
+    setBranch("");
+    setConsultType("");
   };
 
-  // ── Filtered doctors ──────────────────────────────────────────
-  // Note: gender, branch, consultType are not in the data model yet.
-  // They filter against doc.gender, doc.branch, doc.consultationType if present.
-  // For now they act as UI-ready filters that will work once data fields are added.
   const filtered = useMemo(() => {
     return doctors.filter((doc) => {
       if (nameQuery && !doc.name.toLowerCase().includes(nameQuery.toLowerCase())) return false;
       if (specialty && doc.specialty !== specialty) return false;
-      if (gender && doc.gender && doc.gender !== gender) return false;
-      if (branch && doc.branch && doc.branch !== branch) return false;
-      if (consultType && doc.consultationType && doc.consultationType !== consultType) return false;
+      if (gender && doc.gender !== gender) return false;
+      if (branch && doc.branch !== branch) return false;
+      if (consultType && doc.consultationType !== consultType) return false;
       return true;
     });
-  }, [nameQuery, gender, specialty, branch, consultType]);
+  }, [doctors, nameQuery, gender, specialty, branch, consultType]);
 
   return (
     <div id="doctors" className="doctors-section-wrapper">
-
-      {/* ── Filter Bar ───────────────────────────────────────── */}
       <div className="dfilter-card">
         <p className="dfilter-label">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" style={{ marginRight: 5, verticalAlign: "-1px" }}>
@@ -128,10 +207,12 @@ export default function DoctorsGrid() {
           Find a Doctor
         </p>
 
-        {/* Search row */}
         <div className="dfilter-top">
           <div className="dfilter-search-wrap">
-            <span className="dfilter-search-icon"><SearchIcon /></span>
+            <span className="dfilter-search-icon">
+              <SearchIcon />
+            </span>
+
             <input
               className="dfilter-input"
               type="text"
@@ -140,15 +221,18 @@ export default function DoctorsGrid() {
               onChange={(e) => setNameQuery(e.target.value)}
               aria-label="Search by doctor name"
             />
+
             {nameQuery && (
               <button className="dfilter-input-clear" onClick={() => setNameQuery("")} aria-label="Clear name search">
                 <XIcon />
               </button>
             )}
           </div>
-          <button className="btn btn-primary" onClick={() => { }}>
+
+          <button className="btn btn-primary" onClick={() => {}}>
             <SearchIcon /> Search
           </button>
+
           {activePills.length > 0 && (
             <button className="btn btn-secondary" onClick={clearAll}>
               <XIcon /> Clear all
@@ -156,7 +240,6 @@ export default function DoctorsGrid() {
           )}
         </div>
 
-        {/* Filter dropdowns */}
         <div className="dfilter-selects">
           {[
             { value: gender, setter: setGender, options: GENDERS, placeholder: "All Genders" },
@@ -172,14 +255,20 @@ export default function DoctorsGrid() {
                 aria-label={placeholder}
               >
                 <option value="">{placeholder}</option>
-                {options.map((o) => <option key={o} value={o}>{o}</option>)}
+                {options.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
               </select>
-              <span className="dfilter-chevron"><ChevronIcon /></span>
+
+              <span className="dfilter-chevron">
+                <ChevronIcon />
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Active filter pills */}
         {activePills.length > 0 && (
           <div className="dfilter-pills">
             {activePills.map(({ label, clear }) => (
@@ -190,25 +279,38 @@ export default function DoctorsGrid() {
           </div>
         )}
 
-        {/* Results count */}
         <div className="dfilter-footer">
           <span className="dfilter-count">
             <strong>{filtered.length}</strong> doctor{filtered.length !== 1 ? "s" : ""} found
           </span>
+
           {activePills.length === 0 && (
             <span className="dfilter-hint">Use one or more filters to narrow results</span>
           )}
         </div>
       </div>
 
-      {/* ── Doctors Grid ─────────────────────────────────────── */}
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="dfilter-empty">
+          <p>Loading doctors...</p>
+        </div>
+      ) : apiError ? (
+        <div className="dfilter-empty">
+          <p>{apiError}</p>
+          <button className="btn btn-primary" onClick={() => window.location.reload()}>
+            Try again
+          </button>
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="dfilter-empty">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <p>No doctors match your filters.</p>
-          <button className="btn btn-primary" onClick={clearAll}>Clear filters</button>
+          <button className="btn btn-primary" onClick={clearAll}>
+            Clear filters
+          </button>
         </div>
       ) : (
         <motion.div
@@ -231,19 +333,26 @@ export default function DoctorsGrid() {
               >
                 <div className="dcard__accent-bar" aria-hidden="true" />
 
-                <motion.div className="dcard__visual" initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 15 }}>
+                <motion.div
+                  className="dcard__visual"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                >
                   <div className="dcard__image-ring" aria-hidden="true" />
+
                   {hasImageError ? (
                     <InitialsFallback name={doc.name} accentFrom={accent.from} accentTo={accent.to} />
                   ) : (
                     <motion.div
                       className="dcard__image-wrap"
-                      style={{ position: "relative" }}   // ← ADD THIS LINE
+                      style={{ position: "relative" }}
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     >
                       <Image
-                        src={`/images/doctors/doctor-${doc.id}.jpg`}
+                        src={`https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9jdG9yfGVufDB8fDB8fHww`}
                         alt={`Portrait of Dr. ${doc.name}`}
                         fill
                         sizes="(max-width: 559px) 80px, (max-width: 1023px) 120px, 180px"
@@ -253,9 +362,19 @@ export default function DoctorsGrid() {
                       />
                     </motion.div>
                   )}
-                  <motion.div className="dcard__status" role="status" aria-label="Available for appointments" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+
+                  <motion.div
+                    className="dcard__status"
+                    role="status"
+                    aria-label="Available for appointments"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                  >
                     <span className="dcard__status-dot" aria-hidden="true" />
-                    <span className="dcard__status-text">Available</span>
+                    <span className="dcard__status-text">
+                      {doc.status === "ACTIVE" ? "Available" : "Unavailable"}
+                    </span>
                   </motion.div>
                 </motion.div>
 
@@ -263,20 +382,33 @@ export default function DoctorsGrid() {
                   <motion.h3 className="dcard__name" initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                     Dr. {doc.name}
                   </motion.h3>
-                  <motion.p className="dcard__specialty" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>{doc.specialty}</motion.p>
-                  <motion.p className="dcard__qualification" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>{doc.qualification}</motion.p>
+
+                  <motion.p className="dcard__specialty" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    {doc.specialty}
+                  </motion.p>
+
+                  <motion.p className="dcard__qualification" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    {doc.qualification}
+                  </motion.p>
 
                   <motion.div className="dcard__stats" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
                     <div className="dcard__stat">
                       <span className="dcard__stat-value">{doc.experience}</span>
                       <span className="dcard__stat-label">Experience</span>
                     </div>
+
                     <div className="dcard__stat-divider" aria-hidden="true" />
+
                     <div className="dcard__stat">
-                      <span className="dcard__stat-value"><StarIcon />{doc.rating}</span>
+                      <span className="dcard__stat-value">
+                        <StarIcon />
+                        {doc.rating}
+                      </span>
                       <span className="dcard__stat-label">Rating</span>
                     </div>
+
                     <div className="dcard__stat-divider" aria-hidden="true" />
+
                     <div className="dcard__stat">
                       <span className="dcard__stat-value">{doc.patients}+</span>
                       <span className="dcard__stat-label">Patients</span>
@@ -284,8 +416,13 @@ export default function DoctorsGrid() {
                   </motion.div>
 
                   <motion.div className="dcard-cta-group" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                    <Button variant="secondary" href={`/doctors/${doc.id}`}><ProfileIcon /> Profile</Button>
-                    <Button variant="primary" href={`/appointment?doctor=${doc.id}`}><CalendarIcon /> Appointment</Button>
+                    <Button variant="secondary" href={`/doctors/${doc.id}`}>
+                      <ProfileIcon /> Profile
+                    </Button>
+
+                    <Button variant="primary" href={`/appointment?doctor=${doc.id}`}>
+                      <CalendarIcon /> Appointment
+                    </Button>
                   </motion.div>
                 </div>
               </motion.article>
