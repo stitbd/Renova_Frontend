@@ -129,187 +129,206 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const filtered = (Array.isArray(doctors) ? doctors : []).filter(d => {
-    if (!d || !d.id) return false;
-    const name = String(d.name ?? "").toLowerCase();
-    const title = String(d.title ?? "").toLowerCase();
-    const q = String(query ?? "").toLowerCase();
+  const doctorList = Array.isArray(doctors) ? doctors : [];
+
+  const getDoctorName = (doctor) => {
+    return (
+      doctor?.fullName ||
+      doctor?.name ||
+      "Unknown Doctor"
+    );
+  };
+
+  const getDoctorTitle = (doctor) => {
+    // console.log('doctor object in getDoctorTitle:', doctor);
+    const title =
+      doctor?.title ||
+      doctor?.specialization?.name ||
+      doctor?._raw?.specialization?.name ||
+      doctor?._raw?.subSpecialization ||
+      "Specialist";
+
+    return typeof title === "string" ? title : title?.name || "Specialist";
+  };
+
+  const getDoctorExp = (doctor) => {
+    if (doctor?.exp) return doctor.exp;
+    if (doctor?.experience) return doctor.experience;
+    if (doctor?.experienceYears) return `${doctor.experienceYears} yrs`;
+    if (doctor?._raw?.experienceYears) return `${doctor._raw.experienceYears} yrs`;
+    return "";
+  };
+
+  const getDoctorInitials = (doctor) => {
+    const name = getDoctorName(doctor).replace(/^Dr\.?\s*/i, "");
+
+    return (
+      doctor?.initials ||
+      name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((n) => n[0]?.toUpperCase())
+        .join("") ||
+      "DR"
+    );
+  };
+
+  const filtered = doctorList.filter((doctor) => {
+    if (!doctor?.id) return false;
+
+    const name = getDoctorName(doctor).toLowerCase();
+    const title = getDoctorTitle(doctor).toLowerCase();
+    const q = query.toLowerCase();
+
     return name.includes(q) || title.includes(q);
   });
-  const selected = (Array.isArray(doctors) ? doctors : []).find(d => d && d.id === value);
+
+  const selected = doctorList.find((doctor) => doctor?.id === value);
 
   return (
     <div className="appt-doc-dd" style={{ position: "relative" }}>
       <button
         type="button"
         className={`appt-doc-dd__trigger${open ? " open" : ""}${locked ? " appt-doc-dd__trigger--locked" : ""}`}
-        onClick={() => { if (!locked) setOpen(o => !o); }}
+        onClick={() => {
+          if (!locked) setOpen((prev) => !prev);
+        }}
         aria-haspopup={locked ? undefined : "listbox"}
         aria-expanded={locked ? undefined : open}
         aria-disabled={locked}
       >
-        {selected
-          ? <>
-            <div className="appt-doc-avatar" style={{ width: 28, height: 28, fontSize: ".65rem", overflow: "hidden", padding: 0 }}>
-              <img
-                src={selected.avatar || `/images/doctors/doctor-${selected.id}.jpg`}
-                alt={selected.fullName || "Doctor"}
-                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-              // onError={e => { e.target.style.display = "none"; e.target.parentNode.textContent = selected.initials || "Dr"; }}
-              />
+        {selected ? (
+          <>
+            <div
+              className="appt-doc-avatar"
+              style={{
+                width: 28,
+                height: 28,
+                fontSize: ".65rem",
+                overflow: "hidden",
+                padding: 0,
+              }}
+            >
+              {selected.avatar ? (
+                <img
+                  src={selected.avatar}
+                  alt={getDoctorName(selected)}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                />
+              ) : (
+                getDoctorInitials(selected)
+              )}
             </div>
-            <span>{selected.fullName || "Unknown"}</span>
-            <span className="appt-doc-dd__meta">{selected.title || ""}</span>
+
+            <span>{getDoctorName(selected)}</span>
+
           </>
-          : <span className="appt-doc-dd__placeholder">Search &amp; select a doctor…</span>
-        }
-        <span className="appt-doc-dd__chevron" style={{ marginLeft: "auto", color: "var(--appt-ink3)" }}>▾</span>
+        ) : (
+          <span className="appt-doc-dd__placeholder">
+            Search &amp; select a doctor…
+          </span>
+        )}
+
+        {!locked && (
+          <span
+            className="appt-doc-dd__chevron"
+            style={{ marginLeft: "auto", color: "var(--appt-ink3)" }}
+          >
+            ▾
+          </span>
+        )}
       </button>
 
       {open && !locked && (
         <div className="appt-doc-dd__panel" role="listbox">
           <div className="appt-doc-dd__search-wrap">
             <IconSearch size={14} />
+
             <input
               className="appt-doc-dd__search"
               type="text"
               placeholder="Search by name or specialty…"
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               autoFocus
             />
+
             {query && (
-              <button type="button" className="appt-doc-dd__clear" onClick={() => setQuery("")}><IconX size={12} /></button>
+              <button
+                type="button"
+                className="appt-doc-dd__clear"
+                onClick={() => setQuery("")}
+              >
+                <IconX size={12} />
+              </button>
             )}
           </div>
+
           <div className="appt-doc-dd__list">
             {filtered.length === 0 && (
               <div className="appt-doc-dd__empty">No doctors found</div>
             )}
-            {filtered.map(doc => (
+
+            {filtered.map((doctor) => (
               <div
-                key={doc.id || doc.name}
+                key={doctor.id}
                 role="option"
-                aria-selected={value === doc.id}
-                className={`appt-doc-dd__item${value === doc.id ? " sel" : ""}`}
-                onClick={() => { onChange(doc.id); setOpen(false); setQuery(""); }}
+                aria-selected={value === doctor.id}
+                className={`appt-doc-dd__item${value === doctor.id ? " sel" : ""}`}
+                onClick={() => {
+                  onChange(doctor.id);
+                  setOpen(false);
+                  setQuery("");
+                }}
               >
-                <div className="appt-doc-avatar" style={{ width: 36, height: 36, fontSize: ".7rem", flexShrink: 0 }}>{doc.initials || "Dr"}</div>
-                <div>
-                  <div className="appt-doc-name">{doc.fullName || "Unknown"}</div>
-                  <div className="appt-doc-meta">{doc.title || ""}{doc.exp ? ` · ${doc.exp} experience` : ""}</div>
+                <div
+                  className="appt-doc-avatar"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    fontSize: ".7rem",
+                    flexShrink: 0,
+                  }}
+                >
+                  {getDoctorInitials(doctor)}
                 </div>
-                {value === doc.id && <span style={{ marginLeft: "auto", color: "var(--appt-teal)", fontWeight: 700 }}>✓</span>}
+
+                <div>
+                  <div className="appt-doc-name">
+                    {getDoctorName(doctor)}
+                  </div>
+
+                  <div className="appt-doc-meta">
+                    {/* {getDoctorTitle(doctor)} */}
+                    {getDoctorExp(doctor)
+                      ? `  ${getDoctorExp(doctor)} experience`
+                      : ""}
+                  </div>
+                </div>
+
+                {value === doctor.id && (
+                  <span
+                    style={{
+                      marginLeft: "auto",
+                      color: "var(--appt-teal)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✓
+                  </span>
+                )}
               </div>
             ))}
           </div>
         </div>
       )}
     </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   INVOICE — printable/downloadable on confirmation
-   ═══════════════════════════════════════════════════════════════ */
-function InvoicePrint({ data, bookingRef }) {
-  const dept = data._deptObj || {};
-  const doctor = data._doctorObj || {};
-  const branch = BRANCHES.find(b => b.id === data.branch);
-
-  const consultFee = data.ConsultationFee || 1000;
-  const serviceFee = data.mode === "online" ? 100 : 0;
-  const total = consultFee + serviceFee;
-  const isOnlinePay = data.paymentMethod === "bkash" || data.paymentMethod === "card";
-  const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
-
-  const handlePrint = () => {
-    const w = window.open("", "_blank");
-    w.document.write(`<!DOCTYPE html><html><head><title>Invoice ${bookingRef}</title>
-      <style>
-        *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:'DM Sans',Arial,sans-serif;color:#0d1b2a;background:#fff;padding:32px}
-        .inv{max-width:680px;margin:0 auto}
-        .inv-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #1E6FAF}
-        .inv-left{display:flex;flex-direction:column;gap:4px}
-        .inv-logo-img{display:block;max-width:220px;height:auto;object-fit:contain;margin-bottom:8px}
-        .inv-phoneAddress{font-size:.72rem;font-weight:400;color:#6b7b8d;line-height:1.5}
-        .inv-ref{text-align:right}
-        .inv-ref h2{font-size:1rem;color:#1E6FAF;font-weight:700;letter-spacing:.08em}
-        .inv-ref p{font-size:.8rem;color:#6b7b8d;margin-top:4px}
-        .inv-status{display:inline-block;background:#e0f4f1;color:#1E6FAF;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:50px;margin-top:6px;text-transform:uppercase;letter-spacing:.06em}
-        .inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}
-        .inv-box{background:#f7f6f2;border-radius:10px;padding:16px}
-        .inv-box h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7b8d;margin-bottom:10px}
-        .inv-box p{font-size:.85rem;line-height:1.7;color:#3a4a5c}
-        .inv-box strong{color:#0d1b2a}
-        table{width:100%;border-collapse:collapse;margin:20px 0}
-        th{background:#1E6FAF;color:#fff;font-size:.78rem;font-weight:600;text-align:left;padding:10px 14px}
-        td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid #e2ddd8}
-        tr:last-child td{border-bottom:none}
-        .amt{text-align:right}
-        .total-row td{font-weight:700;font-size:.95rem;background:#f0faf8;color:#1E6FAF}
-        .inv-foot{margin-top:28px;padding-top:16px;border-top:1px solid #e2ddd8;font-size:.75rem;color:#6b7b8d;text-align:center;line-height:1.8}
-        @media print{@page{size:A4 portrait;margin:18mm 16mm 18mm 16mm}html,body{width:210mm;margin:0;padding:0;background:#fff}.inv{max-width:100%;padding:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
-      </style></head><body>
-      <div class="inv">
-        <div class="inv-head">
-          <div class="inv-left">
-            <img src="/images/logo2.png" alt="Renova Life Care Ltd." class="inv-logo-img" style="height:56px;width:auto" />
-            <div class="inv-phoneAddress">House #12, Gulshan 2, Dhaka-1212, Bangladesh</div>
-            <div class="inv-phoneAddress">+880 1700-000000</div>
-            <div class="inv-phoneAddress">info@renovalifecare.com</div>
-          </div>
-          <div class="inv-ref">
-            <h2>INVOICE</h2>
-            <p>Invoice No: ${bookingRef}</p>
-            <p>Date: ${today}</p>
-            <span class="inv-status">Confirmed</span>
-          </div>
-        </div>
-        <div class="inv-grid">
-          <div class="inv-box"><h4>Patient</h4>
-            <p><strong>${data.fullName}</strong><br>${data.email}<br>${data.phone}<br>DOB: ${data.dob}</p>
-          </div>
-          <div class="inv-box"><h4>Appointment</h4>
-            <p><strong>${dept?.name || ""} Dept.</strong><br>${doctor?.name || "To be assigned"}<br>${data.mode === "online" ? "🌐 Online Consultation" : branch?.name || ""}<br>${data.date} at ${data.slot}</p>
-          </div>
-        </div>
-        <table>
-          <thead><tr><th>Description</th><th class="amt">Amount (BDT)</th></tr></thead>
-          <tbody>
-            <tr><td>Consultation Fee — ${dept?.name || ""} (${doctor?.name || ""})</td><td class="amt">${consultFee.toLocaleString()}.00</td></tr>
-            ${data.mode === "online" ? `<tr><td>Online Service Fee</td><td class="amt">${serviceFee}.00</td></tr>` : ""}
-            <tr class="total-row"><td><strong>Total Payable</strong></td><td class="amt"><strong>${total.toLocaleString()}.00</strong></td></tr>
-          </tbody>
-        </table>
-        <div class="inv-box"><h4>Payment</h4>
-          <p>Method: <strong>${data.paymentMethod === "bkash" ? "bKash / Mobile Banking" : data.paymentMethod === "card" ? "Credit / Debit Card" : "Cash on Visit"}</strong>
-          ${isOnlinePay ? `<br>Status: <strong style="color:#1E6FAF">Paid</strong>` : `<br>Status: <strong style="color:#c94040">Due on Visit</strong>`}</p>
-        </div>
-        <div class="inv-foot">
-          Thank you for choosing Renova Life Care Ltd. For queries call +880 1700-000000 or email appointments@renovalifecare.com<br>
-          This is a computer-generated invoice and does not require a physical signature.
-        </div>
-      </div>
-      </body></html>`);
-    w.document.close();
-    w.focus();
-    setTimeout(() => { w.print(); }, 400);
-  };
-
-  return (
-    <>
-      <div id="appt-invoice" style={{ display: "none" }} />
-      <button
-        type="button"
-        className="appt-btn appt-btn-ghost appt-btn--invoice"
-        onClick={handlePrint}
-        style={{ width: "100%", marginTop: 10 }}
-      >
-        <IconDownload size={16} /> Download &amp; Print Invoice
-      </button>
-    </>
   );
 }
 
@@ -411,15 +430,44 @@ function Step1({ data, errors, upd, onNext }) {
 /* ═══════════════════════════════════════════════════════════════
    STEP 2 — Appointment Details
    ═══════════════════════════════════════════════════════════════ */
-function Step2({ data, errors, upd, onNext, onBack, minDate, departments, doctorsByDept, loadingDepts, loadingDoctors, availableSlots, loadingSlots }) {
+function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments, doctorsByDept, loadingDepts, loadingDoctors, availableSlots, loadingSlots }) {
   const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
+  console.log('selected doctor object:', doctor);
+
   /* Doctors for the chosen department (from API) */
-  const doctors = useMemo(
-    () => (data.dept ? doctorsByDept[data.dept] || [] : []),
-    [data.dept, doctorsByDept]
-  );
+  const doctors = useMemo(() => {
+    if (doctor) {
+      const fullName = doctor.fullName || doctor.name || "Doctor";
+
+      return [
+        {
+          id: doctor.id,
+          name: fullName.startsWith("Dr") ? fullName : `${fullName}`,
+          title:
+            doctor.specialization?.name ||
+            doctor.subSpecialization ||
+            "Specialist",
+          exp: doctor.experienceYears
+            ? `${doctor.experienceYears} yrs`
+            : "N/A",
+          initials: fullName
+            .replace(/^Dr\.?\s*/i, "")
+            .split(" ")
+            .filter(Boolean)
+            .slice(0, 2)
+            .map((n) => n[0].toUpperCase())
+            .join(""),
+          avatar: doctor.profileImage || doctor.avatar || doctor.photo || null,
+          consultationFee: Number(doctor.consultationFee || 0),
+          _raw: doctor,
+        },
+      ];
+    }
+
+    return data.dept ? doctorsByDept[data.dept] || [] : [];
+  }, [doctor, data.dept, doctorsByDept]);
 
   /* Time slots — prioritize API slots, fallback to static slots */
   const doctorSlots = useMemo(
@@ -430,6 +478,49 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, departments, doctor
   const showDoctorList = data.dept && (isOnline || (isOffline && data.branch));
   const dateEnabled = showDoctorList && !!data.doctor;
   const showSlots = dateEnabled && !!data.date;
+
+  useEffect(() => {
+    if (!doctor?.id) return;
+
+    const fullName = doctor.fullName || doctor.name || "Doctor";
+
+    const normalizedDoctor = {
+      id: doctor.id,
+      name: fullName.startsWith("Dr") ? fullName : `${fullName}`,
+      title:
+        doctor.specialization?.name ||
+        doctor.subSpecialization ||
+        "Specialist",
+      exp: doctor.experienceYears
+        ? `${doctor.experienceYears} yrs`
+        : "N/A",
+      initials: fullName
+        .replace(/^Dr\.?\s*/i, "")
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((n) => n[0].toUpperCase())
+        .join(""),
+      avatar: doctor.profileImage || doctor.avatar || doctor.photo || null,
+      consultationFee: Number(doctor.consultationFee || 0),
+      _raw: doctor,
+    };
+
+    upd("mode", "online");
+    upd("doctor", doctor.id);
+    upd("_preDoctor", doctor.id);
+    upd("_doctorObj", normalizedDoctor);
+    upd("ConsultationFee", Number(doctor.consultationFee || 0));
+
+    if (doctor.specialization?.id) {
+      upd("dept", doctor.specialization.id);
+      upd("_deptObj", {
+        id: doctor.specialization.id,
+        name: doctor.specialization.name,
+        _raw: doctor.specialization,
+      });
+    }
+  }, [doctor?.id]);
 
   return (
     <div className="appt-card">
@@ -549,8 +640,10 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, departments, doctor
                 value={data.doctor}
                 onChange={id => {
                   const docObj = doctors.find(d => d.id === id);
+
                   upd("doctor", id);
                   upd("_doctorObj", docObj || null);
+                  upd("ConsultationFee", Number(docObj?.consultationFee || docObj?._raw?.consultationFee || 0));
                   upd("date", "");
                   upd("slot", "");
                 }}
@@ -616,7 +709,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, departments, doctor
                       aria-disabled={booked}
                     >
                       {time}
-                      {booked && <span className="appt-slot-badge">Full</span>}
+                      {booked && <span className="appt-slot-badge">Booked</span>}
                     </button>
                   );
                 })}
@@ -787,69 +880,6 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   CONFIRMATION VIEW
-   ═══════════════════════════════════════════════════════════════ */
-function Confirmation({ data, bookingRef, onReset }) {
-  const dept = data._deptObj || {};
-  const doctor = data._doctorObj || {};
-  const branch = BRANCHES.find(b => b.id === data.branch);
-
-  const rows = [
-    ["Patient", data.fullName],
-    ["Mode", data.mode === "online" ? "🌐 Online" : "🏥 In-Person"],
-    ["Department", dept?.name],
-    ["Doctor", doctor?.name || "To be assigned"],
-    ["Branch", data.mode === "offline" ? branch?.name : "Online Consultation"],
-    ["Date", data.date],
-    ["Time", data.slot],
-    ["Payment", data.paymentMethod === "bkash" ? "📱 bKash / Mobile Banking"
-      : data.paymentMethod === "card" ? "💳 Credit / Debit Card"
-        : "💵 Cash on Visit"],
-    ["Amount", "BDT " + (data.ConsultationFee || "")],
-  ];
-
-  return (
-    <div className="appt-confirm-wrap">
-      <div className="appt-confirm-card appt-card">
-        <div className="appt-card__body">
-          <h2 className="appt-confirm-title">Booking Confirmed!</h2>
-          <p style={{ color: "var(--appt-ink3)" }}>Your reference number</p>
-          <div className="appt-confirm-ref">{bookingRef}</div>
-
-          <div className="appt-confirm-rows">
-            {rows.filter(([, v]) => v).map(([k, v]) => (
-              <div className="appt-conf-row" key={k}>
-                <span>{k}</span>
-                <strong>{v}</strong>
-              </div>
-            ))}
-          </div>
-
-          <div className="appt-confirm-actions appt-confirm-actions--row">
-            <button className="btn btn-secondary" onClick={onReset} type="button">
-              Book Another Appointment
-            </button>
-            <a href="/" className="btn btn-primary">
-              <IconCheck size={16} /> Go to Homepage
-            </a>
-          </div>
-
-          <InvoicePrint data={data} bookingRef={bookingRef} />
-
-          <div className="appt-confirm-note">
-            <span style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>💡</span>
-            <p>
-              <strong>Before your visit:</strong> Arrive 15 minutes early.
-              Bring your national ID and any previous medical reports or prescriptions.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
    SIDEBAR
    ═══════════════════════════════════════════════════════════════ */
 function Sidebar({ phone, email }) {
@@ -917,14 +947,6 @@ const DEPT_ICON_MAP = {
   default: "🏥",
 };
 
-function getDeptIcon(name = "") {
-  const key = name.toLowerCase();
-  for (const [k, v] of Object.entries(DEPT_ICON_MAP)) {
-    if (key.includes(k)) return v;
-  }
-  return DEPT_ICON_MAP.default;
-}
-
 /* ═══════════════════════════════════════════════════════════════
    MAIN EXPORT — AppointmentForm
    ═══════════════════════════════════════════════════════════════ */
@@ -933,6 +955,9 @@ export default function AppointmentForm({
   email = "appointments@clinic.com",
 }) {
   const searchParams = useSearchParams();
+  const doctorIdFromQuery = searchParams?.get?.("doctor") ?? null;
+
+
   const token = useAppSelector((state) => state.auth.accessToken);
 
   /* ── Form state (must be declared before any useEffect that reads it) ── */
@@ -986,6 +1011,58 @@ export default function AppointmentForm({
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
 
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [loadingDoctor, setLoadingDoctor] = useState(false);
+
+
+
+  //fetch single doctor if doctorIdFromQuery exists and set selectedDoctor state
+  useEffect(() => {
+    if (!doctorIdFromQuery) return;
+
+    const fetchDoctor = async () => {
+      try {
+        setLoadingDoctor(true);
+
+        const res = await fetch(
+          `${API_URL}/doctors/getSingle/${doctorIdFromQuery}`,
+          {
+            credentials: "include",
+          }
+        );
+
+        const result = await res.json();
+
+        if (!res.ok || !result.success) {
+          throw new Error(result.message || "Failed to load doctor");
+        }
+
+        const doctor = result.data;
+
+        setSelectedDoctor(doctor);
+
+        // auto select department
+        if (doctor.specialization) {
+          setData(prev => ({
+            ...prev,
+            dept: doctor.specialization.id,
+            doctor: doctor.id,
+            ConsultationFee: Number(doctor.consultationFee || 0),
+            _doctorObj: doctor,
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to load doctor:", error);
+      } finally {
+        setLoadingDoctor(false);
+      }
+    };
+
+    fetchDoctor();
+  }, [doctorIdFromQuery]);
+
+
+
   /* ── Fetch all specializations on mount ── */
   useEffect(() => {
     const fetchDepts = async () => {
@@ -997,12 +1074,42 @@ export default function AppointmentForm({
         );
         const result = await res.json();
         const raw = result?.data || result || [];
-        const normalized = raw.map(s => ({
-          id: s.id || s._id || s.name,
-          name: s.name || s.specializationName || s.title,
-          icon: getDeptIcon(s.name || s.specializationName || ""),
-          _raw: s,
-        }));
+        const normalized = raw.map(doc => {
+          const fullName = doc.fullName || doc.name || "Unknown Doctor";
+
+          const title =
+            doc.specialization?.name ||
+            doc.specializationName ||
+            doc.subSpecialization ||
+            "Specialist";
+
+          const exp = doc.experienceYears
+            ? `${doc.experienceYears} yrs`
+            : doc.experienceYears
+              ? `${doc.experienceYears} yrs`
+              : "N/A";
+
+          const initials = fullName
+            .replace(/^Dr\.?\s*/i, "")
+            .split(" ")
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(n => n[0].toUpperCase())
+            .join("");
+
+          return {
+            id: doc.id || doc._id,
+            fullName: fullName.startsWith("Dr") ? fullName : `${fullName}`,
+            name: fullName.startsWith("Dr") ? fullName : `${fullName}`,
+            title,
+            exp,
+            initials: initials || "DR",
+            avatar: doc.profileImage || doc.avatar || doc.photo || null,
+            consultationFee: Number(doc.consultationFee || 0),
+            _raw: doc,
+          };
+        });
+
         setDepartments(normalized);
       } catch (err) {
         console.error("Failed to load specializations:", err);
@@ -1012,6 +1119,9 @@ export default function AppointmentForm({
     };
     fetchDepts();
   }, []);
+
+
+
 
   /* ── Fetch doctors whenever department changes ── */
   useEffect(() => {
@@ -1043,12 +1153,12 @@ export default function AppointmentForm({
             .map(n => n[0].toUpperCase())
             .join("");
           const rawTitle = doc.specialization || doc.specializationName || doc.title || selectedDept.name;
-          const rawExp = doc.yearsOfExperience
-            ? `${doc.yearsOfExperience} yrs`
+          const rawExp = doc.experienceYears
+            ? `${doc.experienceYears} yrs`
             : doc.experience || doc.exp || "N/A";
           return {
             id: doc.id || doc._id,
-            name: fullName.startsWith("Dr") ? fullName : `Dr. ${fullName}`,
+            name: fullName.startsWith("Dr") ? fullName : `${fullName}`,
             title: String(rawTitle ?? ""),
             exp: String(rawExp ?? "N/A"),
             initials,
@@ -1124,6 +1234,8 @@ export default function AppointmentForm({
     setMinDate(new Date().toISOString().split("T")[0]);
   }, []);
 
+  /* After other useEffects */
+
   /* Field updater */
   const upd = (key, value) => {
     setData(prev => ({ ...prev, [key]: value }));
@@ -1143,16 +1255,22 @@ export default function AppointmentForm({
   };
 
   /* Final submit */
+  /* Inside AppointmentForm component */
+
+  const [paymentInitiated, setPaymentInitiated] = useState(false);
+
   const handleSubmit = async () => {
     const errs = validateStep3(data);
-
-    console.log('phone data', data.phone)
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
 
     setBusy(true);
     setErrors({});
 
     try {
+      // 1. Create Appointment
       const reqBody = {
         patientName: data.fullName,
         patientEmail: data.email,
@@ -1166,7 +1284,6 @@ export default function AppointmentForm({
         type: data.mode === "online" ? "ONLINE" : "IN_PERSON",
         reason: data.symptoms,
       };
-      console.log('Request body:', reqBody);
 
       const headers = { "Content-Type": "application/json" };
       if (token) headers.Authorization = `Bearer ${token}`;
@@ -1180,17 +1297,36 @@ export default function AppointmentForm({
 
       const result = await res.json();
 
-      console.log("Booking response:", { result });
-
       if (!res.ok || !result.success) {
-        throw new Error(result.message || `Appointment booking failed (Status: ${res.status})`);
+        throw new Error(result.message || "Failed to create appointment");
       }
 
-      setRef(result.data?.appointmentCode || result.data?.id || "Appointment Created");
-      setDone(true);
+      const appointmentId = result.data?.id || result.data?.appointment?.id;
+      if (!appointmentId) throw new Error("Appointment ID not returned");
+
+      // 2. Initiate Payment
+      const paymentRes = await fetch(`${API_URL}/payments/appointment/initiate`, {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: JSON.stringify({ appointmentId }),
+      });
+
+      const paymentResult = await paymentRes.json();
+
+      if (!paymentRes.ok || !paymentResult.success) {
+        throw new Error(paymentResult.message || "Payment initiation failed");
+      }
+
+      const paymentUrl = paymentResult.data?.paymentUrl;
+      if (!paymentUrl) throw new Error("Payment URL not received");
+
+      setPaymentInitiated(true);
+      window.location.href = paymentUrl; // Redirect to payment gateway
+
     } catch (error) {
-      console.error("Booking error:", error.message);
-      setErrors({ submit: error.message || "Booking failed. Please try again." });
+      console.error("Booking error:", error);
+      setErrors({ submit: error.message || "Something went wrong. Please try again." });
     } finally {
       setBusy(false);
     }
@@ -1238,9 +1374,6 @@ export default function AppointmentForm({
       )}
 
       <div className="appt-body">
-        {done && (
-          <Confirmation data={data} bookingRef={ref} onReset={handleReset} />
-        )}
 
         {!done && step === 1 && (
           <Step1 data={data} errors={errors} upd={upd} onNext={() => go(1)} />
@@ -1254,6 +1387,7 @@ export default function AppointmentForm({
             onNext={() => go(1)}
             onBack={() => go(-1)}
             minDate={minDate}
+            doctor={selectedDoctor}
             departments={departments}
             doctorsByDept={doctorsByDept}
             loadingDepts={loadingDepts}
