@@ -301,7 +301,13 @@ export default function PrescriptionDetailsPage() {
                     <div className="rxd-patient-card">
                         <div className="rxd-patient-card-header">
                             <h4 className="rxd-patient-card-title">Patient Summary</h4>
-                            <button className="rxd-view-profile-link">View Profile</button>
+                            <Link
+                                href={`/doctor-portal/patients/patient-profile?id=${patient.pid}&from=/doctor-portal/prescriptions/prescriptions-details`}
+                                className="rxd-view-profile-link"
+                                style={{ display: "block", textAlign: "center", textDecoration: "none" }}
+                            >
+                                View Full Profile
+                            </Link>
                         </div>
                         <div className="rxd-patient-info-block">
                             <div className="rxd-patient-avatar">

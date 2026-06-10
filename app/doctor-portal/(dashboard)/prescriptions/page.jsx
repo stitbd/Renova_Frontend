@@ -202,42 +202,6 @@ export default function PrescriptionsPage() {
                 <Icon type="plus" /> New Prescription
               </Link>
             </button>
-            <button
-              className="rx-act-btn"
-              title="Download"
-              onClick={() => generatePrescriptionPDF({
-                prescriptionId: rx.id,
-                prescriptionDate: rx.date,
-                prescriptionTime: rx.time,
-                visitType: "OPD",
-                prescriptionType: "New Prescription",
-                status: rx.status,
-                doctor: { name: rx.doctor.name, specialization: rx.doctor.spec },
-                patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
-                medicines: [],
-                additionalInstructions: [],
-              }, "download")}
-            >
-              <Icon type="download" />
-            </button>
-            <button
-              className="rx-act-btn"
-              title="Print"
-              onClick={() => generatePrescriptionPDF({
-                prescriptionId: rx.id,
-                prescriptionDate: rx.date,
-                prescriptionTime: rx.time,
-                visitType: "OPD",
-                prescriptionType: "New Prescription",
-                status: rx.status,
-                doctor: { name: rx.doctor.name, specialization: rx.doctor.spec },
-                patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
-                medicines: [],
-                additionalInstructions: [],
-              }, "print")}
-            >
-              <Icon type="print" />
-            </button>
           </div>
         </div>
 
@@ -321,10 +285,41 @@ export default function PrescriptionsPage() {
                     <Link href={`/doctor-portal/prescriptions/prescriptions-details`} className="rx-act-btn" title="View">
                       <Icon type="eye" />
                     </Link>
-                    <button className="rx-act-btn" title="Download">
+                    <button
+                      className="rx-act-btn"
+                      title="Download"
+                      onClick={() => generatePrescriptionPDF({
+                        prescriptionId: rx.id,
+                        prescriptionDate: rx.date,
+                        prescriptionTime: rx.time,
+                        visitType: "OPD",
+                        prescriptionType: "New Prescription",
+                        status: rx.status,
+                        doctor: { name: rx.doctor.name, specialization: rx.doctor.spec },
+                        patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
+                        medicines: [],
+                        additionalInstructions: [],
+                      }, "download")}
+                    >
                       <Icon type="download" />
                     </button>
-                    <button className="rx-act-btn" title="Print">
+
+                    <button
+                      className="rx-act-btn"
+                      title="Print"
+                      onClick={() => generatePrescriptionPDF({
+                        prescriptionId: rx.id,
+                        prescriptionDate: rx.date,
+                        prescriptionTime: rx.time,
+                        visitType: "OPD",
+                        prescriptionType: "New Prescription",
+                        status: rx.status,
+                        doctor: { name: rx.doctor.name, specialization: rx.doctor.spec },
+                        patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
+                        medicines: [],
+                        additionalInstructions: [],
+                      }, "print")}
+                    >
                       <Icon type="print" />
                     </button>
                   </div>
