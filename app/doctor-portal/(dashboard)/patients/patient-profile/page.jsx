@@ -276,9 +276,8 @@ export default function PatientProfilePage() {
     const router = useRouter();
     const pid = searchParams.get("id") || "PT-2025-00123";
     const p = patientsDB[pid] || patientsDB["PT-2025-00123"];
-
     const [expandedTl, setExpandedTl] = useState(null);
-    const backHref = searchParams.get("from") || "/doctor-portal/messages";
+    const from = decodeURIComponent(searchParams.get("from") || "");
 
     return (
         <div className="pp-wrap">
@@ -288,7 +287,7 @@ export default function PatientProfilePage() {
                 <span style={{ width: 16, height: 16, flexShrink: 0, display: "inline-flex" }}>
                     <Icon type="back" />
                 </span>
-                Back to {searchParams.get("from")?.includes("video") ? "Video Call" : searchParams.get("from")?.includes("audio") ? "Audio Call" : "Messages"}
+                Back to {from.includes("video") ? "Video Call" : from.includes("audio") ? "Audio Call" : from.includes("patients") ? "Patient List" : "Messages"}
             </button>
 
             {/* ── TOP ROW: Hero card + Stats ──────────────────────── */}

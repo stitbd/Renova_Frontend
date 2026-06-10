@@ -169,7 +169,7 @@ export default function VideoCallPage() {
                             className="call-patient-btn"
                             style={{ flex: 2, display: "flex", alignItems: "center", gap: 6, textDecoration: "none", justifyContent: "center" }}
                         >
-                            <Icon type="profile" /> View Profile
+                            <Icon type="profile" /> View Full Profile
                         </Link>
                     </div>
 
