@@ -113,6 +113,166 @@
   pointer-events: none;
 }
 
+.consultation-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 1280px) {
+  .consultation-grid {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}
+
+/* Consultation Type Buttons */
+.consult-type-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.consult-type-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  padding: 0 8px;
+}
+
+.consult-type-btn:hover {
+  background: #f9fafb;
+}
+
+.consult-type-btn.active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.consult-type-btn .icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Schedule Box */
+.schedule-box {
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .schedule-grid {
+    grid-template-columns: 120px 1fr 1fr 82px 52px 52px;
+    align-items: center;
+  }
+}
+
+.schedule-input {
+  height: 36px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: #374151;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.schedule-input:focus {
+  border-color: #3b82f6;
+  background: white;
+}
+
+/* Buttons */
+.add-btn {
+  height: 36px;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  background: #2563eb;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.add-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.add-btn:disabled {
+  background: #60a5fa;
+  cursor: not-allowed;
+}
+
+.add-btn .spinner {
+  width: 14px;
+  height: 14px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.view-btn {
+  height: 36px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background: #f9fafb;
+}
+
+/* Fee Input */
+.fee-input-wrapper {
+  position: relative;
+}
+
+.fee-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  z-index: 10;
+}
+
+/* Make sure your Input component has padding-left when icon is present */
+
 /* Leaf watermark */
 .doctor-signup__leaf {
   position: absolute;

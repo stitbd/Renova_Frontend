@@ -3,12 +3,15 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { navLinks, socialLinks } from "@/constants/navLinks";
 import { siteConfig } from "@/constants/siteData";
 import CartBadge from "@/components/common/CartBadge";
 import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 import "../../styles/components/Navbar.css";
+import { useAppSelector } from "@/redux/hook";
+import { logout } from "@/redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 /* ── Inline SVG social icons ── */
 const SocialIcon = ({ type }) => {
@@ -207,6 +210,10 @@ const UserIcon = ({ size = 16 }) => (
    MAIN NAVBAR COMPONENT
    ════════════════════════════════════════════ */
 export default function Navbar() {
+  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  // console.log("Current user in Navbar:", user);
   const pathname = usePathname();
   const navRoutes = navLinks.flatMap((link) => [
     link.href,
@@ -267,6 +274,15 @@ export default function Navbar() {
     return result;
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    router.push("/signin");
+  };
+
   return (
     <>
       {/* ── Top Announcement Bar ── */}
@@ -307,18 +323,40 @@ export default function Navbar() {
                   <ChevronDownIcon />
                 </button>
                 <div className="topbar-account-dropdown">
-                  <Link href="/signup" className="topbar-dropdown-item">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
-                    </svg>
-                    Sign Up
-                  </Link>
-                  <Link href="/signin" className="topbar-dropdown-item">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
-                    </svg>
-                    Sign In
-                  </Link>
+                  {user ? (
+                    <>
+                      <Link
+                        href={`${user.userType === "PATIENT" ? "/patient-portal/dashboard" : user.userType === "DOCTOR" ? "/doctor-portal/dashboard" : user.userType === "OUTLET_USER" ? "/outlet-portal/dashboard" : "/supar-admin-panel/dashboard"}`}
+                        className="topbar-dropdown-item"
+                      >
+                        Dashboard
+                      </Link>
+
+                      <button
+                        type="button"
+                        className="topbar-dropdown-item"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/signup"
+                        className="topbar-dropdown-item"
+                      >
+                        Sign Up
+                      </Link>
+
+                      <Link
+                        href="/signin"
+                        className="topbar-dropdown-item"
+                      >
+                        Sign In
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -347,12 +385,12 @@ export default function Navbar() {
           <ul className="nav-links" role="list">
             {navLinks.map((link) => {
               const hasDropdown = link.children && link.children.length > 0;
-              
+
               if (hasDropdown) {
                 // ✅ Check if this is Services → use Mega Menu
                 const isMegaMenu = link.href === "/services";
                 const menuColumns = isMegaMenu ? chunkArray(link.children, 3) : [link.children];
-                
+
                 return (
                   <li key={link.href} className="nav-item-dropdown" role="menuitem">
                     <Link
@@ -368,7 +406,7 @@ export default function Navbar() {
                       {link.label}
                       <ChevronDownIcon />
                     </Link>
-                    
+
                     {/* ✅ Conditional: Mega Menu or Regular Dropdown */}
                     <div className={`dropdown-menu${isMegaMenu ? " mega-menu" : ""}`} role="menu">
                       {menuColumns.map((columnItems, colIndex) => (
@@ -393,7 +431,7 @@ export default function Navbar() {
                   </li>
                 );
               }
-              
+
               // Regular menu item (no dropdown)
               return (
                 <li key={link.href}>
@@ -489,51 +527,51 @@ export default function Navbar() {
           {navLinks.map((link) => {
             const hasSubmenu = link.children && link.children.length > 0;
             const isExpanded = expandedMobileMenu === link.href;
-            
+
             if (hasSubmenu) {
-                const isMegaMenu = link.href === "/services";
-                
-                return (
-                  <div key={link.href} className="mobile-nav-item">
-                    <button
-                      className={`mobile-nav-toggle${isExpanded ? " expanded" : ""}`}
-                      onClick={() => toggleMobileSubmenu(link.href)}
-                      aria-expanded={isExpanded}
-                      aria-controls={`submenu-${link.href.replace(/\//g, '')}`}
-                    >
-                      <span style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
-                        <span className="nav-dot" aria-hidden="true" />
-                        {link.label}
-                      </span>
-                      <span className="toggle-icon">
-                        <ChevronDownIcon />
-                      </span>
-                    </button>
-                    
-                    <div
-                      id={`submenu-${link.href.replace(/\//g, '')}`}
-                      className={`mobile-submenu${isExpanded ? " expanded" : ""}`}
-                    >
-                      {/* ✅ Mobile: Single stacked list for ALL menus (including Services) */}
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={`dropdown-item${activeLink === child.href ? " active" : ""}`}
-                          onTouchStart={() => prefetchRoute(child.href)}
-                          onClick={() => {
-                            setActiveLink(child.href);
-                            closeDrawer();
-                          }}
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
+              const isMegaMenu = link.href === "/services";
+
+              return (
+                <div key={link.href} className="mobile-nav-item">
+                  <button
+                    className={`mobile-nav-toggle${isExpanded ? " expanded" : ""}`}
+                    onClick={() => toggleMobileSubmenu(link.href)}
+                    aria-expanded={isExpanded}
+                    aria-controls={`submenu-${link.href.replace(/\//g, '')}`}
+                  >
+                    <span style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+                      <span className="nav-dot" aria-hidden="true" />
+                      {link.label}
+                    </span>
+                    <span className="toggle-icon">
+                      <ChevronDownIcon />
+                    </span>
+                  </button>
+
+                  <div
+                    id={`submenu-${link.href.replace(/\//g, '')}`}
+                    className={`mobile-submenu${isExpanded ? " expanded" : ""}`}
+                  >
+                    {/* ✅ Mobile: Single stacked list for ALL menus (including Services) */}
+                    {link.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className={`dropdown-item${activeLink === child.href ? " active" : ""}`}
+                        onTouchStart={() => prefetchRoute(child.href)}
+                        onClick={() => {
+                          setActiveLink(child.href);
+                          closeDrawer();
+                        }}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
                   </div>
-                );
-              }
-            
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.href}
