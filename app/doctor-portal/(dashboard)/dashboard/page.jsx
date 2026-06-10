@@ -1,6 +1,6 @@
 
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/doctor-dashboard.css";
@@ -12,6 +12,8 @@ import RecentConsultations from "@/components/doctor-dashboard/RecentConsultatio
 import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescriptions";
 import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 import { useAppSelector } from "@/redux/hook";
+
+const messageCount = 3;
 
 // Mock data - Replace with actual API calls
 const dashboardData = {
@@ -96,7 +98,7 @@ export default function DashboardPage() {
     return appointmentDate === todayDate;
   });
 
-  const completedAppointments = appointments?.filter((appointment)=> appointment?.status === "COMPLETED")
+  const completedAppointments = appointments?.filter((appointment) => appointment?.status === "COMPLETED")
 
 
   // console.log("completedAppointments", completedAppointments);

@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 import "@/styles/pages/super-admin-dashboard.css";
 
 const renderIcon = (iconName) => {
@@ -322,6 +323,11 @@ const navItems = [
   },
 ];
 
+const prefetchableRoutes = [
+  "/supar-admin-panel/dashboard",
+  "/supar-admin-panel/website-content",
+];
+
 function isActivePath(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -329,6 +335,13 @@ function isActivePath(pathname, href) {
 export default function SuperAdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const prefetchRoute = useRoutePrefetch(prefetchableRoutes);
+
+  const prefetchIfAvailable = (href) => {
+    if (prefetchableRoutes.includes(href)) {
+      prefetchRoute(href);
+    }
+  };
 
   return (
     <div className="admin-dashboard-container">
@@ -362,6 +375,9 @@ export default function SuperAdminLayout({ children }) {
                 href={item.href}
                 key={item.href}
                 className={`nav-item${active ? " active" : ""}`}
+                onMouseEnter={() => prefetchIfAvailable(item.href)}
+                onFocus={() => prefetchIfAvailable(item.href)}
+                onTouchStart={() => prefetchIfAvailable(item.href)}
                 onClick={() => setSidebarOpen(false)}
               >
                 {renderIcon(item.icon)}

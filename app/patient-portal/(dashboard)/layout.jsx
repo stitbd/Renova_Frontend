@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 import "@/styles/pages/patient-dashboard.css";
 
 const navItems = [
@@ -134,6 +135,7 @@ function isActivePath(pathname, href) {
 export default function PatientPortalLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const prefetchRoute = useRoutePrefetch(navItems.map((item) => item.href));
 
   return (
     <div className="patient-dashboard-container">
@@ -167,6 +169,9 @@ export default function PatientPortalLayout({ children }) {
                 href={item.href}
                 key={item.href}
                 className={`nav-item${active ? " active" : ""}`}
+                onMouseEnter={() => prefetchRoute(item.href)}
+                onFocus={() => prefetchRoute(item.href)}
+                onTouchStart={() => prefetchRoute(item.href)}
                 onClick={() => setSidebarOpen(false)}
               >
                 {item.icon}

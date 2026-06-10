@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import "../doctor-dashboard-massages.css";
@@ -16,10 +16,17 @@ const prevPrescriptions = [
     { label: "25 Apr 2025", sub: "Regular follow up" },
 ];
 
+const summaryRows = [
+    { key: "Blood Group", val: "B+" },
+    { key: "Height / Weight", val: "5'8\" / 72 kg" },
+    { key: "Allergies", val: "No Known Allergies" },
+    { key: "Chronic Condition", val: "Hypertension" },
+];
+
 const chatMessages = [
-    { id: 1, from: "doctor", name: "Dr. Ahsan Rahman", text: "Hello Masud, how are you feeling now?", time: "10:31 AM" },
-    { id: 2, from: "patient", name: "Masud Rana", text: "I am better than before, but still have slight pain.", time: "10:32 AM" },
-    { id: 3, from: "doctor", name: "Dr. Ahsan Rahman", text: "Okay. I have reviewed your reports. Let me explain.", time: "10:33 AM" },
+    { id: 1, from: "doctor", text: "Hello Masud, How are you feeling now?", time: "10:31 AM" },
+    { id: 2, from: "patient", text: "I am better than before, but still have slight pain.", time: "10:32 AM" },
+    { id: 3, from: "doctor", text: "Okay. I have reviewed your reports. Let me explain.", time: "10:32 AM" },
 ];
 
 function Icon({ type }) {
@@ -40,6 +47,7 @@ function Icon({ type }) {
         settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>,
         note: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
         history: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
+        arrowright: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>,
         reminder: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>,
         file: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
         send: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>,
@@ -68,6 +76,39 @@ export default function AudioCallPage() {
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
     const [recording, setRecording] = useState(true);
+    const [messageText, setMessageText] = useState("");
+    const [charCount, setCharCount] = useState(0);
+    const [attachedFiles, setAttachedFiles] = useState([]);
+    const [messages, setMessages] = useState(chatMessages);
+    const [inputText, setInputText] = useState("");
+    const [pendingFiles, setPendingFiles] = useState([]);
+    const router = useRouter();
+
+
+    const handleSend = () => {
+        if (!inputText.trim() && pendingFiles.length === 0) return;
+        const newMsgs = [];
+        if (inputText.trim()) {
+            newMsgs.push({ id: Date.now(), from: "doctor", text: inputText.trim(), time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+        }
+        pendingFiles.forEach((f, i) => {
+            newMsgs.push({ id: Date.now() + i + 1, from: "doctor", file: f, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+        });
+        setMessages(prev => [...prev, ...newMsgs]);
+        setInputText("");
+        setPendingFiles([]);
+    };
+
+    const handleAttach = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*,application/pdf";
+        input.multiple = true;
+        input.onchange = (e) => {
+            setPendingFiles(prev => [...prev, ...Array.from(e.target.files)]);
+        };
+        input.click();
+    };
 
     useEffect(() => {
         const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
@@ -81,43 +122,8 @@ export default function AudioCallPage() {
     };
 
     return (
-        <>
-            {/* Custom Topbar — replaces normal dashboard header context */}
-            <div className="call-topbar" style={{ margin: "-18px -22px 0", borderRadius: 0 }}>
-                <div className="call-topbar-left">
-                    <h2 className="call-topbar-title">Audio Consultation</h2>
-                    <span className="call-live-badge">
-                        <span className="call-live-dot" /> Live
-                    </span>
-                </div>
-                <div className="call-topbar-stats">
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Call Duration</span>
-                        <span className="call-stat-value">{fmt(seconds)}</span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Network</span>
-                        <span className="call-stat-value green" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span className="call-network-bars">
-                                <span /><span /><span /><span />
-                            </span>
-                            Good
-                        </span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Recording</span>
-                        <span className="call-stat-value red" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
-                            On
-                        </span>
-                    </div>
-                </div>
-                <button className="call-end-btn">
-                    End Call
-                </button>
-            </div>
-
-            <div className="call-page-layout" style={{ marginTop: 0 }}>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+            <div className="msg-page-wrap">
                 {/* ── Left: Patient Panel ────────────────────────── */}
                 <div className="call-patient-panel">
                     <Link href="/doctor-portal/messages" className="call-back-link">
@@ -144,12 +150,13 @@ export default function AudioCallPage() {
                     </div>
 
                     <div className="call-patient-actions">
-                        <button className="call-patient-btn">
+                        <Link
+                            href="/doctor-portal/patients/patient-profile?id=PT-2025-00123&from=/doctor-portal/messages/audio-call"
+                            className="call-patient-btn"
+                            style={{ flex: 2, display: "flex", alignItems: "center", gap: 6, textDecoration: "none", justifyContent: "center" }}
+                        >
                             <Icon type="profile" /> View Profile
-                        </button>
-                        <button className="call-patient-btn">
-                            <Icon type="phone" />
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Consultation Reason */}
@@ -157,6 +164,24 @@ export default function AudioCallPage() {
                         <p className="call-section-label">Consultation Reason</p>
                         <p className="call-reason-text">Chest pain, Breathing problem</p>
                         <p className="call-started-text">Started at 10:30 AM</p>
+                    </div>
+
+
+                    {/* Patient Summary */}
+                    <div>
+                        <div className="call-panel-list-header">
+                            <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
+                        </div>
+                        {summaryRows.map((r) => (
+                            <div key={r.key} className="call-summary-row">
+                                <span className="call-summary-key">{r.key}</span>
+                                <span className="call-summary-val">{r.val}</span>
+                            </div>
+                        ))}
+
+                        <a href="#" className="call-view-history">
+                            View Medical History <Icon type="arrowright" />
+                        </a>
                     </div>
 
                     {/* Recent Reports */}
@@ -238,31 +263,33 @@ export default function AudioCallPage() {
                         <p className="audio-patient-role">Patient</p>
                         <p className="audio-timer">{fmt(seconds)}</p>
 
-                        <div className="audio-connection-status">
-                            <span className="audio-connection-text">You are connected via audio</span>
-                            <span className="audio-connection-quality">
-                                <span /> Good Connection
-                                <span className="call-network-bars" style={{ marginLeft: 4 }}>
-                                    <span /><span /><span /><span />
-                                </span>
-                            </span>
+                        {/* Controls bar — inside video, bottom center, pill shape */}
+                        <div className="video-controls-bar">
+                            {[
+                                { icon: "mic", label: "Mute" },
+                                { icon: "speaker", label: "Speaker" },
+                            ].map((btn) => (
+                                <button key={btn.label} className="video-ctrl-btn">
+                                    <div className="video-ctrl-icon">
+                                        <Icon type={btn.icon} />
+                                    </div>
+                                    <span className="video-ctrl-label">{btn.label}</span>
+                                </button>
+                            ))}
+
+                            <div className="video-ctrl-divider" />
+
+                            <button className="video-ctrl-btn" onClick={() => router.push("/doctor-portal/messages?activeConv=masud-rana")}>
+                                <div className="video-ctrl-icon end-call">
+                                    <Icon type="endcall" />
+                                </div>
+                                <span className="video-ctrl-label">End Call</span>
+                            </button>
                         </div>
                     </div>
 
-                    {/* Controls Bar */}
-                    <div className="call-controls-bar">
-                        {[
-                            { icon: "mic", label: "Mute" },
-                            { icon: "endcall", label: "End Call", end: true },
-                            { icon: "speaker", label: "Speaker" },
-                        ].map((btn) => (
-                            <button key={btn.label} className="call-ctrl-btn">
-                                <div className={`call-ctrl-icon${btn.end ? " end-call" : ""}`}>
-                                    <Icon type={btn.icon} />
-                                </div>
-                                <span className="call-ctrl-label">{btn.label}</span>
-                            </button>
-                        ))}
+                    <div className="video-footer-note">
+                        All data is encrypted and stored securely. This consultation is subject to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.
                     </div>
                 </div>
 
@@ -285,7 +312,7 @@ export default function AudioCallPage() {
                         <>
                             <div className="call-chat-body">
                                 <div className="call-chat-date">Today</div>
-                                {chatMessages.map((msg) => {
+                                {messages.map((msg) => {
                                     const isDoctor = msg.from === "doctor";
                                     return (
                                         <div key={msg.id} className={`call-chat-bubble-wrap${isDoctor ? " sent" : ""}`}>
@@ -298,14 +325,8 @@ export default function AudioCallPage() {
                                                 <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span>
                                             </div>
                                             <div className="call-chat-bubble-inner">
-                                                <span className="call-chat-sender-name">{msg.name}</span>
-                                                <div className={`call-chat-bubble${isDoctor ? " sent" : ""}`}>
-                                                    {msg.text}
-                                                </div>
-                                                <div className="call-chat-time">
-                                                    {msg.time}
-                                                    {isDoctor && <Icon type="tick" />}
-                                                </div>
+                                                <div className={`call-chat-bubble${isDoctor ? " sent" : ""}`}>{msg.text}</div>
+                                                <div className="call-chat-time">{msg.time} {isDoctor && <Icon type="tick" />}</div>
                                             </div>
                                         </div>
                                     );
@@ -313,12 +334,33 @@ export default function AudioCallPage() {
                             </div>
 
                             <div className="call-chat-input-wrap">
+                                {pendingFiles.length > 0 && (
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: "6px 4px 8px" }}>
+                                        {pendingFiles.map((f, i) => (
+                                            <div key={i} style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 4, background: "#f1f5f9", borderRadius: 6, padding: "3px 8px", fontSize: 11, color: "#475569" }}>
+                                                {f.type.startsWith("image/") ? (
+                                                    <img src={URL.createObjectURL(f)} alt={f.name} style={{ width: 28, height: 28, objectFit: "cover", borderRadius: 4 }} />
+                                                ) : (
+                                                    <Icon type="doc" />
+                                                )}
+                                                <span style={{ maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.name}</span>
+                                                <button onClick={() => setPendingFiles(prev => prev.filter((_, j) => j !== i))} style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                                 <div className="call-chat-input-row">
-                                    <input type="text" placeholder="Type a message..." />
-                                    <span className="call-chat-attach-icon">
+                                    <input
+                                        type="text"
+                                        placeholder="Type a message..."
+                                        value={inputText}
+                                        onChange={e => setInputText(e.target.value)}
+                                        onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+                                    />
+                                    <span className="call-chat-attach-icon" onClick={handleAttach} style={{ cursor: "pointer" }}>
                                         <Icon type="attach" />
                                     </span>
-                                    <div className="call-chat-input-icon">
+                                    <div className="call-chat-input-icon" onClick={handleSend} style={{ cursor: "pointer" }}>
                                         <Icon type="send" />
                                     </div>
                                 </div>
@@ -333,6 +375,6 @@ export default function AudioCallPage() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

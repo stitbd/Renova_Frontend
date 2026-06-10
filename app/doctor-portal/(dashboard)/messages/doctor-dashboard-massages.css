@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    MESSAGES & CONSULTATION PAGES — Shared CSS
-   File: ./doctor-dashboard-massages.css"
+   File: ./doctor-dashboard-massages.css
    ═══════════════════════════════════════════════════════════════ */
 
 /* ══════════════════════════════════════════════════════════════
@@ -25,12 +25,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-}
-
-.msg-conv-header {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid #e2e8f0;
-    flex-shrink: 0;
 }
 
 .msg-tabs {
@@ -106,31 +100,10 @@
     color: #1a202c;
 }
 
-.msg-filter-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid #e2e8f0;
-    border-radius: 7px;
-    background: #fff;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-left: 6px;
-}
-
-.msg-filter-icon svg {
-    width: 14px;
-    height: 14px;
-    stroke: #64748b;
-}
-
 .msg-conv-list {
     flex: 1;
     overflow-y: auto;
     padding: 6px 0;
-    max-height: calc(100% - 90px);
 }
 
 .msg-conv-item {
@@ -241,28 +214,6 @@
     border-radius: 50%;
     flex-shrink: 0;
     margin-left: 4px;
-}
-
-.msg-load-more {
-    text-align: center;
-    padding: 12px;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #014fa1;
-    cursor: pointer;
-    background: none;
-    border: none;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-}
-
-.msg-load-more svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
 }
 
 /* ── Middle Column: Chat ──────────────────────────────────────── */
@@ -383,25 +334,6 @@
     color: #fff;
 }
 
-.msg-action-btn.blue:hover {
-    background: #013d80;
-}
-
-.msg-more-btn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    border: 1px solid #e2e8f0;
-    background: #f8fafc;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #64748b;
-    cursor: pointer;
-}
-
-/* Chat body */
 .msg-chat-body {
     flex: 1;
     overflow-y: auto;
@@ -603,10 +535,6 @@
     fill: none;
 }
 
-.msg-send-btn:hover {
-    background: #013d80;
-}
-
 /* ── Right Column: Patient Info ───────────────────────────────── */
 .msg-info-col {
     background: #fff;
@@ -692,11 +620,6 @@
     transition: all 0.2s ease;
 }
 
-.msg-view-profile-btn:hover {
-    background: #014fa1;
-    color: #fff;
-}
-
 /* Quick Actions */
 .msg-quick-actions {
     display: flex;
@@ -704,6 +627,8 @@
     gap: 8px;
     padding-bottom: 16px;
     border-bottom: 1px solid #f1f5f9;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
 }
 
 .msg-quick-action-item {
@@ -750,275 +675,25 @@
     color: #ef4444;
 }
 
-.msg-qa-icon.orange {
-    background: #ffedd5;
-    color: #ea580c;
-}
-
-.msg-qa-icon.teal {
-    background: #ccfbf1;
-    color: #0d9488;
-}
-
-.msg-qa-icon.purple {
-    background: #ede9fe;
-    color: #7c3aed;
-}
-
 .msg-quick-action-item span {
     font-size: 12.5px;
     font-weight: 500;
     color: #1a202c;
 }
 
-/* Message Templates */
-.msg-templates {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.msg-templates-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.msg-view-all-link {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #014fa1;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.msg-template-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 8px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-
-.msg-template-item:hover {
-    background: #f8fafc;
-}
-
-.msg-template-item svg {
-    width: 14px;
-    height: 14px;
-    stroke: #64748b;
-    fill: none;
-    flex-shrink: 0;
-}
-
-.msg-template-item span {
-    font-size: 12px;
-    color: #475569;
-}
-
-/* SMS Balance */
-.msg-sms-balance {
-    padding-top: 4px;
-}
-
-.msg-sms-balance-card {
-    background: linear-gradient(135deg, #014fa1, #0369a1);
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.msg-sms-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 4px;
-}
-
-.msg-sms-amount {
-    font-size: 22px;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1;
-}
-
-.msg-sms-unit {
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.msg-sms-valid {
-    font-size: 10.5px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 4px;
-}
-
-.msg-sms-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.msg-sms-icon svg {
-    width: 18px;
-    height: 18px;
-    stroke: #fff;
-    fill: none;
-}
-
-
 /* ══════════════════════════════════════════════════════════════
    CONSULTATION CALL PAGES — Shared Layout
    (Audio Call & Video Call)
    ══════════════════════════════════════════════════════════════ */
 
-/* Full-page call layout — no doctor-dashboard-content padding override */
 .call-page-layout {
     display: grid;
     grid-template-columns: 240px 1fr 320px;
     gap: 0;
-    height: calc(100vh - 110px);
-    min-height: 600px;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
     background: #f0f4f8;
-}
-
-/* ── Shared Call Top Bar (inside dashboard-header area override) ── */
-/* Used for the "Audio Consultation • Live" header strip */
-.call-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    background: #fff;
-    border-bottom: 1px solid #e2e8f0;
-    flex-shrink: 0;
-}
-
-.call-topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.call-topbar-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0;
-}
-
-.call-live-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #16a34a;
-}
-
-.call-live-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    animation: pulse 2s infinite;
-}
-
-.call-topbar-stats {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-}
-
-.call-stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.call-stat-label {
-    font-size: 10.5px;
-    color: #94a3b8;
-    font-weight: 500;
-}
-
-.call-stat-value {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1a202c;
-}
-
-.call-stat-value.green {
-    color: #16a34a;
-}
-
-.call-stat-value.red {
-    color: #ef4444;
-}
-
-.call-network-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 14px;
-}
-
-.call-network-bars span {
-    display: block;
-    width: 3px;
-    background: #22c55e;
-    border-radius: 1px;
-}
-
-.call-network-bars span:nth-child(1) {
-    height: 4px;
-}
-
-.call-network-bars span:nth-child(2) {
-    height: 8px;
-}
-
-.call-network-bars span:nth-child(3) {
-    height: 12px;
-}
-
-.call-network-bars span:nth-child(4) {
-    height: 14px;
-}
-
-.call-end-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 20px;
-    background: #fef2f2;
-    color: #ef4444;
-    border: 1.5px solid #fecaca;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.call-end-btn:hover {
-    background: #ef4444;
-    color: #fff;
-    border-color: #ef4444;
 }
 
 /* ── Left Patient Panel ────────────────────────────────────────── */
@@ -1331,91 +1006,24 @@
 .call-center-col {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    background: #f0f4f8;
-}
-
-/* Recording / consent banner */
-.call-recording-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-radius: 10px;
-    margin: 12px 14px 0;
-    flex-shrink: 0;
-}
-
-.call-recording-banner-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.call-rec-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #dcfce7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.call-rec-icon svg {
-    width: 16px;
-    height: 16px;
-    stroke: #16a34a;
-    fill: none;
-}
-
-.call-recording-banner-text h4 {
-    font-size: 13px;
-    font-weight: 700;
-    color: #16a34a;
-    margin: 0 0 1px;
-}
-
-.call-recording-banner-text p {
-    font-size: 11.5px;
-    color: #718096;
-    margin: 0;
-}
-
-.call-view-consent-btn {
-    padding: 7px 14px;
+    overflow: hidden;
     background: #fff;
-    border: 1px solid #bbf7d0;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #16a34a;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
-}
-
-.call-view-consent-btn:hover {
-    background: #16a34a;
-    color: #fff;
 }
 
 /* ── Audio Call Display Area ──────────────────────────────────── */
 .audio-call-display {
     background: #0f172a;
     border-radius: 12px;
-    margin: 12px 14px;
+    margin: 12px 14px 0;
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 32px;
+    padding: 32px 32px 100px;
     position: relative;
-    min-height: 300px;
+    overflow: hidden;
 }
 
 .audio-call-top-bar {
@@ -1507,7 +1115,6 @@
     fill: none;
 }
 
-/* Waveform animation around patient photo */
 .audio-waveform-wrap {
     position: relative;
     display: flex;
@@ -1533,56 +1140,6 @@
 
 .audio-waveform.active span {
     background: #014fa1;
-}
-
-.audio-waveform span:nth-child(1) {
-    height: 16px;
-    animation-delay: 0s;
-}
-
-.audio-waveform span:nth-child(2) {
-    height: 28px;
-    animation-delay: 0.1s;
-}
-
-.audio-waveform span:nth-child(3) {
-    height: 40px;
-    animation-delay: 0.2s;
-}
-
-.audio-waveform span:nth-child(4) {
-    height: 50px;
-    animation-delay: 0.3s;
-}
-
-.audio-waveform span:nth-child(5) {
-    height: 34px;
-    animation-delay: 0.4s;
-}
-
-.audio-waveform span:nth-child(6) {
-    height: 22px;
-    animation-delay: 0.5s;
-}
-
-.audio-waveform span:nth-child(7) {
-    height: 36px;
-    animation-delay: 0.6s;
-}
-
-.audio-waveform span:nth-child(8) {
-    height: 48px;
-    animation-delay: 0.7s;
-}
-
-.audio-waveform span:nth-child(9) {
-    height: 28px;
-    animation-delay: 0.8s;
-}
-
-.audio-waveform span:nth-child(10) {
-    height: 16px;
-    animation-delay: 0.9s;
 }
 
 @keyframes waveAnim {
@@ -1670,170 +1227,7 @@
     display: inline-block;
 }
 
-/* Switch to video / Audio settings row */
-.audio-call-extra-btns {
-    position: absolute;
-    bottom: 16px;
-    left: 18px;
-    right: 18px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.audio-extra-btn {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 16px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 9px;
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.audio-extra-btn svg {
-    width: 15px;
-    height: 15px;
-    stroke: currentColor;
-    fill: none;
-}
-
-.audio-extra-btn:hover {
-    background: rgba(255, 255, 255, 0.18);
-}
-
-/* Call Controls Bar */
-.call-controls-bar {
-    background: #1e293b;
-    border-radius: 0 0 12px 12px;
-    margin: 0 14px;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    flex-shrink: 0;
-}
-
-.call-ctrl-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.call-ctrl-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-}
-
-.call-ctrl-icon:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.call-ctrl-icon.end-call {
-    background: #ef4444;
-}
-
-.call-ctrl-icon.end-call:hover {
-    background: #dc2626;
-}
-
-.call-ctrl-icon svg {
-    width: 20px;
-    height: 20px;
-    stroke: #fff;
-    fill: none;
-}
-
-.call-ctrl-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.75);
-    font-weight: 500;
-}
-
-/* Bottom banners (recording info etc) */
-.call-info-banners {
-    padding: 10px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex-shrink: 0;
-}
-
-.call-info-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 9px;
-    gap: 12px;
-}
-
-.call-info-banner-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.call-rec-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ef4444;
-    animation: pulse 1.5s infinite;
-    flex-shrink: 0;
-}
-
-.call-rec-dot.blue {
-    background: #014fa1;
-}
-
-.call-info-banner-text {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a202c;
-}
-
-.call-info-banner-subtext {
-    font-size: 11.5px;
-    color: #718096;
-}
-
-.call-info-banner-btn {
-    padding: 6px 14px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #014fa1;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
-}
-
-.call-info-banner-btn:hover {
-    background: #014fa1;
-    color: #fff;
-}
-
-/* ── Right Call Panel: Chat, Files, Reports, Notes ────────────── */
+/* ── Right Call Panel: Chat, Files, Reports ────────────── */
 .call-right-panel {
     background: #fff;
     border-left: 1px solid #e2e8f0;
@@ -1868,7 +1262,6 @@
     border-bottom-color: #014fa1;
 }
 
-/* Right panel chat section */
 .call-chat-body {
     flex: 1;
     overflow-y: auto;
@@ -1977,15 +1370,6 @@
     fill: none;
 }
 
-/* Right panel image in chat */
-.call-chat-img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-top: 6px;
-    border: 1px solid #e2e8f0;
-}
-
-/* Right panel: chat input */
 .call-chat-input-wrap {
     padding: 10px 12px;
     border-top: 1px solid #e2e8f0;
@@ -2044,611 +1428,6 @@
     fill: none;
 }
 
-/* Right panel: In-Call Options */
-.call-incall-section {
-    padding: 12px 14px;
-    border-top: 1px solid #f1f5f9;
-    flex-shrink: 0;
-}
-
-.call-incall-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 10px;
-}
-
-.call-incall-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-
-.call-incall-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    padding: 10px 6px;
-    background: #f8fafc;
-    border: 1px solid #f1f5f9;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.call-incall-btn:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.call-incall-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.call-incall-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: none;
-    stroke: currentColor;
-}
-
-.call-incall-icon.green {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.call-incall-icon.yellow {
-    background: #fef9c3;
-    color: #ca8a04;
-}
-
-.call-incall-icon.purple {
-    background: #ede9fe;
-    color: #7c3aed;
-}
-
-.call-incall-icon.blue {
-    background: #dbeafe;
-    color: #014fa1;
-}
-
-.call-incall-btn span {
-    font-size: 10.5px;
-    font-weight: 600;
-    color: #64748b;
-    text-align: center;
-}
-
-/* Right panel: Call Quality toggles */
-.call-quality-section {
-    padding: 12px 14px;
-    border-top: 1px solid #f1f5f9;
-    flex-shrink: 0;
-}
-
-.call-quality-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 10px;
-}
-
-.call-quality-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 8px 0;
-    border-bottom: 1px solid #f8fafc;
-    gap: 10px;
-}
-
-.call-quality-row:last-child {
-    border-bottom: none;
-}
-
-.call-quality-row-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.call-quality-row-icon {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-}
-
-.call-quality-row-icon svg {
-    width: 14px;
-    height: 14px;
-    stroke: #64748b;
-    fill: none;
-}
-
-.call-quality-row-text {
-    flex: 1;
-}
-
-.call-quality-row-text h5 {
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 1px;
-}
-
-.call-quality-row-text p {
-    font-size: 10.5px;
-    color: #94a3b8;
-    margin: 0;
-}
-
-.call-network-quality-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 0;
-}
-
-.call-network-quality-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a202c;
-}
-
-.call-network-quality-val {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #16a34a;
-}
-
-
-/* ── Attach a file row in right panel ─────────────────────────── */
-.call-attach-section {
-    padding: 10px 14px 0;
-    flex-shrink: 0;
-}
-
-.call-attach-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 10px;
-}
-
-.call-attach-options {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
-
-.call-attach-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 10px;
-    background: #f8fafc;
-    border: 1px solid #f1f5f9;
-    border-radius: 9px;
-    cursor: pointer;
-    min-width: 60px;
-    transition: all 0.2s ease;
-}
-
-.call-attach-btn:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.call-attach-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.call-attach-icon svg {
-    width: 15px;
-    height: 15px;
-    stroke: currentColor;
-    fill: none;
-}
-
-.call-attach-icon.green {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.call-attach-icon.blue {
-    background: #dbeafe;
-    color: #014fa1;
-}
-
-.call-attach-icon.orange {
-    background: #ffedd5;
-    color: #ea580c;
-}
-
-.call-attach-icon.indigo {
-    background: #e0e7ff;
-    color: #4f46e5;
-}
-
-.call-attach-icon.teal {
-    background: #ccfbf1;
-    color: #0d9488;
-}
-
-.call-attach-btn span {
-    font-size: 10px;
-    font-weight: 600;
-    color: #64748b;
-    text-align: center;
-}
-
-.call-e2e-note {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10.5px;
-    color: #94a3b8;
-    margin-top: 4px;
-}
-
-.call-e2e-note svg {
-    width: 12px;
-    height: 12px;
-    stroke: #94a3b8;
-    fill: none;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   VIDEO CALL PAGE — Specific Styles
-   ══════════════════════════════════════════════════════════════ */
-.video-call-display {
-    background: #0f172a;
-    border-radius: 12px;
-    margin: 12px 14px 0;
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 16 / 9;
-    flex-shrink: 0;
-}
-
-.video-call-patient-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    background: #1e293b;
-}
-
-/* Placeholder for video (using gradient bg) */
-.video-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video-placeholder-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid rgba(255, 255, 255, 0.15);
-}
-
-.video-placeholder-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Patient label overlay */
-.video-patient-label {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 7px;
-}
-
-/* Doctor PiP */
-.video-pip {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 160px;
-    height: 110px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    background: #334155;
-}
-
-.video-pip img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.video-pip-label {
-    position: absolute;
-    bottom: 6px;
-    left: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 2px 7px;
-    border-radius: 5px;
-}
-
-/* Video call controls */
-.video-call-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
-    padding: 20px 16px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.video-ctrl-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.video-ctrl-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-}
-
-.video-ctrl-icon.active {
-    background: #014fa1;
-}
-
-.video-ctrl-icon:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.video-ctrl-icon.end-call {
-    background: #ef4444;
-}
-
-.video-ctrl-icon svg {
-    width: 18px;
-    height: 18px;
-    stroke: #fff;
-    fill: none;
-}
-
-.video-ctrl-label {
-    font-size: 10.5px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-}
-
-.video-expand-btn {
-    position: absolute;
-    bottom: 14px;
-    right: 14px;
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.15);
-    border: none;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.video-expand-btn svg {
-    width: 15px;
-    height: 15px;
-    stroke: #fff;
-    fill: none;
-}
-
-/* Post Consultation section */
-.video-post-consult {
-    padding: 16px 14px;
-    flex-shrink: 0;
-}
-
-.video-post-consult-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #014fa1;
-    margin: 0 0 14px;
-}
-
-.video-post-consult-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-.video-post-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 14px;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.video-post-btn:hover {
-    border-color: #014fa1;
-    box-shadow: 0 2px 10px rgba(1, 79, 161, 0.08);
-}
-
-.video-post-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video-post-icon svg {
-    width: 18px;
-    height: 18px;
-    fill: none;
-    stroke: currentColor;
-}
-
-.video-post-icon.green {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.video-post-icon.blue {
-    background: #dbeafe;
-    color: #014fa1;
-}
-
-.video-post-icon.yellow {
-    background: #fef9c3;
-    color: #ca8a04;
-}
-
-.video-post-icon.purple {
-    background: #ede9fe;
-    color: #7c3aed;
-}
-
-.video-post-btn h4 {
-    font-size: 12.5px;
-    font-weight: 700;
-    margin: 0 0 2px;
-}
-
-.video-post-btn h4.green {
-    color: #16a34a;
-}
-
-.video-post-btn h4.blue {
-    color: #014fa1;
-}
-
-.video-post-btn h4.yellow {
-    color: #ca8a04;
-}
-
-.video-post-btn h4.purple {
-    color: #7c3aed;
-}
-
-.video-post-btn p {
-    font-size: 10.5px;
-    color: #718096;
-    margin: 0;
-    line-height: 1.4;
-}
-
-.video-post-action-btn {
-    width: 100%;
-    padding: 7px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 7px;
-    font-size: 11.5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: auto;
-}
-
-.video-post-action-btn.green {
-    color: #16a34a;
-    border-color: #bbf7d0;
-}
-
-.video-post-action-btn.green:hover {
-    background: #16a34a;
-    color: #fff;
-}
-
-.video-post-action-btn.blue {
-    color: #014fa1;
-    border-color: #bfdbfe;
-}
-
-.video-post-action-btn.blue:hover {
-    background: #014fa1;
-    color: #fff;
-}
-
-.video-post-action-btn.yellow {
-    color: #ca8a04;
-    border-color: #fde68a;
-}
-
-.video-post-action-btn.yellow:hover {
-    background: #ca8a04;
-    color: #fff;
-}
-
-.video-post-action-btn.purple {
-    color: #7c3aed;
-    border-color: #ddd6fe;
-}
-
-.video-post-action-btn.purple:hover {
-    background: #7c3aed;
-    color: #fff;
-}
-
 /* Footer note on video page */
 .video-footer-note {
     text-align: center;
@@ -2666,126 +1445,267 @@
     font-weight: 600;
 }
 
-/* Pre-Call Summary (video-with-chat variant) */
-.precall-summary {
-    padding: 14px;
+/* ══════════════════════════════════════════════════════════════
+   VIDEO CALL DISPLAY
+   ══════════════════════════════════════════════════════════════ */
+
+.video-call-display {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 12px 14px 0;
+    flex: 1;
+    min-height: 0;
+    background: #1e293b;
+}
+
+.video-main-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.video-main-area>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-patient-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 7px;
+    z-index: 10;
+}
+
+.video-signal-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    margin-left: 2px;
+}
+
+.video-signal-bars span {
+    display: block;
+    width: 3px;
+    background: #22c55e;
+    border-radius: 1px;
+}
+
+.video-signal-bars span:nth-child(1) {
+    height: 4px;
+}
+
+.video-signal-bars span:nth-child(2) {
+    height: 7px;
+}
+
+.video-signal-bars span:nth-child(3) {
+    height: 10px;
+}
+
+.video-signal-bars span:nth-child(4) {
+    height: 12px;
+}
+
+.video-pip {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 165px;
+    height: 118px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: #334155;
+    z-index: 10;
+}
+
+.video-pip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-pip-label {
+    position: absolute;
+    bottom: 6px;
+    left: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+.video-pip-online-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
     flex-shrink: 0;
 }
 
-.precall-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #014fa1;
-    margin: 0 0 12px;
+.video-controls-bar {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(20, 20, 30, 0.75);
+    border: 1px solid #aaa;
+    backdrop-filter: blur(8px);
+    border-radius: 50px;
+    padding: 8px 18px;
+    z-index: 20;
+    white-space: nowrap;
 }
 
-.precall-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-}
-
-.precall-card {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 14px;
-}
-
-.precall-card-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 10px;
-}
-
-.precall-card-list {
+.video-ctrl-btn {
     display: flex;
     flex-direction: column;
-    gap: 7px;
-}
-
-.precall-card-item {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-.precall-item-left {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-.precall-item-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 5px;
-    background: #dbeafe;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.precall-item-icon svg {
-    width: 12px;
-    height: 12px;
-    stroke: #014fa1;
-    fill: none;
-}
-
-.precall-item-name {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0;
-}
-
-.precall-item-date {
-    font-size: 10px;
-    color: #94a3b8;
-    margin: 0;
-}
-
-.precall-eye-btn {
+    gap: 5px;
     background: none;
     border: none;
     cursor: pointer;
-    display: flex;
-    align-items: center;
+    padding: 0 6px;
+    min-width: 52px;
 }
 
-.precall-eye-btn svg {
-    width: 15px;
-    height: 15px;
-    stroke: #014fa1;
+.video-ctrl-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.video-ctrl-icon:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.video-ctrl-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 1.8;
+}
+
+.video-ctrl-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+}
+
+.video-ctrl-divider {
+    width: 1px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 0 6px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.video-ctrl-icon.end-call {
+    background: #ef4444;
+}
+
+.video-ctrl-icon.end-call:hover {
+    background: #dc2626;
+}
+
+.video-expand-btn {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: background 0.2s ease;
+}
+
+.video-expand-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.video-expand-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: #fff;
     fill: none;
 }
 
-.precall-doctor-notes {
-    font-size: 12px;
-    color: #475569;
-    line-height: 1.6;
-    margin: 0 0 6px;
+.video-call-duration {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(20, 20, 30, 0.65);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    z-index: 20;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
 }
 
-.precall-notes-date {
-    font-size: 10.5px;
-    color: #94a3b8;
+.video-call-duration-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ef4444;
+    flex-shrink: 0;
+    animation: pulse 1.5s infinite;
 }
 
-.precall-info-banner {
-    text-align: center;
-    padding: 8px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-radius: 8px;
-    font-size: 11.5px;
-    color: #16a34a;
-    font-weight: 500;
-    margin-top: 10px;
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2798,14 +1718,6 @@
 
     .call-page-layout {
         grid-template-columns: 220px 1fr 280px;
-    }
-
-    .video-post-consult-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .precall-grid {
-        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -2824,10 +1736,6 @@
 
     .call-right-panel {
         display: none;
-    }
-
-    .video-post-consult-grid {
-        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -2849,27 +1757,11 @@
     .call-patient-panel {
         display: none;
     }
-
-    .video-post-consult-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .precall-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .call-topbar-stats {
-        display: none;
-    }
 }
 
 @media (max-width: 480px) {
-    .video-post-consult-grid {
-        grid-template-columns: 1fr;
-    }
-
     .call-controls-bar {
-        gap: 16px;
+        gap: 8px;
     }
 
     .call-ctrl-icon {

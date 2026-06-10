@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 
 /* ─── Icons ─── */
 const HomeIcon = () => (
@@ -80,6 +81,15 @@ const SignUpIcon = () => (
 /* ─── Main Component ─── */
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const prefetchRoute = useRoutePrefetch([
+    "/",
+    "/doctors",
+    "/packages",
+    "/shop",
+    "/cart",
+    "/signup",
+    "/signin",
+  ]);
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef(null);
 
@@ -133,6 +143,7 @@ export default function MobileBottomNav() {
           href="/"
           className={`mob-nav-item${isActive("/") ? " mob-nav-item--active" : ""}`}
           aria-label="Home"
+          onTouchStart={() => prefetchRoute("/")}
         >
           <span className="mob-nav-icon"><HomeIcon /></span>
           <span className="mob-nav-label">Home</span>
@@ -143,6 +154,7 @@ export default function MobileBottomNav() {
           href="/doctors"
           className={`mob-nav-item${isActive("/doctors") ? " mob-nav-item--active" : ""}`}
           aria-label="Doctors"
+          onTouchStart={() => prefetchRoute("/doctors")}
         >
           <span className="mob-nav-icon"><DoctorIcon /></span>
           <span className="mob-nav-label">Doctors</span>
@@ -153,6 +165,7 @@ export default function MobileBottomNav() {
           href="/packages"
           className={`mob-nav-item${isActive("/packages") ? " mob-nav-item--active" : ""}`}
           aria-label="Packages"
+          onTouchStart={() => prefetchRoute("/packages")}
         >
           <span className="mob-nav-icon"><PackageIcon /></span>
           <span className="mob-nav-label">Packages</span>
@@ -163,6 +176,7 @@ export default function MobileBottomNav() {
           href="/shop"
           className={`mob-nav-item${isActive("/shop") ? " mob-nav-item--active" : ""}`}
           aria-label="Shop"
+          onTouchStart={() => prefetchRoute("/shop")}
         >
           <span className="mob-nav-icon"><ShopIcon /></span>
           <span className="mob-nav-label">Shop</span>
@@ -173,6 +187,7 @@ export default function MobileBottomNav() {
           href="/cart"
           className={`mob-nav-item${isActive("/cart") ? " mob-nav-item--active" : ""}`}
           aria-label="Cart"
+          onTouchStart={() => prefetchRoute("/cart")}
         >
           <span className="mob-nav-icon">
             <CartIcon />
@@ -197,6 +212,7 @@ export default function MobileBottomNav() {
                 href="/signup"
                 className="mob-nav-dropup-item"
                 role="menuitem"
+                onTouchStart={() => prefetchRoute("/signup")}
                 onClick={() => setAccountOpen(false)}
               >
                 <SignUpIcon />
@@ -207,6 +223,7 @@ export default function MobileBottomNav() {
                 href="/signin"
                 className="mob-nav-dropup-item"
                 role="menuitem"
+                onTouchStart={() => prefetchRoute("/signin")}
                 onClick={() => setAccountOpen(false)}
               >
                 <SignInIcon />

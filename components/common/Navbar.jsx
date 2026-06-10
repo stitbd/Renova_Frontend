@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { navLinks, socialLinks } from "@/constants/navLinks";
 import { siteConfig } from "@/constants/siteData";
 import CartBadge from "@/components/common/CartBadge";
+import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 import "../../styles/components/Navbar.css";
 
 /* ── Inline SVG social icons ── */
@@ -207,6 +208,18 @@ const UserIcon = ({ size = 16 }) => (
    ════════════════════════════════════════════ */
 export default function Navbar() {
   const pathname = usePathname();
+  const navRoutes = navLinks.flatMap((link) => [
+    link.href,
+    ...(link.children?.map((child) => child.href) || []),
+  ]);
+  const prefetchRoute = useRoutePrefetch([
+    ...navRoutes,
+    "/signup",
+    "/signin",
+    "/doctor-portal/doctor-signin",
+    "/appointment",
+    "/patient-portal/patient-signin",
+  ]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("/");
@@ -345,6 +358,8 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       className={`nav-link dropdown-toggle${activeLink === link.href ? " active" : ""}`}
+                      onMouseEnter={() => prefetchRoute(link.href)}
+                      onFocus={() => prefetchRoute(link.href)}
                       onClick={() => setActiveLink(link.href)}
                       aria-current={activeLink === link.href ? "page" : undefined}
                       aria-haspopup="true"
@@ -364,6 +379,8 @@ export default function Navbar() {
                               key={child.href}
                               href={child.href}
                               className={`dropdown-item${activeLink === child.href ? " active" : ""}`}
+                              onMouseEnter={() => prefetchRoute(child.href)}
+                              onFocus={() => prefetchRoute(child.href)}
                               onClick={() => setActiveLink(child.href)}
                               role="menuitem"
                             >
@@ -383,6 +400,8 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     className={`nav-link${activeLink === link.href ? " active" : ""}`}
+                    onMouseEnter={() => prefetchRoute(link.href)}
+                    onFocus={() => prefetchRoute(link.href)}
                     onClick={() => setActiveLink(link.href)}
                     aria-current={activeLink === link.href ? "page" : undefined}
                   >
@@ -395,11 +414,11 @@ export default function Navbar() {
 
           {/* Desktop CTA Buttons */}
           <div className="nav-buttons">
-            <Link href="/doctor-portal/doctor-signin" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+            <Link href="/doctor-portal/doctor-signin" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" onMouseEnter={() => prefetchRoute("/doctor-portal/doctor-signin")} onFocus={() => prefetchRoute("/doctor-portal/doctor-signin")}>
               <ReportIcon size={15} />
               Doctor Login
             </Link>
-            <Link href="/appointment" className="btn btn-primary">
+            <Link href="/appointment" className="btn btn-primary" onMouseEnter={() => prefetchRoute("/appointment")} onFocus={() => prefetchRoute("/appointment")}>
               <CalendarIcon size={15} />
               Book Appointment
             </Link>
@@ -501,6 +520,7 @@ export default function Navbar() {
                           key={child.href}
                           href={child.href}
                           className={`dropdown-item${activeLink === child.href ? " active" : ""}`}
+                          onTouchStart={() => prefetchRoute(child.href)}
                           onClick={() => {
                             setActiveLink(child.href);
                             closeDrawer();
@@ -519,6 +539,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`mobile-nav-link${activeLink === link.href ? " active" : ""}`}
+                onTouchStart={() => prefetchRoute(link.href)}
                 onClick={() => {
                   setActiveLink(link.href);
                   closeDrawer();
@@ -538,7 +559,7 @@ export default function Navbar() {
             <PhoneIcon size={16} />
             Call Now
           </Link>
-          <Link href="/appointment" className="mobile-btn-appointment" onClick={closeDrawer}>
+          <Link href="/appointment" className="mobile-btn-appointment" onTouchStart={() => prefetchRoute("/appointment")} onClick={closeDrawer}>
             <CalendarIcon size={16} />
             Book Appointment
           </Link>
@@ -563,7 +584,7 @@ export default function Navbar() {
 
       {/* ── Fixed Right Side Button ── */}
       <div className="fixed-report-wrapper">
-        <Link href="/patient-portal/patient-signin" target="_blank" rel="noopener noreferrer" className="fixed-report-btn">
+        <Link href="/patient-portal/patient-signin" target="_blank" rel="noopener noreferrer" className="fixed-report-btn" onMouseEnter={() => prefetchRoute("/patient-portal/patient-signin")} onFocus={() => prefetchRoute("/patient-portal/patient-signin")}>
           <ReportIcon size={15} />
           Report Download
         </Link>

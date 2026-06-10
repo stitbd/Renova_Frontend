@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import "./doctor-dashboard-massages.css";
 
 const TODAY = new Date().toDateString();
@@ -16,6 +17,14 @@ const conversations = [
     online: true,
     patientId: "PT-2025-00123",
     phone: "01712-345678",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'8\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 2,
@@ -27,6 +36,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00098",
     phone: "01811-223344",
+    consultationReason: "Fever, Headache",
+    consultationStarted: "Started at 09:15 AM",
+    summary: [
+      { key: "Blood Group", val: "A+" },
+      { key: "Height / Weight", val: "5'4\" / 55 kg" },
+      { key: "Allergies", val: "Penicillin" },
+      { key: "Chronic Condition", val: "None" },
+    ],
   },
   {
     id: 3,
@@ -38,6 +55,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00075",
     phone: "01912-556677",
+    consultationReason: "Back pain, Fatigue",
+    consultationStarted: "Started at 11:00 AM",
+    summary: [
+      { key: "Blood Group", val: "O+" },
+      { key: "Height / Weight", val: "5'10\" / 80 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Diabetes" },
+    ],
   },
   {
     id: 4,
@@ -49,6 +74,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00061",
     phone: "01712-998877",
+    consultationReason: "Joint pain, Swelling",
+    consultationStarted: "Started at 08:30 AM",
+    summary: [
+      { key: "Blood Group", val: "AB+" },
+      { key: "Height / Weight", val: "5'1\" / 80 kg" },
+      { key: "Allergies", val: "Aspirin" },
+      { key: "Chronic Condition", val: "Arthritis" },
+    ],
   },
   {
     id: 5,
@@ -60,6 +93,14 @@ const conversations = [
     online: true,
     patientId: "PT-2025-00055",
     phone: "01611-445566",
+    consultationReason: "High BP",
+    consultationStarted: "Started at 11:45 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'5\" / 80 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 6,
@@ -71,6 +112,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00044",
     phone: "01922-334455",
+    consultationReason: "Back pain, Fatigue",
+    consultationStarted: "Started at 11:00 AM",
+    summary: [
+      { key: "Blood Group", val: "O+" },
+      { key: "Height / Weight", val: "5'2\" / 80 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Diabetes" },
+    ],
   },
   {
     id: 7,
@@ -82,6 +131,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00038",
     phone: "01812-667788",
+    consultationReason: "Fever, Headache",
+    consultationStarted: "Started at 09:15 AM",
+    summary: [
+      { key: "Blood Group", val: "A+" },
+      { key: "Height / Weight", val: "5'4\" / 55 kg" },
+      { key: "Allergies", val: "Penicillin" },
+      { key: "Chronic Condition", val: "None" },
+    ],
   },
   {
     id: 8,
@@ -93,6 +150,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00031",
     phone: "01711-223366",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'3\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 9,
@@ -104,6 +169,14 @@ const conversations = [
     online: true,
     patientId: "PT-2025-00123",
     phone: "01712-345678",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'8\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 10,
@@ -115,6 +188,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00098",
     phone: "01811-223344",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'0\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 11,
@@ -126,6 +207,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00075",
     phone: "01912-556677",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'9\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 12,
@@ -137,6 +226,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00061",
     phone: "01712-998877",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'2\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 13,
@@ -148,6 +245,14 @@ const conversations = [
     online: true,
     patientId: "PT-2025-00055",
     phone: "01611-445566",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'5\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 14,
@@ -159,6 +264,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00044",
     phone: "01922-334455",
+    consultationReason: "Chest pain, Breathing problem",
+    consultationStarted: "Started at 10:30 AM",
+    summary: [
+      { key: "Blood Group", val: "B+" },
+      { key: "Height / Weight", val: "5'1\" / 72 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Hypertension" },
+    ],
   },
   {
     id: 15,
@@ -170,6 +283,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00038",
     phone: "01812-667788",
+    consultationReason: "Fever, Headache",
+    consultationStarted: "Started at 09:15 AM",
+    summary: [
+      { key: "Blood Group", val: "A+" },
+      { key: "Height / Weight", val: "5'4\" / 55 kg" },
+      { key: "Allergies", val: "Penicillin" },
+      { key: "Chronic Condition", val: "None" },
+    ],
   },
   {
     id: 16,
@@ -181,6 +302,14 @@ const conversations = [
     online: false,
     patientId: "PT-2025-00031",
     phone: "01711-223366",
+    consultationReason: "Back pain, Fatigue",
+    consultationStarted: "Started at 11:00 AM",
+    summary: [
+      { key: "Blood Group", val: "O+" },
+      { key: "Height / Weight", val: "5'3\" / 80 kg" },
+      { key: "Allergies", val: "No Known Allergies" },
+      { key: "Chronic Condition", val: "Diabetes" },
+    ],
   },
 ];
 
@@ -361,12 +490,12 @@ export default function MessagesPage() {
               </div>
             </div>
             <div className="msg-chat-actions">
-              <a href="/doctor-portal/messages/audio-call" className="msg-action-btn">
+              <Link href="/doctor-portal/messages/audio-call" className="msg-action-btn">
                 {getIcon("phone")}
-              </a>
-              <a href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
+              </Link>
+              <Link href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
                 {getIcon("video")}
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -505,9 +634,35 @@ export default function MessagesPage() {
             <p>32 Years, Male</p>
             <p className="msg-patient-id">{selectedConv?.phone}</p>
             <p className="msg-patient-id">{selectedConv?.patientId}</p>
-            <button className="msg-view-profile-btn">View Full Profile</button>
+            <Link
+              href={`/doctor-portal/patients/patient-profile?id=${selectedConv?.patientId}&from=/doctor-portal/messages`}
+              className="msg-view-profile-btn"
+              style={{ display: "block", textAlign: "center", textDecoration: "none" }}
+            >
+              View Full Profile
+            </Link>
           </div>
 
+
+          {/* Consultation Reason */}
+          <div>
+            <p className="call-section-label">Consultation Reason</p>
+            <p className="call-reason-text">{selectedConv?.consultationReason || "—"}</p>
+            <p className="call-started-text">{selectedConv?.consultationStarted || ""}</p>
+          </div>
+
+          {/* Patient Summary */}
+          <div>
+            <div className="call-panel-list-header">
+              <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
+            </div>
+            {(selectedConv?.summary || []).map((r) => (
+              <div key={r.key} className="call-summary-row">
+                <span className="call-summary-key">{r.key}</span>
+                <span className="call-summary-val">{r.val}</span>
+              </div>
+            ))}
+          </div>
           {/* Quick Actions */}
           <div className="msg-quick-actions">
             <p className="msg-info-section-title">Quick Actions</p>

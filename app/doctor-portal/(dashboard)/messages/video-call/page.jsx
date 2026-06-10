@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import "../doctor-dashboard-massages.css";
@@ -40,6 +40,7 @@ function Icon({ type }) {
         back: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
         user: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
         phone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>,
+        profile: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
         doc: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>,
         rx: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>,
         mic: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /><line x1="8" y1="23" x2="16" y2="23" /></svg>,
@@ -84,6 +85,39 @@ export default function VideoCallPage() {
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
     const [adaptive, setAdaptive] = useState(true);
+    const [messageText, setMessageText] = useState("");
+    const [charCount, setCharCount] = useState(0);
+    const [attachedFiles, setAttachedFiles] = useState([]);
+    const [messages, setMessages] = useState(chatMessages);
+    const [inputText, setInputText] = useState("");
+    const [pendingFiles, setPendingFiles] = useState([]);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const router = useRouter();
+
+    const handleSend = () => {
+        if (!inputText.trim() && pendingFiles.length === 0) return;
+        const newMsgs = [];
+        if (inputText.trim()) {
+            newMsgs.push({ id: Date.now(), from: "doctor", text: inputText.trim(), time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+        }
+        pendingFiles.forEach((f, i) => {
+            newMsgs.push({ id: Date.now() + i + 1, from: "doctor", file: f, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+        });
+        setMessages(prev => [...prev, ...newMsgs]);
+        setInputText("");
+        setPendingFiles([]);
+    };
+
+    const handleAttach = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*,application/pdf";
+        input.multiple = true;
+        input.onchange = (e) => {
+            setPendingFiles(prev => [...prev, ...Array.from(e.target.files)]);
+        };
+        input.click();
+    };
 
     useEffect(() => {
         const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
@@ -97,37 +131,8 @@ export default function VideoCallPage() {
     };
 
     return (
-        <>
-            {/* Topbar */}
-            <div className="call-topbar" style={{ margin: "-18px -22px 0", borderRadius: 0 }}>
-                <div className="call-topbar-left">
-                    <h2 className="call-topbar-title">Video Consultation</h2>
-                    <span className="call-live-badge">
-                        <span className="call-live-dot" /> Live
-                    </span>
-                </div>
-                <div className="call-topbar-stats">
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Call Duration</span>
-                        <span className="call-stat-value">{fmt(seconds)}</span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Network</span>
-                        <span className="call-stat-value green" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span className="call-network-bars"><span /><span /><span /><span /></span> Good
-                        </span>
-                    </div>
-                    <div className="call-stat-item">
-                        <span className="call-stat-label">Recording</span>
-                        <span className="call-stat-value red" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} /> On
-                        </span>
-                    </div>
-                </div>
-                <button className="call-end-btn">End Call</button>
-            </div>
-
-            <div className="call-page-layout" style={{ marginTop: 0 }}>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+            <div className="msg-page-wrap">
                 {/* ── Left: Patient Panel ────────────────────────── */}
                 <div className="call-patient-panel">
                     <Link href="/doctor-portal/messages" className="call-back-link">
@@ -158,14 +163,14 @@ export default function VideoCallPage() {
                         </div>
                     </div>
 
-                    {/* Patient contact */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4, paddingBottom: 14, borderBottom: "1px solid #f1f5f9" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b" }}>
-                            <Icon type="phone" /><span>01712-345678</span>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b" }}>
-                            <Icon type="doc" /><span>masud.rana@email.com</span>
-                        </div>
+                    <div className="call-patient-actions">
+                        <Link
+                            href="/doctor-portal/patients/patient-profile?id=PT-2025-00123&from=/doctor-portal/messages/video-call"
+                            className="call-patient-btn"
+                            style={{ flex: 2, display: "flex", alignItems: "center", gap: 6, textDecoration: "none", justifyContent: "center" }}
+                        >
+                            <Icon type="profile" /> View Profile
+                        </Link>
                     </div>
 
                     {/* Consultation Reason */}
@@ -179,7 +184,6 @@ export default function VideoCallPage() {
                     <div>
                         <div className="call-panel-list-header">
                             <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
-                            <button className="call-view-all">View Full Profile →</button>
                         </div>
                         {summaryRows.map((r) => (
                             <div key={r.key} className="call-summary-row">
@@ -242,65 +246,88 @@ export default function VideoCallPage() {
                 <div className="call-center-col">
 
                     {/* Video display */}
-                    <div className="video-call-display">
-                        {/* Patient video placeholder */}
-                        <div className="video-placeholder">
-                            <div className="video-placeholder-avatar">
-                                <img
-                                    src="/images/patients/01.jpg"
-                                    alt="Patient"
-                                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                                />
-                                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span>
-                            </div>
-                        </div>
+                    <div className="video-call-display" style={isExpanded ? { position: "fixed", inset: 0, margin: 0, borderRadius: 0, zIndex: 1000, width: "100vw", height: "100vh" } : {}}>
+                        <div className="video-main-area">
 
-                        {/* Patient label */}
-                        <div className="video-patient-label">
-                            Patient
-                            <span className="audio-signal-bars" style={{ marginLeft: 4 }}>
-                                <span /><span /><span /><span />
-                            </span>
-                        </div>
-
-                        {/* Doctor PiP */}
-                        <div className="video-pip">
+                            {/* Full-cover patient video */}
                             <img
-                                src="/images/doctors/doctor-2.jpg"
-                                alt="You"
-                                onError={(e) => { e.currentTarget.style.background = "#334155"; e.currentTarget.style.display = "none"; }}
+                                src="/images/patients/01.jpg"
+                                alt="Patient"
+                                onError={e => { e.currentTarget.style.display = "none"; }}
                             />
-                            <div className="video-pip-label">
-                                You
+
+                            {/* Patient label — top left */}
+                            <div className="video-patient-label">
+                                Patient
+                                <span className="video-signal-bars">
+                                    <span /><span /><span /><span />
+                                </span>
                             </div>
-                        </div>
 
-                        {/* Controls */}
-                        <div className="video-call-controls">
-                            {[
-                                { icon: "mic", label: "Mute" },
-                                { icon: "videooff", label: "Stop Video" },
-                                { icon: "screen", label: "Screen Share" },
-                                { icon: "rotateCamera", label: "Switch Camera" },
-                                { icon: "endcall", label: "End Call", end: true },
-                            ].map((btn) => (
-                                <button key={btn.label} className="video-ctrl-btn">
-                                    <div className={`video-ctrl-icon${btn.end ? " end-call" : ""}`}>
-                                        <Icon type={btn.icon} />
+                            {/* Doctor PiP — top right */}
+                            <div className="video-pip">
+                                <img
+                                    src="/images/doctors/doctor-2.jpg"
+                                    alt="You"
+                                    onError={e => { e.currentTarget.style.display = "none"; }}
+                                />
+                                <div className="video-pip-label">
+                                    <span className="video-pip-online-dot" />
+                                    You
+                                </div>
+                            </div>
+
+                            {/* Call Duration — above controls bar */}
+                            <div className="video-call-duration">
+                                <span className="video-call-duration-dot" />
+                                {fmt(seconds)}
+                            </div>
+
+                            {/* Controls bar — inside video, bottom center, pill shape */}
+                            <div className="video-controls-bar">
+                                {[
+                                    { icon: "mic", label: "Mute" },
+                                    { icon: "video", label: "Stop Video" },
+                                    { icon: "screen", label: "Screen Share" },
+                                    { icon: "rotateCamera", label: "Switch Camera" },
+                                ].map((btn) => (
+                                    <button key={btn.label} className="video-ctrl-btn">
+                                        <div className="video-ctrl-icon">
+                                            <Icon type={btn.icon} />
+                                        </div>
+                                        <span className="video-ctrl-label">{btn.label}</span>
+                                    </button>
+                                ))}
+
+                                <div className="video-ctrl-divider" />
+
+                                <button className="video-ctrl-btn" onClick={() => router.push("/doctor-portal/messages?activeConv=masud-rana")}>
+                                    <div className="video-ctrl-icon end-call">
+                                        <Icon type="endcall" />
                                     </div>
-                                    <span className="video-ctrl-label">{btn.label}</span>
+                                    <span className="video-ctrl-label">End Call</span>
                                 </button>
-                            ))}
-                        </div>
+                            </div>
 
-                        {/* Expand */}
-                        <button className="video-expand-btn">
-                            <Icon type="expand" />
-                        </button>
+                            {/* Expand — bottom right */}
+                            <button className="video-expand-btn" onClick={() => setIsExpanded(prev => !prev)}>
+                                {isExpanded ? (
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" width="14" height="14">
+                                        <polyline points="4 14 10 14 10 20" />
+                                        <polyline points="20 10 14 10 14 4" />
+                                        <line x1="10" y1="14" x2="3" y2="21" />
+                                        <line x1="21" y1="3" x2="14" y2="10" />
+                                    </svg>
+                                ) : (
+                                    <Icon type="expand" />
+                                )}
+                            </button>
+
+                        </div>
                     </div>
 
                     <div className="video-footer-note">
-                        All data is encrypted and stored securely. This consultation is subject to our <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.
+                        All data is encrypted and stored securely. This consultation is subject to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.
                     </div>
                 </div>
 
@@ -322,7 +349,7 @@ export default function VideoCallPage() {
                         <>
                             <div className="call-chat-body">
                                 <div className="call-chat-date">Today</div>
-                                {chatMessages.map((msg) => {
+                                {messages.map((msg) => {
                                     const isDoctor = msg.from === "doctor";
                                     return (
                                         <div key={msg.id} className={`call-chat-bubble-wrap${isDoctor ? " sent" : ""}`}>
@@ -342,12 +369,33 @@ export default function VideoCallPage() {
                             </div>
 
                             <div className="call-chat-input-wrap">
+                                {pendingFiles.length > 0 && (
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: "6px 4px 8px" }}>
+                                        {pendingFiles.map((f, i) => (
+                                            <div key={i} style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 4, background: "#f1f5f9", borderRadius: 6, padding: "3px 8px", fontSize: 11, color: "#475569" }}>
+                                                {f.type.startsWith("image/") ? (
+                                                    <img src={URL.createObjectURL(f)} alt={f.name} style={{ width: 28, height: 28, objectFit: "cover", borderRadius: 4 }} />
+                                                ) : (
+                                                    <Icon type="doc" />
+                                                )}
+                                                <span style={{ maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.name}</span>
+                                                <button onClick={() => setPendingFiles(prev => prev.filter((_, j) => j !== i))} style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                                 <div className="call-chat-input-row">
-                                    <input type="text" placeholder="Type a message..." />
-                                    <span className="call-chat-attach-icon">
+                                    <input
+                                        type="text"
+                                        placeholder="Type a message..."
+                                        value={inputText}
+                                        onChange={e => setInputText(e.target.value)}
+                                        onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+                                    />
+                                    <span className="call-chat-attach-icon" onClick={handleAttach} style={{ cursor: "pointer" }}>
                                         <Icon type="attach" />
                                     </span>
-                                    <div className="call-chat-input-icon">
+                                    <div className="call-chat-input-icon" onClick={handleSend} style={{ cursor: "pointer" }}>
                                         <Icon type="send" />
                                     </div>
                                 </div>
@@ -362,6 +410,6 @@ export default function VideoCallPage() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
