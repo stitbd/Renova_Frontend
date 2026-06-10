@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import "@/styles/pages/doctor-dashboard.css";
+import "./patients.css";
 
 const patientsData = [
   { id: 1, name: "Masud Rana", age: 32, gender: "Male", phone: "+880 1712-345678", email: "masud.rana@email.com", lastVisit: "10 May 2025", totalVisits: 5, bloodGroup: "O+", avatar: "/images/patients/01.jpg" },

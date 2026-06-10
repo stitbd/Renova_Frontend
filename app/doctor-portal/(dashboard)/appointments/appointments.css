@@ -1,0 +1,230 @@
+/* ======================================================
+   CSS FILE: appointments.css
+   ====================================================== */
+
+/* Appointments Page Styles */
+.appointments-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.date-filter {
+    display: flex;
+    gap: 8px;
+}
+
+.date-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.date-btn.active {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.view-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-btn.active {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.view-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.appointments-list-full {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.appointment-card-full {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+}
+
+.appointment-time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 10px;
+    min-width: 100px;
+}
+
+.appointment-date {
+    font-size: 11px;
+    color: #718096;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.appointment-time {
+    font-size: 14px;
+    font-weight: 700;
+    color: #014fa1;
+}
+
+.appointment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.appointment-patient {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.patient-avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.patient-avatar-small svg {
+    width: 20px;
+    height: 20px;
+    stroke: #014fa1;
+}
+
+.appointment-patient h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+.appointment-type {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+}
+
+.appointment-notes {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.notes-label {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.notes-text {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.appointment-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-badge.confirmed {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-badge.upcoming {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.status-badge.scheduled {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: #f8fafc;
+    border-color: #014fa1;
+}
+
+.btn-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .appointment-card-full {
+        grid-template-columns: 1fr;
+    }
+}
