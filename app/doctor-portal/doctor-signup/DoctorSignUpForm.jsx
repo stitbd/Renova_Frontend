@@ -948,122 +948,122 @@ export default function DoctorSignUpForm() {
             {/* ── Work & Availability ── */}
             <h3 className="doctor-signup__section-title">Work &amp; Availability</h3>
 
-           <div className="consultation-grid">
-  {/* Consultation Type */}
-  <Field label="Consultation Type" required>
-    <div className="consult-type-buttons">
-      {[
-        { id: "video", label: "Video", Ic: Icon.Video },
-        { id: "audio", label: "Audio", Ic: Icon.Audio },
-        { id: "chat", label: "Chat", Ic: Icon.Chat },
-      ].map(({ id, label, Ic }) => (
-        <button
-          key={id}
-          type="button"
-          onClick={() => setConsultType(id)}
-          className={`consult-type-btn ${consultType === id ? 'active' : ''}`}
-        >
-          <Ic className="icon" />
-          {label}
-        </button>
-      ))}
-    </div>
-  </Field>
+            <div className="consultation-grid">
+              {/* Consultation Type */}
+              <Field label="Consultation Type" required>
+                <div className="consult-type-buttons">
+                  {[
+                    { id: "video", label: "Video", Ic: Icon.Video },
+                    { id: "audio", label: "Audio", Ic: Icon.Audio },
+                    { id: "chat", label: "Chat", Ic: Icon.Chat },
+                  ].map(({ id, label, Ic }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setConsultType(id)}
+                      className={`consult-type-btn ${consultType === id ? 'active' : ''}`}
+                    >
+                      <Ic className="icon" />
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </Field>
 
-  {/* Work Schedule */}
-  <Field label="Work Schedule" required>
-    <div className="schedule-box">
-      <div className="schedule-grid">
-        <select
-          name="dayName"
-          value={scheduleForm.dayName}
-          onChange={handleScheduleChange}
-          className="schedule-input"
-        >
-          <option value="">Day</option>
-          <option value="MONDAY">Monday</option>
-          <option value="TUESDAY">Tuesday</option>
-          <option value="WEDNESDAY">Wednesday</option>
-          <option value="THURSDAY">Thursday</option>
-          <option value="FRIDAY">Friday</option>
-          <option value="SATURDAY">Saturday</option>
-          <option value="SUNDAY">Sunday</option>
-        </select>
+              {/* Work Schedule */}
+              <Field label="Work Schedule" required>
+                <div className="schedule-box">
+                  <div className="schedule-grid">
+                    <select
+                      name="dayName"
+                      value={scheduleForm.dayName}
+                      onChange={handleScheduleChange}
+                      className="schedule-input"
+                    >
+                      <option value="">Day</option>
+                      <option value="MONDAY">Monday</option>
+                      <option value="TUESDAY">Tuesday</option>
+                      <option value="WEDNESDAY">Wednesday</option>
+                      <option value="THURSDAY">Thursday</option>
+                      <option value="FRIDAY">Friday</option>
+                      <option value="SATURDAY">Saturday</option>
+                      <option value="SUNDAY">Sunday</option>
+                    </select>
 
-        <input
-          type="time"
-          name="startTime"
-          value={scheduleForm.startTime}
-          onChange={handleScheduleChange}
-          className="schedule-input"
-        />
+                    <input
+                      type="time"
+                      name="startTime"
+                      value={scheduleForm.startTime}
+                      onChange={handleScheduleChange}
+                      className="schedule-input"
+                    />
 
-        <input
-          type="time"
-          name="endTime"
-          value={scheduleForm.endTime}
-          onChange={handleScheduleChange}
-          className="schedule-input"
-        />
+                    <input
+                      type="time"
+                      name="endTime"
+                      value={scheduleForm.endTime}
+                      onChange={handleScheduleChange}
+                      className="schedule-input"
+                    />
 
-        <select
-          name="slotDuration"
-          value={scheduleForm.slotDuration}
-          onChange={handleScheduleChange}
-          className="schedule-input"
-        >
-          <option value="15">15m</option>
-          <option value="30">30m</option>
-          <option value="45">45m</option>
-          <option value="60">60m</option>
-        </select>
+                    <select
+                      name="slotDuration"
+                      value={scheduleForm.slotDuration}
+                      onChange={handleScheduleChange}
+                      className="schedule-input"
+                    >
+                      <option value="15">15m</option>
+                      <option value="30">30m</option>
+                      <option value="45">45m</option>
+                      <option value="60">60m</option>
+                    </select>
 
-        <button
-          type="button"
-          onClick={handleAddSchedule}
-          disabled={addingSchedule}
-          className={`add-btn ${addingSchedule ? 'loading' : ''}`}
-        >
-          {addingSchedule ? (
-            <>
-              <svg className="spinner" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
-                <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-              </svg>
-              Adding...
-            </>
-          ) : (
-            "Add"
-          )}
-        </button>
+                    <button
+                      type="button"
+                      onClick={handleAddSchedule}
+                      disabled={addingSchedule}
+                      className={`add-btn ${addingSchedule ? 'loading' : ''}`}
+                    >
+                      {addingSchedule ? (
+                        <>
+                          <svg className="spinner" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+                            <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                          </svg>
+                          Adding...
+                        </>
+                      ) : (
+                        "Add"
+                      )}
+                    </button>
 
-        <button
-          type="button"
-          onClick={() => setOpenScheduleModal(true)}
-          className="view-btn"
-        >
-          View
-        </button>
-      </div>
-    </div>
-  </Field>
+                    <button
+                      type="button"
+                      onClick={() => setOpenScheduleModal(true)}
+                      className="view-btn"
+                    >
+                      View
+                    </button>
+                  </div>
+                </div>
+              </Field>
 
-  {/* Consultation Fee */}
-  <Field label="Consultation Fee (৳)" required>
-    <div className="fee-input-wrapper">
-      <Icon.Taka className="fee-icon" />
-      <Input
-        name="consultationFee"
-        value={formData.consultationFee}
-        onChange={handleInputChange}
-        type="number"
-        min="0"
-        placeholder="Fee"
-        required
-      />
-    </div>
-  </Field>
-</div>
+              {/* Consultation Fee */}
+              <Field label="Consultation Fee (৳)" required>
+                <div className="fee-input-wrapper">
+                  <Icon.Taka className="fee-icon" />
+                  <Input
+                    name="consultationFee"
+                    value={formData.consultationFee}
+                    onChange={handleInputChange}
+                    type="number"
+                    min="0"
+                    placeholder="Fee"
+                    required
+                  />
+                </div>
+              </Field>
+            </div>
 
             {/* ── Documents Upload ── */}
             <h3 className="doctor-signup__section-title">Documents Upload</h3>

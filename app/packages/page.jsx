@@ -219,7 +219,7 @@ const pricingPlans = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════
-   ICONS
+   ICONS 
    ═══════════════════════════════════════════════════════════════ */
 const CartIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
@@ -417,7 +417,6 @@ function PlanCard({ plan }) {
    PAGE
    ═══════════════════════════════════════════════════════════════ */
 export default function PackagePage() {
-  // ✅ ADD THESE LINES:
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
