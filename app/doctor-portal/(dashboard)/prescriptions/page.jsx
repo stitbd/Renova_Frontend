@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import "@/styles/pages/doctor-dashboard.css";
+import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import "./prescriptions.css";
 
 const prescriptionsData = [
@@ -101,7 +101,6 @@ function Icon({ type, cls = "" }) {
     download: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>,
     print: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>,
     eye: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>,
-    more: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg>,
     user: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
     chev_left: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
     chev_right: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>,
@@ -168,9 +167,6 @@ export default function PrescriptionsPage() {
           <Icon type="chevdown" cls="rx-filter-chevron" />
         </button>
         <button className="rx-filter-item">
-          All Doctors <Icon type="chevdown" cls="rx-filter-chevron" />
-        </button>
-        <button className="rx-filter-item">
           All Patients <Icon type="chevdown" cls="rx-filter-chevron" />
         </button>
         <button className="rx-filter-item">
@@ -206,11 +202,41 @@ export default function PrescriptionsPage() {
                 <Icon type="plus" /> New Prescription
               </Link>
             </button>
-            <button className="rx-tbl-btn outline">
-              <Icon type="download" /> Download
+            <button
+              className="rx-act-btn"
+              title="Download"
+              onClick={() => generatePrescriptionPDF({
+                prescriptionId: rx.id,
+                prescriptionDate: rx.date,
+                prescriptionTime: rx.time,
+                visitType: "OPD",
+                prescriptionType: "New Prescription",
+                status: rx.status,
+                doctor: { name: rx.doctor.name, specialization: rx.doctor.spec },
+                patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
+                medicines: [],
+                additionalInstructions: [],
+              }, "download")}
+            >
+              <Icon type="download" />
             </button>
-            <button className="rx-tbl-btn outline">
-              <Icon type="print" /> Print
+            <button
+              className="rx-act-btn"
+              title="Print"
+              onClick={() => generatePrescriptionPDF({
+                prescriptionId: rx.id,
+                prescriptionDate: rx.date,
+                prescriptionTime: rx.time,
+                visitType: "OPD",
+                prescriptionType: "New Prescription",
+                status: rx.status,
+                doctor: { name: rx.doctor.name, specialization: rx.doctor.spec },
+                patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
+                medicines: [],
+                additionalInstructions: [],
+              }, "print")}
+            >
+              <Icon type="print" />
             </button>
           </div>
         </div>
@@ -300,9 +326,6 @@ export default function PrescriptionsPage() {
                     </button>
                     <button className="rx-act-btn" title="Print">
                       <Icon type="print" />
-                    </button>
-                    <button className="rx-act-btn" title="More">
-                      <Icon type="more" />
                     </button>
                   </div>
                 </td>

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import "@/styles/pages/doctor-dashboard.css";
+import { useState } from "react";
+import { generatePrescriptionPDF, buildPrescriptionDataFromDetails } from "@/utils/prescriptionPDF";
+import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 import "./prescriptions-details.css";
 
 const prescription = {
@@ -50,6 +52,39 @@ const summary = {
     status: "dispensed",
 };
 
+
+const doctor = {
+    email: "dr.noman@hospital.com",
+    phone: "+880 1XXX XXXXXX",
+};
+
+const getPdfData = () =>
+    buildPrescriptionDataFromDetails({ prescription, medicines, additionalInstructions, patient, summary, doctor });
+
+const handleDownload = async () => {
+    setIsGenerating(true);
+    await generatePrescriptionPDF(getPdfData(), "download");
+    setIsGenerating(false);
+};
+
+const handlePrint = async () => {
+    setIsGenerating(true);
+    await generatePrescriptionPDF(getPdfData(), "print");
+    setIsGenerating(false);
+};
+
+const handlePreview = async () => {
+    setIsGenerating(true);
+    const url = await generatePrescriptionPDF(getPdfData(), "preview");
+    setPreviewUrl(url);
+    setIsGenerating(false);
+};
+
+const handleClosePreview = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
+};
+
 function Icon({ type }) {
     const icons = {
         back: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
@@ -75,6 +110,9 @@ function Icon({ type }) {
 }
 
 export default function PrescriptionDetailsPage() {
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [isGenerating, setIsGenerating] = useState(false);
+
     return (
         <>
             {/* Sub Header */}
@@ -88,11 +126,11 @@ export default function PrescriptionDetailsPage() {
                     <Link href="/doctor-portal/prescriptions" className="rxd-header-btn back">
                         <Icon type="back" /> Back
                     </Link>
-                    <button className="rxd-header-btn outline">
+                    <button className="rxd-header-btn outline" onClick={handlePrint} disabled={isGenerating}>
                         <Icon type="print" /> Print
                     </button>
-                    <button className="rxd-header-btn outline">
-                        <Icon type="download" /> Download
+                    <button className="rxd-header-btn outline" onClick={handleDownload} disabled={isGenerating}>
+                        <Icon type="download" /> {isGenerating ? "Generating…" : "Download"}
                     </button>
                     <button className="rxd-header-btn primary">
                         <Link
@@ -348,6 +386,15 @@ export default function PrescriptionDetailsPage() {
                     </div>
                 </div>
             </div>
+
+            {previewUrl && (
+                <PrescriptionPreviewModal
+                    pdfUrl={previewUrl}
+                    onClose={handleClosePreview}
+                    onDownload={handleDownload}
+                    onPrint={handlePrint}
+                />
+            )}
         </>
     );
 }

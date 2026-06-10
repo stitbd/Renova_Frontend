@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { generatePrescriptionPDF, buildPrescriptionDataFromForm } from "@/utils/prescriptionPDF";
+import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 import "./new-prescriptions.css";
 
 // ==================== ICONS COMPONENT ====================
@@ -182,6 +184,9 @@ export default function NewPrescriptionPage() {
     const [prescriptionType, setPrescriptionType] = useState("new");
     const [followUpDate, setFollowUpDate] = useState("");
     const [clinicalNotes, setClinicalNotes] = useState("");
+
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [isGenerating, setIsGenerating] = useState(false);
 
     // --- State for medicines (dynamic rows) ---
     const [medicines, setMedicines] = useState([
@@ -401,9 +406,20 @@ export default function NewPrescriptionPage() {
         alert("Prescription saved as draft");
     };
 
-    const handlePreview = () => {
-        console.log("Preview prescription");
-        alert("Preview mode - would show print preview");
+    const handlePreview = async () => {
+        setIsGenerating(true);
+        const formData = buildPrescriptionDataFromForm({
+            prescriptionDate, visitType, prescriptionType, followUpDate, clinicalNotes,
+            medicines, additionalInstructions, selectedPatient, doctor,
+        });
+        const url = await generatePrescriptionPDF(formData, "preview");
+        setPreviewUrl(url);
+        setIsGenerating(false);
+    };
+
+    const handleClosePreview = () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
     };
 
     return (
@@ -421,8 +437,8 @@ export default function NewPrescriptionPage() {
                     <Link href="/doctor-portal/prescriptions" className="nrx-header-btn back">
                         <Icon type="arrowLeft" /> Back
                     </Link>
-                    <button className="nrx-header-btn outline" onClick={handlePreview}>
-                        <Icon type="eye" /> Preview
+                    <button className="nrx-header-btn outline" onClick={handlePreview} disabled={isGenerating}>
+                        <Icon type="eye" /> {isGenerating ? "Generating…" : "Preview"}
                     </button>
                     <button className="nrx-header-btn secondary" onClick={handleSaveAsDraft}>
                         <Icon type="save" /> Save Draft
@@ -1025,8 +1041,8 @@ export default function NewPrescriptionPage() {
                         <button className="nrx-submit-btn draft" onClick={handleSaveAsDraft}>
                             Save as Draft
                         </button>
-                        <button className="nrx-submit-btn preview" onClick={handlePreview}>
-                            <Icon type="eye" /> Preview & Print
+                        <button className="nrx-submit-btn preview" onClick={handlePreview} disabled={isGenerating}>
+                            <Icon type="eye" /> {isGenerating ? "Generating…" : "Preview & Print"}
                         </button>
                         <div className="nrx-divider"></div>
                         <Link
@@ -1039,6 +1055,13 @@ export default function NewPrescriptionPage() {
                     </div>
                 </div>
             </div>
+
+            {previewUrl && (
+                <PrescriptionPreviewModal
+                    pdfUrl={previewUrl}
+                    onClose={handleClosePreview}
+                />
+            )}
         </>
     );
 }
