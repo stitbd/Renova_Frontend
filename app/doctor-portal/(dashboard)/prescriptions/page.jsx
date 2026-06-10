@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import "./prescriptions.css";
@@ -9,7 +9,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000156",
     patient: { name: "Ayesha Rahman", pid: "PT-2025-000123", age: "28 Years, Female" },
-    doctor: { name: "Dr. Abdullah Al Noman", spec: "Cardiologist" },
+    vitalSigns: { bloodPressure: "Blood Pressure (145/90 mmHg)", heartRate: "Heart Rate (82 bpm)", temperature: "Temperature (98.6°F)", oxygenSaturation: "Oxygen Saturation (98%)", bloodSugar: "Blood Sugar (120 mg/dL)" },
     date: "31 May 2025",
     time: "10:30 AM",
     medicines: 5,
@@ -19,7 +19,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000155",
     patient: { name: "Hasan Mahmud", pid: "PT-2025-000122", age: "45 Years, Male" },
-    doctor: { name: "Dr. Farhana Akter", spec: "Dermatologist" },
+    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
     date: "31 May 2025",
     time: "09:15 AM",
     medicines: 3,
@@ -29,7 +29,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000154",
     patient: { name: "Sumaiya Khan", pid: "PT-2025-000121", age: "32 Years, Female" },
-    doctor: { name: "Dr. Hasan Mahmud", spec: "Physiotherapist" },
+    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
     date: "30 May 2025",
     time: "04:20 PM",
     medicines: 4,
@@ -39,7 +39,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000153",
     patient: { name: "Jannatul Ferdous", pid: "PT-2025-000120", age: "29 Years, Female" },
-    doctor: { name: "Dr. Abdullah Al Noman", spec: "Cardiologist" },
+    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
     date: "30 May 2025",
     time: "11:00 AM",
     medicines: 6,
@@ -49,7 +49,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000152",
     patient: { name: "Rafiq Ahmed", pid: "PT-2025-000119", age: "38 Years, Male" },
-    doctor: { name: "Dr. Farhana Akter", spec: "Dermatologist" },
+    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
     date: "29 May 2025",
     time: "03:45 PM",
     medicines: 2,
@@ -59,7 +59,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000151",
     patient: { name: "Nusrat Jahan", pid: "PT-2025-000118", age: "26 Years, Female" },
-    doctor: { name: "Dr. Hasan Mahmud", spec: "Physiotherapist" },
+    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
     date: "29 May 2025",
     time: "10:20 AM",
     medicines: 4,
@@ -69,7 +69,7 @@ const prescriptionsData = [
   {
     id: "RX-2025-000150",
     patient: { name: "Sakib Khan", pid: "PT-2025-000117", age: "41 Years, Male" },
-    doctor: { name: "Dr. Abdullah Al Noman", spec: "Cardiologist" },
+    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
     date: "28 May 2025",
     time: "02:30 PM",
     medicines: 5,
@@ -122,14 +122,30 @@ const getDoctorImage = (index) => {
   return `/images/doctors/doctor-${imageNum}.jpg`;
 };
 
+const ITEMS_PER_PAGE = 10;
+
 export default function PrescriptionsPage() {
   const [search, setSearch] = useState("");
-  const [currentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allPrescriptions, setAllPrescriptions] = useState([]);
 
-  const filtered = prescriptionsData.filter((p) =>
+  // Load saved prescriptions from localStorage and merge with static data
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("prescriptions") || "[]");
+    setAllPrescriptions([...saved, ...prescriptionsData]);
+  }, []);
+
+  const filtered = allPrescriptions.filter((p) =>
     p.patient.name.toLowerCase().includes(search.toLowerCase()) ||
     p.id.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
 
   return (
     <>
@@ -211,7 +227,7 @@ export default function PrescriptionsPage() {
               <th>#</th>
               <th>Prescription ID</th>
               <th>Patient Info</th>
-              <th>Doctor</th>
+              <th>Vital Signs</th>
               <th>Date</th>
               <th>Medicines</th>
               <th>Status</th>
@@ -219,9 +235,9 @@ export default function PrescriptionsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((rx, i) => (
+            {paginated.map((rx, i) => (
               <tr key={rx.id}>
-                <td>{i + 1}</td>
+                <td>{(currentPage - 1) * ITEMS_PER_PAGE + i + 1}</td>
                 <td style={{ fontWeight: 600, fontSize: 12.5, color: "#014fa1" }}>{rx.id}</td>
                 <td>
                   <div className="rx-patient-cell">
@@ -244,19 +260,12 @@ export default function PrescriptionsPage() {
                 </td>
                 <td>
                   <div className="rx-doctor-cell">
-                    <div className="rx-doctor-avatar">
-                      <img
-                        src={getDoctorImage(i)}
-                        alt={rx.doctor.name}
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.parentElement.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-                        }}
-                      />
-                    </div>
                     <div>
-                      <p className="rx-doctor-name">{rx.doctor.name}</p>
-                      <p className="rx-doctor-spec">{rx.doctor.spec}</p>
+                      <p className="rx-doctor-spec">{rx.vitalSigns.bloodPressure}</p>
+                      <p className="rx-doctor-spec">{rx.vitalSigns.heartRate}</p>
+                      <p className="rx-doctor-spec">{rx.vitalSigns.temperature}</p>
+                      <p className="rx-doctor-spec">{rx.vitalSigns.oxygenSaturation}</p>
+                      <p className="rx-doctor-spec">{rx.vitalSigns.bloodSugar}</p>
                     </div>
                   </div>
                 </td>
@@ -332,20 +341,34 @@ export default function PrescriptionsPage() {
         {/* Pagination */}
         <div className="rx-pagination-bar">
           <span className="rx-pagination-info">
-            Showing 1 to {filtered.length} of 156 entries
+            Showing {filtered.length === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1} to{" "}
+            {Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of {filtered.length} entries
           </span>
           <div className="rx-pagination-btns">
-            <button className="rx-page-btn">
+            <button className="rx-page-btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
               <Icon type="chev_left" />
             </button>
-            {[1, 2, 3].map((p) => (
-              <button key={p} className={`rx-page-btn${p === currentPage ? " active" : ""}`}>
-                {p}
-              </button>
-            ))}
-            <button className="rx-page-btn dots">...</button>
-            <button className="rx-page-btn">23</button>
-            <button className="rx-page-btn">
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+              .reduce((acc, p, idx, arr) => {
+                if (idx > 0 && p - arr[idx - 1] > 1) acc.push("...");
+                acc.push(p);
+                return acc;
+              }, [])
+              .map((p, idx) =>
+                p === "..." ? (
+                  <button key={`dots-${idx}`} className="rx-page-btn dots">…</button>
+                ) : (
+                  <button
+                    key={p}
+                    className={`rx-page-btn${p === currentPage ? " active" : ""}`}
+                    onClick={() => handlePageChange(p)}
+                  >
+                    {p}
+                  </button>
+                )
+              )}
+            <button className="rx-page-btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
               <Icon type="chev_right" />
             </button>
           </div>

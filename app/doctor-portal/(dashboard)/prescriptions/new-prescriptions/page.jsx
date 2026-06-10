@@ -170,6 +170,11 @@ function Icon({ type }) {
                 <rect x="6" y="14" width="12" height="8" />
             </svg>
         ),
+        chevdown: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+        ),
     };
     return icons[type] || null;
 }
@@ -310,38 +315,16 @@ export default function NewPrescriptionPage() {
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [showPatientSuggestions, setShowPatientSuggestions] = useState(false);
 
-    // Mock patient data
+    // Today's patient list (mock — replace with API call)
     const mockPatients = [
-        {
-            id: "PT-2025-000123",
-            name: "Ayesha Rahman",
-            age: 28,
-            gender: "Female",
-            phone: "017XXXXXXXXXX",
-            email: "ayesha@example.com",
-            address: "Mirpur, Dhaka",
-            avatar: null,
-        },
-        {
-            id: "PT-2025-000456",
-            name: "Md. Kamal Hossain",
-            age: 45,
-            gender: "Male",
-            phone: "018XXXXXXXXXX",
-            email: "kamal@example.com",
-            address: "Uttara, Dhaka",
-            avatar: null,
-        },
-        {
-            id: "PT-2025-000789",
-            name: "Fatema Begum",
-            age: 35,
-            gender: "Female",
-            phone: "019XXXXXXXXXX",
-            email: "fatema@example.com",
-            address: "Gulshan, Dhaka",
-            avatar: null,
-        },
+        { id: "PT-2025-000123", name: "Ayesha Rahman", age: 28, gender: "Female", phone: "017XXXXXXXXXX", email: "ayesha@example.com", address: "Mirpur, Dhaka", avatar: null },
+        { id: "PT-2025-000456", name: "Md. Kamal Hossain", age: 45, gender: "Male", phone: "018XXXXXXXXXX", email: "kamal@example.com", address: "Uttara, Dhaka", avatar: null },
+        { id: "PT-2025-000789", name: "Fatema Begum", age: 35, gender: "Female", phone: "019XXXXXXXXXX", email: "fatema@example.com", address: "Gulshan, Dhaka", avatar: null },
+        { id: "PT-2025-000790", name: "Rafiq Ahmed", age: 38, gender: "Male", phone: "016XXXXXXXXXX", email: "rafiq@example.com", address: "Banani, Dhaka", avatar: null },
+        { id: "PT-2025-000791", name: "Nusrat Jahan", age: 26, gender: "Female", phone: "015XXXXXXXXXX", email: "nusrat@example.com", address: "Dhanmondi, Dhaka", avatar: null },
+        { id: "PT-2025-000792", name: "Sakib Khan", age: 41, gender: "Male", phone: "014XXXXXXXXXX", email: "sakib@example.com", address: "Mohammadpur, Dhaka", avatar: null },
+        { id: "PT-2025-000793", name: "Sumaiya Akter", age: 30, gender: "Female", phone: "013XXXXXXXXXX", email: "sumaiya@example.com", address: "Khilgaon, Dhaka", avatar: null },
+        { id: "PT-2025-000794", name: "Tanvir Hossain", age: 52, gender: "Male", phone: "012XXXXXXXXXX", email: "tanvir@example.com", address: "Wari, Dhaka", avatar: null },
     ];
 
     const filteredPatients = mockPatients.filter(
@@ -382,23 +365,38 @@ export default function NewPrescriptionPage() {
     // --- Form submission handlers ---
     const handleSavePrescription = () => {
         if (!selectedPatient) {
-            alert("Please select a patient");
+            alert("Please select a patient first.");
             return;
         }
-        const prescriptionData = {
-            patient: selectedPatient,
-            prescriptionDate,
-            visitType,
-            prescriptionType,
-            followUpDate,
-            clinicalNotes,
-            medicines: medicines.filter((m) => m.name.trim() !== ""),
-            additionalInstructions: additionalInstructions.filter((i) => i.trim() !== ""),
-            attachments: attachments.map((a) => a.name),
-            doctor,
+        const validMeds = medicines.filter((m) => m.name.trim() !== "");
+        if (validMeds.length === 0) {
+            alert("Please add at least one medicine.");
+            return;
+        }
+        const newRx = {
+            id: `RX-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`,
+            patient: {
+                name: selectedPatient.name,
+                pid: selectedPatient.id,
+                age: `${selectedPatient.age} Years, ${selectedPatient.gender}`,
+            },
+            date: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+            time: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+            medicines: validMeds.length,
+            instructions: additionalInstructions.filter((i) => i.trim() !== "").length,
+            status: "pending",
+            _fullData: {
+                prescriptionDate, visitType, prescriptionType, followUpDate,
+                clinicalNotes, medicines: validMeds,
+                additionalInstructions: additionalInstructions.filter((i) => i.trim() !== ""),
+                doctor, patient: selectedPatient,
+            },
         };
-        console.log("Saving prescription:", prescriptionData);
+        // Save to localStorage so the list page can read it
+        const existing = JSON.parse(localStorage.getItem("prescriptions") || "[]");
+        localStorage.setItem("prescriptions", JSON.stringify([newRx, ...existing]));
         alert("Prescription saved successfully!");
+        window.location.href = "/doctor-portal/prescriptions";
     };
 
     const handleSaveAsDraft = () => {
@@ -439,9 +437,6 @@ export default function NewPrescriptionPage() {
                     </Link>
                     <button className="nrx-header-btn outline" onClick={handlePreview} disabled={isGenerating}>
                         <Icon type="eye" /> {isGenerating ? "Generating…" : "Preview"}
-                    </button>
-                    <button className="nrx-header-btn secondary" onClick={handleSaveAsDraft}>
-                        <Icon type="save" /> Save Draft
                     </button>
                     <button className="nrx-header-btn primary" onClick={handleSavePrescription}>
                         <Icon type="save" /> Save Prescription
@@ -490,7 +485,7 @@ export default function NewPrescriptionPage() {
                                     <option value="Telemedicine">Telemedicine</option>
                                 </select>
                             </div>
-                            <div className="nrx-form-group full-width">
+                            <div className="nrx-form-group">
                                 <label className="nrx-label">Prescription Type</label>
                                 <div className="nrx-type-selector">
                                     <button
@@ -531,7 +526,7 @@ export default function NewPrescriptionPage() {
                                 </div>
                             </div>
                             <div className="nrx-form-group full-width">
-                                <label className="nrx-label">Clinical Notes / Remarks</label>
+                                <label className="nrx-label">Prescription Notes</label>
                                 <textarea
                                     className="nrx-textarea"
                                     rows="3"
@@ -842,57 +837,6 @@ export default function NewPrescriptionPage() {
                             <Icon type="plus" /> Add Instruction
                         </button>
                     </div>
-
-                    {/* Attachments Card */}
-                    <div className="nrx-card">
-                        <h3 className="nrx-section-title">
-                            <Icon type="paperclip" /> Attachments
-                        </h3>
-                        <div
-                            className={`nrx-upload-zone ${isDragOver ? "drag-over" : ""}`}
-                            onDrop={handleDrop}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                        >
-                            <div className="nrx-upload-icon">
-                                <Icon type="upload" />
-                            </div>
-                            <p className="nrx-upload-title">Drag & drop files here</p>
-                            <p className="nrx-upload-sub">or</p>
-                            <label className="nrx-upload-btn-label">
-                                <Icon type="upload" /> Browse Files
-                                <input
-                                    type="file"
-                                    multiple
-                                    style={{ display: "none" }}
-                                    onChange={(e) => handleFileUpload(e.target.files)}
-                                />
-                            </label>
-                            <p className="nrx-upload-sub">Supported: PDF, JPG, PNG, DOC (Max 10MB)</p>
-                        </div>
-                        {attachments.length > 0 && (
-                            <div className="nrx-uploaded-files">
-                                {attachments.map((att) => (
-                                    <div key={att.id} className="nrx-uploaded-file">
-                                        <div className={`nrx-file-icon ${getFileIconClass(att.type)}`}>
-                                            <Icon type={getFileIconType(att.type)} />
-                                        </div>
-                                        <div className="nrx-file-info">
-                                            <p className="nrx-file-name">{att.name}</p>
-                                            <p className="nrx-file-size">{formatFileSize(att.size)}</p>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            className="nrx-file-del-btn"
-                                            onClick={() => removeAttachment(att.id)}
-                                        >
-                                            <Icon type="trash" />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
                 </div>
 
                 {/* Right Column */}
@@ -902,40 +846,30 @@ export default function NewPrescriptionPage() {
                         <h4 className="nrx-right-section-title">Patient Information</h4>
                         {!selectedPatient ? (
                             <>
-                                <div className="nrx-patient-search-box">
-                                    <Icon type="search" />
-                                    <input
-                                        type="text"
-                                        placeholder="Search by name, ID, or phone..."
-                                        value={patientSearchQuery}
-                                        onChange={(e) => {
-                                            setPatientSearchQuery(e.target.value);
-                                            setShowPatientSuggestions(true);
-                                        }}
-                                        onFocus={() => setShowPatientSuggestions(true)}
-                                    />
-                                </div>
-                                {showPatientSuggestions && patientSearchQuery && (
-                                    <div className="nrx-patient-suggestions" style={{ marginTop: 8 }}>
-                                        {filteredPatients.map((patient) => (
-                                            <div
-                                                key={patient.id}
-                                                className="nrx-patient-suggestion-item"
-                                                style={{
-                                                    padding: "8px 12px",
-                                                    cursor: "pointer",
-                                                    borderRadius: 8,
-                                                    marginBottom: 4,
-                                                    background: "#f8fafc",
-                                                }}
-                                                onClick={() => handleSelectPatient(patient)}
-                                            >
-                                                <div style={{ fontWeight: 600 }}>{patient.name}</div>
-                                                <div style={{ fontSize: 11, color: "#94a3b8" }}>{patient.id}</div>
-                                            </div>
-                                        ))}
+                                {/* Dropdown select from today's patient list */}
+                                <div className="nrx-patient-dropdown-wrap">
+                                    <label className="nrx-label" style={{ marginBottom: 6, display: "block" }}>
+                                        Select Today's Patient <span className="nrx-required">*</span>
+                                    </label>
+                                    <div className="nrx-patient-select-box">
+                                        <Icon type="user" />
+                                        <select
+                                            className="nrx-patient-native-select"
+                                            value=""
+                                            onChange={(e) => {
+                                                const found = mockPatients.find((p) => p.id === e.target.value);
+                                                if (found) handleSelectPatient(found);
+                                            }}
+                                        >
+                                            <option value="" disabled>Select a patient…</option>
+                                            {mockPatients.map((p) => (
+                                                <option key={p.id} value={p.id}>
+                                                    {p.name}  ·  {p.id}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
-                                )}
+                                </div>
                             </>
                         ) : (
                             <>
@@ -1008,50 +942,57 @@ export default function NewPrescriptionPage() {
                         </div>
                     </div>
 
-                    {/* Doctor Info Card */}
-                    <div className="nrx-doctor-card">
-                        <h4 className="nrx-right-section-title">Prescribing Doctor</h4>
-                        <div className="nrx-doctor-info-block">
-                            <div className="nrx-doctor-avatar">
-                                {doctor.avatar ? <img src={doctor.avatar} alt="" /> : <Icon type="doctor" />}
-                            </div>
-                            <div>
-                                <p className="nrx-doctor-name">{doctor.name}</p>
-                                <p className="nrx-doctor-spec">{doctor.specialization}</p>
-                            </div>
-                        </div>
-                        <div className="nrx-doctor-detail-rows">
-                            <div className="nrx-doctor-detail-row">
-                                <Icon type="stethoscope" /> {doctor.department}
-                            </div>
-                            <div className="nrx-doctor-detail-row">
-                                <Icon type="mail" /> {doctor.email}
-                            </div>
-                            <div className="nrx-doctor-detail-row">
-                                <Icon type="phone" /> {doctor.phone}
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Submit Actions Card */}
-                    <div className="nrx-submit-card">
-                        <button className="nrx-submit-btn save" onClick={handleSavePrescription}>
-                            <Icon type="save" /> Save Prescription
-                        </button>
-                        <button className="nrx-submit-btn draft" onClick={handleSaveAsDraft}>
-                            Save as Draft
-                        </button>
-                        <button className="nrx-submit-btn preview" onClick={handlePreview} disabled={isGenerating}>
-                            <Icon type="eye" /> {isGenerating ? "Generating…" : "Preview & Print"}
-                        </button>
-                        <div className="nrx-divider"></div>
-                        <Link
-                            href="/doctor-portal/prescriptions"
-                            className="nrx-submit-btn draft"
-                            style={{ textAlign: "center", textDecoration: "none" }}
+
+                    {/* Attachments Card */}
+                    <div className="nrx-card">
+                        <h3 className="nrx-section-title">
+                            <Icon type="paperclip" /> Attachments
+                        </h3>
+                        <div
+                            className={`nrx-upload-zone ${isDragOver ? "drag-over" : ""}`}
+                            onDrop={handleDrop}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
                         >
-                            Cancel
-                        </Link>
+                            <div className="nrx-upload-icon">
+                                <Icon type="upload" />
+                            </div>
+                            <p className="nrx-upload-title">Drag & drop files here</p>
+                            <p className="nrx-upload-sub">or</p>
+                            <label className="nrx-upload-btn-label">
+                                <Icon type="upload" /> Browse Files
+                                <input
+                                    type="file"
+                                    multiple
+                                    style={{ display: "none" }}
+                                    onChange={(e) => handleFileUpload(e.target.files)}
+                                />
+                            </label>
+                            <p className="nrx-upload-sub">Supported: PDF, JPG, PNG, DOC (Max 10MB)</p>
+                        </div>
+                        {attachments.length > 0 && (
+                            <div className="nrx-uploaded-files">
+                                {attachments.map((att) => (
+                                    <div key={att.id} className="nrx-uploaded-file">
+                                        <div className={`nrx-file-icon ${getFileIconClass(att.type)}`}>
+                                            <Icon type={getFileIconType(att.type)} />
+                                        </div>
+                                        <div className="nrx-file-info">
+                                            <p className="nrx-file-name">{att.name}</p>
+                                            <p className="nrx-file-size">{formatFileSize(att.size)}</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            className="nrx-file-del-btn"
+                                            onClick={() => removeAttachment(att.id)}
+                                        >
+                                            <Icon type="trash" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

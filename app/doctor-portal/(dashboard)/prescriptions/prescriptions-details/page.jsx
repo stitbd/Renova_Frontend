@@ -320,15 +320,6 @@ export default function PrescriptionDetailsPage() {
                         </div>
                         <div className="rxd-patient-detail-rows">
                             <div className="rxd-patient-detail-row">
-                                <Icon type="user" /> {patient.age}
-                            </div>
-                            <div className="rxd-patient-detail-row">
-                                <Icon type="phone" /> {patient.phone}
-                            </div>
-                            <div className="rxd-patient-detail-row">
-                                <Icon type="calendar" /> {patient.dob}
-                            </div>
-                            <div className="rxd-patient-detail-row">
                                 <Icon type="pin" /> {patient.address}
                             </div>
                         </div>
