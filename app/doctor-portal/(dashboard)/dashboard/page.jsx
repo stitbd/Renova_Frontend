@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/constants/siteData";
-import "@/styles/pages/doctor-dashboard.css";
+import "./dashboard.css";
 import StatCard from "@/components/doctor-dashboard/StatCard";
 import PatientQueueList from "@/components/doctor-dashboard/PatientQueueList";
 import AppointmentsList from "@/components/doctor-dashboard/AppointmentsList";

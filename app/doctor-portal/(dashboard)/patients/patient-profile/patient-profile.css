@@ -263,6 +263,31 @@
     gap: 12px;
 }
 
+.pp-stat-box.blue {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.pp-stat-box.green {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.pp-stat-box.purple {
+    background: #faf5ff;
+    border-color: #ddd6fe;
+}
+
+.pp-stat-box.orange {
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+.pp-stat-box.pink {
+    background: #fdf2f8;
+    border-color: #fbcfe8;
+}
+
 .pp-stat-icon {
     width: 40px;
     height: 40px;
