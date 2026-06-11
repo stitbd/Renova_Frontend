@@ -350,7 +350,7 @@ export default function PatientProfilePage() {
                             { icon: "report", color: "orange", num: p.stats.uploadedReports, label: "Uploaded Reports" },
                             { icon: "heart", color: "pink", num: p.stats.chronicCount, label: "Chronic Conditions" },
                         ].map((s, i) => (
-                            <div key={i} className="pp-stat-box">
+                            <div key={i} className={`pp-stat-box ${s.color}`}>
                                 <div className={`pp-stat-icon ${s.color}`}>
                                     <Icon type={s.icon} />
                                 </div>
