@@ -2,280 +2,799 @@
    CSS FILE: patient-queue.css
    ====================================================== */
 
-/* Patient Queue Page Styles */
-.queue-controls {
+/* ── Stats Row ─────────────────────────────────────── */
+.pq-stats-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.pq-stat-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-fast);
+}
+
+.pq-stat-card:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.pq-stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pq-stat-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pq-stat-card.waiting .pq-stat-icon {
+    background: #fff7ed;
+}
+
+.pq-stat-card.waiting .pq-stat-icon svg {
+    stroke: #f59e0b;
+}
+
+.pq-stat-card.in-progress .pq-stat-icon {
+    background: #eff6ff;
+}
+
+.pq-stat-card.in-progress .pq-stat-icon svg {
+    stroke: var(--color-primary);
+}
+
+.pq-stat-card.completed .pq-stat-icon {
+    background: #f0fdf4;
+}
+
+.pq-stat-card.completed .pq-stat-icon svg {
+    stroke: #22c55e;
+}
+
+.pq-stat-card.avg-wait .pq-stat-icon {
+    background: #fdf4ff;
+}
+
+.pq-stat-card.avg-wait .pq-stat-icon svg {
+    stroke: #a855f7;
+}
+
+.pq-stat-card.avg-time .pq-stat-icon {
+    background: #fff1f2;
+}
+
+.pq-stat-card.avg-time .pq-stat-icon svg {
+    stroke: #f43f5e;
+}
+
+.pq-stat-num {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-text-heading);
+    line-height: 1;
+    font-family: var(--font-heading);
+}
+
+.pq-stat-lbl {
+    display: block;
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* ── Controls ──────────────────────────────────────── */
+.pq-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    margin-bottom: 16px;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
-.search-box {
+.pq-search {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 8px 12px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    padding: 9px 14px;
     flex: 1;
-    max-width: 400px;
+    max-width: 380px;
+    transition: var(--transition-fast);
 }
 
-.search-box svg {
-    width: 18px;
-    height: 18px;
+.pq-search:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.08);
+}
+
+.pq-search svg {
+    width: 16px;
+    height: 16px;
     stroke: #94a3b8;
+    flex-shrink: 0;
 }
 
-.search-box input {
+.pq-search input {
     border: none;
     background: transparent;
     outline: none;
     font-size: 13px;
     width: 100%;
-    color: #1a202c;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
 }
 
-.filter-tabs {
+.pq-filters {
     display: flex;
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-.filter-tab {
-    padding: 8px 16px;
-    border: 1px solid #e2e8f0;
-    background: #fff;
-    border-radius: 8px;
+.pq-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--color-border-default);
+    background: var(--color-white);
+    border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--color-text-muted);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
 }
 
-.filter-tab.active {
-    background: #014fa1;
-    color: #fff;
-    border-color: #014fa1;
+.pq-filter-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
-.queue-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+.pq-filter-btn.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
 }
 
-.stat-box {
-    background: #fff;
-    border: 1px solid #e2e8f0;
+.pq-filter-count {
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 10px;
-    padding: 16px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.pq-filter-btn:not(.active) .pq-filter-count {
+    background: var(--color-border-muted);
+    color: var(--color-text-muted);
+}
+
+/* ── Queue List ────────────────────────────────────── */
+.pq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pq-empty {
     text-align: center;
+    padding: 48px 24px;
+    color: var(--color-text-muted);
 }
 
-.stat-number {
-    display: block;
-    font-size: 24px;
-    font-weight: 800;
-    color: #014fa1;
-    margin-bottom: 4px;
+.pq-empty svg {
+    width: 48px;
+    height: 48px;
+    stroke: #cbd5e1;
+    margin: 0 auto 12px;
 }
 
-.stat-label {
-    font-size: 11px;
-    color: #718096;
-    font-weight: 500;
+.pq-empty p {
+    font-size: 14px;
+    color: var(--color-text-muted);
 }
 
-.patient-queue-full {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.queue-item-full {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
+.pq-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
     padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    transition: var(--transition-fast);
 }
 
-.queue-item-header {
+.pq-card:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.pq-card.urgent-border {
+    border-left: 3px solid #f59e0b;
+}
+
+.pq-card-main {
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
 }
 
-.queue-number-large {
-    width: 32px;
-    height: 32px;
-    background: #014fa1;
-    color: #fff;
+.pq-queue-num {
+    width: 30px;
+    height: 30px;
+    background: var(--color-primary);
+    color: var(--color-white);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
+    flex-shrink: 0;
+    font-family: var(--font-heading);
 }
 
-.patient-avatar-large {
-    width: 48px;
-    height: 48px;
+.pq-avatar {
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     overflow: hidden;
     background: #dbeafe;
+    flex-shrink: 0;
+    position: relative;
 }
 
-.patient-avatar-large img {
+.pq-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.patient-details {
-    flex: 1;
-    min-width: 200px;
+.pq-avatar-fallback {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
-.patient-name-large {
+.pq-avatar-fallback svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--color-primary);
+}
+
+.pq-info {
+    flex: 1;
+    min-width: 180px;
+}
+
+.pq-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 3px;
+}
+
+.pq-name {
     font-size: 14px;
     font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 2px;
-}
-
-.patient-meta-large {
-    font-size: 12px;
-    color: #718096;
-    margin: 0 0 2px;
-}
-
-.patient-issue-large {
-    font-size: 12px;
-    color: #64748b;
+    color: var(--color-text-heading);
     margin: 0;
+    font-family: var(--font-heading);
 }
 
-.queue-time-info {
+.priority-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.priority-badge.urgent {
+    background: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #fed7aa;
+}
+
+.pq-type-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--color-border-muted);
+    color: var(--color-text-muted);
+}
+
+.pq-meta {
+    font-size: 11.5px;
+    color: var(--color-text-muted);
+    margin: 0 0 4px;
+}
+
+.pq-issue {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pq-issue svg {
+    width: 13px;
+    height: 13px;
+    stroke: #94a3b8;
+    flex-shrink: 0;
+}
+
+.pq-time-block {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    min-width: 120px;
+    gap: 5px;
+    min-width: 140px;
 }
 
-.time-label,
-.waiting-label {
+.pq-time-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.pq-time-lbl {
     font-size: 10px;
     color: #94a3b8;
+    font-weight: 500;
 }
 
-.time-value,
-.waiting-value {
+.pq-time-val {
     font-size: 12px;
     font-weight: 600;
-    color: #1a202c;
+    color: var(--color-text-heading);
 }
 
-.status-badge-large {
+.pq-time-val.wait.long {
+    color: #ef4444;
+}
+
+/* Status Badges */
+.pq-status-badge {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
+    padding: 5px 12px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 600;
-    background: #f1f5f9;
+    white-space: nowrap;
 }
 
-.status-dot-large {
-    width: 8px;
-    height: 8px;
+.pq-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
-.status-dot-large.status-waiting {
+.status-waiting {
+    background: #fff7ed;
+    color: #92400e;
+}
+
+.dot-amber {
     background: #f59e0b;
-}
-
-.status-dot-large.status-ongoing {
-    background: #014fa1;
     animation: pulse 2s infinite;
 }
 
-.status-dot-large.status-completed {
+.status-ongoing {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.dot-blue {
+    background: var(--color-primary);
+    animation: pulse 2s infinite;
+}
+
+.status-completed {
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.dot-green {
     background: #22c55e;
 }
 
-.queue-item-actions {
+.status-accepted {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.dot-teal {
+    background: #10b981;
+}
+
+.status-rejected {
+    background: #fff1f2;
+    color: #9f1239;
+}
+
+.dot-red {
+    background: #ef4444;
+}
+
+.status-rescheduled {
+    background: #faf5ff;
+    color: #6b21a8;
+}
+
+.dot-purple {
+    background: #a855f7;
+}
+
+/* ── Actions ───────────────────────────────────────── */
+.pq-actions {
     display: flex;
     gap: 8px;
     padding-top: 12px;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid var(--color-border-muted);
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-.btn-action {
-    display: flex;
+.pq-btn {
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 7px 15px;
+    border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     border: none;
-    transition: all 0.2s ease;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
 }
 
-.btn-action svg {
-    width: 16px;
-    height: 16px;
+.pq-btn svg {
+    width: 14px;
+    height: 14px;
 }
 
-.btn-start {
-    background: #014fa1;
+.pq-btn.accept {
+    background: #14532d;
     color: #fff;
 }
 
-.btn-start:hover {
-    background: #013d80;
+.pq-btn.accept:hover {
+    background: #166534;
 }
 
-.btn-reschedule {
-    background: #f8fafc;
-    color: #64748b;
-    border: 1px solid #e2e8f0;
+.pq-btn.reject {
+    background: #fff1f2;
+    color: #be123c;
+    border: 1px solid #fecdd3;
 }
 
-.btn-reschedule:hover {
-    background: #f1f5f9;
+.pq-btn.reject:hover {
+    background: #ffe4e6;
 }
 
-.btn-complete {
+.pq-btn.reschedule {
+    background: var(--color-bg-light);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-default);
+}
+
+.pq-btn.reschedule:hover {
+    background: var(--color-border-muted);
+}
+
+.pq-btn.complete {
     background: #22c55e;
     color: #fff;
 }
 
-.btn-complete:hover {
+.pq-btn.complete:hover {
     background: #16a34a;
 }
 
-.btn-view {
-    background: #f8fafc;
-    color: #014fa1;
+.pq-btn.view-profile {
+    background: var(--color-bg-light);
+    color: var(--color-primary);
     border: 1px solid #dbeafe;
 }
 
-.btn-view:hover {
+.pq-btn.view-profile:hover {
     background: #dbeafe;
+}
+
+.pq-btn.prescription {
+    background: #f5f3ff;
+    color: #7c3aed;
+    border: 1px solid #ddd6fe;
+}
+
+.pq-btn.prescription:hover {
+    background: #ede9fe;
+}
+
+.pq-btn.reject-confirm {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+}
+
+.pq-btn.reject-confirm:hover {
+    background: #dc2626;
+}
+
+.pq-rejected-note {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ── Modals ────────────────────────────────────────── */
+.pq-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(2px);
+}
+
+.pq-modal {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.pq-modal-sm {
+    max-width: 420px;
+}
+
+.pq-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.pq-modal-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.pq-modal-close {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--color-bg-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.pq-modal-close svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--color-text-muted);
+}
+
+.pq-modal-patient {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--color-bg-light);
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.pq-modal-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dbeafe;
+    flex-shrink: 0;
+}
+
+.pq-modal-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pq-modal-pname {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin: 0 0 2px;
+    font-family: var(--font-heading);
+}
+
+.pq-modal-pmeta {
+    font-size: 11.5px;
+    color: var(--color-text-muted);
+    margin: 0 0 2px;
+}
+
+.pq-modal-pissue {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.pq-modal-body {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pq-modal-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.pq-modal-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    background: var(--color-white);
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.pq-modal-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.08);
+}
+
+.pq-modal-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.pq-time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.pq-time-slot {
+    padding: 7px 4px;
+    border: 1px solid var(--color-border-default);
+    background: var(--color-white);
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
+    text-align: center;
+}
+
+.pq-time-slot:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.pq-time-slot.selected {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.pq-reject-warning {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    border-radius: 8px;
+    padding: 10px 14px;
+    line-height: 1.6;
+}
+
+.pq-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--color-border-default);
+}
+
+.pq-modal-btn {
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
+}
+
+.pq-modal-btn.cancel {
+    background: var(--color-bg-light);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-default);
+}
+
+.pq-modal-btn.cancel:hover {
+    background: var(--color-border-muted);
+}
+
+.pq-modal-btn.confirm {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.pq-modal-btn.confirm:hover {
+    background: var(--color-primary-dark);
+}
+
+.pq-modal-btn.confirm.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pq-modal-btn.reject-confirm {
+    background: #ef4444;
+    color: #fff;
+}
+
+.pq-modal-btn.reject-confirm:hover {
+    background: #dc2626;
 }
 
 @keyframes pulse {
@@ -290,34 +809,49 @@
     }
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-    .queue-stats {
-        grid-template-columns: repeat(2, 1fr);
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 1200px) {
+    .pq-stats-row {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .queue-controls {
+    .pq-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pq-controls {
         flex-direction: column;
         align-items: stretch;
     }
 
-    .search-box {
+    .pq-search {
         max-width: 100%;
     }
 
-    .filter-tabs {
+    .pq-filters {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
     }
 
-    .queue-stats {
+    .pq-card-main {
+        flex-wrap: wrap;
+    }
+
+    .pq-time-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .pq-stats-row {
         grid-template-columns: 1fr 1fr;
     }
 
-    .queue-item-header {
-        flex-direction: column;
-        align-items: flex-start;
+    .pq-time-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
