@@ -331,7 +331,7 @@ export default function DoctorsGrid() {
               <option value="">All Branches</option>
               {outlets.map((outlet) => (
                 <option key={outlet.id} value={outlet.id}>
-                  {outlet.outletName || outlet.name}
+                  {outlet?.outletName || outlet?.name}
                 </option>
               ))}
             </select>
