@@ -1,227 +1,391 @@
-// app/patient/appointments/page.jsx
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/hook";
+import "../../../../styles/pages/patient-portal-appointment.css";
+import { CalendarView } from "@/components/patient-dashboard/patient-appointment-calenderView";
 
-// Animation variants
+const API_URL = "http://localhost:5001/api/v1/appointments/my";
+const TZ = "Asia/Dhaka";
+
+const filters = ["TODAY APPOINTMENTS", "ALL", "PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"];
+
 const container = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.06 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 15 }
-  }
+    transition: { type: "spring", stiffness: 120, damping: 18 },
+  },
 };
 
-const appointmentsData = [
-  { id: 1, doctor: "Dr. Afsana Rahman", specialty: "Dermatologist", date: "16 May 2025", time: "11:30 AM", location: "Dhanmondi Outlet", status: "Confirmed", type: "Follow-up" },
-  { id: 2, doctor: "Dr. Tasnim Farin", specialty: "Cardiologist", date: "25 May 2025", time: "10:00 AM", location: "Gulshan Outlet", status: "Scheduled", type: "Regular Checkup" },
-  { id: 3, doctor: "Dr. Kamal Hossain", specialty: "General Physician", date: "02 Jun 2025", time: "02:00 PM", location: "Online", status: "Pending", type: "Consultation" },
-];
+function formatDate(date) {
+  if (!date) return "N/A";
+
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+function getDateKey(date) {
+  if (!date) return "";
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date(date));
+
+  const year = parts.find((p) => p.type === "year")?.value;
+  const month = parts.find((p) => p.type === "month")?.value;
+  const day = parts.find((p) => p.type === "day")?.value;
+
+  return `${year}-${month}-${day}`;
+}
+
+function isTodayAppointment(appointmentDate) {
+  return getDateKey(appointmentDate) === getDateKey(new Date());
+}
+
+
+function formatTime(date) {
+  if (!date) return "N/A";
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(date));
+}
+
+function normalizeAppointment(apt) {
+  const formattedDate = formatDate(apt.appointmentDate);
+  const [day, month, year] = formattedDate.split(" ");
+
+  return {
+    id: apt.id,
+    appointmentCode: apt.appointmentCode,
+    doctor: apt.doctor?.fullName || "Unknown Doctor",
+    specialty: apt.doctor?.specialization?.name || "Specialist",
+    day,
+    month: month?.toUpperCase() || "",
+    year,
+    date: formattedDate,
+    rawAppointmentDate: apt.appointmentDate,
+    startTime: formatTime(apt.startTime),
+    endTime: formatTime(apt.endTime),
+    type: apt.type,
+    location: apt.type === "ONLINE" ? "Online Consultation" : "Clinic Visit",
+    status: apt.status,
+    paymentStatus: apt.paymentStatus,
+    consultationFee: apt.consultationFee,
+    reason: apt.reason || "No reason provided",
+  };
+}
+
+function getStatusLabel(status) {
+  return String(status || "UNKNOWN").replaceAll("_", " ");
+}
+
+function getStatusClass(status) {
+  return `status-${String(status || "unknown").toLowerCase()}`;
+}
+
+function getStats(appointments) {
+  return {
+    total: appointments.length,
+    today: appointments.filter((apt) => isTodayAppointment(apt.rawAppointmentDate)).length,
+    pending: appointments.filter((apt) => apt.status === "PENDING").length,
+    confirmed: appointments.filter((apt) => apt.status === "CONFIRMED").length,
+    unpaid: appointments.filter((apt) => apt.paymentStatus === "UNPAID").length,
+  };
+}
+
+
+function AppointmentSkeleton() {
+  return (
+    <div className="appointments-list">
+      {[1, 2, 3].map((item) => (
+        <div className="appointment-card skeleton-card" key={item}>
+          <div className="skeleton date-skeleton" />
+          <div className="skeleton-content">
+            <div className="skeleton line-lg" />
+            <div className="skeleton line-md" />
+            <div className="skeleton line-sm" />
+          </div>
+          <div className="skeleton action-skeleton" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function AppointmentsPage() {
+  const router = useRouter();
+  const token = useAppSelector((state) => state.auth.accessToken);
+
   const [viewMode, setViewMode] = useState("list");
+  const [activeFilter, setActiveFilter] = useState("ALL");
+  const [appointments, setAppointments] = useState([]);
+  const [isLoading, setIsLoading] = useState(Boolean(token));
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!token) {
+      setIsLoading(false);
+      setError("Authentication token not found. Please login again.");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    async function fetchAppointments() {
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const res = await fetch(API_URL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+          cache: "no-store",
+        });
+
+        const result = await res.json();
+
+        if (!res.ok || !result.success) {
+          throw new Error(result.message || "Failed to load appointments.");
+        }
+
+        setAppointments(Array.isArray(result.data) ? result.data : []);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "Something went wrong.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchAppointments();
+
+    return () => controller.abort();
+  }, [token]);
+
+  const normalizedAppointments = useMemo(
+    () => appointments?.map(normalizeAppointment),
+    [appointments]
+  );
+
+  const filteredAppointments = useMemo(() => {
+    if (activeFilter === "ALL") return normalizedAppointments;
+
+    if (activeFilter === "TODAY APPOINTMENTS") {
+      return normalizedAppointments.filter((apt) =>
+        isTodayAppointment(apt.rawAppointmentDate)
+      );
+    }
+
+    return normalizedAppointments.filter((apt) => apt.status === activeFilter);
+  }, [normalizedAppointments, activeFilter]);
+
+
+  const stats = useMemo(() => getStats(normalizedAppointments), [normalizedAppointments]);
 
   return (
-    <motion.div 
+    <motion.div
+      className="appointments-page"
       variants={container}
       initial="hidden"
       animate="show"
     >
-      <motion.div className="appointments-header" variants={item}>
-        <motion.div className="view-toggle">
-          {[
-            { mode: "list", icon: (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="8" y1="6" x2="21" y2="6" />
-                <line x1="8" y1="12" x2="21" y2="12" />
-                <line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" />
-                <line x1="3" y1="12" x2="3.01" y2="12" />
-                <line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
-            ), label: "List" },
-            { mode: "calendar", icon: (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-            ), label: "Calendar" }
-          ].map(btn => (
-            <motion.button
-              key={btn.mode}
-              className={`view-btn ${viewMode === btn.mode ? "active" : ""}`}
-              onClick={() => setViewMode(btn.mode)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400 }}
-            >
-              {btn.icon}
-              {btn.label}
-            </motion.button>
-          ))}
-        </motion.div>
-        
-        <motion.button 
+      <motion.div className="appointments-topbar" variants={item}>
+        <div>
+          <h1>My Appointments</h1>
+          <p className="page-subtitle">
+            Manage your upcoming consultations, payment status, and appointment history.
+          </p>
+        </div>
+
+        <motion.button
           className="btn-book-appointment"
+          onClick={() => router.push("/appointment")}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 300 }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Book New Appointment
+          <span>+</span>
+          Book Appointment
         </motion.button>
       </motion.div>
 
-      {viewMode === "list" ? (
-        <motion.div className="appointments-list">
-          {appointmentsData.map((apt, index) => (
+      <motion.div className="appointments-stats" variants={item}>
+        <div className="stat-card">
+          <span>Total</span>
+          <strong>{stats.total}</strong>
+        </div>
+        <div className="stat-card">
+          <span>Today </span>
+          <strong>{stats.today}</strong>
+        </div>
+        <div className="stat-card">
+          <span>Pending</span>
+          <strong>{stats.pending}</strong>
+        </div>
+        <div className="stat-card">
+          <span>Confirmed</span>
+          <strong>{stats.confirmed}</strong>
+        </div>
+        <div className="stat-card">
+          <span>Unpaid</span>
+          <strong>{stats.unpaid}</strong>
+        </div>
+      </motion.div>
+
+      <motion.div className="appointments-toolbar" variants={item}>
+        <div className="filter-tabs">
+          {filters?.map((filter) => (
+            <button
+              key={filter}
+              className={activeFilter === filter ? "active" : ""}
+              onClick={() => setActiveFilter(filter)}
+            >
+              {filter === "ALL" ? "All" : filter === "TODAY APPOINTMENTS" ? "Today Appointments" : getStatusLabel(filter)}
+            </button>
+          ))}
+        </div>
+
+        <div className="view-toggle">
+          {["list", "calendar"].map((mode) => (
+            <button
+              key={mode}
+              className={viewMode === mode ? "active" : ""}
+              onClick={() => setViewMode(mode)}
+            >
+              {mode === "list" ? "List" : "Calendar"}
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
+      {isLoading && <AppointmentSkeleton />}
+
+      {!isLoading && error && (
+        <motion.div className="state-box error-box" variants={item}>
+          <h3>Unable to load appointments</h3>
+          <p>{error}</p>
+          <button onClick={() => router.push("/login")}>Go to Login</button>
+        </motion.div>
+      )}
+
+      {!isLoading && !error && filteredAppointments.length === 0 && (
+        <motion.div className="state-box" variants={item}>
+          <h3>No appointments found</h3>
+          <p>You do not have any appointments for this filter.</p>
+          <button onClick={() => router.push("/appointment")}>
+            Book New Appointment
+          </button>
+        </motion.div>
+      )}
+
+      {!isLoading && !error && viewMode === "list" && filteredAppointments.length > 0 && (
+        <motion.div className="appointments-list" variants={container}>
+          {filteredAppointments.map((apt) => (
             <motion.div
               key={apt.id}
               className="appointment-card"
               variants={item}
-              whileHover={{ 
-                y: -4, 
-                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                transition: { duration: 0.2 }
+              whileHover={{
+                y: -4,
+                boxShadow: "0 18px 45px rgba(15, 23, 42, 0.1)",
               }}
             >
-              <motion.div 
-                className="appointment-date-block"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <motion.span 
-                  className="appointment-day"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.1 + index * 0.05, type: "spring" }}
-                >
-                  {apt.date.split(" ")[0]}
-                </motion.span>
-                <span className="appointment-month">{apt.date.split(" ")[1].toUpperCase()}</span>
-              </motion.div>
-              
-              <div className="appointment-content">
-                <div className="appointment-doctor">
-                  <motion.h3 
-                    className="doctor-name"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + index * 0.05 }}
-                  >
-                    {apt.doctor}
-                  </motion.h3>
-                  <p className="doctor-specialty">{apt.specialty}</p>
-                  <motion.span 
-                    className="appointment-type"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 + index * 0.05 }}
-                  >
-                    {apt.type}
-                  </motion.span>
+              <div className="appointment-date-block">
+                <strong>{apt.day}</strong>
+                <span>{apt.month}</span>
+                <small>{apt.year}</small>
+              </div>
+
+              <div className="appointment-main">
+                <div className="appointment-title-row">
+                  <div>
+                    <h3>{apt.doctor}</h3>
+                    <p>{apt.specialty}</p>
+                  </div>
+
+                  <span className={`appointment-status ${getStatusClass(apt.status)}`}>
+                    {getStatusLabel(apt.status)}
+                  </span>
                 </div>
-                <div className="appointment-details">
-                  <div className="detail-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                    <span>{apt.time}</span>
+
+                <div className="appointment-meta-grid">
+                  <div>
+                    <span>Time</span>
+                    <strong>
+                      {apt.startTime} - {apt.endTime}
+                    </strong>
                   </div>
-                  <div className="detail-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    <span>{apt.location}</span>
+
+                  <div>
+                    <span>Consultation</span>
+                    <strong>{apt.type === "ONLINE" ? "Online" : "In Person"}</strong>
                   </div>
+
+                  <div>
+                    <span>Location</span>
+                    <strong>{apt.location}</strong>
+                  </div>
+
+                  <div>
+                    <span>Payment</span>
+                    <strong>{apt.paymentStatus}</strong>
+                  </div>
+                </div>
+
+                <div className="appointment-footer">
+                  <p>
+                    <span>Code:</span> {apt.appointmentCode}
+                  </p>
+                  <p>
+                    <span>Fee:</span> ৳{apt.consultationFee}
+                  </p>
                 </div>
               </div>
-              
-              <div className="appointment-status-actions">
-                <motion.span 
-                  className={`appointment-status status-${apt.status.toLowerCase()}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + index * 0.05, type: "spring" }}
-                >
-                  {apt.status}
-                </motion.span>
-                <div className="appointment-btns">
-                  {apt.status === "Confirmed" && (
-                    <>
-                      <motion.button 
-                        className="btn-join"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Join Call
-                      </motion.button>
-                      <motion.button 
-                        className="btn-reschedule"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Reschedule
-                      </motion.button>
-                    </>
-                  )}
-                  {apt.status === "Scheduled" && (
-                    <motion.button 
-                      className="btn-confirm"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Confirm
-                    </motion.button>
-                  )}
-                  {apt.status === "Pending" && (
-                    <motion.button 
-                      className="btn-cancel"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Cancel
-                    </motion.button>
-                  )}
-                </div>
+
+              <div className="appointment-actions">
+                {apt.status === "CONFIRMED" && apt.type === "ONLINE" && (
+                  <button className="btn-join">Join Call</button>
+                )}
+
+                {apt.paymentStatus === "UNPAID" && (
+                  <button className="btn-pay">Pay Now</button>
+                )}
+
+                {apt.status === "PENDING" && (
+                  <button className="btn-cancel">Cancel</button>
+                )}
               </div>
             </motion.div>
           ))}
         </motion.div>
-      ) : (
-        <motion.div 
-          className="calendar-view"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div 
-            className="calendar-placeholder"
-            animate={{ 
-              y: [0, -10, 0],
-              transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-            }}
-          >
-            Calendar view coming soon
-          </motion.div>
-        </motion.div>
+      )}
+
+      {!isLoading && !error && viewMode === "calendar" && (
+        <CalendarView appointments={filteredAppointments} />
       )}
     </motion.div>
   );
