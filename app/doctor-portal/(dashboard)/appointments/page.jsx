@@ -1,9 +1,10 @@
 // app/doctor-portal/appointments/page.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import "./appointments.css";
+
 
 // Accepted patients from queue feed into appointments
 const allAppointments = [
@@ -33,6 +34,52 @@ export default function AppointmentsPage() {
   const [selectedDate, setSelectedDate] = useState("today");
   const [calendarDate, setCalendarDate] = useState(new Date().toISOString().split("T")[0]);
 
+  const [calPopupOpen, setCalPopupOpen] = useState(false);
+  const [calMode, setCalMode] = useState("single" | "single" | "multi" | "range");
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [rangeStart, setRangeStart] = useState(null);
+  const [calViewYear, setCalViewYear] = useState(new Date().getFullYear());
+  const [calViewMonth, setCalViewMonth] = useState(new Date().getMonth());
+  const calPopupRef = useRef(null);
+
+  const fmtDate = (y, m, d) => `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+  const handleCalCell = (dateStr) => {
+    if (calMode === "single") {
+      setSelectedDates([dateStr]);
+    } else if (calMode === "multi") {
+      setSelectedDates(prev =>
+        prev.includes(dateStr) ? prev.filter(d => d !== dateStr) : [...prev, dateStr]
+      );
+    } else {
+      if (!rangeStart) {
+        setRangeStart(dateStr);
+        setSelectedDates([dateStr]);
+      } else {
+        const [s, e] = [rangeStart, dateStr].sort();
+        const range = [];
+        const cur = new Date(s);
+        const end = new Date(e);
+        while (cur <= end) {
+          range.push(cur.toISOString().split("T")[0]);
+          cur.setDate(cur.getDate() + 1);
+        }
+        setSelectedDates(range);
+        setRangeStart(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (calPopupRef.current && !calPopupRef.current.contains(e.target)) {
+        setCalPopupOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   // Computed stats
   const todayAppts = appointments.filter(a => a.date === "today");
   const tomorrowAppts = appointments.filter(a => a.date === "tomorrow");
@@ -43,11 +90,21 @@ export default function AppointmentsPage() {
   // Visible list: separate completed to bottom
   const getFilteredList = () => {
     let list = [];
-    if (selectedDate === "today") list = [...todayAppts];
-    else if (selectedDate === "tomorrow") list = [...tomorrowAppts];
-    else list = [...appointments]; // "all"
-
-    // Sort: non-completed first (by time), completed last
+    if (selectedDates.length > 0) {
+      // calendar filter active — match against apt.date string or a real date
+      const today = new Date().toISOString().split("T")[0];
+      const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
+      list = appointments.filter(a => {
+        const d = a.date === "today" ? today : a.date === "tomorrow" ? tomorrow : a.date;
+        return selectedDates.includes(d);
+      });
+    } else if (selectedDate === "today") {
+      list = [...todayAppts];
+    } else if (selectedDate === "tomorrow") {
+      list = [...tomorrowAppts];
+    } else {
+      list = [...appointments];
+    }
     const active = list.filter(a => a.status !== "completed").sort((a, b) => a.time.localeCompare(b.time));
     const done = list.filter(a => a.status === "completed").sort((a, b) => a.time.localeCompare(b.time));
     return [...active, ...done];
@@ -138,22 +195,76 @@ export default function AppointmentsPage() {
         </div>
 
         <div className="apt-view-toggle">
-          <button
-            className={`apt-view-btn${viewMode === "list" ? " active" : ""}`}
-            onClick={() => setViewMode("list")}
-            title="List View"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
-            List
-          </button>
-          <button
-            className={`apt-view-btn${viewMode === "calendar" ? " active" : ""}`}
-            onClick={() => setViewMode("calendar")}
-            title="Calendar View"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
-            Calendar
-          </button>
+          <div className="apt-calendar-wrap" ref={calPopupRef}>
+            <button
+              className={`apt-view-btn${calPopupOpen ? " active" : ""}`}
+              onClick={() => setCalPopupOpen(p => !p)}
+              title="Calendar View"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+              Calendar {selectedDates.length > 0 && `(${selectedDates.length})`}
+            </button>
+
+            {calPopupOpen && (() => {
+              const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
+              const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
+              const today = new Date();
+              const todayStr = today.toISOString().split("T")[0];
+              const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+              const cells = [];
+              for (let i = 0; i < firstDay; i++) cells.push(null);
+              for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+
+              return (
+                <div className="apt-cal-popup">
+                  <div className="apt-cal-header">
+                    <button className="apt-cal-nav" onClick={() => {
+                      if (calViewMonth === 0) { setCalViewMonth(11); setCalViewYear(y => y - 1); }
+                      else setCalViewMonth(m => m - 1);
+                    }}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                    </button>
+                    <span className="apt-cal-title">{monthNames[calViewMonth]} {calViewYear}</span>
+                    <button className="apt-cal-nav" onClick={() => {
+                      if (calViewMonth === 11) { setCalViewMonth(0); setCalViewYear(y => y + 1); }
+                      else setCalViewMonth(m => m + 1);
+                    }}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                    </button>
+                  </div>
+                  <div className="apt-cal-grid-head">
+                    {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
+                      <div key={d} className="apt-cal-day-name">{d}</div>
+                    ))}
+                  </div>
+                  <div className="apt-cal-grid">
+                    {cells.map((d, i) => {
+                      if (!d) return <div key={`e-${i}`} className="apt-cal-cell empty" />;
+                      const dateStr = fmtDate(calViewYear, calViewMonth, d);
+                      const isSelected = selectedDates.includes(dateStr);
+                      const isToday = dateStr === todayStr;
+                      const isRangeStart = calMode === "range" && selectedDates[0] === dateStr;
+                      const isRangeEnd = calMode === "range" && selectedDates[selectedDates.length - 1] === dateStr && selectedDates.length > 1;
+                      const isInRange = calMode === "range" && isSelected && !isRangeStart && !isRangeEnd;
+                      let cls = "apt-cal-cell";
+                      if (isRangeStart) cls += " range-start";
+                      else if (isRangeEnd) cls += " range-end";
+                      else if (isInRange) cls += " in-range";
+                      else if (isSelected) cls += " selected";
+                      if (isToday && !isSelected) cls += " today-marker";
+                      return (
+                        <button key={dateStr} className={cls} onClick={() => handleCalCell(dateStr)}>{d}</button>
+                      );
+                    })}
+                  </div>
+                  <div className="apt-cal-footer">
+                    <button className="apt-cal-clear" onClick={() => { setSelectedDates([]); setRangeStart(null); }}>Clear</button>
+                    <button className="apt-cal-apply" onClick={() => setCalPopupOpen(false)}>Apply</button>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       </div>
 

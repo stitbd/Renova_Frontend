@@ -25,6 +25,31 @@
     box-shadow: var(--shadow-sm);
 }
 
+.apt-sum-card:nth-child(1) {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.apt-sum-card:nth-child(2) {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.apt-sum-card:nth-child(3) {
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+.apt-sum-card:nth-child(4) {
+    background: #fdf4ff;
+    border-color: #e9d5ff;
+}
+
+.apt-sum-card:nth-child(5) {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
 .apt-sum-icon {
     width: 38px;
     height: 38px;
@@ -170,28 +195,188 @@
 
 /* ── Calendar ──────────────────────────────────────── */
 .apt-calendar-wrap {
+    position: relative;
+}
+
+.apt-cal-popup {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 100;
     background: var(--color-white);
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-md);
-    padding: 24px;
-    margin-bottom: 16px;
-    text-align: center;
+    padding: 16px;
+    box-shadow: var(--shadow-md);
+    width: 300px;
 }
 
-.apt-calendar-input {
-    padding: 9px 14px;
+.apt-cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.apt-cal-nav {
+    background: none;
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-sm);
-    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     font-family: var(--font-body);
-    color: var(--color-text-primary);
-    outline: none;
-    margin-bottom: 10px;
 }
 
-.apt-calendar-hint {
-    font-size: 12px;
+.apt-cal-nav:hover {
+    background: var(--color-bg-light);
+}
+
+.apt-cal-nav svg {
+    width: 14px;
+    height: 14px;
+}
+
+.apt-cal-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+}
+
+.apt-cal-mode-btns {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.apt-cal-mode-btn {
+    flex: 1;
+    padding: 5px 8px;
+    border: 1px solid var(--color-border-default);
+    background: var(--color-white);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
     color: var(--color-text-muted);
+    transition: var(--transition-fast);
+}
+
+.apt-cal-mode-btn.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.apt-cal-grid-head {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 4px;
+}
+
+.apt-cal-day-name {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    padding: 4px 0;
+}
+
+.apt-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.apt-cal-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11.5px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    border: none;
+    background: none;
+    transition: var(--transition-fast);
+}
+
+.apt-cal-cell:hover:not(.empty) {
+    background: var(--color-bg-light);
+}
+
+.apt-cal-cell.empty {
+    cursor: default;
+}
+
+.apt-cal-cell.selected {
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 700;
+}
+
+.apt-cal-cell.in-range {
+    background: #dbeafe;
+    color: var(--color-primary);
+    border-radius: 0;
+}
+
+.apt-cal-cell.range-start {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: 6px 0 0 6px;
+}
+
+.apt-cal-cell.range-end {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: 0 6px 6px 0;
+}
+
+.apt-cal-cell.today-marker {
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.apt-cal-footer {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border-muted);
+}
+
+.apt-cal-clear {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid var(--color-border-default);
+    background: var(--color-white);
+    border-radius: var(--radius-sm);
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+    color: var(--color-text-muted);
+}
+
+.apt-cal-apply {
+    flex: 1;
+    padding: 6px;
+    border: none;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-sm);
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
 }
 
 /* ── List ──────────────────────────────────────────── */
