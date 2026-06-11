@@ -162,7 +162,7 @@ export default function PrescriptionsPage() {
       {/* Stats Row */}
       <div className="rx-stats-row">
         {stats.map((s) => (
-          <div key={s.label} className="rx-stat-card">
+          <div key={s.label} className={`rx-stat-card ${s.color}`}>
             <div className={`rx-stat-icon ${s.color}`}>
               <Icon type={s.icon} />
             </div>

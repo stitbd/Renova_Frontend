@@ -70,6 +70,31 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
+.rx-stat-card.green {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.rx-stat-card.blue {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.rx-stat-card.yellow {
+    background: #fefce8;
+    border-color: #fef08a;
+}
+
+.rx-stat-card.teal {
+    background: #f0fdfa;
+    border-color: #99f6e4;
+}
+
+.rx-stat-card.red {
+    background: #fff5f5;
+    border-color: #fecaca;
+}
+
 .rx-stat-icon {
     width: 44px;
     height: 44px;
