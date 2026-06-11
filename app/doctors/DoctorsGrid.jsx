@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Button from "@/components/common/Button";
@@ -17,6 +17,7 @@ const staggerContainer = {
   visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
 };
 
+// Icons
 const ProfileIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -84,24 +85,30 @@ const InitialsFallback = ({ name, accentFrom, accentTo }) => {
   );
 };
 
-const CONSULTATION_TYPES = ["Face to Face", "Video / Audio Call"];
+const CONSULTATION_TYPES = ["ONLINE", "OFFLINE"];
 const GENDERS = ["Male", "Female"];
 
 const mapDoctorFromApi = (doctor) => {
   const cleanName = doctor.fullName?.replace(/^Dr\.?\s*/i, "") || "Unknown Doctor";
+
+  const hasOnlineSchedule = doctor.schedules?.some(
+    (s) => s.consultationType === "ONLINE"
+  );
 
   return {
     id: doctor.id,
     name: cleanName,
     fullName: doctor.fullName || `Dr. ${cleanName}`,
     specialty: doctor.specialization?.name || doctor.subSpecialization || "General Physician",
+    specializationId: doctor.specializationId,
     qualification: doctor.qualification || "N/A",
     experience: `${doctor.experienceYears || 0}+ Years`,
     rating: "5.0",
     patients: "500",
     gender: doctor.gender || "",
-    branch: doctor.outlet?.name || "",
-    consultationType: doctor.onlineStatus === "ONLINE" ? "Video / Audio Call" : "Face to Face",
+    branch: doctor.outlet?.outletName || doctor.outlet?.name || "",
+    outletId: doctor.outletId,
+    consultationType: hasOnlineSchedule ? "ONLINE" : "OFFLINE",
     status: doctor.status,
     raw: doctor,
   };
@@ -115,88 +122,131 @@ export default function DoctorsGrid() {
     { from: "var(--color-secondary)", to: "var(--color-primary-dark)" },
   ];
 
+  // Data states
   const [doctors, setDoctors] = useState([]);
+  const [specializations, setSpecializations] = useState([]);
+  const [outlets, setOutlets] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
   const [imageErrors, setImageErrors] = useState({});
 
+  // Filter states
   const [nameQuery, setNameQuery] = useState("");
   const [gender, setGender] = useState("");
-  const [specialty, setSpecialty] = useState("");
-  const [branch, setBranch] = useState("");
+  const [specialtyId, setSpecialtyId] = useState("");
+  const [outletId, setOutletId] = useState("");
   const [consultType, setConsultType] = useState("");
 
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [limit] = useState(12);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalDoctors, setTotalDoctors] = useState(0);
+
+  // Fetch Specializations
   useEffect(() => {
-    const fetchDoctors = async () => {
+    const fetchSpecializations = async () => {
       try {
-        setLoading(true);
-        setApiError("");
-
-        const res = await fetch(`${API_URL}/doctors/getAll`, {
-          method: "GET",
-          credentials: "include",
-        });
-
+        const res = await fetch(`${API_URL}/doctor-specializations/getAll`);
         const result = await res.json();
-
-        if (!res.ok || !result.success) {
-          throw new Error(result.message || "Failed to fetch doctors.");
-        }
-
-        const mappedDoctors = Array.isArray(result.data)
-          ? result.data.map(mapDoctorFromApi)
-          : [];
-
-        setDoctors(mappedDoctors);
-      } catch (error) {
-        setApiError(error.message || "Something went wrong while loading doctors.");
-      } finally {
-        setLoading(false);
+        if (result.success) setSpecializations(result.data || []);
+      } catch (err) {
+        console.error("Failed to fetch specializations");
       }
     };
-
-    fetchDoctors();
+    fetchSpecializations();
   }, []);
 
-  const SPECIALTIES = useMemo(() => {
-    return [...new Set(doctors.map((d) => d.specialty).filter(Boolean))];
-  }, [doctors]);
+  // Fetch Outlets (Branches)
+  useEffect(() => {
+    const fetchOutlets = async () => {
+      try {
+        const res = await fetch(`${API_URL}/outlets/getAll`);
+        const result = await res.json();
+        if (result.success) setOutlets(result.data || []);
+      } catch (err) {
+        console.error("Failed to fetch outlets");
+      }
+    };
+    fetchOutlets();
+  }, []);
 
-  const BRANCHES = useMemo(() => {
-    const apiBranches = [...new Set(doctors.map((d) => d.branch).filter(Boolean))];
+  // Fetch Doctors
+  const fetchDoctors = async () => {
+    try {
+      setLoading(true);
+      setApiError("");
 
-    return apiBranches.length > 0
-      ? apiBranches
-      : ["Gulshan Branch", "Mirpur Branch", "Dhanmondi Branch"];
-  }, [doctors]);
+      const params = new URLSearchParams();
+      if (nameQuery.trim()) params.append("fullName", nameQuery.trim());
+      if (gender) params.append("gender", gender.toUpperCase());
+      if (specialtyId) params.append("specializationId", specialtyId);
+      if (outletId) params.append("outletId", outletId);
+      if (consultType) params.append("consultationType", consultType);
+      params.append("page", page.toString());
+      params.append("limit", limit.toString());
 
-  const activePills = [
-    nameQuery && { label: `Name: ${nameQuery}`, clear: () => setNameQuery("") },
-    gender && { label: gender, clear: () => setGender("") },
-    specialty && { label: specialty, clear: () => setSpecialty("") },
-    branch && { label: branch, clear: () => setBranch("") },
-    consultType && { label: consultType, clear: () => setConsultType("") },
-  ].filter(Boolean);
+      const res = await fetch(`${API_URL}/doctors/getAll?${params}`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to fetch doctors.");
+      }
+
+      const mappedDoctors = Array.isArray(result.data)
+        ? result.data.map(mapDoctorFromApi)
+        : [];
+
+      setDoctors(mappedDoctors);
+      setTotalPages(result.meta?.totalPages || 1);
+      setTotalDoctors(result.meta?.total || 0);
+    } catch (error) {
+      setApiError(error.message || "Something went wrong while loading doctors.");
+      setDoctors([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch when filters or page changes
+  useEffect(() => {
+    fetchDoctors();
+  }, [nameQuery, gender, specialtyId, outletId, consultType, page]);
+
+  // Active filter pills
+  const activePills = useMemo(() => {
+    const pills = [];
+
+    if (nameQuery) pills.push({ label: `Name: ${nameQuery}`, clear: () => setNameQuery("") });
+    if (gender) pills.push({ label: gender, clear: () => setGender("") });
+    if (specialtyId) {
+      const spec = specializations.find((s) => s.id === specialtyId);
+      pills.push({ label: spec?.name || "Specialty", clear: () => setSpecialtyId("") });
+    }
+    if (outletId) {
+      const outlet = outlets.find((o) => o.id === outletId);
+      pills.push({ label: outlet?.outletName || outlet?.name || "Branch", clear: () => setOutletId("") });
+    }
+    if (consultType) pills.push({ label: consultType, clear: () => setConsultType("") });
+
+    return pills;
+  }, [nameQuery, gender, specialtyId, outletId, consultType, specializations, outlets]);
 
   const clearAll = () => {
     setNameQuery("");
     setGender("");
-    setSpecialty("");
-    setBranch("");
+    setSpecialtyId("");
+    setOutletId("");
     setConsultType("");
+    setPage(1);
   };
 
-  const filtered = useMemo(() => {
-    return doctors.filter((doc) => {
-      if (nameQuery && !doc.name.toLowerCase().includes(nameQuery.toLowerCase())) return false;
-      if (specialty && doc.specialty !== specialty) return false;
-      if (gender && doc.gender !== gender) return false;
-      if (branch && doc.branch !== branch) return false;
-      if (consultType && doc.consultationType !== consultType) return false;
-      return true;
-    });
-  }, [doctors, nameQuery, gender, specialty, branch, consultType]);
-
+  // console.log("Doctors data:", doctors);
   return (
     <div id="doctors" className="doctors-section-wrapper">
       <div className="dfilter-card">
@@ -212,7 +262,6 @@ export default function DoctorsGrid() {
             <span className="dfilter-search-icon">
               <SearchIcon />
             </span>
-
             <input
               className="dfilter-input"
               type="text"
@@ -221,7 +270,6 @@ export default function DoctorsGrid() {
               onChange={(e) => setNameQuery(e.target.value)}
               aria-label="Search by doctor name"
             />
-
             {nameQuery && (
               <button className="dfilter-input-clear" onClick={() => setNameQuery("")} aria-label="Clear name search">
                 <XIcon />
@@ -229,7 +277,7 @@ export default function DoctorsGrid() {
             )}
           </div>
 
-          <button className="btn btn-primary" onClick={() => {}}>
+          <button className="btn btn-primary" onClick={fetchDoctors}>
             <SearchIcon /> Search
           </button>
 
@@ -241,38 +289,75 @@ export default function DoctorsGrid() {
         </div>
 
         <div className="dfilter-selects">
-          {[
-            { value: gender, setter: setGender, options: GENDERS, placeholder: "All Genders" },
-            { value: specialty, setter: setSpecialty, options: SPECIALTIES, placeholder: "All Specialties" },
-            { value: branch, setter: setBranch, options: BRANCHES, placeholder: "All Branches" },
-            { value: consultType, setter: setConsultType, options: CONSULTATION_TYPES, placeholder: "Consultation Type" },
-          ].map(({ value, setter, options, placeholder }) => (
-            <div className="dfilter-select-wrap" key={placeholder}>
-              <select
-                className="dfilter-select"
-                value={value}
-                onChange={(e) => setter(e.target.value)}
-                aria-label={placeholder}
-              >
-                <option value="">{placeholder}</option>
-                {options.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
+          {/* Gender */}
+          <div className="dfilter-select-wrap">
+            <select
+              className="dfilter-select"
+              value={gender}
+              onChange={(e) => { setGender(e.target.value); setPage(1); }}
+            >
+              <option value="">All Genders</option>
+              {GENDERS.map((g) => (
+                <option key={g} value={g}>{g}</option>
+              ))}
+            </select>
+            <span className="dfilter-chevron"><ChevronIcon /></span>
+          </div>
 
-              <span className="dfilter-chevron">
-                <ChevronIcon />
-              </span>
-            </div>
-          ))}
+          {/* Specialization */}
+          <div className="dfilter-select-wrap">
+            <select
+              className="dfilter-select"
+              value={specialtyId}
+              onChange={(e) => { setSpecialtyId(e.target.value); setPage(1); }}
+            >
+              <option value="">All Specialties</option>
+              {specializations.map((spec) => (
+                <option key={spec.id} value={spec.id}>
+                  {spec.name}
+                </option>
+              ))}
+            </select>
+            <span className="dfilter-chevron"><ChevronIcon /></span>
+          </div>
+
+          {/* Branch / Outlet */}
+          <div className="dfilter-select-wrap">
+            <select
+              className="dfilter-select"
+              value={outletId}
+              onChange={(e) => { setOutletId(e.target.value); setPage(1); }}
+            >
+              <option value="">All Branches</option>
+              {outlets.map((outlet) => (
+                <option key={outlet.id} value={outlet.id}>
+                  {outlet.outletName || outlet.name}
+                </option>
+              ))}
+            </select>
+            <span className="dfilter-chevron"><ChevronIcon /></span>
+          </div>
+
+          {/* Consultation Type */}
+          <div className="dfilter-select-wrap">
+            <select
+              className="dfilter-select"
+              value={consultType}
+              onChange={(e) => { setConsultType(e.target.value); setPage(1); }}
+            >
+              <option value="">Consultation Type</option>
+              {CONSULTATION_TYPES.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+            <span className="dfilter-chevron"><ChevronIcon /></span>
+          </div>
         </div>
 
         {activePills.length > 0 && (
           <div className="dfilter-pills">
-            {activePills.map(({ label, clear }) => (
-              <button key={label} className="dfilter-pill" onClick={clear}>
+            {activePills.map(({ label, clear }, index) => (
+              <button key={index} className="dfilter-pill" onClick={clear}>
                 {label} <XIcon />
               </button>
             ))}
@@ -281,36 +366,27 @@ export default function DoctorsGrid() {
 
         <div className="dfilter-footer">
           <span className="dfilter-count">
-            <strong>{filtered.length}</strong> doctor{filtered.length !== 1 ? "s" : ""} found
+            <strong>{totalDoctors}</strong> doctor{totalDoctors !== 1 ? "s" : ""} found
           </span>
-
-          {activePills.length === 0 && (
-            <span className="dfilter-hint">Use one or more filters to narrow results</span>
-          )}
         </div>
       </div>
 
+      {/* States */}
       {loading ? (
-        <div className="dfilter-empty">
-          <p>Loading doctors...</p>
-        </div>
+        <div className="dfilter-empty"><p>Loading doctors...</p></div>
       ) : apiError ? (
         <div className="dfilter-empty">
           <p>{apiError}</p>
-          <button className="btn btn-primary" onClick={() => window.location.reload()}>
-            Try again
-          </button>
+          <button className="btn btn-primary" onClick={fetchDoctors}>Try again</button>
         </div>
-      ) : filtered.length === 0 ? (
+      ) : doctors.length === 0 ? (
         <div className="dfilter-empty">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <p>No doctors match your filters.</p>
-          <button className="btn btn-primary" onClick={clearAll}>
-            Clear filters
-          </button>
+          <button className="btn btn-primary" onClick={clearAll}>Clear filters</button>
         </div>
       ) : (
         <motion.div
@@ -320,7 +396,7 @@ export default function DoctorsGrid() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {filtered.map((doc, index) => {
+          {doctors.map((doc, index) => {
             const accent = accentColors[index % accentColors.length];
             const hasImageError = imageErrors[doc.id];
 
@@ -352,8 +428,8 @@ export default function DoctorsGrid() {
                       transition={{ duration: 0.3 }}
                     >
                       <Image
-                        src={`https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9jdG9yfGVufDB8fDB8fHww`}
-                        alt={`Portrait of Dr. ${doc.name}`}
+                        src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500&auto=format&fit=crop&q=60"
+                        alt={`Dr. ${doc.name}`}
                         fill
                         sizes="(max-width: 559px) 80px, (max-width: 1023px) 120px, 180px"
                         className="dcard__image"
@@ -363,14 +439,7 @@ export default function DoctorsGrid() {
                     </motion.div>
                   )}
 
-                  <motion.div
-                    className="dcard__status"
-                    role="status"
-                    aria-label="Available for appointments"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                  >
+                  <motion.div className="dcard__status" role="status">
                     <span className="dcard__status-dot" aria-hidden="true" />
                     <span className="dcard__status-text">
                       {doc.status === "ACTIVE" ? "Available" : "Unavailable"}
@@ -379,47 +448,31 @@ export default function DoctorsGrid() {
                 </motion.div>
 
                 <div className="dcard__body">
-                  <motion.h3 className="dcard__name" initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                    Dr. {doc.name}
-                  </motion.h3>
+                  <motion.h3 className="dcard__name">Dr. {doc.name}</motion.h3>
+                  <motion.p className="dcard__specialty">{doc.specialty}</motion.p>
+                  <motion.p className="dcard__qualification">{doc.qualification}</motion.p>
 
-                  <motion.p className="dcard__specialty" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-                    {doc.specialty}
-                  </motion.p>
-
-                  <motion.p className="dcard__qualification" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-                    {doc.qualification}
-                  </motion.p>
-
-                  <motion.div className="dcard__stats" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                  <motion.div className="dcard__stats">
                     <div className="dcard__stat">
                       <span className="dcard__stat-value">{doc.experience}</span>
                       <span className="dcard__stat-label">Experience</span>
                     </div>
-
-                    <div className="dcard__stat-divider" aria-hidden="true" />
-
+                    <div className="dcard__stat-divider" />
                     <div className="dcard__stat">
-                      <span className="dcard__stat-value">
-                        <StarIcon />
-                        {doc.rating}
-                      </span>
+                      <span className="dcard__stat-value"><StarIcon /> {doc.rating}</span>
                       <span className="dcard__stat-label">Rating</span>
                     </div>
-
-                    <div className="dcard__stat-divider" aria-hidden="true" />
-
+                    <div className="dcard__stat-divider" />
                     <div className="dcard__stat">
                       <span className="dcard__stat-value">{doc.patients}+</span>
                       <span className="dcard__stat-label">Patients</span>
                     </div>
                   </motion.div>
 
-                  <motion.div className="dcard-cta-group" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                  <motion.div className="dcard-cta-group">
                     <Button variant="secondary" href={`/doctors/${doc.id}`}>
                       <ProfileIcon /> Profile
                     </Button>
-
                     <Button variant="primary" href={`/appointment?doctor=${doc.id}`}>
                       <CalendarIcon /> Appointment
                     </Button>
@@ -429,6 +482,19 @@ export default function DoctorsGrid() {
             );
           })}
         </motion.div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="pagination" style={{ textAlign: "center", marginTop: "30px" }}>
+          <button disabled={page === 1} onClick={() => setPage((p) => p - 1)} style={{ marginRight: "10px" }}>
+            Previous
+          </button>
+          <span>Page {page} of {totalPages}</span>
+          <button disabled={page === totalPages} onClick={() => setPage((p) => p + 1)} style={{ marginLeft: "10px" }}>
+            Next
+          </button>
+        </div>
       )}
     </div>
   );
