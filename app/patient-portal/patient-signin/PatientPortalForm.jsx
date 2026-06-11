@@ -20,7 +20,7 @@ export default function PatientPortalForm() {
 
 
   const user = useAppSelector((state) => state.auth.accessToken);
-  console.log('patient form redux', user);
+  // console.log('patient form redux', user);
 
   const handleSignIn = async (e) => {
     e.preventDefault();

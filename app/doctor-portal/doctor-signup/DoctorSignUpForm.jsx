@@ -584,7 +584,7 @@ export default function DoctorSignUpForm() {
       })),
     };
 
-   
+
     const body = new FormData();
     body.append("data", JSON.stringify(payload));
 
@@ -601,7 +601,7 @@ export default function DoctorSignUpForm() {
       setLoading(true);
 
 
-    
+
 
       const response = await fetch(`${API_BASE_URL}/doctors/create`, {
         method: "POST",
@@ -612,7 +612,7 @@ export default function DoctorSignUpForm() {
       const result = await getSafeJsonResponse(response);
 
       // conslole.log("API Response:", { status: response.status, body: result }); 
-  // conslole.log("Submitting registration with payload:", payload);
+      // conslole.log("Submitting registration with payload:", payload);
       if (!response.ok || result?.success === false) {
         const fallbackMessage = response.status >= 500
           ? "Server error occurred while creating doctor. Please try again later."
@@ -948,9 +948,10 @@ export default function DoctorSignUpForm() {
             {/* ── Work & Availability ── */}
             <h3 className="doctor-signup__section-title">Work &amp; Availability</h3>
 
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_2fr_1fr]">
+            <div className="consultation-grid">
+              {/* Consultation Type */}
               <Field label="Consultation Type" required>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="consult-type-buttons">
                   {[
                     { id: "video", label: "Video", Ic: Icon.Video },
                     { id: "audio", label: "Audio", Ic: Icon.Audio },
@@ -960,26 +961,24 @@ export default function DoctorSignUpForm() {
                       key={id}
                       type="button"
                       onClick={() => setConsultType(id)}
-                      className={`flex h-9 items-center justify-center gap-1.5 rounded-lg border px-2 text-xs font-medium transition ${consultType === id
-                        ? "border-blue-600 bg-blue-50 text-blue-700"
-                        : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
-                        }`}
+                      className={`consult-type-btn ${consultType === id ? 'active' : ''}`}
                     >
-                      <Ic className="h-3.5 w-3.5" />
+                      <Ic className="icon" />
                       {label}
                     </button>
                   ))}
                 </div>
               </Field>
 
+              {/* Work Schedule */}
               <Field label="Work Schedule" required>
-                <div className="rounded-xl border border-gray-200 bg-white p-2 shadow-sm">
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-[120px_1fr_1fr_82px_52px_52px] sm:items-center">
+                <div className="schedule-box">
+                  <div className="schedule-grid">
                     <select
                       name="dayName"
                       value={scheduleForm.dayName}
                       onChange={handleScheduleChange}
-                      className="h-9 rounded-lg border border-gray-200 bg-gray-50 px-2 text-xs text-gray-700 outline-none transition focus:border-blue-500 focus:bg-white"
+                      className="schedule-input"
                     >
                       <option value="">Day</option>
                       <option value="MONDAY">Monday</option>
@@ -996,7 +995,7 @@ export default function DoctorSignUpForm() {
                       name="startTime"
                       value={scheduleForm.startTime}
                       onChange={handleScheduleChange}
-                      className="h-9 rounded-lg border border-gray-200 bg-gray-50 px-2 text-xs text-gray-700 outline-none transition focus:border-blue-500 focus:bg-white"
+                      className="schedule-input"
                     />
 
                     <input
@@ -1004,14 +1003,14 @@ export default function DoctorSignUpForm() {
                       name="endTime"
                       value={scheduleForm.endTime}
                       onChange={handleScheduleChange}
-                      className="h-9 rounded-lg border border-gray-200 bg-gray-50 px-2 text-xs text-gray-700 outline-none transition focus:border-blue-500 focus:bg-white"
+                      className="schedule-input"
                     />
 
                     <select
                       name="slotDuration"
                       value={scheduleForm.slotDuration}
                       onChange={handleScheduleChange}
-                      className="h-9 rounded-lg border border-gray-200 bg-gray-50 px-2 text-xs text-gray-700 outline-none transition focus:border-blue-500 focus:bg-white"
+                      className="schedule-input"
                     >
                       <option value="15">15m</option>
                       <option value="30">30m</option>
@@ -1023,35 +1022,14 @@ export default function DoctorSignUpForm() {
                       type="button"
                       onClick={handleAddSchedule}
                       disabled={addingSchedule}
-                      className={`h-9 rounded-lg px-3 text-xs font-semibold text-white transition flex items-center justify-center gap-2
-    ${addingSchedule
-                          ? "cursor-not-allowed bg-blue-400"
-                          : "bg-blue-600 hover:bg-blue-700"
-                        }`}
+                      className={`add-btn ${addingSchedule ? 'loading' : ''}`}
                     >
                       {addingSchedule ? (
                         <>
-                          <svg
-                            className="h-3.5 w-3.5 animate-spin"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                          >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              opacity="0.25"
-                            />
-                            <path
-                              d="M22 12a10 10 0 0 1-10 10"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              strokeLinecap="round"
-                            />
+                          <svg className="spinner" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+                            <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                           </svg>
-
                           Adding...
                         </>
                       ) : (
@@ -1062,7 +1040,7 @@ export default function DoctorSignUpForm() {
                     <button
                       type="button"
                       onClick={() => setOpenScheduleModal(true)}
-                      className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+                      className="view-btn"
                     >
                       View
                     </button>
@@ -1070,17 +1048,20 @@ export default function DoctorSignUpForm() {
                 </div>
               </Field>
 
+              {/* Consultation Fee */}
               <Field label="Consultation Fee (৳)" required>
-                <Input
-                  icon={Icon.Taka}
-                  name="consultationFee"
-                  value={formData.consultationFee}
-                  onChange={handleInputChange}
-                  type="number"
-                  min="0"
-                  placeholder="Fee"
-                  required
-                />
+                <div className="fee-input-wrapper">
+                  <Icon.Taka className="fee-icon" />
+                  <Input
+                    name="consultationFee"
+                    value={formData.consultationFee}
+                    onChange={handleInputChange}
+                    type="number"
+                    min="0"
+                    placeholder="Fee"
+                    required
+                  />
+                </div>
               </Field>
             </div>
 
