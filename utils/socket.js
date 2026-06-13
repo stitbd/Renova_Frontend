@@ -2,7 +2,7 @@
 
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:5001";
+const SOCKET_URL = "http://192.168.0.164:5001";
 
 let socket = null;
 

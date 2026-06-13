@@ -7,8 +7,8 @@ import { useAppSelector } from "@/redux/hook";
 import "./patient-appointments.css";
 import { CalendarView } from "@/components/patient-dashboard/patient-appointment-calenderView";
 
-const API_URL = "http://localhost:5001/api/v1/appointments/my";
-const CANCEL_API_URL = "http://localhost:5001/api/v1/appointments/cancel";
+const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
+const CANCEL_API_URL = "http://192.168.0.164:5001/api/v1/appointments/cancel";
 const TZ = "Asia/Dhaka";
 
 const filters = [
@@ -288,11 +288,11 @@ export default function AppointmentsPage() {
         prev.map((apt) =>
           apt.id === cancelModal.appointmentId
             ? {
-                ...apt,
-                status: "CANCELLED",
-                cancellationReason: reason,
-                cancelledAt: new Date().toISOString(),
-              }
+              ...apt,
+              status: "CANCELLED",
+              cancellationReason: reason,
+              cancelledAt: new Date().toISOString(),
+            }
             : apt
         )
       );
@@ -396,8 +396,8 @@ export default function AppointmentsPage() {
               {filter === "ALL"
                 ? "All"
                 : filter === "TODAY APPOINTMENTS"
-                ? "Today"
-                : getStatusLabel(filter)}
+                  ? "Today"
+                  : getStatusLabel(filter)}
             </button>
           ))}
         </div>
@@ -499,7 +499,7 @@ export default function AppointmentsPage() {
                   </div>
 
                   <div className="appointment-footer">
-                  
+
                     <p>
                       <span>Fee:</span> ৳{apt.consultationFee}
                     </p>

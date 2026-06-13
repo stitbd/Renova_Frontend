@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5001/api/v1";
+const API_BASE_URL = "http://192.168.0.164:5001/api/v1";
 
 async function request(endpoint, token, options = {}) {
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {

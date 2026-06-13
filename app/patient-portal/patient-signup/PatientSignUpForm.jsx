@@ -164,7 +164,7 @@ function Select({ icon: IconComp, children, className = "", ...props }) {
 }
 
 // ── main component ────────────────────────────────────────────
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5001/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.0.164:5001/api/v1";
 
 export default function PatientSignUpForm() {
   const router = useRouter();
