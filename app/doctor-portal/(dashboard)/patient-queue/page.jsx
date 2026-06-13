@@ -1,238 +1,452 @@
 // app/doctor-portal/patient-queue/page.jsx
 "use client";
-import Link from "next/link";
-import { useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
+import { useAppSelector } from "@/redux/hook";
 import "./patient-queue.css";
 
-const initialQueue = [
-  { id: 1, name: "Masud Rana", age: 32, gender: "Male", issue: "Chest pain, Breathing problem", time: "10:24 AM", waitingTime: "02:15", status: "pending", avatar: "/images/patients/01.jpg", phone: "01712-345678", patientId: "PT-2025-00123", type: "New Patient", priority: "urgent" },
-  { id: 2, name: "Farhana Akter", age: 28, gender: "Female", issue: "Heart palpitations, Anxiety", time: "10:28 AM", waitingTime: "01:48", status: "pending", avatar: "/images/patients/02.jpg", phone: "01811-223344", patientId: "PT-2025-00098", type: "Follow-up", priority: "normal" },
-  { id: 3, name: "Abdullah Al Mamun", age: 45, gender: "Male", issue: "High BP, Headache", time: "10:31 AM", waitingTime: "01:32", status: "in-progress", avatar: "/images/patients/03.jpg", phone: "01912-556677", patientId: "PT-2025-00075", type: "Regular Checkup", priority: "normal" },
-  { id: 4, name: "Sumiya Rahman", age: 30, gender: "Female", issue: "Shortness of breath", time: "10:35 AM", waitingTime: "00:58", status: "pending", avatar: "/images/patients/04.jpg", phone: "01712-998877", patientId: "PT-2025-00061", type: "Consultation", priority: "urgent" },
-  { id: 5, name: "Rafiq Hasan", age: 50, gender: "Male", issue: "ECG review", time: "10:35 AM", waitingTime: "00:32", status: "pending", avatar: "/images/patients/05.jpg", phone: "01611-445566", patientId: "PT-2025-00055", type: "ECG Review", priority: "normal" },
-  { id: 6, name: "Taslima Begum", age: 35, gender: "Female", issue: "Diabetes checkup", time: "10:40 AM", waitingTime: "00:15", status: "pending", avatar: "/images/patients/06.jpg", phone: "01922-334455", patientId: "PT-2025-00044", type: "Checkup", priority: "normal" },
-  { id: 7, name: "Kamal Hossain", age: 42, gender: "Male", issue: "Regular checkup", time: "10:45 AM", waitingTime: "00:05", status: "pending", avatar: "/images/patients/07.jpg", phone: "01812-667788", patientId: "PT-2025-00038", type: "Regular Checkup", priority: "normal" },
-];
+const API_URL = "http://localhost:5001/api/v1/appointments/my";
+const CONFIRM_API_URL = "http://localhost:5001/api/v1/appointments/confirm";
+const CANCEL_API_URL = "http://localhost:5001/api/v1/appointments/cancel";
+const TZ = "Asia/Dhaka";
+
+function formatTime(date) {
+  if (!date) return "N/A";
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(date));
+}
+
+function formatDate(date) {
+  if (!date) return "N/A";
+
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+function normalizeAppointment(apt) {
+  return {
+    id: apt.id,
+    appointmentCode: apt.appointmentCode,
+    patientName: apt.patient?.fullName || apt.patientName || "Unknown Patient",
+    patientPhone: apt.patient?.mobileNumber || apt.patientPhone || "N/A",
+    patientEmail: apt.patient?.email || apt.patientEmail || "N/A",
+    patientGender: apt.patient?.gender || apt.patientGender || "N/A",
+    patientAge: apt.patient?.age || "N/A",
+    reason: apt.reason || "No reason provided",
+    medicalHistory: apt.patientMedicalHistory || "No medical history provided",
+    appointmentDate: formatDate(apt.appointmentDate),
+    startTime: formatTime(apt.startTime),
+    endTime: formatTime(apt.endTime),
+    type: apt.type,
+    status: apt.status,
+    paymentStatus: apt.paymentStatus,
+    consultationFee: apt.consultationFee,
+  };
+}
+
+function PatientQueueSkeleton() {
+  return (
+    <div className="dq-list">
+      {[1, 2, 3].map((item) => (
+        <div className="dq-card dq-skeleton-card" key={item}>
+          <div className="dq-skeleton dq-avatar-skeleton" />
+          <div className="dq-skeleton-content">
+            <div className="dq-skeleton dq-line-lg" />
+            <div className="dq-skeleton dq-line-md" />
+            <div className="dq-skeleton dq-line-sm" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function PatientQueuePage() {
-  const [patients, setPatients] = useState(initialQueue);
-  const [filter, setFilter] = useState("all");
+  const token = useAppSelector((state) => state.auth.accessToken);
+
+  const [appointments, setAppointments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [rejectModal, setRejectModal] = useState(null);
-  const [rejectReason, setRejectReason] = useState("");
+  const [isLoading, setIsLoading] = useState(Boolean(token));
+  const [error, setError] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [actionLoadingId, setActionLoadingId] = useState(null);
 
-  // Filter out completed patients from being displayed
-  const activePatients = patients.filter(p => p.status !== "completed");
+  const [rejectModal, setRejectModal] = useState({
+    open: false,
+    appointmentId: null,
+    patientName: "",
+    reason: "",
+    error: "",
+  });
 
-  const statusOrder = { "pending": 0, "in-progress": 1, "rejected": 2 };
+  useEffect(() => {
+    if (!token) {
+      setIsLoading(false);
+      setError("Authentication token not found. Please login again.");
+      return;
+    }
 
-  const filteredPatients = activePatients
-    .filter(p => {
-      const matchesFilter = filter === "all" || p.status === filter;
-      const matchesSearch =
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.issue.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.patientId.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesFilter && matchesSearch;
-    })
-    .sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
+    const controller = new AbortController();
 
-  const stats = {
-    pending: patients.filter(p => p.status === "pending").length,
-    inProgress: patients.filter(p => p.status === "in-progress").length,
-    rejected: patients.filter(p => p.status === "rejected").length,
-  };
+    async function fetchDoctorAppointments() {
+      try {
+        setIsLoading(true);
+        setError("");
 
-  const handleAccept = (id) => {
-    // Accept now changes status to "in-progress" directly
-    setPatients(prev =>
-      prev.map(p => p.id === id ? { ...p, status: "in-progress" } : p)
-    );
-  };
+        const res = await fetch(API_URL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+          cache: "no-store",
+        });
 
-  const handleReject = (patient) => {
-    setRejectModal(patient);
-    setRejectReason("");
-  };
+        const result = await res.json();
 
-  const confirmReject = () => {
-    setPatients(prev =>
-      prev.map(p => p.id === rejectModal.id ? { ...p, status: "rejected" } : p)
-    );
-    setRejectModal(null);
-    setRejectReason("");
-  };
+        if (!res.ok || !result.success) {
+          throw new Error(result.message || "Failed to load patient queue.");
+        }
 
-  const handleComplete = (id) => {
-    // When marked complete, remove the patient from the active queue entirely
-    setPatients(prev =>
-      prev.map(p => p.id === id ? { ...p, status: "completed" } : p)
-    );
-  };
+        setAppointments(Array.isArray(result.data) ? result.data : []);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "Something went wrong.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-  const getStatusMeta = (status) => {
-    switch (status) {
-      case "in-progress": return { cls: "status-ongoing", label: "In Progress", dot: "dot-blue" };
-      case "rejected": return { cls: "status-rejected", label: "Rejected", dot: "dot-red" };
-      default: return { cls: "status-pending", label: "Pending", dot: "dot-amber" };
+    fetchDoctorAppointments();
+
+    return () => controller.abort();
+  }, [token]);
+
+  const pendingAppointments = useMemo(() => {
+    return appointments
+      .filter((apt) => apt.status === "PENDING")
+      .map(normalizeAppointment);
+  }, [appointments]);
+
+  const filteredAppointments = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase();
+
+    if (!query) return pendingAppointments;
+
+    return pendingAppointments.filter((apt) => {
+      return (
+        apt.patientName.toLowerCase().includes(query) ||
+        apt.patientPhone.toLowerCase().includes(query) ||
+        apt.appointmentCode.toLowerCase().includes(query) ||
+        apt.reason.toLowerCase().includes(query)
+      );
+    });
+  }, [pendingAppointments, searchTerm]);
+
+  const handleConfirmAppointment = async (appointmentId) => {
+    if (!token) {
+      setActionError("Authentication token not found. Please login again.");
+      return;
+    }
+
+    try {
+      setActionLoadingId(appointmentId);
+      setActionError("");
+
+      const res = await fetch(`${CONFIRM_API_URL}/${appointmentId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to confirm appointment.");
+      }
+
+      setAppointments((prev) =>
+        prev.map((apt) =>
+          apt.id === appointmentId
+            ? {
+              ...apt,
+              status: "CONFIRMED",
+              confirmedAt: new Date().toISOString(),
+            }
+            : apt
+        )
+      );
+    } catch (err) {
+      setActionError(err.message || "Unable to confirm appointment.");
+    } finally {
+      setActionLoadingId(null);
     }
   };
 
-  const getPriorityBadge = (priority) => priority === "urgent"
-    ? <span className="priority-badge urgent">Urgent</span>
-    : null;
+  const openRejectModal = (appointment) => {
+    setActionError("");
+
+    setRejectModal({
+      open: true,
+      appointmentId: appointment.id,
+      patientName: appointment.patientName,
+      reason: "",
+      error: "",
+    });
+  };
+
+  const closeRejectModal = () => {
+    if (actionLoadingId) return;
+
+    setRejectModal({
+      open: false,
+      appointmentId: null,
+      patientName: "",
+      reason: "",
+      error: "",
+    });
+  };
+
+  const handleRejectAppointment = async () => {
+    if (!token) {
+      setActionError("Authentication token not found. Please login again.");
+      return;
+    }
+
+    const reason = rejectModal.reason.trim();
+
+    if (reason.length < 2) {
+      setRejectModal((prev) => ({
+        ...prev,
+        error: "Reject reason must be at least 2 characters.",
+      }));
+      return;
+    }
+
+    try {
+      setActionLoadingId(rejectModal.appointmentId);
+      setActionError("");
+
+      const res = await fetch(`${CANCEL_API_URL}/${rejectModal.appointmentId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          cancellationReason: reason,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to reject appointment.");
+      }
+
+      setAppointments((prev) =>
+        prev.map((apt) =>
+          apt.id === rejectModal.appointmentId
+            ? {
+              ...apt,
+              status: "CANCELLED",
+              cancellationReason: reason,
+              cancelledAt: new Date().toISOString(),
+            }
+            : apt
+        )
+      );
+
+      closeRejectModal();
+    } catch (err) {
+      setRejectModal((prev) => ({
+        ...prev,
+        error: err.message || "Unable to reject appointment.",
+      }));
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
 
   return (
-    <div className="dashboard-content">
+    <div className="doctor-queue-page">
+      <div className="dq-header">
+        <div>
+          <h1>Pending Patient Queue</h1>
+          <p>
+            Review patients waiting for appointment confirmation and manage your
+            queue efficiently.
+          </p>
+        </div>
 
-      {/* ── Controls ──────────────────────────────────────── */}
-      <div className="pq-controls">
-        <div className="pq-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+        <div className="dq-count-card">
+          <span>Pending</span>
+          <strong>{pendingAppointments.length}</strong>
+        </div>
+      </div>
+
+      <div className="dq-toolbar">
+        <div className="dq-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+
           <input
             type="text"
-            placeholder="Search by name, issue or patient ID…"
+            placeholder="Search by patient, phone, code, or reason..."
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="pq-filters">
-          {["all", "pending", "in-progress", "rejected"].map(f => (
-            <button
-              key={f}
-              className={`pq-filter-btn${filter === f ? " active" : ""}`}
-              onClick={() => setFilter(f)}
-            >
-              {f === "all" ? "All" : f === "in-progress" ? "In Progress" : f.charAt(0).toUpperCase() + f.slice(1)}
-              {f !== "all" && (
-                <span className="pq-filter-count">
-                  {activePatients.filter(p => p.status === f).length}
-                </span>
-              )}
-            </button>
+
+        <div className="dq-filter-pill">Pending appointments only</div>
+      </div>
+
+      {actionError && <div className="dq-action-error">{actionError}</div>}
+
+      {isLoading && <PatientQueueSkeleton />}
+
+      {!isLoading && error && (
+        <div className="dq-state dq-error">
+          <h3>Unable to load queue</h3>
+          <p>{error}</p>
+        </div>
+      )}
+
+      {!isLoading && !error && filteredAppointments.length === 0 && (
+        <div className="dq-state">
+          <h3>No pending appointments</h3>
+          <p>There are no pending patient appointments right now.</p>
+        </div>
+      )}
+
+      {!isLoading && !error && filteredAppointments.length > 0 && (
+        <div className="dq-list">
+          {filteredAppointments.map((apt) => (
+            <div className="dq-card" key={apt.id}>
+              <div className="dq-time-box">
+                <span>{apt.appointmentDate}</span>
+                <strong>{apt.startTime}</strong>
+              </div>
+
+              <div className="dq-patient-avatar">
+                {apt.patientName
+                  .split(" ")
+                  .map((part) => part[0])
+                  .join("")
+                  .slice(0, 2)
+                  .toUpperCase()}
+              </div>
+
+              <div className="dq-info">
+                <h3>{apt.patientName}</h3>
+
+                <p>
+                  {apt.patientAge} yrs • {apt.patientGender} •{" "}
+                  {apt.patientPhone}
+                </p>
+
+                <h4>{apt.reason}</h4>
+
+                <small>
+                  {apt.type === "ONLINE"
+                    ? "Online Consultation"
+                    : "In-Person Visit"}
+                </small>
+              </div>
+
+              <div className="dq-status-wrap">
+                <span className="dq-status">Pending</span>
+              </div>
+
+              <div className="dq-actions">
+                <button
+                  className="dq-btn primary"
+                  onClick={() => handleConfirmAppointment(apt.id)}
+                  disabled={actionLoadingId === apt.id}
+                >
+                  {actionLoadingId === apt.id ? "Confirming..." : "Confirm"}
+                </button>
+
+                <button
+                  className="dq-btn danger"
+                  onClick={() => openRejectModal(apt)}
+                  disabled={actionLoadingId === apt.id}
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      )}
 
-      {/* ── Queue List ────────────────────────────────────── */}
-      <div className="pq-list">
-        {filteredPatients.length === 0 && (
-          <div className="pq-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-            <p>No patients found</p>
-          </div>
-        )}
-
-        {filteredPatients.map((patient, index) => {
-          const meta = getStatusMeta(patient.status);
-          return (
-            <div key={patient.id} className={`pq-card${patient.priority === "urgent" ? " urgent-border" : ""}`}>
-              {/* Card Header */}
-              <div className="pq-card-main">
-                <div className="pq-queue-num">{index + 1}</div>
-
-                <div className="pq-avatar">
-                  <img src={patient.avatar} alt={patient.name}
-                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                  />
-                  <span className="pq-avatar-fallback">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                  </span>
-                </div>
-
-                <div className="pq-info">
-                  <div className="pq-name-row">
-                    <h3 className="pq-name">{patient.name}</h3>
-                    {getPriorityBadge(patient.priority)}
-                    <span className="pq-type-badge">{patient.type}</span>
-                  </div>
-                  <p className="pq-meta">{patient.age} yrs • {patient.gender} • {patient.patientId}</p>
-                  <p className="pq-issue">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
-                    {patient.issue}
-                  </p>
-                </div>
-
-                <div className="pq-time-block">
-                  <div className="pq-time-row">
-                    <span className="pq-time-lbl">Arrived</span>
-                    <span className="pq-time-val">{patient.time}</span>
-                  </div>
-                  <div className="pq-time-row">
-                    <span className="pq-time-lbl">Waiting</span>
-                    <span className={`pq-time-val wait${parseFloat(patient.waitingTime) > 1.5 ? " long" : ""}`}>{patient.waitingTime}</span>
-                  </div>
-                </div>
-
-                <div className={`pq-status-badge ${meta.cls}`}>
-                  <span className={`pq-dot ${meta.dot}`} />
-                  {meta.label}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="pq-actions">
-                {patient.status === "pending" && (
-                  <>
-                    <button className="pq-btn accept" onClick={() => handleAccept(patient.id)}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                      Accept
-                    </button>
-                    <button className="pq-btn reject" onClick={() => handleReject(patient)}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                      Reject
-                    </button>
-                  </>
-                )}
-                {patient.status === "in-progress" && (
-                  <>
-                    <button className="pq-btn complete" onClick={() => handleComplete(patient.id)}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>
-                      Mark Complete
-                    </button>
-                    <Link href={`/doctor-portal/patients/patient-profile?id=${patient.patientId}&from=/doctor-portal/patient-queue`} className="pq-btn view-profile">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-                      View Details
-                    </Link>
-                  </>
-                )}
-                {patient.status === "rejected" && (
-                  <span className="pq-rejected-note">Patient has been notified of rejection.</span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* ── Reject Modal ──────────────────────────────────── */}
-      {rejectModal && (
-        <div className="pq-modal-overlay" onClick={() => setRejectModal(null)}>
-          <div className="pq-modal pq-modal-sm" onClick={e => e.stopPropagation()}>
-            <div className="pq-modal-header">
-              <h3>Reject Queue Entry</h3>
-              <button className="pq-modal-close" onClick={() => setRejectModal(null)}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+      {rejectModal.open && (
+        <div className="dq-modal-overlay" onClick={closeRejectModal}>
+          <div className="dq-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="dq-modal-header">
+              <h3>Reject Appointment</h3>
+              <button type="button" onClick={closeRejectModal}>
+                ×
               </button>
             </div>
-            <div className="pq-modal-body">
-              <p className="pq-reject-warning">
-                You are about to reject <strong>{rejectModal.name}</strong> from the queue. The patient will be notified.
-              </p>
-              <label className="pq-modal-label">Reason for rejection</label>
-              <select className="pq-modal-input" value={rejectReason} onChange={e => setRejectReason(e.target.value)}>
-                <option value="">Select a reason…</option>
-                <option value="no-slot">No available slot today</option>
-                <option value="wrong-dept">Wrong department</option>
-                <option value="incomplete-info">Incomplete patient information</option>
-                <option value="emergency-only">Emergency cases only</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div className="pq-modal-footer">
-              <button className="pq-modal-btn cancel" onClick={() => setRejectModal(null)}>Cancel</button>
-              <button className="pq-modal-btn reject-confirm" onClick={confirmReject}>
-                Reject Patient
+
+            <p className="dq-modal-text">
+              Reject appointment for{" "}
+              <strong>{rejectModal.patientName}</strong>. Please provide a
+              reason.
+            </p>
+
+            <label className="dq-modal-label">Reject Reason</label>
+            <textarea
+              value={rejectModal.reason}
+              onChange={(e) =>
+                setRejectModal((prev) => ({
+                  ...prev,
+                  reason: e.target.value,
+                  error: "",
+                }))
+              }
+              placeholder="Example: Doctor is unavailable at this time"
+              rows={4}
+              disabled={!!actionLoadingId}
+            />
+
+            {rejectModal.error && (
+              <span className="dq-modal-error">{rejectModal.error}</span>
+            )}
+
+            <div className="dq-modal-actions">
+              <button
+                type="button"
+                className="dq-modal-cancel"
+                onClick={closeRejectModal}
+                disabled={!!actionLoadingId}
+              >
+                Keep
+              </button>
+
+              <button
+                type="button"
+                className="dq-modal-danger"
+                onClick={handleRejectAppointment}
+                disabled={!!actionLoadingId}
+              >
+                {actionLoadingId ? "Rejecting..." : "Confirm Reject"}
               </button>
             </div>
           </div>
