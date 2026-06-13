@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import "../doctor-dashboard-massages.css";
+import "../patient-massages.css";
 
 const recentReports = [
     { name: "Full Body Check-up", date: "12 May 2025" },
