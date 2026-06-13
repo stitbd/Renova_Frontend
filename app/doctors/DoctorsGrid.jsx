@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Button from "@/components/common/Button";
 
-const API_URL = "http://localhost:5001/api/v1";
+const API_URL = "http://192.168.0.164:5001/api/v1";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },

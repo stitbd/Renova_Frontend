@@ -5,9 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/redux/hook";
 import "./patient-queue.css";
 
-const API_URL = "http://localhost:5001/api/v1/appointments/my";
-const CONFIRM_API_URL = "http://localhost:5001/api/v1/appointments/confirm";
-const CANCEL_API_URL = "http://localhost:5001/api/v1/appointments/cancel";
+const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
+const CONFIRM_API_URL = "http://192.168.0.164:5001/api/v1/appointments/confirm";
+const CANCEL_API_URL = "http://192.168.0.164:5001/api/v1/appointments/cancel";
 const TZ = "Asia/Dhaka";
 
 function formatTime(date) {

@@ -112,7 +112,7 @@ export default function DashboardPage() {
 
 
         const res = await fetch(
-          "http://localhost:5001/api/v1/appointments/my",
+          "http://192.168.0.164:5001/api/v1/appointments/my",
           {
             method: "GET",
             headers: {
