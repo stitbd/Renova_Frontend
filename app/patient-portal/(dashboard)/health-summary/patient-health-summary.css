@@ -1,0 +1,260 @@
+/* ======================================================
+   CSS FILE: patient-health-summary.css
+   ====================================================== */
+
+.health-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.health-score-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.score-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.score-circle .circular-chart {
+    display: block;
+    width: 100px;
+    height: 100px;
+    transform: rotate(-90deg);
+}
+
+.score-circle .circle-bg {
+    fill: none;
+    stroke: #e2e8f0;
+    stroke-width: 8;
+}
+
+.score-circle .circle {
+    fill: none;
+    stroke: #16a34a;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s ease;
+}
+
+.score-circle .score-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 800;
+    color: #16a34a;
+}
+
+.score-info h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 4px;
+}
+
+.score-status {
+    font-size: 14px;
+    font-weight: 700;
+    color: #16a34a;
+    margin: 0 0 4px;
+}
+
+.score-description {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+}
+
+/* Vitals Grid */
+.vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.vital-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+}
+
+.vital-label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.vital-value {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.vital-unit {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 400;
+    margin-left: 2px;
+}
+
+.vital-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-normal {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-borderline {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+/* Trends Section */
+.trends-section h3,
+.recommendations-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 14px;
+}
+
+.trends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.trend-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.trend-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 12px;
+}
+
+.trend-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 80px;
+    width: 100%;
+}
+
+.chart-bar {
+    flex: 1;
+    background: linear-gradient(to top, #dbeafe, #014fa1);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    min-width: 20px;
+    transition: height 0.3s ease;
+}
+
+.bar-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.chart-unit {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+/* Recommendations */
+.recommendations-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.recommendations-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.recommendation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.recommendation-item svg {
+    width: 18px;
+    height: 18px;
+    stroke: #22c55e;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+@media (max-width: 1024px) {
+    .vitals-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .health-score-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .vitals-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .trends-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .vitals-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

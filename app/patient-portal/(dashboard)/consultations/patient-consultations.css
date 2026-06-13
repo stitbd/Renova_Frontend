@@ -1,0 +1,219 @@
+/* ======================================================
+   CSS FILE: patient-consultations.css
+   ====================================================== */
+
+.consultations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.consultation-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+    transition: box-shadow 0.2s ease;
+}
+
+.consultation-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.consultation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.consultation-doctor {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.doctor-avatar-large {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #dcfce7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doctor-avatar-large svg {
+    width: 26px;
+    height: 26px;
+    stroke: #16a34a;
+}
+
+.doctor-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+.doctor-specialty {
+    font-size: 12px;
+    color: #718096;
+    margin: 2px 0 0;
+}
+
+.consultation-type {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.consultation-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.consultation-datetime {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.consultation-date {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.consultation-time {
+    font-size: 12px;
+    color: #718096;
+}
+
+.consultation-fee {
+    font-size: 14px;
+    font-weight: 700;
+    color: #014fa1;
+}
+
+.consultation-body {
+    margin-bottom: 14px;
+}
+
+.diagnosis-section h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    margin: 0 0 4px;
+}
+
+.diagnosis-text {
+    font-size: 14px;
+    color: #1a202c;
+    margin: 0;
+}
+
+.consultation-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tag-prescription {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.tag-report {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.consultation-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-view-details,
+.btn-view-prescription,
+.btn-view-report,
+.btn-book-again {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-view-details,
+.btn-view-prescription,
+.btn-view-report {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #014fa1;
+}
+
+.btn-view-details:hover,
+.btn-view-prescription:hover,
+.btn-view-report:hover {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.btn-book-again {
+    background: #014fa1;
+    color: #fff;
+}
+
+.btn-book-again:hover {
+    background: #013d80;
+}
+
+@media (max-width: 768px) {
+    .consultation-header {
+        flex-direction: column;
+    }
+
+    .consultation-meta {
+        align-items: flex-start;
+    }
+
+    .consultation-datetime {
+        align-items: flex-start;
+    }
+
+    .consultation-actions {
+        flex-direction: column;
+    }
+
+    .btn-view-details,
+    .btn-view-prescription,
+    .btn-view-report,
+    .btn-book-again {
+        width: 100%;
+        justify-content: center;
+    }
+}

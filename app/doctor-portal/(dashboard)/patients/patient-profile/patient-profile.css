@@ -1,7 +1,7 @@
+/* patient-profile.css */
 /* ═══════════════════════════════════════════════════════════════
    PATIENT PROFILE PAGE — Doctor Portal
-   File: styles/pages/patient-profile.css
-   Tokens from: global.css (--color-primary, --font-heading, etc.)
+   Fully Responsive Mobile Friendly
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Page Wrapper ──────────────────────────────────────────────── */
@@ -108,7 +108,6 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
-
 }
 
 .pp-hero-banner-name {
@@ -1450,64 +1449,113 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
-   RESPONSIVE
+   FULLY RESPONSIVE — Mobile First Adjustments
    ══════════════════════════════════════════════════════════════ */
-@media (max-width: 1280px) {
-    .pp-top-row {
-        grid-template-columns: 300px 1fr;
-    }
 
-    .pp-content-row {
-        grid-template-columns: 1fr 320px;
-    }
-
-    .pp-info-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
+/* Tablet and below (max-width: 1024px) */
 @media (max-width: 1024px) {
     .pp-top-row {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .pp-summary-grid {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .pp-content-row {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 
-    .pp-reports-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .pp-summary-grid {
-        grid-template-columns: repeat(3, 1fr);
+    /* Make all inner grids stack vertically */
+    .pp-main-col,
+    .pp-side-col {
+        width: 100%;
     }
 
-    .pp-info-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .pp-reports-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .pp-family-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
+    /* Force all nested grids to single column */
+    .pp-reports-grid,
+    .pp-family-grid,
     .pp-lifestyle-grid {
         grid-template-columns: 1fr;
     }
 
+    /* Two-column layouts inside main col should stack */
+    .pp-main-col>div[style*="display: grid"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    /* Remove grid from any inline style that creates two columns */
+    [style*="grid-template-columns: 1fr 1fr"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    /* Current consultation full width on mobile */
     .pp-current-consult {
         flex-direction: column;
         gap: 12px;
+    }
+
+    .pp-consult-group {
+        min-width: auto;
+        max-width: none;
+    }
+
+    .pp-consult-group:nth-child(3),
+    .pp-consult-group:nth-child(4) {
+        flex: auto;
+        max-width: none;
+    }
+
+    /* Medical reports: single column */
+    .pp-reports-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Family history: single column */
+    .pp-family-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Lifestyle: single column */
+    .pp-lifestyle-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Medications table responsive */
+    .pp-med-table th:nth-child(3),
+    .pp-med-table td:nth-child(3) {
+        display: none;
+    }
+}
+
+/* Small tablet (max-width: 768px) */
+@media (max-width: 768px) {
+    .pp-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pp-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-family-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pp-section-body.pp-scrollable {
+        max-height: 400px;
+    }
+
+    /* Hide frequency column on smaller screens */
+    .pp-med-table th:nth-child(2),
+    .pp-med-table td:nth-child(2) {
+        display: table-cell;
     }
 
     .pp-med-table th:nth-child(3),
@@ -1516,20 +1564,365 @@
     }
 }
 
-@media (max-width: 480px) {
+/* Mobile (max-width: 640px) */
+@media (max-width: 640px) {
+    .pp-wrap {
+        gap: 12px;
+    }
+
+    .pp-hero-body {
+        padding: 44px 16px 16px;
+    }
+
+    .pp-hero-banner-name {
+        font-size: 18px;
+    }
+
+    .pp-hero-banner-id {
+        font-size: 10px;
+    }
+
+    .pp-avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .pp-avatar-wrap {
+        left: 16px;
+        bottom: -30px;
+    }
+
+    .pp-hero-banner-overlay {
+        left: 90px;
+        top: 16px;
+    }
+
     .pp-summary-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
+    .pp-stat-box {
+        padding: 12px 10px;
+    }
+
+    .pp-stat-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .pp-stat-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .pp-stat-num {
+        font-size: 18px;
+    }
+
+    .pp-stat-label {
+        font-size: 10px;
+    }
+
+    .pp-section-head {
+        padding: 12px 14px;
+    }
+
+    .pp-section-title {
+        font-size: 12px;
+    }
+
+    .pp-section-body {
+        padding: 12px 14px;
+    }
+
+    .pp-current-consult {
+        padding: 12px 14px;
+    }
+
+    .pp-consult-val {
+        font-size: 12px;
+    }
+
+    /* Medical reports: single column */
     .pp-reports-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
+    /* Family history: single column */
     .pp-family-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr !important;
     }
 
-    .pp-info-grid {
+    /* Lifestyle: single column */
+    .pp-lifestyle-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Table adjustments */
+    .pp-med-table th,
+    .pp-med-table td {
+        font-size: 11px;
+        padding: 8px 0;
+    }
+
+    .pp-med-pill,
+    .pp-med-freq {
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    /* Hide frequency column */
+    .pp-med-table th:nth-child(3),
+    .pp-med-table td:nth-child(3) {
+        display: none;
+    }
+
+    /* Timeline adjustments */
+    .pp-tl-dot-wrap {
+        width: 28px;
+        height: 28px;
+    }
+
+    .pp-tl-dot-wrap svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .pp-timeline-item::before {
+        left: 13px;
+    }
+
+    .pp-tl-title {
+        font-size: 12px;
+    }
+
+    .pp-tl-date {
+        font-size: 10px;
+    }
+
+    .pp-tl-meta {
+        font-size: 10px;
+    }
+
+    /* Report cards */
+    .pp-report-card {
+        padding: 10px 12px;
+    }
+
+    .pp-report-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .pp-report-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .pp-report-name {
+        font-size: 11px;
+    }
+
+    .pp-report-date {
+        font-size: 9px;
+    }
+
+    /* Allergy tags */
+    .pp-allergy-tag {
+        font-size: 10px;
+        padding: 3px 10px;
+    }
+
+    /* Disease tags */
+    .pp-disease-tag {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+
+    /* Vital signs table */
+    .pp-vitals-table th,
+    .pp-vitals-table td {
+        font-size: 10px;
+        padding: 8px 8px 8px 0;
+    }
+
+    .pp-vital-name {
+        font-size: 10px;
+    }
+
+    .pp-vital-name svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .pp-vital-status {
+        font-size: 9px;
+        padding: 1px 6px;
+    }
+
+    /* Surgical history */
+    .pp-surgery-item {
+        padding: 10px 12px;
+    }
+
+    .pp-surgery-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .pp-surgery-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .pp-surgery-name {
+        font-size: 11px;
+    }
+
+    .pp-surgery-meta {
+        font-size: 9px;
+    }
+
+    /* Prescriptions */
+    .pp-rx-item {
+        padding: 10px 12px;
+    }
+
+    .pp-rx-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .pp-rx-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .pp-rx-name {
+        font-size: 11px;
+    }
+
+    .pp-rx-meta {
+        font-size: 9px;
+    }
+
+    /* Lifestyle items */
+    .pp-lifestyle-item {
+        padding: 8px 10px;
+    }
+
+    .pp-lifestyle-icon {
+        font-size: 18px;
+    }
+
+    .pp-lifestyle-key {
+        font-size: 9px;
+    }
+
+    .pp-lifestyle-val {
+        font-size: 11px;
+    }
+
+    /* Back link */
+    .pp-back-link {
+        font-size: 11px;
+    }
+
+    .pp-back-link svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* Extra small devices (max-width: 480px) */
+@media (max-width: 480px) {
+    .pp-summary-grid {
         grid-template-columns: 1fr;
+    }
+
+    .pp-stat-box {
+        width: 100%;
+    }
+
+    .pp-basic-chips {
+        gap: 4px;
+    }
+
+    .pp-chip {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .pp-contact-row {
+        font-size: 10px;
+        gap: 6px;
+    }
+
+    .pp-contact-row svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .pp-consult-group {
+        min-width: 100%;
+    }
+
+    .pp-consult-key {
+        font-size: 9px;
+    }
+
+    .pp-consult-val {
+        font-size: 11px;
+    }
+
+    .pp-section-title {
+        font-size: 11px;
+    }
+
+    .pp-section-title svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Force single column for all grids */
+    [style*="display: grid"]:not(.pp-summary-grid):not(.pp-top-row):not(.pp-content-row) {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    /* Ensure reports are single column */
+    .pp-reports-grid {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Family history single column */
+    .pp-family-grid {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .pp-family-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        gap: 10px;
+        padding: 8px 12px;
+    }
+
+    .pp-family-icon {
+        font-size: 18px;
+    }
+
+    .pp-family-label {
+        flex: 1;
+        font-size: 12px;
+    }
+
+    .pp-family-status {
+        font-size: 10px;
     }
 }

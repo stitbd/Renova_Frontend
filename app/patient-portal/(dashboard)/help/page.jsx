@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import "./patient-help.css";
 
 // Animation variants
 const container = {
@@ -15,8 +16,8 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100, damping: 15 }
   }
@@ -48,32 +49,32 @@ export default function HelpSupportPage() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="help-page"
       variants={container}
       initial="hidden"
       animate="show"
     >
       {/* Quick Contact */}
-      <motion.div 
+      <motion.div
         className="contact-options-grid"
         variants={container}
         initial="hidden"
         animate="show"
       >
         {contactOptions.map((opt, idx) => (
-          <motion.div 
-            key={idx} 
+          <motion.div
+            key={idx}
             className="contact-option-card"
             variants={item}
-            whileHover={{ 
+            whileHover={{
               y: -6,
               boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
               transition: { duration: 0.2 }
             }}
             style={{ borderLeftColor: opt.color }}
           >
-            <motion.div 
+            <motion.div
               className="contact-icon"
               style={{ backgroundColor: `${opt.color}15`, color: opt.color }}
               whileHover={{ scale: 1.1, rotate: 5 }}
@@ -94,13 +95,13 @@ export default function HelpSupportPage() {
               </motion.h4>
               <p>{opt.desc}</p>
             </div>
-            <motion.button 
+            <motion.button
               className="contact-action-btn"
               style={{ color: opt.color, borderColor: opt.color }}
-              whileHover={{ 
-                scale: 1.05, 
-                backgroundColor: opt.color, 
-                color: "#fff" 
+              whileHover={{
+                scale: 1.05,
+                backgroundColor: opt.color,
+                color: "#fff"
               }}
               whileTap={{ scale: 0.95 }}
             >
@@ -111,7 +112,7 @@ export default function HelpSupportPage() {
       </motion.div>
 
       {/* FAQs */}
-      <motion.div 
+      <motion.div
         className="faqs-section"
         variants={item}
       >
@@ -121,21 +122,21 @@ export default function HelpSupportPage() {
         >
           Frequently Asked Questions
         </motion.h3>
-        <motion.div 
+        <motion.div
           className="faqs-list"
           variants={container}
           initial="hidden"
           animate="show"
         >
           {faqs.map((faq, idx) => (
-            <motion.div 
-              key={idx} 
+            <motion.div
+              key={idx}
               className={`faq-item ${openFaq === idx ? "open" : ""}`}
               variants={item}
               layout
             >
-              <motion.button 
-                className="faq-question" 
+              <motion.button
+                className="faq-question"
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                 whileHover={{ backgroundColor: "#f8fafc" }}
                 transition={{ duration: 0.2 }}
@@ -147,10 +148,10 @@ export default function HelpSupportPage() {
                 >
                   {faq.q}
                 </motion.span>
-                <motion.svg 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
+                <motion.svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
                   strokeWidth="2"
                   animate={{ rotate: openFaq === idx ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
@@ -158,10 +159,10 @@ export default function HelpSupportPage() {
                   <polyline points={openFaq === idx ? "18 15 12 9 6 15" : "6 9 12 15 18 9"} />
                 </motion.svg>
               </motion.button>
-              
+
               <AnimatePresence>
                 {openFaq === idx && (
-                  <motion.p 
+                  <motion.p
                     className="faq-answer"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -178,7 +179,7 @@ export default function HelpSupportPage() {
       </motion.div>
 
       {/* Contact Form */}
-      <motion.div 
+      <motion.div
         className="contact-form-section"
         variants={item}
       >
@@ -188,39 +189,39 @@ export default function HelpSupportPage() {
         >
           Send us a Message
         </motion.h3>
-        <motion.form 
-          onSubmit={handleSubmit} 
+        <motion.form
+          onSubmit={handleSubmit}
           className="contact-form"
           variants={container}
           initial="hidden"
           animate="show"
         >
-          <motion.div 
+          <motion.div
             className="form-field"
             variants={item}
           >
             <label>Subject</label>
-            <motion.input 
-              type="text" 
-              placeholder="What do you need help with?" 
+            <motion.input
+              type="text"
+              placeholder="What do you need help with?"
               required
               whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
             />
           </motion.div>
-          <motion.div 
+          <motion.div
             className="form-field full"
             variants={item}
           >
             <label>Message</label>
-            <motion.textarea 
-              rows={4} 
-              placeholder="Describe your issue..." 
+            <motion.textarea
+              rows={4}
+              placeholder="Describe your issue..."
               required
               whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
             />
           </motion.div>
-          <motion.button 
-            type="submit" 
+          <motion.button
+            type="submit"
             className="btn-send-message"
             variants={item}
             whileHover={{ scale: 1.02 }}
@@ -229,10 +230,10 @@ export default function HelpSupportPage() {
           >
             Send Message
           </motion.button>
-          
+
           <AnimatePresence>
             {message && (
-              <motion.p 
+              <motion.p
                 className="form-success"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}

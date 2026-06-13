@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import "./patient-profile.css";
 
 const initialProfile = {
   name: "Md. Rakib Hasan",
@@ -27,8 +28,8 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100 }
   }
@@ -51,7 +52,7 @@ export default function MyProfilePage() {
   const set = (field) => (e) => setDraft((p) => ({ ...p, [field]: e.target.value }));
 
   return (
-    <motion.div 
+    <motion.div
       className="profile-page"
       variants={container}
       initial="hidden"
@@ -59,23 +60,23 @@ export default function MyProfilePage() {
     >
       <AnimatePresence>
         {saved && (
-          <motion.div 
+          <motion.div
             className="success-message"
             initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <motion.svg 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
+            <motion.svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
               strokeWidth="2"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.1, type: "spring" }}
             >
-              <polyline points="20 6 9 17 4 12"/>
+              <polyline points="20 6 9 17 4 12" />
             </motion.svg>
             Profile updated successfully!
           </motion.div>
@@ -84,8 +85,8 @@ export default function MyProfilePage() {
 
       {/* Header card */}
       <motion.div className="profile-header-card" variants={item}>
-        <motion.div 
-          className="profile-avatar-wrapper" 
+        <motion.div
+          className="profile-avatar-wrapper"
           style={{ position: "relative", display: "inline-block" }}
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
@@ -98,16 +99,16 @@ export default function MyProfilePage() {
             style={{ width: 80, height: 80, borderRadius: "50%", border: "3px solid #e2e8f0", objectFit: "cover" }}
           />
           {isEditing && (
-            <motion.label 
-              className="edit-avatar-btn" 
+            <motion.label
+              className="edit-avatar-btn"
               style={{ cursor: "pointer" }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
               <input type="file" accept="image/*" style={{ display: "none" }} />
             </motion.label>
@@ -124,7 +125,7 @@ export default function MyProfilePage() {
                 whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
               />
             ) : (
-              <motion.h2 
+              <motion.h2
                 className="profile-name"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -132,7 +133,7 @@ export default function MyProfilePage() {
                 {profile.name}
               </motion.h2>
             )}
-            <motion.span 
+            <motion.span
               className="status-badge active"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -142,7 +143,7 @@ export default function MyProfilePage() {
             </motion.span>
           </div>
           <p className="profile-id-label">Patient ID</p>
-          <motion.p 
+          <motion.p
             className="profile-id"
             initial={{ width: 0 }}
             animate={{ width: "auto" }}
@@ -155,19 +156,19 @@ export default function MyProfilePage() {
         <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
           {isEditing ? (
             <>
-              <motion.button 
-                className="edit-profile-btn" 
-                onClick={handleSave} 
+              <motion.button
+                className="edit-profile-btn"
+                onClick={handleSave}
                 style={{ background: "#014fa1", color: "#fff", borderColor: "#014fa1" }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>
                 Save Changes
               </motion.button>
-              <motion.button 
-                className="edit-profile-btn" 
-                onClick={handleCancel} 
+              <motion.button
+                className="edit-profile-btn"
+                onClick={handleCancel}
                 style={{ color: "#ef4444", borderColor: "#fca5a5" }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -176,15 +177,15 @@ export default function MyProfilePage() {
               </motion.button>
             </>
           ) : (
-            <motion.button 
-              className="edit-profile-btn" 
+            <motion.button
+              className="edit-profile-btn"
               onClick={handleEdit}
               whileHover={{ scale: 1.05, x: 2 }}
               whileTap={{ scale: 0.98 }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
               </svg>
               Edit Profile
             </motion.button>
@@ -193,7 +194,7 @@ export default function MyProfilePage() {
       </motion.div>
 
       {/* Info cards */}
-      <motion.div 
+      <motion.div
         className="profile-info-grid"
         variants={container}
         initial="hidden"
@@ -213,10 +214,10 @@ export default function MyProfilePage() {
             { label: "Phone", key: "phone", type: "tel" },
             { label: "Date of Birth", key: "dob", type: "text", disabled: true },
             { label: "Gender", key: "gender", type: "select", options: ["Male", "Female", "Other"] },
-            { label: "Blood Group", key: "bloodGroup", type: "select", options: ["A+","A-","B+","B-","AB+","AB-","O+","O-"] },
+            { label: "Blood Group", key: "bloodGroup", type: "select", options: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
           ].map((field, i) => (
-            <motion.div 
-              key={field.key} 
+            <motion.div
+              key={field.key}
               className="info-field"
               variants={item}
               whileHover={{ backgroundColor: "#f8fafc" }}
@@ -224,17 +225,17 @@ export default function MyProfilePage() {
               <label>{field.label}</label>
               {isEditing && !field.disabled ? (
                 field.type === "select" ? (
-                  <motion.select 
-                    value={draft[field.key]} 
+                  <motion.select
+                    value={draft[field.key]}
                     onChange={set(field.key)}
                     whileFocus={{ borderColor: "#014fa1" }}
                   >
                     {field.options.map(opt => <option key={opt}>{opt}</option>)}
                   </motion.select>
                 ) : (
-                  <motion.input 
-                    type={field.type} 
-                    value={draft[field.key]} 
+                  <motion.input
+                    type={field.type}
+                    value={draft[field.key]}
                     onChange={set(field.key)}
                     whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
                   />
@@ -259,17 +260,17 @@ export default function MyProfilePage() {
           >
             Address & Contact
           </motion.h3>
-          
-          <motion.div 
+
+          <motion.div
             className="info-field full"
             variants={item}
             whileHover={{ backgroundColor: "#f8fafc" }}
           >
             <label>Address</label>
             {isEditing ? (
-              <motion.textarea 
-                value={draft.address} 
-                onChange={set("address")} 
+              <motion.textarea
+                value={draft.address}
+                onChange={set("address")}
                 rows={3}
                 whileFocus={{ borderColor: "#014fa1" }}
               />
@@ -282,17 +283,17 @@ export default function MyProfilePage() {
               </motion.p>
             )}
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="info-field"
             variants={item}
             whileHover={{ backgroundColor: "#f8fafc" }}
           >
             <label>Emergency Contact</label>
             {isEditing ? (
-              <motion.input 
-                type="tel" 
-                value={draft.emergencyContact} 
+              <motion.input
+                type="tel"
+                value={draft.emergencyContact}
                 onChange={set("emergencyContact")}
                 whileFocus={{ borderColor: "#014fa1" }}
               />
@@ -307,7 +308,7 @@ export default function MyProfilePage() {
           </motion.div>
 
           {isEditing && (
-            <motion.div 
+            <motion.div
               style={{ marginTop: 16, display: "flex", gap: 8 }}
               variants={item}
             >
