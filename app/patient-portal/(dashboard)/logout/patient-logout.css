@@ -1,0 +1,67 @@
+/* ======================================================
+   CSS FILE: patient-logout.css
+   ====================================================== */
+
+.logout-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 20px;
+}
+
+.logout-card {
+    text-align: center;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.logout-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #014fa1;
+}
+
+.logout-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 8px;
+}
+
+.logout-card p {
+    font-size: 14px;
+    color: #718096;
+    margin: 0 0 24px;
+}
+
+.logout-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #f1f5f9;
+    border-top-color: #014fa1;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

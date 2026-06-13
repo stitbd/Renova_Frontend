@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import "../patient-dashboard-massages.css";
+import "../doctor-dashboard-massages.css";
 
 const recentReports = [
     { name: "Full Body Check-up", date: "12 May 2025" },
@@ -12,7 +12,8 @@ const recentReports = [
 ];
 
 const prevPrescriptions = [
-    { label: "Dr. Ahsan Rahman", date: "10 May 2025", sub: "Medicine for BP & Chest pain" },
+    { label: "10 May 2025", sub: "Medicine for BP & Chest pain" },
+    { label: "25 Apr 2025", sub: "Regular follow up" },
 ];
 
 const summaryRows = [
@@ -28,13 +29,6 @@ const chatMessages = [
     { id: 3, from: "doctor", text: "Okay. I have reviewed your reports. Let me explain.", time: "10:32 AM" },
 ];
 
-const attachOptions = [
-    { label: "Image", color: "green", icon: "image" },
-    { label: "Document", color: "blue", icon: "doc" },
-    { label: "Lab Report", color: "orange", icon: "labReport" },
-    { label: "Prescription", color: "indigo", icon: "rx" },
-];
-
 function Icon({ type }) {
     const icons = {
         back: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
@@ -43,33 +37,30 @@ function Icon({ type }) {
         profile: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
         doc: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>,
         rx: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>,
-        mic: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /><line x1="8" y1="23" x2="16" y2="23" /></svg>,
-        video: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" /></svg>,
-        videooff: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10" /><line x1="1" y1="1" x2="23" y2="23" /></svg>,
-        screen: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>,
-        chat: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>,
-        files: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>,
-        morevert: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg>,
-        endcall: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.42 19.42 0 0 1 4.36 4.36" /><path d="M22 2 2 22" /></svg>,
-        expand: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" /><line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" /></svg>,
         shield: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>,
-        send: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>,
-        tick: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>,
+        mic: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /><line x1="8" y1="23" x2="16" y2="23" /></svg>,
+        keypad: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="6" r="1" /><circle cx="15" cy="6" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="9" cy="18" r="1" /><circle cx="15" cy="18" r="1" /></svg>,
+        endcall: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.42 19.42 0 0 1 4.36 4.36" /><path d="M22 2 2 22" /></svg>,
+        speaker: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>,
+        morevert: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></svg>,
+        video: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" /></svg>,
+        settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>,
+        note: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
         history: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
         arrowright: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>,
-        prescription: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>,
-        schedule: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
-        bandwidth: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>,
-        headphone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z" /><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" /></svg>,
-        adaptive: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>,
-        image: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>,
+        reminder: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>,
+        file: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
+        send: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>,
         attach: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>,
-        rotateCamera: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h4l2-2h4l2 2h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-4" /><path d="M8 17H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1" /><path d="M15 10a4 4 0 0 1 0 8" /><polyline points="15 18 15 14 19 14" /><path d="M9 14a4 4 0 0 1 0-8" /><polyline points="9 6 9 10 5 10" /></svg>,
-        labReport: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0-6 7h18l-6-7" /></svg>,
+        bandwidth: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>,
+        recording: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="3" /></svg>,
+        headphone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" /></svg>,
+        tick: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>,
     };
     return <>{icons[type] || null}</>;
 }
 
+// Toggle component
 function Toggle({ checked, onChange }) {
     return (
         <label className="toggle-switch">
@@ -79,20 +70,20 @@ function Toggle({ checked, onChange }) {
     );
 }
 
-export default function PatientVideoCallPage() {
+export default function AudioCallPage() {
     const [activeTab, setActiveTab] = useState("Chat");
-    const [seconds, setSeconds] = useState(765); // 12:45
+    const [seconds, setSeconds] = useState(504); // 8:24
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
-    const [adaptive, setAdaptive] = useState(true);
+    const [recording, setRecording] = useState(true);
     const [messageText, setMessageText] = useState("");
     const [charCount, setCharCount] = useState(0);
     const [attachedFiles, setAttachedFiles] = useState([]);
     const [messages, setMessages] = useState(chatMessages);
     const [inputText, setInputText] = useState("");
     const [pendingFiles, setPendingFiles] = useState([]);
-    const [isExpanded, setIsExpanded] = useState(false);
     const router = useRouter();
+
 
     const handleSend = () => {
         if (!inputText.trim() && pendingFiles.length === 0) return;
@@ -135,7 +126,7 @@ export default function PatientVideoCallPage() {
             <div className="msg-page-wrap">
                 {/* ── Left: Patient Panel ────────────────────────── */}
                 <div className="call-patient-panel">
-                    <Link href="/doctor-portal/messages" className="call-back-link">
+                    <Link href="/patient-portal/messages" className="call-back-link">
                         <Icon type="back" /> Back to Messages
                     </Link>
 
@@ -146,12 +137,7 @@ export default function PatientVideoCallPage() {
                                 alt="Masud Rana"
                                 onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
                             />
-                            <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><img
-                                src="/images/patients/01.jpg"
-                                alt="Masud Rana"
-                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                            />
-                                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span></span>
+                            <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span>
                         </div>
                         <div className="call-patient-meta">
                             <h3>Masud Rana</h3>
@@ -165,7 +151,7 @@ export default function PatientVideoCallPage() {
 
                     <div className="call-patient-actions">
                         <Link
-                            href="/doctor-portal/patients/patient-profile?id=PT-2025-00123&from=/doctor-portal/messages/video-call"
+                            href="/patient-portal/profile?id=PT-2025-00123&from=/patient-portal/messages/audio-call"
                             className="call-patient-btn"
                             style={{ flex: 2, display: "flex", alignItems: "center", gap: 6, textDecoration: "none", justifyContent: "center" }}
                         >
@@ -180,6 +166,7 @@ export default function PatientVideoCallPage() {
                         <p className="call-started-text">Started at 10:30 AM</p>
                     </div>
 
+
                     {/* Patient Summary */}
                     <div>
                         <div className="call-panel-list-header">
@@ -191,6 +178,7 @@ export default function PatientVideoCallPage() {
                                 <span className="call-summary-val">{r.val}</span>
                             </div>
                         ))}
+
                         <a href="#" className="call-view-history">
                             View Medical History <Icon type="arrowright" />
                         </a>
@@ -205,7 +193,7 @@ export default function PatientVideoCallPage() {
                         <div className="call-panel-list">
                             {recentReports.map((r) => (
                                 <div key={r.name} className="call-panel-item">
-                                    <div className="call-panel-item-icon green">
+                                    <div className="call-panel-item-icon">
                                         <Icon type="doc" />
                                     </div>
                                     <div className="call-panel-item-info">
@@ -232,7 +220,6 @@ export default function PatientVideoCallPage() {
                                     </div>
                                     <div className="call-panel-item-info">
                                         <p className="call-panel-item-name">{p.label}</p>
-                                        <p className="call-panel-item-date">{p.date}</p>
                                         <p className="call-panel-item-date">{p.sub}</p>
                                     </div>
                                     <button className="call-panel-view-btn">View</button>
@@ -242,87 +229,62 @@ export default function PatientVideoCallPage() {
                     </div>
                 </div>
 
-                {/* ── Middle: Video ─────────── */}
+                {/* ── Middle: Audio Call Display ─────────────────── */}
                 <div className="call-center-col">
-
-                    {/* Video display */}
-                    <div className="video-call-display" style={isExpanded ? { position: "fixed", inset: 0, margin: 0, borderRadius: 0, zIndex: 1000, width: "100vw", height: "100vh" } : {}}>
-                        <div className="video-main-area">
-
-                            {/* Full-cover patient video */}
-                            <img
-                                src="/images/patients/01.jpg"
-                                alt="Patient"
-                                onError={e => { e.currentTarget.style.display = "none"; }}
-                            />
-
-                            {/* Patient label — top left */}
-                            <div className="video-patient-label">
-                                Patient
-                                <span className="video-signal-bars">
+                    {/* Audio display */}
+                    <div className="audio-call-display">
+                        {/* Top bar */}
+                        <div className="audio-call-top-bar">
+                            <div className="audio-call-label">
+                                <Icon type="phone" /> Audio Call
+                                <div className="audio-signal-bars">
                                     <span /><span /><span /><span />
-                                </span>
-                            </div>
-
-                            {/* Doctor PiP — top right */}
-                            <div className="video-pip">
-                                <img
-                                    src="/images/doctors/doctor-2.jpg"
-                                    alt="You"
-                                    onError={e => { e.currentTarget.style.display = "none"; }}
-                                />
-                                <div className="video-pip-label">
-                                    <span className="video-pip-online-dot" />
-                                    You
                                 </div>
                             </div>
-
-                            {/* Call Duration — above controls bar */}
-                            <div className="video-call-duration">
-                                <span className="video-call-duration-dot" />
-                                {fmt(seconds)}
+                            <div className="audio-secure-text">
+                                <Icon type="shield" /> Call is secured and encrypted
                             </div>
+                        </div>
 
-                            {/* Controls bar — inside video, bottom center, pill shape */}
-                            <div className="video-controls-bar">
-                                {[
-                                    { icon: "mic", label: "Mute" },
-                                    { icon: "video", label: "Stop Video" },
-                                    { icon: "screen", label: "Screen Share" },
-                                    { icon: "rotateCamera", label: "Switch Camera" },
-                                ].map((btn) => (
-                                    <button key={btn.label} className="video-ctrl-btn">
-                                        <div className="video-ctrl-icon">
-                                            <Icon type={btn.icon} />
-                                        </div>
-                                        <span className="video-ctrl-label">{btn.label}</span>
-                                    </button>
-                                ))}
+                        {/* Waveform + patient photo */}
+                        <div className="audio-waveform-wrap">
+                            <div className="audio-waveform active">
+                                {[...Array(10)].map((_, i) => <span key={i} />)}
+                            </div>
+                            <div className="audio-patient-circle">
+                                <img src="/images/patients/01.jpg" alt="Masud Rana" onError={(e) => { e.currentTarget.style.background = "#334155"; }} />
+                            </div>
+                            <div className="audio-waveform">
+                                {[...Array(10)].map((_, i) => <span key={i} />)}
+                            </div>
+                        </div>
 
-                                <div className="video-ctrl-divider" />
+                        <p className="audio-patient-name">Masud Rana</p>
+                        <p className="audio-patient-role">Patient</p>
+                        <p className="audio-timer">{fmt(seconds)}</p>
 
-                                <button className="video-ctrl-btn" onClick={() => router.push("/doctor-portal/messages?activeConv=masud-rana")}>
-                                    <div className="video-ctrl-icon end-call">
-                                        <Icon type="endcall" />
+                        {/* Controls bar — inside video, bottom center, pill shape */}
+                        <div className="video-controls-bar">
+                            {[
+                                { icon: "mic", label: "Mute" },
+                                { icon: "speaker", label: "Speaker" },
+                            ].map((btn) => (
+                                <button key={btn.label} className="video-ctrl-btn">
+                                    <div className="video-ctrl-icon">
+                                        <Icon type={btn.icon} />
                                     </div>
-                                    <span className="video-ctrl-label">End Call</span>
+                                    <span className="video-ctrl-label">{btn.label}</span>
                                 </button>
-                            </div>
+                            ))}
 
-                            {/* Expand — bottom right */}
-                            <button className="video-expand-btn" onClick={() => setIsExpanded(prev => !prev)}>
-                                {isExpanded ? (
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" width="14" height="14">
-                                        <polyline points="4 14 10 14 10 20" />
-                                        <polyline points="20 10 14 10 14 4" />
-                                        <line x1="10" y1="14" x2="3" y2="21" />
-                                        <line x1="21" y1="3" x2="14" y2="10" />
-                                    </svg>
-                                ) : (
-                                    <Icon type="expand" />
-                                )}
+                            <div className="video-ctrl-divider" />
+
+                            <button className="video-ctrl-btn" onClick={() => router.push("/patient-portal/messages?activeConv=masud-rana")}>
+                                <div className="video-ctrl-icon end-call">
+                                    <Icon type="endcall" />
+                                </div>
+                                <span className="video-ctrl-label">End Call</span>
                             </button>
-
                         </div>
                     </div>
 
@@ -331,8 +293,9 @@ export default function PatientVideoCallPage() {
                     </div>
                 </div>
 
-                {/* ── Right Panel ────────────────────────────────── */}
+                {/* ── Right: Chat / Files / Reports Panel ── */}
                 <div className="call-right-panel">
+                    {/* Tabs */}
                     <div className="call-right-tabs">
                         {["Chat", "Files", "Reports"].map((tab) => (
                             <button
@@ -353,11 +316,13 @@ export default function PatientVideoCallPage() {
                                     const isDoctor = msg.from === "doctor";
                                     return (
                                         <div key={msg.id} className={`call-chat-bubble-wrap${isDoctor ? " sent" : ""}`}>
-                                            <div className="call-chat-avatar"><img
-                                                src="/images/patients/01.jpg"
-                                                alt="Masud Rana"
-                                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                                            />
+                                            <div className="call-chat-avatar">
+                                                <img
+                                                    src={isDoctor ? "/images/doctors/doctor-1.jpg" : "/images/patients/01.jpg"}
+                                                    alt={isDoctor ? "Doctor" : "Patient"}
+                                                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                                                />
+                                                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span>
                                             </div>
                                             <div className="call-chat-bubble-inner">
                                                 <div className={`call-chat-bubble${isDoctor ? " sent" : ""}`}>{msg.text}</div>

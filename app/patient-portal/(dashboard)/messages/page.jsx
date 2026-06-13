@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import "../patient-dashboard-massages.css";
+import "./patient-massages.css";
 
 const TODAY = new Date().toDateString();
 
@@ -363,7 +363,7 @@ const emojis = [
 
 const qaColorMap = { blue: "blue", red: "red", orange: "orange", teal: "teal", purple: "purple" };
 
-export default function PatientMessagesPage() {
+export default function MessagesPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [selectedConv, setSelectedConv] = useState(conversations[0]);
   const [messageText, setMessageText] = useState("");
@@ -490,10 +490,10 @@ export default function PatientMessagesPage() {
               </div>
             </div>
             <div className="msg-chat-actions">
-              <Link href="/doctor-portal/messages/audio-call" className="msg-action-btn">
+              <Link href="/patient-portal/messages/audio-call" className="msg-action-btn">
                 {getIcon("phone")}
               </Link>
-              <Link href="/doctor-portal/messages/video-call" className="msg-action-btn blue">
+              <Link href="/patient-portal/messages/video-call" className="msg-action-btn blue">
                 {getIcon("video")}
               </Link>
             </div>
@@ -635,7 +635,7 @@ export default function PatientMessagesPage() {
             <p className="msg-patient-id">{selectedConv?.phone}</p>
             <p className="msg-patient-id">{selectedConv?.patientId}</p>
             <Link
-              href={`/doctor-portal/patients/patient-profile?id=${selectedConv?.patientId}&from=/doctor-portal/messages`}
+              href={`/patient-portal/profile?id=${selectedConv?.patientId}&from=/patient-portal/messages`}
               className="msg-view-profile-btn"
               style={{ display: "block", textAlign: "center", textDecoration: "none" }}
             >

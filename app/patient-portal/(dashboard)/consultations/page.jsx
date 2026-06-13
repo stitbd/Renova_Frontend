@@ -2,6 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import "./patient-consultations.css";
 
 // Animation variants
 const container = {
@@ -14,8 +15,8 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100, damping: 15 }
   }
@@ -29,31 +30,31 @@ const consultationsData = [
 
 export default function ConsultationsPage() {
   return (
-    <motion.div 
+    <motion.div
       className="consultations-list"
       variants={container}
       initial="hidden"
       animate="show"
     >
       {consultationsData.map((consultation, index) => (
-        <motion.div 
-          key={consultation.id} 
+        <motion.div
+          key={consultation.id}
           className="consultation-card"
           variants={item}
-          whileHover={{ 
+          whileHover={{
             y: -4,
             boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
             transition: { duration: 0.2 }
           }}
         >
-          <motion.div 
+          <motion.div
             className="consultation-header"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + index * 0.05 }}
           >
             <div className="consultation-doctor">
-              <motion.div 
+              <motion.div
                 className="doctor-avatar-large"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 transition={{ type: "spring", stiffness: 400 }}
@@ -64,7 +65,7 @@ export default function ConsultationsPage() {
                 </svg>
               </motion.div>
               <div>
-                <motion.h3 
+                <motion.h3
                   className="doctor-name"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -72,7 +73,7 @@ export default function ConsultationsPage() {
                 >
                   {consultation.doctor}
                 </motion.h3>
-                <motion.p 
+                <motion.p
                   className="doctor-specialty"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -80,7 +81,7 @@ export default function ConsultationsPage() {
                 >
                   {consultation.specialty}
                 </motion.p>
-                <motion.span 
+                <motion.span
                   className="consultation-type"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -91,7 +92,7 @@ export default function ConsultationsPage() {
               </div>
             </div>
             <div className="consultation-meta">
-              <motion.div 
+              <motion.div
                 className="consultation-datetime"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -100,7 +101,7 @@ export default function ConsultationsPage() {
                 <span className="consultation-date">{consultation.date}</span>
                 <span className="consultation-time">{consultation.time}</span>
               </motion.div>
-              <motion.span 
+              <motion.span
                 className="consultation-fee"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -111,7 +112,7 @@ export default function ConsultationsPage() {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="consultation-body"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,7 +126,7 @@ export default function ConsultationsPage() {
               >
                 Diagnosis:
               </motion.h4>
-              <motion.p 
+              <motion.p
                 className="diagnosis-text"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -134,14 +135,14 @@ export default function ConsultationsPage() {
                 {consultation.diagnosis}
               </motion.p>
             </div>
-            <motion.div 
+            <motion.div
               className="consultation-tags"
               variants={container}
               initial="hidden"
               animate="show"
             >
               {consultation.prescription && (
-                <motion.span 
+                <motion.span
                   className="tag tag-prescription"
                   variants={item}
                   whileHover={{ scale: 1.05 }}
@@ -150,7 +151,7 @@ export default function ConsultationsPage() {
                 </motion.span>
               )}
               {consultation.report && (
-                <motion.span 
+                <motion.span
                   className="tag tag-report"
                   variants={item}
                   whileHover={{ scale: 1.05 }}
@@ -161,13 +162,13 @@ export default function ConsultationsPage() {
             </motion.div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="consultation-actions"
             variants={container}
             initial="hidden"
             animate="show"
           >
-            <motion.button 
+            <motion.button
               className="btn-view-details"
               variants={item}
               whileHover={{ scale: 1.05 }}
@@ -176,7 +177,7 @@ export default function ConsultationsPage() {
               View Details
             </motion.button>
             {consultation.prescription && (
-              <motion.button 
+              <motion.button
                 className="btn-view-prescription"
                 variants={item}
                 whileHover={{ scale: 1.05 }}
@@ -186,7 +187,7 @@ export default function ConsultationsPage() {
               </motion.button>
             )}
             {consultation.report && (
-              <motion.button 
+              <motion.button
                 className="btn-view-report"
                 variants={item}
                 whileHover={{ scale: 1.05 }}
@@ -195,7 +196,7 @@ export default function ConsultationsPage() {
                 View Report
               </motion.button>
             )}
-            <motion.button 
+            <motion.button
               className="btn-book-again"
               variants={item}
               whileHover={{ scale: 1.05 }}

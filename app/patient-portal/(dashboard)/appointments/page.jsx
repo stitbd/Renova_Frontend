@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
-import "../../../../styles/pages/patient-portal-appointment.css";
+import "./patient-appointments.css";
 import { CalendarView } from "@/components/patient-dashboard/patient-appointment-calenderView";
 
 const API_URL = "http://localhost:5001/api/v1/appointments/my";
