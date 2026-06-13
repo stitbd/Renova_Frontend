@@ -9,6 +9,10 @@ import { useAppSelector } from "@/redux/hook";
 import "./doctor-dashboard-massages.css";
 import { chatApi } from "@/utils/chatApi";
 import { getSocket } from "@/utils/socket";
+import { Phone, Video } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { videoCallApi } from "@/utils/videoCallApi";
+import { saveCallSession } from "@/utils/callSession";
 
 function getInitials(name = "Patient") {
   return name
@@ -89,6 +93,8 @@ export default function MessagesPage() {
   const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [error, setError] = useState("");
+
+  const router = useRouter();
 
   const chatBodyRef = useRef(null);
 
@@ -274,7 +280,9 @@ export default function MessagesPage() {
       senderId: authUser?.id,
       receiverId: selectedConv.receiverId,
       conversationId: selectedConv.id,
-      appointmentId: selectedConv.appointmentId || appointmentIdFromUrl,
+      ...(selectedConv.appointmentId || appointmentIdFromUrl
+        ? { appointmentId: selectedConv.appointmentId || appointmentIdFromUrl }
+        : {}),
       createdAt: new Date().toISOString(),
       optimistic: true,
     };
@@ -283,11 +291,18 @@ export default function MessagesPage() {
     setMessageText("");
 
     try {
-      const result = await chatApi.sendMessage(token, {
+      const payload = {
         receiverId: selectedConv.receiverId,
-        appointmentId: selectedConv.appointmentId || appointmentIdFromUrl,
         message: text,
-      });
+      };
+
+      const appointmentId = selectedConv.appointmentId || appointmentIdFromUrl;
+
+      if (appointmentId) {
+        payload.appointmentId = appointmentId;
+      }
+
+      const result = await chatApi.sendMessage(token, payload);
 
       const savedMessage = result.data;
 
@@ -328,6 +343,36 @@ export default function MessagesPage() {
       setError(err.message || "Failed to send message");
     }
   };
+
+  const handleStartCall = async (callType) => {
+    if (!token || !selectedConv?.receiverId) return;
+
+    const payload = {
+      receiverId: selectedConv.receiverId,
+      callType,
+    };
+
+    if (selectedConv.appointmentId || appointmentIdFromUrl) {
+      payload.appointmentId = selectedConv.appointmentId || appointmentIdFromUrl;
+    }
+
+    const result = await videoCallApi.start(token, payload);
+
+    saveCallSession({
+      ...result.data,
+      receiverId: selectedConv.receiverId,
+      receiverName: selectedConv.name,
+      role: "CALLER",
+    });
+
+    const path =
+      callType === "AUDIO"
+        ? "/doctor-portal/messages/audio-call"
+        : "/doctor-portal/messages/video-call";
+
+    router.push(`${path}?callId=${result.data.callId}`);
+  };
+
 
   if (!token) {
     return <div className="apt-empty">Authentication token not found.</div>;
@@ -394,10 +439,30 @@ export default function MessagesPage() {
                         Verified Patient
                       </span>
                     </h4>
+
                     <p>
                       {selectedConv.phone} • Patient ID: {selectedConv.patientId}
                     </p>
                   </div>
+                </div>
+
+                {/* CALL ACTIONS */}
+                <div className="msg-chat-actions">
+                  <button
+                    type="button"
+                    className="msg-action-btn"
+                    onClick={() => handleStartCall("AUDIO")}
+                  >
+                    <Phone size={18} />
+                  </button>
+
+                  <button
+                    type="button"
+                    className="msg-action-btn blue"
+                    onClick={() => handleStartCall("VIDEO")}
+                  >
+                    <Video size={18} />
+                  </button>
                 </div>
               </div>
 

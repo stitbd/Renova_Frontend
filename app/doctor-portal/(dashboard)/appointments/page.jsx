@@ -240,7 +240,7 @@ export default function AppointmentsPage() {
   }, [normalizedAppointments]);
 
 
-  console.log('visibleList', visibleList)
+  // console.log('visibleList', visibleList)
 
 
   return (

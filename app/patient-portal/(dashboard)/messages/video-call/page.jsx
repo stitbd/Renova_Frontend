@@ -2,7 +2,8 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import "../doctor-dashboard-massages.css";
+import "../patient-massages.css";
+import { useAgoraCall } from "@/utils/useAgoraCall";
 
 const recentReports = [
     { name: "Full Body Check-up", date: "12 May 2025" },
@@ -94,6 +95,21 @@ export default function VideoCallPage() {
     const [isExpanded, setIsExpanded] = useState(false);
     const router = useRouter();
 
+    const {
+        callSession,
+        localVideoRef,
+        remoteVideoRef,
+        isJoined,
+        isMuted,
+        isVideoOff,
+        error,
+        toggleMute,
+        toggleVideo,
+        endCall,
+        formatDuration,
+    } = useAgoraCall({ mode: "VIDEO" });
+
+
     const handleSend = () => {
         if (!inputText.trim() && pendingFiles.length === 0) return;
         const newMsgs = [];
@@ -131,8 +147,8 @@ export default function VideoCallPage() {
     };
 
     return (
-        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-            <div className="msg-page-wrap">
+        <div className="call-page-shell">
+            <div className="call-page-layout">
                 {/* ── Left: Patient Panel ────────────────────────── */}
                 <div className="call-patient-panel">
                     <Link href="/patient-portal/messages" className="call-back-link">
@@ -141,17 +157,19 @@ export default function VideoCallPage() {
 
                     <div className="call-patient-info-card">
                         <div className="call-patient-avatar">
-                            <img
-                                src="/images/patients/01.jpg"
-                                alt="Masud Rana"
-                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                            />
-                            <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><img
-                                src="/images/patients/01.jpg"
-                                alt="Masud Rana"
-                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                            />
-                                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span></span>
+                            <div ref={remoteVideoRef} className="agora-remote-video" />
+
+                            {!isJoined && (
+                                <div className="video-waiting-text">
+                                    Connecting...
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="video-waiting-text">
+                                    {error}
+                                </div>
+                            )}
                         </div>
                         <div className="call-patient-meta">
                             <h3>Masud Rana</h3>
@@ -266,11 +284,7 @@ export default function VideoCallPage() {
 
                             {/* Doctor PiP — top right */}
                             <div className="video-pip">
-                                <img
-                                    src="/images/doctors/doctor-2.jpg"
-                                    alt="You"
-                                    onError={e => { e.currentTarget.style.display = "none"; }}
-                                />
+                                <div ref={localVideoRef} className="agora-local-video" />
                                 <div className="video-pip-label">
                                     <span className="video-pip-online-dot" />
                                     You
@@ -280,33 +294,40 @@ export default function VideoCallPage() {
                             {/* Call Duration — above controls bar */}
                             <div className="video-call-duration">
                                 <span className="video-call-duration-dot" />
-                                {fmt(seconds)}
+                                {formatDuration()}
                             </div>
 
                             {/* Controls bar — inside video, bottom center, pill shape */}
                             <div className="video-controls-bar">
-                                {[
-                                    { icon: "mic", label: "Mute" },
-                                    { icon: "video", label: "Stop Video" },
-                                    { icon: "screen", label: "Screen Share" },
-                                    { icon: "rotateCamera", label: "Switch Camera" },
-                                ].map((btn) => (
-                                    <button key={btn.label} className="video-ctrl-btn">
-                                        <div className="video-ctrl-icon">
-                                            <Icon type={btn.icon} />
-                                        </div>
-                                        <span className="video-ctrl-label">{btn.label}</span>
-                                    </button>
-                                ))}
+                                <button className="video-ctrl-btn" onClick={toggleMute}>
+                                    <div className="video-ctrl-icon">
+                                        <Icon type="mic" />
+                                    </div>
+                                    <span className="video-ctrl-label">
+                                        {isMuted ? "Unmute" : "Mute"}
+                                    </span>
+                                </button>
+
+                                <button className="video-ctrl-btn" onClick={toggleVideo}>
+                                    <div className="video-ctrl-icon">
+                                        <Icon type="video" />
+                                    </div>
+                                    <span className="video-ctrl-label">
+                                        {isVideoOff ? "Start Video" : "Stop Video"}
+                                    </span>
+                                </button>
 
                                 <div className="video-ctrl-divider" />
 
-                                <button className="video-ctrl-btn" onClick={() => router.push("/patient-portal/messages?activeConv=masud-rana")}>
+                                <button className="video-ctrl-btn" onClick={endCall}>
                                     <div className="video-ctrl-icon end-call">
                                         <Icon type="endcall" />
                                     </div>
                                     <span className="video-ctrl-label">End Call</span>
                                 </button>
+
+                                <div className="video-ctrl-divider" />
+
                             </div>
 
                             {/* Expand — bottom right */}
