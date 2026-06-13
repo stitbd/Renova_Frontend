@@ -22,15 +22,15 @@ const filters = [
 
 const container = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.04 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 14 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 120, damping: 18 },
+    transition: { type: "spring", stiffness: 130, damping: 18 },
   },
 };
 
@@ -42,6 +42,17 @@ function formatDate(date) {
     day: "2-digit",
     month: "short",
     year: "numeric",
+  }).format(new Date(date));
+}
+
+function formatTime(date) {
+  if (!date) return "N/A";
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
   }).format(new Date(date));
 }
 
@@ -66,17 +77,6 @@ function isTodayAppointment(appointmentDate) {
   return getDateKey(appointmentDate) === getDateKey(new Date());
 }
 
-function formatTime(date) {
-  if (!date) return "N/A";
-
-  return new Intl.DateTimeFormat("en-US", {
-    timeZone: TZ,
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  }).format(new Date(date));
-}
-
 function normalizeAppointment(apt) {
   const formattedDate = formatDate(apt.appointmentDate);
   const [day, month, year] = formattedDate.split(" ");
@@ -91,6 +91,7 @@ function normalizeAppointment(apt) {
     year,
     date: formattedDate,
     rawAppointmentDate: apt.appointmentDate,
+    startTimeRaw: apt.startTime,
     startTime: formatTime(apt.startTime),
     endTime: formatTime(apt.endTime),
     type: apt.type,
@@ -120,6 +121,27 @@ function getStats(appointments) {
     confirmed: appointments.filter((apt) => apt.status === "CONFIRMED").length,
     unpaid: appointments.filter((apt) => apt.paymentStatus === "UNPAID").length,
   };
+}
+
+function sortAppointments(list) {
+  const now = Date.now();
+
+  return [...list].sort((a, b) => {
+    const aIsClosed = ["COMPLETED", "CANCELLED"].includes(a.status);
+    const bIsClosed = ["COMPLETED", "CANCELLED"].includes(b.status);
+
+    if (aIsClosed && !bIsClosed) return 1;
+    if (!aIsClosed && bIsClosed) return -1;
+
+    const aTime = new Date(a.startTimeRaw || a.rawAppointmentDate).getTime();
+    const bTime = new Date(b.startTimeRaw || b.rawAppointmentDate).getTime();
+
+    if (!aIsClosed && !bIsClosed) {
+      return Math.abs(aTime - now) - Math.abs(bTime - now);
+    }
+
+    return bTime - aTime;
+  });
 }
 
 function AppointmentSkeleton() {
@@ -161,7 +183,6 @@ export default function AppointmentsPage() {
 
   const openCancelModal = (appointmentId) => {
     setCancelError("");
-
     setCancelModal({
       open: true,
       appointmentId,
@@ -267,11 +288,11 @@ export default function AppointmentsPage() {
         prev.map((apt) =>
           apt.id === cancelModal.appointmentId
             ? {
-              ...apt,
-              status: "CANCELLED",
-              cancellationReason: reason,
-              cancelledAt: new Date().toISOString(),
-            }
+                ...apt,
+                status: "CANCELLED",
+                cancellationReason: reason,
+                cancelledAt: new Date().toISOString(),
+              }
             : apt
         )
       );
@@ -286,21 +307,24 @@ export default function AppointmentsPage() {
       setCancelingId(null);
     }
   };
+
   const normalizedAppointments = useMemo(
     () => appointments.map(normalizeAppointment),
     [appointments]
   );
 
   const filteredAppointments = useMemo(() => {
-    if (activeFilter === "ALL") return normalizedAppointments;
+    let list = normalizedAppointments;
 
     if (activeFilter === "TODAY APPOINTMENTS") {
-      return normalizedAppointments.filter((apt) =>
+      list = normalizedAppointments.filter((apt) =>
         isTodayAppointment(apt.rawAppointmentDate)
       );
+    } else if (activeFilter !== "ALL") {
+      list = normalizedAppointments.filter((apt) => apt.status === activeFilter);
     }
 
-    return normalizedAppointments.filter((apt) => apt.status === activeFilter);
+    return sortAppointments(list);
   }, [normalizedAppointments, activeFilter]);
 
   const stats = useMemo(
@@ -315,19 +339,18 @@ export default function AppointmentsPage() {
       initial="hidden"
       animate="show"
     >
-      <motion.div className="appointments-topbar" variants={item}>
+      <motion.div className="appointments-hero" variants={item}>
         <div>
           <h1>My Appointments</h1>
           <p className="page-subtitle">
-            Manage your upcoming consultations, payment status, and appointment
-            history.
+            Track upcoming consultations, payments, and appointment history in one place.
           </p>
         </div>
 
         <motion.button
           className="btn-book-appointment"
           onClick={() => router.push("/appointment")}
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ y: -1 }}
           whileTap={{ scale: 0.98 }}
         >
           <span>+</span>
@@ -336,22 +359,26 @@ export default function AppointmentsPage() {
       </motion.div>
 
       <motion.div className="appointments-stats" variants={item}>
-        <div className="stat-card">
+        <div className="stat-card stat-total">
           <span>Total</span>
           <strong>{stats.total}</strong>
         </div>
+
         <div className="stat-card">
           <span>Today</span>
           <strong>{stats.today}</strong>
         </div>
+
         <div className="stat-card">
           <span>Pending</span>
           <strong>{stats.pending}</strong>
         </div>
+
         <div className="stat-card">
           <span>Confirmed</span>
           <strong>{stats.confirmed}</strong>
         </div>
+
         <div className="stat-card">
           <span>Unpaid</span>
           <strong>{stats.unpaid}</strong>
@@ -369,8 +396,8 @@ export default function AppointmentsPage() {
               {filter === "ALL"
                 ? "All"
                 : filter === "TODAY APPOINTMENTS"
-                  ? "Today Appointments"
-                  : getStatusLabel(filter)}
+                ? "Today"
+                : getStatusLabel(filter)}
             </button>
           ))}
         </div>
@@ -388,7 +415,9 @@ export default function AppointmentsPage() {
         </div>
       </motion.div>
 
-      {cancelError && <div className="appointment-error-alert">{cancelError}</div>}
+      {cancelError && (
+        <div className="appointment-error-alert">{cancelError}</div>
+      )}
 
       {isLoading && <AppointmentSkeleton />}
 
@@ -418,12 +447,8 @@ export default function AppointmentsPage() {
             {filteredAppointments.map((apt) => (
               <motion.div
                 key={apt.id}
-                className="appointment-card"
+                className={`appointment-card appointment-card-${apt.status.toLowerCase()}`}
                 variants={item}
-                whileHover={{
-                  y: -4,
-                  boxShadow: "0 18px 45px rgba(15, 23, 42, 0.1)",
-                }}
               >
                 <div className="appointment-date-block">
                   <strong>{apt.day}</strong>
@@ -474,16 +499,14 @@ export default function AppointmentsPage() {
                   </div>
 
                   <div className="appointment-footer">
-                    <p>
-                      <span>Code:</span> {apt.appointmentCode}
-                    </p>
+                  
                     <p>
                       <span>Fee:</span> ৳{apt.consultationFee}
                     </p>
                   </div>
                 </div>
 
-                <div className="appointment-actions">
+                <div className="appointment-actions compact-actions">
                   {apt.status === "CONFIRMED" && apt.type === "ONLINE" && (
                     <button className="btn-join">Join Call</button>
                   )}
@@ -517,7 +540,11 @@ export default function AppointmentsPage() {
           <div className="cancel-modal" onClick={(e) => e.stopPropagation()}>
             <div className="cancel-modal-header">
               <h3>Cancel Appointment</h3>
-              <button type="button" onClick={closeCancelModal} disabled={!!cancelingId}>
+              <button
+                type="button"
+                onClick={closeCancelModal}
+                disabled={!!cancelingId}
+              >
                 ×
               </button>
             </div>
@@ -541,8 +568,11 @@ export default function AppointmentsPage() {
                 rows={4}
                 disabled={!!cancelingId}
               />
+
               {cancelModal.error && (
-                <span className="cancel-modal-error">{cancelModal.error}</span>
+                <span className="cancel-modal-error">
+                  {cancelModal.error}
+                </span>
               )}
             </div>
 
@@ -568,7 +598,6 @@ export default function AppointmentsPage() {
           </div>
         </div>
       )}
-
     </motion.div>
   );
 }
