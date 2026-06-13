@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import "./patient-logout.css";
 
 export default function LogoutPage() {
   const router = useRouter();
@@ -11,12 +12,12 @@ export default function LogoutPage() {
     // Clear auth tokens/session
     localStorage.removeItem("patientToken");
     sessionStorage.clear();
-    
+
     // Redirect to login after short delay
     const timer = setTimeout(() => {
       router.push("/patient-portal/patient-signin");
     }, 1500);
-    
+
     return () => clearTimeout(timer);
   }, [router]);
 

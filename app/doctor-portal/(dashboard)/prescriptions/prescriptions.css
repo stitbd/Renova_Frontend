@@ -1,6 +1,6 @@
+/* prescriptions.css */
 /* ═══════════════════════════════════════════════════════════════
-   PRESCRIPTIONS LIST PAGE
-   File: styles/pages/prescriptions.css
+   PRESCRIPTIONS LIST PAGE — Fully Responsive & Mobile Friendly
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Page Header ───────────────────────────────────────────────── */
@@ -10,7 +10,7 @@
     align-items: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
 }
 
 .rx-page-title {
@@ -59,10 +59,10 @@
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 16px 18px;
+    padding: 14px 12px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     transition: box-shadow 0.2s ease;
 }
 
@@ -96,8 +96,8 @@
 }
 
 .rx-stat-icon {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -106,8 +106,8 @@
 }
 
 .rx-stat-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     fill: none;
     stroke: currentColor;
 }
@@ -139,21 +139,21 @@
 
 .rx-stat-body {
     min-width: 0;
+    flex: 1;
 }
 
 .rx-stat-label {
-    font-size: 11px;
+    font-size: 10px;
     color: #718096;
     font-weight: 500;
-    margin: 0 0 3px;
+    margin: 0 0 2px;
 }
 
 .rx-stat-value {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 800;
-    color: #1a202c;
     line-height: 1;
-    margin: 0 0 3px;
+    margin: 0 0 2px;
 }
 
 .rx-stat-value.green {
@@ -177,7 +177,7 @@
 }
 
 .rx-stat-sub {
-    font-size: 10.5px;
+    font-size: 9px;
     color: #94a3b8;
     margin: 0;
 }
@@ -186,12 +186,20 @@
 .rx-filter-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px;
     padding: 14px 16px;
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.rx-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
@@ -203,7 +211,7 @@
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     background: #f8fafc;
-    font-size: 12.5px;
+    font-size: 12px;
     color: #475569;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -231,6 +239,10 @@
     margin-left: 2px;
 }
 
+.rx-filter-text {
+    white-space: nowrap;
+}
+
 .rx-search-box {
     display: flex;
     align-items: center;
@@ -240,7 +252,7 @@
     border-radius: 8px;
     background: #f8fafc;
     flex: 1;
-    min-width: 180px;
+    min-width: 200px;
 }
 
 .rx-search-box svg {
@@ -255,32 +267,50 @@
     border: none;
     background: transparent;
     outline: none;
-    font-size: 12.5px;
+    font-size: 12px;
     color: #1a202c;
     width: 100%;
 }
 
-.rx-apply-btn {
+.rx-search-box input::placeholder {
+    color: #94a3b8;
+}
+
+.rx-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rx-apply-btn,
+.rx-reset-btn {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 9px 18px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.rx-apply-btn svg,
+.rx-reset-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+}
+
+.rx-apply-btn {
     background: #014fa1;
     color: #fff;
     border: none;
-    border-radius: 8px;
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s ease;
 }
 
 .rx-apply-btn svg {
-    width: 14px;
-    height: 14px;
     stroke: #fff;
-    fill: none;
 }
 
 .rx-apply-btn:hover {
@@ -288,26 +318,13 @@
 }
 
 .rx-reset-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 16px;
     background: #fff;
     color: #64748b;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s ease;
 }
 
 .rx-reset-btn svg {
-    width: 14px;
-    height: 14px;
     stroke: currentColor;
-    fill: none;
 }
 
 .rx-reset-btn:hover {
@@ -320,14 +337,20 @@
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
+}
+
+.rx-table-responsive-wrapper {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
 }
 
 .rx-table-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
+    padding: 14px 16px;
     border-bottom: 1px solid #e2e8f0;
     flex-wrap: wrap;
     gap: 10px;
@@ -346,16 +369,17 @@
 }
 
 .rx-tbl-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 8px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .rx-tbl-btn svg {
@@ -389,14 +413,15 @@
 /* ── Table ─────────────────────────────────────────────────────── */
 .rx-table {
     width: 100%;
+    min-width: 700px;
     border-collapse: collapse;
 }
 
 .rx-table thead th {
     background: #f8fafc;
-    padding: 12px 16px;
+    padding: 12px 14px;
     text-align: left;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
     color: #64748b;
     border-bottom: 1px solid #e2e8f0;
@@ -417,8 +442,8 @@
 }
 
 .rx-table td {
-    padding: 14px 16px;
-    font-size: 13px;
+    padding: 12px 14px;
+    font-size: 12px;
     color: #1a202c;
     vertical-align: middle;
 }
@@ -431,8 +456,8 @@
 }
 
 .rx-patient-avatar {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     overflow: hidden;
     background: #dbeafe;
@@ -456,104 +481,48 @@
 }
 
 .rx-patient-name {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: #1a202c;
     margin: 0 0 2px;
 }
 
 .rx-patient-id {
-    font-size: 11px;
+    font-size: 10px;
     color: #94a3b8;
     margin: 0 0 1px;
 }
 
 .rx-patient-age {
-    font-size: 11px;
+    font-size: 10px;
     color: #718096;
     margin: 0;
 }
 
-.rx-patient-avatar img,
-.rx-doctor-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.rx-patient-avatar,
-.rx-doctor-avatar {
-    position: relative;
-    overflow: hidden;
-}
-
-.rx-patient-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.rx-doctor-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Doctor cell */
+/* Doctor/Vital Signs cell */
 .rx-doctor-cell {
     display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.rx-doctor-avatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #dcfce7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.rx-doctor-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.rx-doctor-avatar svg {
-    width: 16px;
-    height: 16px;
-    stroke: #16a34a;
-    fill: none;
-}
-
-.rx-doctor-name {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 1px;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .rx-doctor-spec {
-    font-size: 11px;
-    color: #718096;
+    font-size: 10px;
+    color: #475569;
     margin: 0;
+    line-height: 1.4;
 }
 
 /* Date cell */
 .rx-date-primary {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     color: #1a202c;
     margin: 0 0 2px;
 }
 
 .rx-date-time {
-    font-size: 11px;
+    font-size: 10px;
     color: #94a3b8;
     margin: 0;
 }
@@ -561,38 +530,37 @@
 /* Medicines cell */
 .rx-medicine-icon-wrap {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
 }
 
 .rx-med-icon {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 6px;
     background: #dcfce7;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-top: 1px;
 }
 
 .rx-med-icon svg {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
     stroke: #16a34a;
     fill: none;
 }
 
 .rx-med-count {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     color: #1a202c;
     margin: 0 0 2px;
 }
 
 .rx-instr-count {
-    font-size: 11px;
+    font-size: 10px;
     color: #718096;
     margin: 0;
 }
@@ -601,9 +569,9 @@
 .rx-status-badge {
     display: inline-flex;
     align-items: center;
-    padding: 4px 12px;
+    padding: 3px 10px;
     border-radius: 20px;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 600;
     white-space: nowrap;
 }
@@ -623,11 +591,6 @@
     color: #ef4444;
 }
 
-.rx-status-badge.new {
-    background: #dbeafe;
-    color: #014fa1;
-}
-
 /* Action buttons */
 .rx-action-btns {
     display: flex;
@@ -636,9 +599,9 @@
 }
 
 .rx-act-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 7px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
     background: #fff;
     display: flex;
@@ -652,8 +615,8 @@
 }
 
 .rx-act-btn svg {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
     stroke: currentColor;
     fill: none;
 }
@@ -664,25 +627,19 @@
     color: #014fa1;
 }
 
-.rx-act-btn.danger:hover {
-    background: #fee2e2;
-    border-color: #ef4444;
-    color: #ef4444;
-}
-
 /* ── Pagination ────────────────────────────────────────────────── */
 .rx-pagination-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;
+    padding: 12px 16px;
     border-top: 1px solid #f1f5f9;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
 }
 
 .rx-pagination-info {
-    font-size: 12.5px;
+    font-size: 12px;
     color: #718096;
 }
 
@@ -690,18 +647,21 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .rx-page-btn {
-    width: 32px;
+    min-width: 32px;
     height: 32px;
+    padding: 0 8px;
     border: 1px solid #e2e8f0;
     background: #fff;
-    border-radius: 7px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     color: #64748b;
     cursor: pointer;
@@ -715,7 +675,7 @@
     fill: none;
 }
 
-.rx-page-btn:hover {
+.rx-page-btn:hover:not(:disabled):not(.dots) {
     background: #f1f5f9;
     border-color: #014fa1;
     color: #014fa1;
@@ -734,27 +694,51 @@
     color: #94a3b8;
 }
 
-/* ── Responsive ────────────────────────────────────────────────── */
-@media (max-width: 1280px) {
-    .rx-stats-row {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.rx-page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   FULLY RESPONSIVE — Mobile Friendly Breakpoints
+   ══════════════════════════════════════════════════════════════ */
+
+/* Tablet (max-width: 1024px) */
 @media (max-width: 1024px) {
     .rx-stats-row {
         grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
 
-    .rx-table thead th:nth-child(5),
-    .rx-table td:nth-child(5) {
-        display: none;
+    .rx-stat-card {
+        padding: 12px 10px;
+    }
+
+    .rx-stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .rx-stat-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .rx-stat-value {
+        font-size: 20px;
     }
 }
 
+/* Small Tablet (max-width: 768px) */
 @media (max-width: 768px) {
+    .rx-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .rx-stats-row {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .rx-filter-bar {
@@ -762,25 +746,336 @@
         align-items: stretch;
     }
 
+    .rx-filter-group {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rx-filter-item {
+        flex: 1;
+        justify-content: center;
+    }
+
     .rx-search-box {
         width: 100%;
     }
 
-    .rx-table thead th:nth-child(3),
-    .rx-table td:nth-child(3),
-    .rx-table thead th:nth-child(4),
-    .rx-table td:nth-child(4) {
-        display: none;
+    .rx-filter-actions {
+        width: 100%;
     }
-}
 
-@media (max-width: 480px) {
-    .rx-stats-row {
-        grid-template-columns: 1fr 1fr;
+    .rx-apply-btn,
+    .rx-reset-btn {
+        flex: 1;
+        justify-content: center;
     }
 
     .rx-table-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .rx-table-actions {
+        width: 100%;
+    }
+
+    .rx-tbl-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rx-pagination-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Mobile (max-width: 640px) - Convert table to card layout */
+@media (max-width: 640px) {
+    .rx-page-title {
+        font-size: 18px;
+    }
+
+    .rx-breadcrumb {
+        font-size: 11px;
+    }
+
+    .rx-stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .rx-stat-card {
+        padding: 10px 8px;
+        gap: 8px;
+    }
+
+    .rx-stat-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rx-stat-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .rx-stat-value {
+        font-size: 18px;
+    }
+
+    .rx-stat-label {
+        font-size: 9px;
+    }
+
+    .rx-stat-sub {
+        font-size: 8px;
+    }
+
+    .rx-filter-bar {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .rx-filter-item {
+        padding: 8px 12px;
+        font-size: 11px;
+        white-space: normal;
+        word-break: keep-all;
+    }
+
+    .rx-filter-group {
+        gap: 8px;
+    }
+
+    .rx-search-box {
+        padding: 8px 12px;
+    }
+
+    .rx-search-box input {
+        font-size: 11px;
+    }
+
+    .rx-apply-btn,
+    .rx-reset-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .rx-table-header {
+        padding: 12px;
+    }
+
+    .rx-table-title {
+        font-size: 13px;
+    }
+
+    .rx-tbl-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    /* Convert table to card layout */
+    .rx-table-responsive-wrapper {
+        overflow-x: visible;
+    }
+
+    .rx-table,
+    .rx-table thead,
+    .rx-table tbody,
+    .rx-table th,
+    .rx-table td,
+    .rx-table tr {
+        display: block;
+    }
+
+    .rx-table {
+        min-width: unset;
+    }
+
+    .rx-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .rx-table tbody tr {
+        display: block;
+        margin-bottom: 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+    }
+
+    .rx-table tbody tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .rx-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: right;
+        gap: 12px;
+    }
+
+    .rx-table td:last-child {
+        border-bottom: none;
+    }
+
+    .rx-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 11px;
+        color: #64748b;
+        text-align: left;
+        min-width: 100px;
+        flex-shrink: 0;
+    }
+
+    /* Card layout alignment fixes */
+    .rx-table td .rx-patient-cell,
+    .rx-table td .rx-doctor-cell,
+    .rx-table td .rx-medicine-icon-wrap {
+        justify-content: flex-end;
+    }
+
+    .rx-table td .rx-status-badge {
+        display: inline-flex;
+    }
+
+    .rx-pagination-info {
+        font-size: 11px;
+    }
+
+    .rx-page-btn {
+        min-width: 30px;
+        height: 30px;
+        font-size: 11px;
+    }
+}
+
+/* Extra Small (max-width: 480px) */
+@media (max-width: 480px) {
+    .rx-stats-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .rx-stat-card {
+        padding: 12px;
+    }
+
+    .rx-stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .rx-stat-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .rx-stat-value {
+        font-size: 22px;
+    }
+
+    .rx-filter-group {
+        flex-direction: column;
+    }
+
+    .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .rx-filter-actions {
+        flex-direction: column;
+    }
+
+    .rx-apply-btn,
+    .rx-reset-btn {
+        width: 100%;
+    }
+
+    .rx-pagination-btns {
+        gap: 3px;
+    }
+
+    .rx-page-btn {
+        min-width: 28px;
+        height: 28px;
+        font-size: 10px;
+        padding: 0 6px;
+    }
+}
+
+/* Very Small (max-width: 380px) */
+@media (max-width: 380px) {
+    .rx-table td {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .rx-table td::before {
+        margin-bottom: 8px;
+        min-width: unset;
+    }
+
+    .rx-table td .rx-patient-cell,
+    .rx-table td .rx-doctor-cell,
+    .rx-table td .rx-medicine-icon-wrap,
+    .rx-table td .rx-action-btns {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .rx-patient-cell {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .rx-patient-avatar {
+        margin-bottom: 0;
+    }
+
+    .rx-medicine-icon-wrap {
+        justify-content: flex-start;
+    }
+
+    .rx-action-btns {
+        justify-content: flex-start;
+        gap: 8px;
+    }
+}
+
+/* Touch-friendly improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+
+    .rx-filter-item,
+    .rx-apply-btn,
+    .rx-reset-btn,
+    .rx-tbl-btn,
+    .rx-act-btn,
+    .rx-page-btn {
+        min-height: 44px;
+    }
+
+    .rx-filter-item {
+        min-height: 40px;
+    }
+
+    .rx-act-btn {
+        min-height: 40px;
+        width: 40px;
+    }
+
+    .rx-page-btn {
+        min-height: 40px;
     }
 }

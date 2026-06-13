@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import "./patient-reports.css";
 
 // Animation variants - Reusable & Consistent
 const containerVariants = {
@@ -18,8 +19,8 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100, damping: 15 }
   }
@@ -27,8 +28,8 @@ const itemVariants = {
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: "easeOut" }
   }
@@ -36,8 +37,8 @@ const fadeInUp = {
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     scale: 1,
     transition: { duration: 0.4, ease: "easeOut" }
   }
@@ -54,26 +55,26 @@ const reportsData = [
 const reportIcons = {
   "Machine Report": (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="3" width="20" height="14" rx="2"/>
-      <line x1="8" y1="21" x2="16" y2="21"/>
-      <line x1="12" y1="17" x2="12" y2="21"/>
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <line x1="8" y1="21" x2="16" y2="21" />
+      <line x1="12" y1="17" x2="12" y2="21" />
     </svg>
   ),
   "Lab Report": (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2zM9 9h6v6H9V9z"/>
+      <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2zM9 9h6v6H9V9z" />
     </svg>
   ),
   "Cardiac Report": (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
     </svg>
   ),
   "Imaging Report": (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-      <circle cx="8.5" cy="8.5" r="1.5"/>
-      <path d="M21 15l-5-5L5 21"/>
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <path d="M21 15l-5-5L5 21" />
     </svg>
   ),
 };
@@ -92,26 +93,26 @@ export default function ReportsPage() {
   const filteredReports = reportsData.filter((report) => {
     const matchesFilter = filter === "all" || report.status.toLowerCase() === filter;
     const matchesSearch = report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         report.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         report.doctor.toLowerCase().includes(searchTerm.toLowerCase());
+      report.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      report.doctor.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const getStatusConfig = (status) => statusColors[status.toLowerCase()] || statusColors.pending;
 
   return (
-    <motion.div 
+    <motion.div
       className="reports-page"
       variants={containerVariants}
       initial="hidden"
       animate="show"
     >
       {/* Page Header */}
-      <motion.div 
+      <motion.div
         className="page-header"
         variants={itemVariants}
       >
-        <motion.h1 
+        <motion.h1
           className="page-title"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -119,7 +120,7 @@ export default function ReportsPage() {
         >
           Medical Reports
         </motion.h1>
-        <motion.button 
+        <motion.button
           className="btn btn-primary"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -135,19 +136,19 @@ export default function ReportsPage() {
       </motion.div>
 
       {/* Filters & Search */}
-      <motion.div 
+      <motion.div
         className="reports-controls"
         variants={itemVariants}
       >
-        <motion.div 
+        <motion.div
           className="search-box"
           whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
           transition={{ duration: 0.2 }}
         >
-          <motion.svg 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
+          <motion.svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
             strokeWidth="2"
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -162,7 +163,7 @@ export default function ReportsPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </motion.div>
-        
+
         <motion.div className="filter-tabs">
           {["all", "normal", "risk", "pending"].map((f, i) => (
             <motion.button
@@ -177,7 +178,7 @@ export default function ReportsPage() {
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
               {f !== "all" && (
-                <motion.span 
+                <motion.span
                   className="filter-count"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -192,7 +193,7 @@ export default function ReportsPage() {
       </motion.div>
 
       {/* Stats Summary */}
-      <motion.div 
+      <motion.div
         className="reports-stats"
         variants={itemVariants}
       >
@@ -209,7 +210,7 @@ export default function ReportsPage() {
             whileHover={{ y: -4 }}
             style={{ borderLeftColor: stat.color }}
           >
-            <motion.span 
+            <motion.span
               className="stat-label"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -217,7 +218,7 @@ export default function ReportsPage() {
             >
               {stat.label}
             </motion.span>
-            <motion.span 
+            <motion.span
               className="stat-value"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -232,7 +233,7 @@ export default function ReportsPage() {
       {/* Reports Grid */}
       <AnimatePresence mode="wait">
         {filteredReports.length > 0 ? (
-          <motion.div 
+          <motion.div
             className="reports-grid"
             key="grid"
             variants={containerVariants}
@@ -243,27 +244,27 @@ export default function ReportsPage() {
             {filteredReports.map((report, index) => {
               const statusConfig = getStatusConfig(report.status);
               const IconComponent = reportIcons[report.type] || reportIcons["Machine Report"];
-              
+
               return (
                 <motion.div
                   key={report.id}
                   className="report-card"
                   variants={itemVariants}
                   layout
-                  whileHover={{ 
+                  whileHover={{
                     y: -6,
                     boxShadow: "0 12px 32px rgba(0,0,0,0.15)",
                     transition: { duration: 0.2 }
                   }}
                 >
                   {/* Report Header */}
-                  <motion.div 
+                  <motion.div
                     className="report-header"
                     onClick={() => setExpandedReport(expandedReport === report.id ? null : report.id)}
                     whileHover={{ backgroundColor: "#f8fafc" }}
                     transition={{ duration: 0.2 }}
                   >
-                    <motion.div 
+                    <motion.div
                       className="report-icon"
                       style={{ backgroundColor: `${statusConfig.bg}`, color: statusConfig.text }}
                       whileHover={{ scale: 1.1, rotate: 5 }}
@@ -272,7 +273,7 @@ export default function ReportsPage() {
                       {IconComponent}
                     </motion.div>
                     <div className="report-info">
-                      <motion.h3 
+                      <motion.h3
                         className="report-title"
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -280,7 +281,7 @@ export default function ReportsPage() {
                       >
                         {report.title}
                       </motion.h3>
-                      <motion.p 
+                      <motion.p
                         className="report-type"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -289,7 +290,7 @@ export default function ReportsPage() {
                         {report.type}
                       </motion.p>
                     </div>
-                    <motion.span 
+                    <motion.span
                       className={`report-status status-${report.status.toLowerCase()}`}
                       style={{ backgroundColor: statusConfig.bg, color: statusConfig.text }}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -298,11 +299,11 @@ export default function ReportsPage() {
                     >
                       {report.status}
                     </motion.span>
-                    <motion.svg 
+                    <motion.svg
                       className="expand-icon"
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
                       strokeWidth="2"
                       animate={{ rotate: expandedReport === report.id ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -314,14 +315,14 @@ export default function ReportsPage() {
                   {/* Expanded Details */}
                   <AnimatePresence>
                     {expandedReport === report.id && (
-                      <motion.div 
+                      <motion.div
                         className="report-details"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <motion.div 
+                        <motion.div
                           className="report-description"
                           variants={fadeInUp}
                           initial="hidden"
@@ -330,28 +331,28 @@ export default function ReportsPage() {
                           <h4>Report Summary:</h4>
                           <p>{report.description}</p>
                         </motion.div>
-                        
-                        <motion.div 
+
+                        <motion.div
                           className="report-meta"
                           variants={containerVariants}
                           initial="hidden"
                           animate="show"
                         >
-                          <motion.div 
+                          <motion.div
                             className="meta-item"
                             variants={itemVariants}
                           >
                             <span className="meta-label">Date:</span>
                             <span className="meta-value">{report.date}</span>
                           </motion.div>
-                          <motion.div 
+                          <motion.div
                             className="meta-item"
                             variants={itemVariants}
                           >
                             <span className="meta-label">Doctor:</span>
                             <span className="meta-value">{report.doctor}</span>
                           </motion.div>
-                          <motion.div 
+                          <motion.div
                             className="meta-item"
                             variants={itemVariants}
                           >
@@ -360,13 +361,13 @@ export default function ReportsPage() {
                           </motion.div>
                         </motion.div>
 
-                        <motion.div 
+                        <motion.div
                           className="report-actions"
                           variants={containerVariants}
                           initial="hidden"
                           animate="show"
                         >
-                          <motion.button 
+                          <motion.button
                             className="btn-view-report"
                             variants={itemVariants}
                             whileHover={{ scale: 1.05 }}
@@ -378,7 +379,7 @@ export default function ReportsPage() {
                             </svg>
                             View Full Report
                           </motion.button>
-                          <motion.button 
+                          <motion.button
                             className="btn-download"
                             variants={itemVariants}
                             whileHover={{ scale: 1.05 }}
@@ -391,7 +392,7 @@ export default function ReportsPage() {
                             </svg>
                             Download PDF
                           </motion.button>
-                          <motion.button 
+                          <motion.button
                             className="btn-share"
                             variants={itemVariants}
                             whileHover={{ scale: 1.05 }}
@@ -415,7 +416,7 @@ export default function ReportsPage() {
             })}
           </motion.div>
         ) : (
-          <motion.div 
+          <motion.div
             key="empty"
             className="reports-empty"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -423,9 +424,9 @@ export default function ReportsPage() {
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3 }}
           >
-            <motion.div 
+            <motion.div
               className="empty-icon"
-              animate={{ 
+              animate={{
                 y: [0, -10, 0],
                 transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
               }}
@@ -440,7 +441,7 @@ export default function ReportsPage() {
             </motion.div>
             <h3>No reports found</h3>
             <p>Try adjusting your search or filter criteria</p>
-            <motion.button 
+            <motion.button
               className="btn-clear-filters"
               onClick={() => { setSearchTerm(""); setFilter("all"); }}
               whileHover={{ scale: 1.05 }}
@@ -454,11 +455,11 @@ export default function ReportsPage() {
 
       {/* Pagination */}
       {filteredReports.length > 0 && (
-        <motion.div 
+        <motion.div
           className="pagination"
           variants={itemVariants}
         >
-          <motion.button 
+          <motion.button
             className="page-btn"
             disabled
             whileHover={{ scale: 1 }}
@@ -466,8 +467,8 @@ export default function ReportsPage() {
             Previous
           </motion.button>
           {[1, 2, 3].map(num => (
-            <motion.button 
-              key={num} 
+            <motion.button
+              key={num}
               className={`page-num ${num === 1 ? "active" : ""}`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -476,7 +477,7 @@ export default function ReportsPage() {
               {num}
             </motion.button>
           ))}
-          <motion.button 
+          <motion.button
             className="page-btn"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

@@ -2,6 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import "./patient-health-summary.css";
 
 const healthData = {
   score: 85,
@@ -35,8 +36,8 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100 }
   }
@@ -44,48 +45,48 @@ const item = {
 
 export default function HealthSummaryPage() {
   return (
-    <motion.div 
+    <motion.div
       className="health-summary"
       variants={container}
       initial="hidden"
       animate="show"
     >
       {/* Health Score Card */}
-      <motion.div 
+      <motion.div
         className="health-score-card"
         variants={item}
-        whileHover={{ 
+        whileHover={{
           boxShadow: "0 8px 24px rgba(22, 163, 74, 0.15)",
           transition: { duration: 0.3 }
         }}
       >
-        <motion.div 
+        <motion.div
           className="score-circle"
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
           <svg className="circular-chart" viewBox="0 0 100 100">
-            <motion.circle 
-              className="circle-bg" 
-              cx="50" 
-              cy="50" 
+            <motion.circle
+              className="circle-bg"
+              cx="50"
+              cy="50"
               r="45"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             />
-            <motion.circle 
-              className="circle" 
-              cx="50" 
-              cy="50" 
-              r="45" 
+            <motion.circle
+              className="circle"
+              cx="50"
+              cy="50"
+              r="45"
               strokeDasharray={`${healthData.score}, 100`}
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
             />
           </svg>
-          <motion.span 
+          <motion.span
             className="score-value"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -102,7 +103,7 @@ export default function HealthSummaryPage() {
           >
             Health Score
           </motion.h3>
-          <motion.p 
+          <motion.p
             className="score-status"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -110,7 +111,7 @@ export default function HealthSummaryPage() {
           >
             {healthData.status}
           </motion.p>
-          <motion.p 
+          <motion.p
             className="score-description"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -122,24 +123,24 @@ export default function HealthSummaryPage() {
       </motion.div>
 
       {/* Vitals Grid */}
-      <motion.div 
+      <motion.div
         className="vitals-grid"
         variants={container}
         initial="hidden"
         animate="show"
       >
         {healthData.vitals.map((vital, idx) => (
-          <motion.div 
-            key={idx} 
+          <motion.div
+            key={idx}
             className="vital-card"
             variants={item}
-            whileHover={{ 
+            whileHover={{
               y: -4,
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               transition: { duration: 0.2 }
             }}
           >
-            <motion.span 
+            <motion.span
               className="vital-label"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -147,7 +148,7 @@ export default function HealthSummaryPage() {
             >
               {vital.label}
             </motion.span>
-            <motion.span 
+            <motion.span
               className="vital-value"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -156,7 +157,7 @@ export default function HealthSummaryPage() {
               {vital.value}
               {vital.unit && <span className="vital-unit">{vital.unit}</span>}
             </motion.span>
-            <motion.span 
+            <motion.span
               className={`vital-status status-${vital.status}`}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -169,7 +170,7 @@ export default function HealthSummaryPage() {
       </motion.div>
 
       {/* Trends Charts */}
-      <motion.div 
+      <motion.div
         className="trends-section"
         variants={item}
       >
@@ -179,15 +180,15 @@ export default function HealthSummaryPage() {
         >
           Health Trends
         </motion.h3>
-        <motion.div 
+        <motion.div
           className="trends-grid"
           variants={container}
           initial="hidden"
           animate="show"
         >
           {healthData.trends.map((trend, idx) => (
-            <motion.div 
-              key={idx} 
+            <motion.div
+              key={idx}
               className="trend-card"
               variants={item}
               whileHover={{ y: -4 }}
@@ -200,26 +201,26 @@ export default function HealthSummaryPage() {
                 {trend.label}
               </motion.h4>
               <div className="trend-chart">
-                <motion.div 
+                <motion.div
                   className="chart-bars"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
                   {trend.data.map((val, i) => (
-                    <motion.div 
-                      key={i} 
-                      className="chart-bar" 
+                    <motion.div
+                      key={i}
+                      className="chart-bar"
                       style={{ height: `${(val / Math.max(...trend.data)) * 100}%` }}
                       initial={{ height: 0 }}
                       animate={{ height: `${(val / Math.max(...trend.data)) * 100}%` }}
-                      transition={{ 
-                        duration: 0.8, 
+                      transition={{
+                        duration: 0.8,
                         delay: 0.3 + i * 0.1,
                         ease: "easeOut"
                       }}
                     >
-                      <motion.span 
+                      <motion.span
                         className="bar-value"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -238,10 +239,10 @@ export default function HealthSummaryPage() {
       </motion.div>
 
       {/* Recommendations */}
-      <motion.div 
+      <motion.div
         className="recommendations-card"
         variants={item}
-        whileHover={{ 
+        whileHover={{
           boxShadow: "0 8px 24px rgba(66, 138, 38, 0.1)",
           transition: { duration: 0.3 }
         }}
@@ -252,23 +253,23 @@ export default function HealthSummaryPage() {
         >
           Personalized Recommendations
         </motion.h3>
-        <motion.ul 
+        <motion.ul
           className="recommendations-list"
           variants={container}
           initial="hidden"
           animate="show"
         >
           {healthData.recommendations.map((rec, idx) => (
-            <motion.li 
-              key={idx} 
+            <motion.li
+              key={idx}
               className="recommendation-item"
               variants={item}
               whileHover={{ x: 4 }}
             >
-              <motion.svg 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <motion.svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 transition={{ duration: 0.2 }}

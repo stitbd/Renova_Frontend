@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import "./patient-prescriptions.css";
 
 const prescriptionsData = [
   { id: 1, doctor: "Dr. Afsana Rahman", specialty: "Dermatologist", date: "10 May 2025", medications: ["Cetirizine 10mg - 1 tablet daily", "Calamine Lotion - Apply twice daily"], duration: "7 days", status: "Active" },
@@ -20,8 +21,8 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100 }
   }
@@ -31,7 +32,7 @@ export default function PrescriptionsPage() {
   const [expandedId, setExpandedId] = useState(null);
 
   return (
-    <motion.div 
+    <motion.div
       className="prescriptions-list"
       variants={container}
       initial="hidden"
@@ -39,20 +40,20 @@ export default function PrescriptionsPage() {
     >
       <AnimatePresence>
         {prescriptionsData.map((prescription) => (
-          <motion.div 
-            key={prescription.id} 
+          <motion.div
+            key={prescription.id}
             className="prescription-card"
             variants={item}
             layout
           >
-            <motion.div 
-              className="prescription-header" 
+            <motion.div
+              className="prescription-header"
               onClick={() => setExpandedId(expandedId === prescription.id ? null : prescription.id)}
               whileHover={{ backgroundColor: "#f8fafc" }}
               transition={{ duration: 0.2 }}
             >
               <div className="prescription-doctor">
-                <motion.div 
+                <motion.div
                   className="doctor-avatar"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ type: "spring", stiffness: 400 }}
@@ -69,7 +70,7 @@ export default function PrescriptionsPage() {
               </div>
               <div className="prescription-meta">
                 <span className="prescription-date">{prescription.date}</span>
-                <motion.span 
+                <motion.span
                   className={`prescription-status status-${prescription.status.toLowerCase()}`}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -78,11 +79,11 @@ export default function PrescriptionsPage() {
                   {prescription.status}
                 </motion.span>
               </div>
-              <motion.svg 
-                className={`expand-icon ${expandedId === prescription.id ? "expanded" : ""}`} 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <motion.svg
+                className={`expand-icon ${expandedId === prescription.id ? "expanded" : ""}`}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
                 animate={{ rotate: expandedId === prescription.id ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
@@ -93,7 +94,7 @@ export default function PrescriptionsPage() {
 
             <AnimatePresence>
               {expandedId === prescription.id && (
-                <motion.div 
+                <motion.div
                   className="prescription-details"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
@@ -113,15 +114,15 @@ export default function PrescriptionsPage() {
                       animate="show"
                     >
                       {prescription.medications.map((med, idx) => (
-                        <motion.li 
-                          key={idx} 
+                        <motion.li
+                          key={idx}
                           className="medication-item"
                           variants={item}
                         >
-                          <motion.svg 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            stroke="currentColor" 
+                          <motion.svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
                             strokeWidth="2"
                             whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                             transition={{ duration: 0.3 }}
@@ -136,7 +137,7 @@ export default function PrescriptionsPage() {
                   <div className="prescription-footer">
                     <span className="duration">Duration: {prescription.duration}</span>
                     <div className="prescription-actions">
-                      <motion.button 
+                      <motion.button
                         className="btn-download-pdf"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -148,7 +149,7 @@ export default function PrescriptionsPage() {
                         </svg>
                         Download PDF
                       </motion.button>
-                      <motion.button 
+                      <motion.button
                         className="btn-reminder"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

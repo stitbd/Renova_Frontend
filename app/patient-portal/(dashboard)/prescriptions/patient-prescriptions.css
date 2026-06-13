@@ -1,0 +1,223 @@
+/* ======================================================
+   CSS FILE: patient-prescriptions.css
+   ====================================================== */
+
+.prescriptions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.prescription-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+    transition: box-shadow 0.2s ease;
+}
+
+.prescription-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.prescription-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.prescription-doctor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.doctor-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doctor-avatar svg {
+    width: 22px;
+    height: 22px;
+    stroke: #014fa1;
+}
+
+.doctor-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+.doctor-specialty {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+}
+
+.prescription-meta {
+    text-align: right;
+}
+
+.prescription-date {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.prescription-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-completed {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+.expand-icon {
+    width: 20px;
+    height: 20px;
+    stroke: #94a3b8;
+    transition: transform 0.2s ease;
+}
+
+.expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+.prescription-details {
+    padding-top: 14px;
+}
+
+.medications-list h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 8px;
+}
+
+.medications-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.medication-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.medication-item svg {
+    width: 16px;
+    height: 16px;
+    stroke: #014fa1;
+}
+
+.prescription-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.duration {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.prescription-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-download-pdf,
+.btn-reminder {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-download-pdf {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #014fa1;
+}
+
+.btn-download-pdf:hover {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.btn-reminder {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #428a26;
+}
+
+.btn-reminder:hover {
+    background: #428a26;
+    color: #fff;
+    border-color: #428a26;
+}
+
+.btn-download-pdf svg,
+.btn-reminder svg {
+    width: 16px;
+    height: 16px;
+}
+
+@media (max-width: 768px) {
+    .prescription-header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .prescription-footer {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .prescription-actions {
+        flex-direction: column;
+    }
+
+    .btn-download-pdf,
+    .btn-reminder {
+        width: 100%;
+        justify-content: center;
+    }
+}
