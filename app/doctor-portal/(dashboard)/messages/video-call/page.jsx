@@ -148,14 +148,23 @@ export default function VideoCallPage() {
                             <img
                                 src="/images/patients/01.jpg"
                                 alt="Masud Rana"
-                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                                onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                    e.currentTarget.nextSibling.style.display = "flex";
+                                }}
                             />
-                            <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><img
-                                src="/images/patients/01.jpg"
-                                alt="Masud Rana"
-                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                            />
-                                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><Icon type="user" /></span></span>
+
+                            <span
+                                style={{
+                                    display: "none",
+                                    width: "100%",
+                                    height: "100%",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Icon type="user" />
+                            </span>
                         </div>
                         <div className="call-patient-meta">
                             <h3>Masud Rana</h3>
@@ -254,11 +263,19 @@ export default function VideoCallPage() {
                         <div className="video-main-area">
 
                             {/* Full-cover patient video */}
-                            <img
-                                src="/images/patients/01.jpg"
-                                alt="Patient"
-                                onError={e => { e.currentTarget.style.display = "none"; }}
-                            />
+                            <div ref={remoteVideoRef} className="agora-remote-video" />
+
+                            {!isJoined && (
+                                <div className="video-waiting-text">
+                                    Connecting...
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="video-waiting-text">
+                                    {error}
+                                </div>
+                            )}
 
                             {/* Patient label — top left */}
                             <div className="video-patient-label">

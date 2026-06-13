@@ -82,7 +82,6 @@ function Toggle({ checked, onChange }) {
 
 export default function VideoCallPage() {
     const [activeTab, setActiveTab] = useState("Chat");
-    const [seconds, setSeconds] = useState(765); // 12:45
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
     const [adaptive, setAdaptive] = useState(true);
@@ -135,17 +134,6 @@ export default function VideoCallPage() {
         input.click();
     };
 
-    useEffect(() => {
-        const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const fmt = (s) => {
-        const m = Math.floor(s / 60).toString().padStart(2, "0");
-        const sec = (s % 60).toString().padStart(2, "0");
-        return `${m}:${sec}`;
-    };
-
     return (
         <div className="call-page-shell">
             <div className="call-page-layout">
@@ -157,19 +145,26 @@ export default function VideoCallPage() {
 
                     <div className="call-patient-info-card">
                         <div className="call-patient-avatar">
-                            <div ref={remoteVideoRef} className="agora-remote-video" />
+                            <img
+                                src="/images/patients/01.jpg"
+                                alt="Masud Rana"
+                                onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                    e.currentTarget.nextSibling.style.display = "flex";
+                                }}
+                            />
 
-                            {!isJoined && (
-                                <div className="video-waiting-text">
-                                    Connecting...
-                                </div>
-                            )}
-
-                            {error && (
-                                <div className="video-waiting-text">
-                                    {error}
-                                </div>
-                            )}
+                            <span
+                                style={{
+                                    display: "none",
+                                    width: "100%",
+                                    height: "100%",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Icon type="user" />
+                            </span>
                         </div>
                         <div className="call-patient-meta">
                             <h3>Masud Rana</h3>
@@ -268,11 +263,19 @@ export default function VideoCallPage() {
                         <div className="video-main-area">
 
                             {/* Full-cover patient video */}
-                            <img
-                                src="/images/patients/01.jpg"
-                                alt="Patient"
-                                onError={e => { e.currentTarget.style.display = "none"; }}
-                            />
+                            <div ref={remoteVideoRef} className="agora-remote-video" />
+
+                            {!isJoined && (
+                                <div className="video-waiting-text">
+                                    Connecting...
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="video-waiting-text">
+                                    {error}
+                                </div>
+                            )}
 
                             {/* Patient label — top left */}
                             <div className="video-patient-label">
