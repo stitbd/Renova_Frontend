@@ -113,9 +113,9 @@ const statusLabel = { dispensed: "Dispensed", pending: "Pending", cancelled: "Ca
 
 const getDoctorImage = (index) => {
   const imageNum = (index % 9) + 1;
-  const imageNumStr = imageNum.toString().padStart(2, '0');
-  return `/images/doctors/${imageNumStr}.jpg`;
+  return `/images/doctors/doctor-${imageNum}.jpg`;
 };
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -123,6 +123,13 @@ export default function PrescriptionsPage() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [allPrescriptions, setAllPrescriptions] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [showDoctorDropdown, setShowDoctorDropdown] = useState(false);
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("prescriptions") || "[]");
@@ -131,12 +138,26 @@ export default function PrescriptionsPage() {
     setAllPrescriptions([...validSaved, ...prescriptionsData]);
   }, []);
 
+  const doctorList = [...new Map(allPrescriptions.filter(p => p?.doctor).map(p => [p.doctor.name, p.doctor])).values()];
+
   const filtered = allPrescriptions.filter((p) => {
     if (!p || !p.doctor) return false;
-    return (
+    const matchSearch =
       p.doctor.name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.id?.toLowerCase().includes(search.toLowerCase())
-    );
+      p.id?.toLowerCase().includes(search.toLowerCase());
+    const matchDoctor = selectedDoctor === "all" || p.doctor.name === selectedDoctor;
+    const matchStatus = selectedStatus === "all" || p.status === selectedStatus;
+
+    const matchDate = (() => {
+      if (!dateFrom && !dateTo) return true;
+      const rxDate = new Date(p.date);
+      const from = dateFrom ? new Date(dateFrom) : null;
+      const to = dateTo ? new Date(dateTo) : null;
+      if (from && rxDate < from) return false;
+      if (to && rxDate > to) return false;
+      return true;
+    })();
+    return matchSearch && matchDoctor && matchStatus && matchDate;
   });
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -165,19 +186,62 @@ export default function PrescriptionsPage() {
 
       <div className="rx-filter-bar">
         <div className="rx-filter-group">
-          <button className="rx-filter-item">
-            <Icon type="date" />
-            <span>01 May 2025 – 31 May 2025</span>
-            <Icon type="chevdown" cls="rx-filter-chevron" />
-          </button>
-          <button className="rx-filter-item">
-            <span>All Doctors</span>
-            <Icon type="chevdown" cls="rx-filter-chevron" />
-          </button>
-          <button className="rx-filter-item">
-            <span>All Status</span>
-            <Icon type="chevdown" cls="rx-filter-chevron" />
-          </button>
+          <div className="rx-filter-group-row">
+            <div style={{ position: "relative", flex: 1 }}>
+              <button className="rx-filter-item" onClick={() => { setShowDatePicker(v => !v); setShowDoctorDropdown(false); setShowStatusDropdown(false); }}>
+                <Icon type="date" />
+                <span>{dateFrom && dateTo ? `${dateFrom} – ${dateTo}` : dateFrom ? `From ${dateFrom}` : dateTo ? `To ${dateTo}` : "Date Range"}</span>
+                <Icon type="chevdown" cls="rx-filter-chevron" />
+              </button>
+              {showDatePicker && (
+                <div className="rx-dropdown rx-date-dropdown">
+                  <div className="rx-date-row">
+                    <label>From</label>
+                    <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+                  </div>
+                  <div className="rx-date-row">
+                    <label>To</label>
+                    <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} />
+                  </div>
+                  <div className="rx-date-actions">
+                    <button onClick={() => { setDateFrom(""); setDateTo(""); }}>Clear</button>
+                    <button className="apply" onClick={() => setShowDatePicker(false)}>Apply</button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div style={{ position: "relative", flex: 1 }}>
+              <button className="rx-filter-item" onClick={() => { setShowDoctorDropdown(v => !v); setShowStatusDropdown(false); setShowDatePicker(false); }}>
+                <span>{selectedDoctor === "all" ? "All Doctors" : `Dr. ${selectedDoctor}`}</span>
+                <Icon type="chevdown" cls="rx-filter-chevron" />
+              </button>
+              {showDoctorDropdown && (
+                <div className="rx-dropdown">
+                  <div className="rx-dropdown-item" onClick={() => { setSelectedDoctor("all"); setShowDoctorDropdown(false); }}>All Doctors</div>
+                  {doctorList.map(d => (
+                    <div key={d.name} className="rx-dropdown-item" onClick={() => { setSelectedDoctor(d.name); setShowDoctorDropdown(false); }}>
+                      Dr. {d.name} <span style={{ color: "#94a3b8", fontSize: "10px" }}>{d.specialization}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div style={{ position: "relative", flex: 1 }}>
+              <button className="rx-filter-item" onClick={() => { setShowStatusDropdown(v => !v); setShowDoctorDropdown(false); setShowDatePicker(false); }}>
+                <span>{selectedStatus === "all" ? "All Status" : statusLabel[selectedStatus]}</span>
+                <Icon type="chevdown" cls="rx-filter-chevron" />
+              </button>
+              {showStatusDropdown && (
+                <div className="rx-dropdown">
+                  {[["all", "All Status"], ["dispensed", "Dispensed"], ["pending", "Pending"], ["cancelled", "Cancelled"]].map(([val, label]) => (
+                    <div key={val} className="rx-dropdown-item" onClick={() => { setSelectedStatus(val); setShowStatusDropdown(false); }}>
+                      {label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         <div className="rx-search-box">
           <Icon type="search" />
@@ -192,7 +256,7 @@ export default function PrescriptionsPage() {
           <button className="rx-apply-btn">
             <Icon type="filter" /> Apply Filter
           </button>
-          <button className="rx-reset-btn">
+          <button className="rx-reset-btn" onClick={() => { setSelectedDoctor("all"); setSelectedStatus("all"); setSearch(""); setDateFrom(""); setDateTo(""); setCurrentPage(1); }}>
             <Icon type="reset" /> Reset
           </button>
         </div>

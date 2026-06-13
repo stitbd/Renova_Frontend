@@ -203,6 +203,14 @@
     flex-wrap: wrap;
 }
 
+.rx-filter-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 .rx-filter-item {
     display: flex;
     align-items: center;
@@ -699,6 +707,106 @@
     cursor: not-allowed;
 }
 
+.rx-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.rx-dropdown-item {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.rx-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #014fa1;
+}
+
+
+.rx-date-dropdown {
+    min-width: 280px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rx-date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rx-date-row label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.rx-date-row input[type="date"] {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    width: 100%;
+}
+
+.rx-date-row input[type="date"]:focus {
+    border-color: #014fa1;
+}
+
+.rx-date-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.rx-date-actions button {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.rx-date-actions button:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.rx-date-actions button.apply {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.rx-date-actions button.apply:hover {
+    background: #013d80;
+}
+
 /* ══════════════════════════════════════════════════════════════
    FULLY RESPONSIVE — Mobile Friendly Breakpoints
    ══════════════════════════════════════════════════════════════ */
@@ -744,16 +852,29 @@
     .rx-filter-bar {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
 
     .rx-filter-group {
-        justify-content: space-between;
         width: 100%;
     }
 
-    .rx-filter-item {
+    .rx-filter-group-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .rx-filter-group-row>div {
         flex: 1;
-        justify-content: center;
+        min-width: 0;
+    }
+
+    .rx-filter-group-row .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 11px;
     }
 
     .rx-search-box {
@@ -762,6 +883,8 @@
 
     .rx-filter-actions {
         width: 100%;
+        display: flex;
+        gap: 8px;
     }
 
     .rx-apply-btn,
@@ -960,6 +1083,19 @@
 
 /* Extra Small (max-width: 480px) */
 @media (max-width: 480px) {
+    .rx-filter-group-row {
+        flex-direction: column;
+    }
+
+    .rx-filter-group-row>div {
+        width: 100%;
+    }
+
+    .rx-filter-group-row .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
     .rx-stats-row {
         grid-template-columns: 1fr;
         gap: 8px;

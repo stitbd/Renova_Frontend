@@ -296,8 +296,7 @@ export default function ConsultationsPage() {
 
   const getDoctorImage = (index) => {
     const imageNum = (index % 9) + 1;
-    const imageNumStr = imageNum.toString().padStart(2, "0");
-    return `/images/doctors/${imageNumStr}.jpg`;
+    return `/images/doctors/doctor-${imageNum}.jpg`;
   };
 
   return (
@@ -330,7 +329,7 @@ export default function ConsultationsPage() {
             <div className="ch-patient-top">
               <div className="ch-patient-avatar">
                 <img
-                  src="/images/patients/patient-01.jpg"
+                  src="/images/patients/01.jpg"
                   alt={patientData.name}
                   onError={(e) => {
                     e.currentTarget.style.display = "none";

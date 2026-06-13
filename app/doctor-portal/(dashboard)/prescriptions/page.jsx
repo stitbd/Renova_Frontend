@@ -112,10 +112,10 @@ function Icon({ type, cls = "" }) {
 const statusLabel = { dispensed: "Dispensed", pending: "Pending", cancelled: "Cancelled" };
 
 const getPatientImage = (index) => {
-  const imageNum = (index % 9) + 1;
-  const imageNumStr = imageNum.toString().padStart(2, '0');
-  return `/images/patients/${imageNumStr}.jpg`;
+  const imageNum = ((index % 10) + 1).toString().padStart(2, '0');
+  return `/images/patients/${imageNum}.jpg`;
 };
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -123,16 +123,42 @@ export default function PrescriptionsPage() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [allPrescriptions, setAllPrescriptions] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [showDoctorDropdown, setShowDoctorDropdown] = useState(false);
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("prescriptions") || "[]");
-    setAllPrescriptions([...saved, ...prescriptionsData]);
+    // Filter out any prescriptions without Patient property and merge with default data
+    const validSaved = saved.filter(p => p && p.patient);
+    setAllPrescriptions([...validSaved, ...prescriptionsData]);
   }, []);
 
-  const filtered = allPrescriptions.filter((p) =>
-    p.patient.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.id.toLowerCase().includes(search.toLowerCase())
-  );
+  const patientList = [...new Map(allPrescriptions.filter(p => p?.patient).map(p => [p.patient.name, p.patient])).values()];
+
+  const filtered = allPrescriptions.filter((p) => {
+    if (!p || !p.patient) return false;
+    const matchSearch =
+      p.patient?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      p.id?.toLowerCase().includes(search.toLowerCase());
+    const matchPatient = selectedPatient === "all" || p.patient?.name === selectedPatient;
+    const matchStatus = selectedStatus === "all" || p.status === selectedStatus;
+
+    const matchDate = (() => {
+      if (!dateFrom && !dateTo) return true;
+      const rxDate = new Date(p.date);
+      const from = dateFrom ? new Date(dateFrom) : null;
+      const to = dateTo ? new Date(dateTo) : null;
+      if (from && rxDate < from) return false;
+      if (to && rxDate > to) return false;
+      return true;
+    })();
+    return matchSearch && matchPatient && matchStatus && matchDate;
+  });
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -160,19 +186,62 @@ export default function PrescriptionsPage() {
 
       <div className="rx-filter-bar">
         <div className="rx-filter-group">
-          <button className="rx-filter-item">
-            <Icon type="date" />
-            <span>01 May 2025 – 31 May 2025</span>
-            <Icon type="chevdown" cls="rx-filter-chevron" />
-          </button>
-          <button className="rx-filter-item">
-            <span>All Patients</span>
-            <Icon type="chevdown" cls="rx-filter-chevron" />
-          </button>
-          <button className="rx-filter-item">
-            <span>All Status</span>
-            <Icon type="chevdown" cls="rx-filter-chevron" />
-          </button>
+          <div className="rx-filter-group-row">
+            <div style={{ position: "relative", flex: 1 }}>
+              <button className="rx-filter-item" onClick={() => { setShowDatePicker(v => !v); setShowDoctorDropdown(false); setShowStatusDropdown(false); }}>
+                <Icon type="date" />
+                <span>{dateFrom && dateTo ? `${dateFrom} – ${dateTo}` : dateFrom ? `From ${dateFrom}` : dateTo ? `To ${dateTo}` : "Date Range"}</span>
+                <Icon type="chevdown" cls="rx-filter-chevron" />
+              </button>
+              {showDatePicker && (
+                <div className="rx-dropdown rx-date-dropdown">
+                  <div className="rx-date-row">
+                    <label>From</label>
+                    <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+                  </div>
+                  <div className="rx-date-row">
+                    <label>To</label>
+                    <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} />
+                  </div>
+                  <div className="rx-date-actions">
+                    <button onClick={() => { setDateFrom(""); setDateTo(""); }}>Clear</button>
+                    <button className="apply" onClick={() => setShowDatePicker(false)}>Apply</button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div style={{ position: "relative", flex: 1 }}>
+              <button className="rx-filter-item" onClick={() => { setShowDoctorDropdown(v => !v); setShowStatusDropdown(false); setShowDatePicker(false); }}>
+                <span>{selectedPatient === "all" ? "All Patients" : selectedPatient}</span>
+                <Icon type="chevdown" cls="rx-filter-chevron" />
+              </button>
+              {showDoctorDropdown && (
+                <div className="rx-dropdown">
+                  <div className="rx-dropdown-item" onClick={() => { setSelectedPatient("all"); setShowDoctorDropdown(false); }}>All Patients</div>
+                  {patientList.map(p => (
+                    <div key={p.name} className="rx-dropdown-item" onClick={() => { setSelectedPatient(p.name); setShowDoctorDropdown(false); }}>
+                      {p.name} <span style={{ color: "#94a3b8", fontSize: "10px" }}>{p.pid}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div style={{ position: "relative", flex: 1 }}>
+              <button className="rx-filter-item" onClick={() => { setShowStatusDropdown(v => !v); setShowDoctorDropdown(false); setShowDatePicker(false); }}>
+                <span>{selectedStatus === "all" ? "All Status" : statusLabel[selectedStatus]}</span>
+                <Icon type="chevdown" cls="rx-filter-chevron" />
+              </button>
+              {showStatusDropdown && (
+                <div className="rx-dropdown">
+                  {[["all", "All Status"], ["dispensed", "Dispensed"], ["pending", "Pending"], ["cancelled", "Cancelled"]].map(([val, label]) => (
+                    <div key={val} className="rx-dropdown-item" onClick={() => { setSelectedStatus(val); setShowStatusDropdown(false); }}>
+                      {label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         <div className="rx-search-box">
           <Icon type="search" />
@@ -187,7 +256,7 @@ export default function PrescriptionsPage() {
           <button className="rx-apply-btn">
             <Icon type="filter" /> Apply Filter
           </button>
-          <button className="rx-reset-btn">
+          <button className="rx-reset-btn" onClick={() => { setSelectedPatient("all"); setSelectedStatus("all"); setSearch(""); setDateFrom(""); setDateTo(""); setCurrentPage(1); }}>
             <Icon type="reset" /> Reset
           </button>
         </div>
@@ -220,9 +289,12 @@ export default function PrescriptionsPage() {
             <tbody>
               {paginated.map((rx, i) => (
                 <tr key={rx.id}>
-                  <td data-label="#">{(currentPage - 1) * ITEMS_PER_PAGE + i + 1}</td>
-                  <td data-label="Prescription ID" className="rx-prescription-id">{rx.id}</td>
-                  <td data-label="Patient Info">
+                  <td data-label="#" className="rx-serial-td">{(currentPage - 1) * ITEMS_PER_PAGE + i + 1}</td>
+                  <td data-label="Prescription ID" className="rx-prescription-id">
+                    <span className="rx-card-rxid">{rx.id}</span>
+                    <span className={`rx-status-badge ${rx.status} rx-card-status`}>{statusLabel[rx.status]}</span>
+                  </td>
+                  <td data-label="Patient Info" className="rx-patient-td">
                     <div className="rx-patient-cell">
                       <div className="rx-patient-avatar">
                         <img
@@ -234,14 +306,19 @@ export default function PrescriptionsPage() {
                           }}
                         />
                       </div>
-                      <div>
+                      <div className="rx-patient-info">
                         <p className="rx-patient-name">{rx.patient.name}</p>
                         <p className="rx-patient-id">{rx.patient.pid}</p>
                         <p className="rx-patient-age">{rx.patient.age}</p>
                       </div>
                     </div>
+                    <div className="rx-card-actions">
+                      <Link href="/doctor-portal/prescriptions/prescriptions-details" className="rx-act-btn" title="View"><Icon type="eye" /></Link>
+                      <button className="rx-act-btn" title="Download" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "download")}><Icon type="download" /></button>
+                      <button className="rx-act-btn" title="Print" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "print")}><Icon type="print" /></button>
+                    </div>
                   </td>
-                  <td data-label="Vital Signs">
+                  <td data-label="Vital Signs" className="rx-vital-td">
                     <div className="rx-vital-cell">
                       <p className="rx-vital-item">{rx.vitalSigns.bloodPressure}</p>
                       <p className="rx-vital-item">{rx.vitalSigns.heartRate}</p>
@@ -256,9 +333,7 @@ export default function PrescriptionsPage() {
                   </td>
                   <td data-label="Medicines">
                     <div className="rx-medicine-icon-wrap">
-                      <div className="rx-med-icon">
-                        <Icon type="rx" />
-                      </div>
+                      <div className="rx-med-icon"><Icon type="rx" /></div>
                       <div>
                         <p className="rx-med-count">{rx.medicines} Medicines</p>
                         <p className="rx-instr-count">{rx.instructions} Instructions</p>
@@ -266,49 +341,19 @@ export default function PrescriptionsPage() {
                     </div>
                   </td>
                   <td data-label="Status">
-                    <span className={`rx-status-badge ${rx.status}`}>
-                      {statusLabel[rx.status]}
-                    </span>
+                    <span className={`rx-status-badge ${rx.status}`}>{statusLabel[rx.status]}</span>
                   </td>
                   <td data-label="Action">
                     <div className="rx-action-btns">
                       <Link href={`/doctor-portal/prescriptions/prescriptions-details`} className="rx-act-btn" title="View">
                         <Icon type="eye" />
                       </Link>
-                      <button
-                        className="rx-act-btn"
-                        title="Download"
-                        onClick={() => generatePrescriptionPDF({
-                          prescriptionId: rx.id,
-                          prescriptionDate: rx.date,
-                          prescriptionTime: rx.time,
-                          visitType: "OPD",
-                          prescriptionType: "New Prescription",
-                          status: rx.status,
-                          doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" },
-                          patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
-                          medicines: [],
-                          additionalInstructions: [],
-                        }, "download")}
-                      >
+                      <button className="rx-act-btn" title="Download"
+                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "download")}>
                         <Icon type="download" />
                       </button>
-                      <button
-                        className="rx-act-btn"
-                        title="Print"
-                        onClick={() => generatePrescriptionPDF({
-                          prescriptionId: rx.id,
-                          prescriptionDate: rx.date,
-                          prescriptionTime: rx.time,
-                          visitType: "OPD",
-                          prescriptionType: "New Prescription",
-                          status: rx.status,
-                          doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" },
-                          patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age },
-                          medicines: [],
-                          additionalInstructions: [],
-                        }, "print")}
-                      >
+                      <button className="rx-act-btn" title="Print"
+                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "print")}>
                         <Icon type="print" />
                       </button>
                     </div>
