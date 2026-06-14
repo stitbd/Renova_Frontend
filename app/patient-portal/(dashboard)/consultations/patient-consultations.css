@@ -1,219 +1,1599 @@
-/* ======================================================
-   CSS FILE: patient-consultations.css
-   ====================================================== */
+/* ═══════════════════════════════════════════════════════════════
+   CONSULTATION HISTORY PAGE
+   File: styles/pages/consultations.css
+   ═══════════════════════════════════════════════════════════════ */
 
-.consultations-list {
+/* ── Sub-header (breadcrumb + export buttons) ──────────────────── */
+.ch-sub-header {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.consultation-card {
+.ch-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: #94a3b8;
+}
+
+.ch-breadcrumb a {
+    color: #718096;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.ch-breadcrumb a:hover {
+    color: #014fa1;
+}
+
+.ch-breadcrumb-sep {
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+.ch-breadcrumb-current {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.ch-export-btns {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ch-export-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    background: #fff;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.ch-export-btn svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.ch-export-btn:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+/* ── Main 2-col layout ─────────────────────────────────────────── */
+.ch-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 18px;
+    align-items: start;
+}
+
+.ch-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
+
+/* ── Patient Info Card ─────────────────────────────────────────── */
+.ch-patient-card {
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 18px;
-    transition: box-shadow 0.2s ease;
+    padding: 18px 20px;
 }
 
-.consultation-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+.ch-patient-top {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
 }
 
-.consultation-header {
+.ch-patient-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.ch-patient-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ch-patient-avatar svg {
+    width: 36px;
+    height: 36px;
+    stroke: #014fa1;
+    fill: none;
+}
+
+.ch-patient-main h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0 0 3px;
+    font-family: 'Sen', sans-serif;
+}
+
+.ch-patient-pid {
+    font-size: 12.5px;
+    color: #014fa1;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+
+.ch-patient-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.ch-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12.5px;
+    color: #475569;
+}
+
+.ch-contact-item svg {
+    width: 14px;
+    height: 14px;
+    stroke: #94a3b8;
+    fill: none;
+    flex-shrink: 0;
+}
+
+/* Stats column on the right */
+.ch-patient-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 220px;
+}
+
+.ch-stat-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
+    align-items: center;
+    gap: 12px;
+}
+
+.ch-stat-row-left {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    color: #718096;
+}
+
+.ch-stat-row-left svg {
+    width: 14px;
+    height: 14px;
+    stroke: #94a3b8;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.ch-stat-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a202c;
+    text-align: right;
+}
+
+.ch-stat-val.blue {
+    color: #014fa1;
+}
+
+.ch-stat-val-block {
+    text-align: right;
+}
+
+.ch-stat-val-block span:first-child {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.ch-stat-val-block span:last-child {
+    font-size: 11px;
+    color: #718096;
+}
+
+/* Bottom row of patient card */
+.ch-patient-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
     flex-wrap: wrap;
     gap: 12px;
 }
 
-.consultation-doctor {
+.ch-patient-extra {
     display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.doctor-avatar-large {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: #dcfce7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.doctor-avatar-large svg {
-    width: 26px;
-    height: 26px;
-    stroke: #16a34a;
-}
-
-.doctor-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0;
-}
-
-.doctor-specialty {
-    font-size: 12px;
-    color: #718096;
-    margin: 2px 0 0;
-}
-
-.consultation-type {
-    display: inline-block;
-    padding: 3px 10px;
-    background: #f1f5f9;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #64748b;
-    margin-top: 4px;
-}
-
-.consultation-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-}
-
-.consultation-datetime {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.consultation-date {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a202c;
-}
-
-.consultation-time {
-    font-size: 12px;
-    color: #718096;
-}
-
-.consultation-fee {
-    font-size: 14px;
-    font-weight: 700;
-    color: #014fa1;
-}
-
-.consultation-body {
-    margin-bottom: 14px;
-}
-
-.diagnosis-section h4 {
-    font-size: 12px;
-    font-weight: 700;
-    color: #64748b;
-    margin: 0 0 4px;
-}
-
-.diagnosis-text {
-    font-size: 14px;
-    color: #1a202c;
-    margin: 0;
-}
-
-.consultation-tags {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.tag {
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.tag-prescription {
-    background: #dbeafe;
-    color: #014fa1;
-}
-
-.tag-report {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.consultation-actions {
-    display: flex;
-    gap: 8px;
+    gap: 24px;
     flex-wrap: wrap;
 }
 
-.btn-view-details,
-.btn-view-prescription,
-.btn-view-report,
-.btn-book-again {
+.ch-extra-item {
+    font-size: 12.5px;
+    color: #475569;
+}
+
+.ch-extra-item span {
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.ch-view-profile-btn {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
+    padding: 8px 18px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 600;
+    color: #014fa1;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: none;
+    white-space: nowrap;
 }
 
-.btn-view-details,
-.btn-view-prescription,
-.btn-view-report {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #014fa1;
-}
-
-.btn-view-details:hover,
-.btn-view-prescription:hover,
-.btn-view-report:hover {
+.ch-view-profile-btn:hover {
     background: #014fa1;
     color: #fff;
     border-color: #014fa1;
 }
 
-.btn-book-again {
-    background: #014fa1;
-    color: #fff;
+/* ── Filter Bar (Mobile responsive like PrescriptionsPage) ─────── */
+.ch-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    flex-wrap: wrap;
 }
 
-.btn-book-again:hover {
+.ch-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.ch-filter-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.ch-filter-group-row>div {
+    flex: 1;
+    min-width: 0;
+}
+
+.ch-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.ch-filter-item:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.ch-filter-svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.ch-filter-chevron {
+    width: 13px;
+    height: 13px;
+    stroke: #94a3b8;
+    fill: none;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.ch-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    flex: 1;
+    min-width: 200px;
+}
+
+.ch-search-wrap svg {
+    width: 15px;
+    height: 15px;
+    stroke: #94a3b8;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.ch-search-wrap input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 12px;
+    color: #1a202c;
+    width: 100%;
+}
+
+.ch-search-wrap input::placeholder {
+    color: #94a3b8;
+}
+
+.ch-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ch-apply-btn,
+.ch-reset-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.ch-apply-btn svg,
+.ch-reset-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+}
+
+.ch-apply-btn {
+    background: #014fa1;
+    color: #fff;
+    border: none;
+}
+
+.ch-apply-btn svg {
+    stroke: #fff;
+}
+
+.ch-apply-btn:hover {
     background: #013d80;
 }
 
+.ch-reset-btn {
+    background: #fff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.ch-reset-btn:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+/* Dropdown */
+.ch-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.ch-dropdown-item {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.ch-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #014fa1;
+}
+
+.ch-date-dropdown {
+    min-width: 280px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ch-date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ch-date-row label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.ch-date-row input[type="date"] {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ch-date-row input[type="date"]:focus {
+    border-color: #014fa1;
+}
+
+.ch-date-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.ch-date-actions button {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.ch-date-actions button:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.ch-date-actions button.apply {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.ch-date-actions button.apply:hover {
+    background: #013d80;
+}
+
+/* ── Table ─────────────────────────────────────────────────────── */
+.ch-table-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.ch-table-wrap {
+    overflow-x: auto;
+}
+
+.ch-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.ch-table thead th {
+    background: #f8fafc;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.ch-table thead th:first-child {
+    width: 36px;
+    text-align: center;
+}
+
+.ch-table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s ease;
+}
+
+.ch-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.ch-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.ch-table td {
+    padding: 12px 14px;
+    font-size: 12.5px;
+    color: #475569;
+    vertical-align: middle;
+}
+
+.ch-table td:first-child {
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+/* Date-time cell */
+.ch-date-val {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 2px;
+}
+
+.ch-time-val {
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Doctor cell */
+.ch-doctor-cell {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.ch-doc-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dcfce7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ch-doc-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ch-doc-avatar svg {
+    width: 15px;
+    height: 15px;
+    stroke: #16a34a;
+    fill: none;
+}
+
+.ch-doc-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 1px;
+}
+
+.ch-doc-spec {
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Visit type badges */
+.ch-visit-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ch-visit-badge.follow-up {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.ch-visit-badge.lab-test {
+    background: #dcfce7;
+    color: #428a26;
+}
+
+.ch-visit-badge.consultation {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+/* Reason / Diagnosis text */
+.ch-reason-text {
+    font-size: 12.5px;
+    color: #1a202c;
+    max-width: 180px;
+    line-height: 1.4;
+}
+
+.ch-diagnosis-text {
+    font-size: 12.5px;
+    color: #475569;
+    max-width: 140px;
+}
+
+/* Next visit cell */
+.ch-next-date {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 1px;
+}
+
+.ch-next-time {
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.ch-next-none {
+    font-size: 12.5px;
+    color: #cbd5e1;
+}
+
+/* Action button */
+.ch-view-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ch-view-btn svg {
+    width: 15px;
+    height: 15px;
+    stroke: #64748b;
+    fill: none;
+}
+
+.ch-view-btn:hover {
+    background: #dbeafe;
+    border-color: #014fa1;
+}
+
+.ch-view-btn:hover svg {
+    stroke: #014fa1;
+}
+
+/* ── Pagination ────────────────────────────────────────────────── */
+.ch-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ch-pagination-info {
+    font-size: 12.5px;
+    color: #718096;
+}
+
+.ch-pagination-btns {
+    display: flex;
+    gap: 4px;
+}
+
+.ch-page-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ch-page-btn svg {
+    width: 13px;
+    height: 13px;
+    stroke: currentColor;
+    fill: none;
+}
+
+.ch-page-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.ch-page-btn.active {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.ch-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RIGHT SIDEBAR
+   ══════════════════════════════════════════════════════════════ */
+.ch-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 80px;
+}
+
+/* Common right card */
+.ch-right-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.ch-right-card-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #014fa1;
+    margin: 0 0 14px;
+    font-family: 'Sen', sans-serif;
+}
+
+/* ── Donut: Visit Type Overview ────────────────────────────────── */
+.ch-donut-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ch-donut-svg-wrap {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+}
+
+.ch-donut-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.ch-donut-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ch-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+}
+
+.ch-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ch-legend-label {
+    flex: 1;
+    color: #475569;
+}
+
+.ch-legend-val {
+    font-weight: 700;
+    color: #1a202c;
+    font-size: 11.5px;
+    white-space: nowrap;
+}
+
+/* ── Consultation Summary ──────────────────────────────────────── */
+.ch-summary-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.ch-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f8fafc;
+    font-size: 12.5px;
+}
+
+.ch-summary-row:last-child {
+    border-bottom: none;
+}
+
+.ch-summary-key {
+    color: #718096;
+}
+
+.ch-summary-val {
+    font-weight: 700;
+    color: #1a202c;
+    text-align: right;
+}
+
+.ch-summary-val.blue {
+    color: #014fa1;
+}
+
+.ch-summary-val.green {
+    color: #428a26;
+}
+
+/* ── Frequently Visited Doctors ────────────────────────────────── */
+.ch-freq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.ch-freq-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #014fa1;
+    margin: 0;
+    font-family: 'Sen', sans-serif;
+}
+
+.ch-view-all-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #014fa1;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: none;
+}
+
+.ch-view-all-link:hover {
+    text-decoration: underline;
+}
+
+.ch-freq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ch-freq-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ch-freq-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ch-freq-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ch-freq-avatar svg {
+    width: 18px;
+    height: 18px;
+    stroke: #014fa1;
+    fill: none;
+}
+
+.ch-freq-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ch-freq-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ch-freq-spec {
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.ch-freq-visits {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #014fa1;
+    white-space: nowrap;
+}
+
+/* ── Help Card ─────────────────────────────────────────────────── */
+.ch-help-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ch-help-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ch-help-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #dcfce7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ch-help-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #428a26;
+    fill: none;
+}
+
+.ch-help-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 4px;
+}
+
+.ch-help-text {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.ch-help-btn {
+    width: 100%;
+    padding: 9px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1a202c;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.ch-help-btn:hover {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+/* ── Consultation Cards (mobile only, hidden on desktop) ─────── */
+.ch-con-cards {
+    display: none;
+}
+
+.ch-con-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.ch-con-card-top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 13px;
+    background: #f0f6ff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ch-con-card-serial {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.ch-con-card-mid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.ch-con-card-doctor {
+    padding: 10px 13px;
+    border-right: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ch-con-card-doc-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dcfce7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ch-con-card-doc-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ch-con-card-doc-avatar svg {
+    width: 15px;
+    height: 15px;
+    stroke: #16a34a;
+    fill: none;
+}
+
+.ch-con-card-doc-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 2px;
+    line-height: 1.2;
+}
+
+.ch-con-card-doc-spec {
+    font-size: 10px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.ch-con-card-datetime {
+    padding: 10px 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.ch-con-card-date {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 2px;
+}
+
+.ch-con-card-time {
+    font-size: 10px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.ch-con-card-reason {
+    padding: 9px 13px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #fafbfc;
+}
+
+.ch-con-card-reason-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+}
+
+.ch-con-card-reason-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 2px;
+}
+
+.ch-con-card-diag-text {
+    font-size: 11px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ch-con-card-footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ch-con-card-next {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.ch-con-card-next-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.ch-con-card-next-val {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #014fa1;
+}
+
+.ch-con-card-next-none {
+    font-size: 11.5px;
+    color: #cbd5e1;
+}
+
+.ch-con-card-view-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.ch-con-card-view-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: #64748b;
+    fill: none;
+}
+
+.ch-con-card-view-btn:hover {
+    background: #dbeafe;
+    border-color: #014fa1;
+}
+
+.ch-con-card-view-btn:hover svg {
+    stroke: #014fa1;
+}
+
+/* ── Responsive: Mobile filter like PrescriptionsPage ─────────── */
 @media (max-width: 768px) {
-    .consultation-header {
+    .ch-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .ch-filter-group {
+        width: 100%;
+    }
+
+    .ch-filter-group-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .ch-filter-group-row>div {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ch-filter-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .ch-search-wrap {
+        width: 100%;
+    }
+
+    .ch-filter-actions {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .ch-apply-btn,
+    .ch-reset-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .ch-filter-group-row {
         flex-direction: column;
     }
 
-    .consultation-meta {
-        align-items: flex-start;
+    .ch-filter-group-row>div {
+        width: 100%;
     }
 
-    .consultation-datetime {
-        align-items: flex-start;
+    .ch-filter-item {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    .consultation-actions {
+    .ch-filter-actions {
         flex-direction: column;
     }
 
-    .btn-view-details,
-    .btn-view-prescription,
-    .btn-view-report,
-    .btn-book-again {
+    .ch-apply-btn,
+    .ch-reset-btn {
+        width: 100%;
+    }
+}
+
+/* ── General Responsive ────────────────────────────────────────── */
+@media (max-width: 1280px) {
+    .ch-layout {
+        grid-template-columns: 1fr 280px;
+    }
+
+    .ch-patient-top {
+        grid-template-columns: auto 1fr;
+    }
+
+    .ch-patient-stats {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .ch-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .ch-right-col {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .ch-patient-top {
+        grid-template-columns: auto 1fr;
+    }
+
+    .ch-patient-stats {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ch-right-col {
+        grid-template-columns: 1fr;
+    }
+
+    .ch-sub-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ch-export-btns {
+        width: 100%;
+    }
+
+    .ch-patient-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ch-view-profile-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .ch-patient-contact-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
+
+/* ── Mobile (max-width: 640px) — Cards Layout ─────────────────── */
+@media (max-width: 640px) {
+    .ch-container {
+        padding: 0;
+    }
+
+    .ch-sub-header {
+        margin-bottom: 12px;
+        gap: 8px;
+    }
+
+    .ch-export-btns {
+        gap: 6px;
+    }
+
+    .ch-export-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 10px;
+        font-size: 11.5px;
+    }
+
+    .ch-patient-card {
+        padding: 13px;
+    }
+
+    .ch-patient-top {
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .ch-patient-avatar {
+        width: 58px;
+        height: 58px;
+        border-width: 2px;
+    }
+
+    .ch-patient-main h2 {
+        font-size: 15px;
+    }
+
+    .ch-patient-pid {
+        font-size: 11.5px;
+        margin-bottom: 5px;
+    }
+
+    .ch-patient-stats {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding-top: 10px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .ch-stat-row {
+        padding: 3px 0;
+    }
+
+    .ch-patient-bottom {
+        padding-top: 10px;
+        gap: 8px;
+    }
+
+    .ch-patient-extra {
+        gap: 10px;
+    }
+
+    .ch-extra-item {
+        font-size: 11.5px;
+    }
+
+    .ch-view-profile-btn {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 11.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Hide desktop table, show cards */
+    .ch-table-wrap {
+        display: none;
+    }
+
+    .ch-con-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .ch-pagination {
+        padding: 10px 12px;
+    }
+
+    .ch-pagination-info {
+        font-size: 11px;
+    }
+
+    .ch-page-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+
+    .ch-right-col {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .ch-right-card {
+        padding: 14px;
+    }
+
+    .ch-right-card-title {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .ch-donut-wrap {
+        gap: 12px;
+    }
+
+    .ch-donut-svg-wrap {
+        width: 90px;
+        height: 90px;
+    }
+
+    .ch-help-card {
+        padding: 14px;
+    }
+}
+
+/* Extra small (max-width: 400px) */
+@media (max-width: 400px) {
+    .ch-con-card-mid {
+        grid-template-columns: 1fr;
+    }
+
+    .ch-con-card-doctor {
+        border-right: none;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .ch-con-card-datetime {
+        align-items: flex-start;
+    }
+}
+
+/* Touch-friendly */
+@media (hover: none) and (pointer: coarse) {
+
+    .ch-export-btn,
+    .ch-filter-item,
+    .ch-view-profile-btn,
+    .ch-page-btn {
+        min-height: 44px;
+    }
+
+    .ch-con-card-view-btn {
+        width: 40px;
+        height: 40px;
     }
 }

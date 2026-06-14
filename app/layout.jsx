@@ -1,5 +1,9 @@
 import "@/styles/globals.css";
 import "@/styles/pages.css";
+import "@/styles/components/Button.css";
+import "@/styles/components/Card.css";
+import "@/styles/components/CartBadge.css";
+import "@/styles/components/Section.css";
 import { siteConfig } from "@/constants/siteData";
 import { CartProvider } from "@/context/CartContext";
 import LayoutWrapper from "@/components/LayoutWrapper";

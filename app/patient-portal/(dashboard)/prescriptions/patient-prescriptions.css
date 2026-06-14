@@ -1,164 +1,383 @@
-/* ======================================================
-   CSS FILE: patient-prescriptions.css
-   ====================================================== */
+/* prescriptions.css */
+/* ═══════════════════════════════════════════════════════════════
+   PRESCRIPTIONS LIST PAGE — Fully Responsive & Mobile Friendly
+   ═══════════════════════════════════════════════════════════════ */
 
-.prescriptions-list {
+/* ── Page Header ───────────────────────────────────────────────── */
+.rx-page-header {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.prescription-card {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 18px;
-    transition: box-shadow 0.2s ease;
-}
-
-.prescription-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.prescription-header {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    cursor: pointer;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.prescription-doctor {
-    display: flex;
     align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
-.doctor-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #dbeafe;
+.rx-page-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0;
+}
+
+.rx-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: #94a3b8;
+}
+
+.rx-breadcrumb a {
+    color: #718096;
+    text-decoration: none;
+}
+
+.rx-breadcrumb a:hover {
+    color: #014fa1;
+}
+
+.rx-breadcrumb-sep {
+    font-size: 11px;
+    color: #cbd5e1;
+}
+
+.rx-breadcrumb-current {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+/* ── Stats Row ─────────────────────────────────────────────────── */
+.rx-stats-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.rx-stat-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: box-shadow 0.2s ease;
+}
+
+.rx-stat-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.rx-stat-card.green {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.rx-stat-card.blue {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.rx-stat-card.yellow {
+    background: #fefce8;
+    border-color: #fef08a;
+}
+
+.rx-stat-card.teal {
+    background: #f0fdfa;
+    border-color: #99f6e4;
+}
+
+.rx-stat-card.red {
+    background: #fff5f5;
+    border-color: #fecaca;
+}
+
+.rx-stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
-.doctor-avatar svg {
-    width: 22px;
-    height: 22px;
-    stroke: #014fa1;
+.rx-stat-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
 }
 
-.doctor-name {
+.rx-stat-icon.green {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.rx-stat-icon.blue {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.rx-stat-icon.yellow {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.rx-stat-icon.teal {
+    background: #ccfbf1;
+    color: #0d9488;
+}
+
+.rx-stat-icon.red {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.rx-stat-body {
+    min-width: 0;
+    flex: 1;
+}
+
+.rx-stat-label {
+    font-size: 10px;
+    color: #718096;
+    font-weight: 500;
+    margin: 0 0 2px;
+}
+
+.rx-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 0 2px;
+}
+
+.rx-stat-value.green {
+    color: #16a34a;
+}
+
+.rx-stat-value.blue {
+    color: #014fa1;
+}
+
+.rx-stat-value.yellow {
+    color: #ca8a04;
+}
+
+.rx-stat-value.teal {
+    color: #0d9488;
+}
+
+.rx-stat-value.red {
+    color: #ef4444;
+}
+
+.rx-stat-sub {
+    font-size: 9px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* ── Filter Bar ────────────────────────────────────────────────── */
+.rx-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.rx-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rx-filter-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.rx-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.rx-filter-item svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.rx-filter-item:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.rx-filter-item .rx-filter-chevron {
+    width: 13px;
+    height: 13px;
+    stroke: #94a3b8;
+    fill: none;
+    margin-left: 2px;
+}
+
+.rx-filter-text {
+    white-space: nowrap;
+}
+
+.rx-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    flex: 1;
+    min-width: 200px;
+}
+
+.rx-search-box svg {
+    width: 15px;
+    height: 15px;
+    stroke: #94a3b8;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.rx-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 12px;
+    color: #1a202c;
+    width: 100%;
+}
+
+.rx-search-box input::placeholder {
+    color: #94a3b8;
+}
+
+.rx-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rx-apply-btn,
+.rx-reset-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.rx-apply-btn svg,
+.rx-reset-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+}
+
+.rx-apply-btn {
+    background: #014fa1;
+    color: #fff;
+    border: none;
+}
+
+.rx-apply-btn svg {
+    stroke: #fff;
+}
+
+.rx-apply-btn:hover {
+    background: #013d80;
+}
+
+.rx-reset-btn {
+    background: #fff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.rx-reset-btn svg {
+    stroke: currentColor;
+}
+
+.rx-reset-btn:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+/* ── Table Container ───────────────────────────────────────────── */
+.rx-table-container {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: visible;
+}
+
+.rx-table-responsive-wrapper {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+}
+
+.rx-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.rx-table-title {
     font-size: 14px;
     font-weight: 700;
     color: #1a202c;
     margin: 0;
 }
 
-.doctor-specialty {
-    font-size: 12px;
-    color: #718096;
-    margin: 0;
-}
-
-.prescription-meta {
-    text-align: right;
-}
-
-.prescription-date {
-    display: block;
-    font-size: 12px;
-    color: #64748b;
-}
-
-.prescription-status {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    display: inline-block;
-}
-
-.status-active {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.status-completed {
-    background: #f3e8ff;
-    color: #9333ea;
-}
-
-.expand-icon {
-    width: 20px;
-    height: 20px;
-    stroke: #94a3b8;
-    transition: transform 0.2s ease;
-}
-
-.expand-icon.expanded {
-    transform: rotate(180deg);
-}
-
-.prescription-details {
-    padding-top: 14px;
-}
-
-.medications-list h4 {
-    font-size: 13px;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 8px;
-}
-
-.medications-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.medication-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #475569;
-}
-
-.medication-item svg {
-    width: 16px;
-    height: 16px;
-    stroke: #014fa1;
-}
-
-.prescription-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid #f1f5f9;
-}
-
-.duration {
-    font-size: 12px;
-    color: #64748b;
-}
-
-.prescription-actions {
+.rx-table-actions {
     display: flex;
     gap: 8px;
 }
 
-.btn-download-pdf,
-.btn-reminder {
-    display: flex;
+.rx-tbl-btn {
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 8px 14px;
@@ -167,57 +386,1644 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.rx-tbl-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+}
+
+.rx-tbl-btn.primary {
+    background: #016a1f;
+    color: #fff;
     border: none;
 }
 
-.btn-download-pdf {
-    background: #f8fafc;
+.rx-tbl-btn.primary:hover {
+    background: #015018;
+}
+
+.rx-tbl-btn.outline {
+    background: #fff;
+    color: #475569;
     border: 1px solid #e2e8f0;
+}
+
+.rx-tbl-btn.outline:hover {
+    border-color: #014fa1;
     color: #014fa1;
 }
 
-.btn-download-pdf:hover {
+/* ── Table ─────────────────────────────────────────────────────── */
+.rx-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+.rx-table thead th {
+    background: #f8fafc;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.rx-table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s ease;
+}
+
+.rx-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.rx-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.rx-table td {
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #1a202c;
+    vertical-align: middle;
+}
+
+/* Patient cell */
+.rx-patient-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rx-patient-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.rx-patient-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rx-patient-avatar svg {
+    width: 18px;
+    height: 18px;
+    stroke: #014fa1;
+    fill: none;
+}
+
+.rx-patient-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 2px;
+}
+
+.rx-patient-id {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0 0 1px;
+}
+
+.rx-patient-age {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+}
+
+.rx-card-actions-inline {
+    display: none;
+}
+
+.rx-card-actions {
+    display: none;
+}
+
+.rx-card-rxid {
+    font-size: 13px;
+    font-weight: 700;
+    color: #014fa1;
+}
+
+.rx-card-status {
+    font-size: 11px;
+}
+
+/* Doctor/Vital Signs cell */
+.rx-doctor-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rx-doctor-spec {
+    font-size: 10px;
+    color: #475569;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Date cell */
+.rx-date-primary {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 2px;
+}
+
+.rx-date-time {
+    font-size: 10px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Medicines cell */
+.rx-medicine-icon-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rx-med-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #dcfce7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.rx-med-icon svg {
+    width: 13px;
+    height: 13px;
+    stroke: #16a34a;
+    fill: none;
+}
+
+.rx-med-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 2px;
+}
+
+.rx-instr-count {
+    font-size: 10px;
+    color: #718096;
+    margin: 0;
+}
+
+/* Status badges */
+.rx-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.rx-status-badge.dispensed {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.rx-status-badge.pending {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.rx-status-badge.cancelled {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+/* Action buttons */
+.rx-action-btns {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rx-act-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    text-decoration: none;
+    color: #64748b;
+}
+
+.rx-act-btn svg {
+    width: 13px;
+    height: 13px;
+    stroke: currentColor;
+    fill: none;
+}
+
+.rx-act-btn:hover {
+    background: #f1f5f9;
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+/* ── Pagination ────────────────────────────────────────────────── */
+.rx-pagination-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.rx-pagination-info {
+    font-size: 12px;
+    color: #718096;
+}
+
+.rx-pagination-btns {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.rx-page-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rx-page-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+}
+
+.rx-page-btn:hover:not(:disabled):not(.dots) {
+    background: #f1f5f9;
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.rx-page-btn.active {
     background: #014fa1;
     color: #fff;
     border-color: #014fa1;
 }
 
-.btn-reminder {
-    background: #f8fafc;
+.rx-page-btn.dots {
+    border: none;
+    background: none;
+    cursor: default;
+    color: #94a3b8;
+}
+
+.rx-page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.rx-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: #fff;
     border: 1px solid #e2e8f0;
-    color: #428a26;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    overflow: hidden;
 }
 
-.btn-reminder:hover {
-    background: #428a26;
+.rx-dropdown-item {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.rx-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #014fa1;
+}
+
+
+.rx-date-dropdown {
+    min-width: 280px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rx-date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rx-date-row label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.rx-date-row input[type="date"] {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    width: 100%;
+}
+
+.rx-date-row input[type="date"]:focus {
+    border-color: #014fa1;
+}
+
+.rx-date-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.rx-date-actions button {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.rx-date-actions button:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.rx-date-actions button.apply {
+    background: #014fa1;
     color: #fff;
-    border-color: #428a26;
+    border-color: #014fa1;
 }
 
-.btn-download-pdf svg,
-.btn-reminder svg {
-    width: 16px;
-    height: 16px;
+.rx-date-actions button.apply:hover {
+    background: #013d80;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   FULLY RESPONSIVE — Mobile Friendly Breakpoints
+   ══════════════════════════════════════════════════════════════ */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .rx-stats-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .rx-stat-card {
+        padding: 12px 10px;
+    }
+
+    .rx-stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .rx-stat-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .rx-stat-value {
+        font-size: 20px;
+    }
+}
+
+/* Small Tablet (max-width: 768px) */
 @media (max-width: 768px) {
-    .prescription-header {
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    .prescription-footer {
+    .rx-page-header {
         flex-direction: column;
-        gap: 12px;
+        align-items: flex-start;
     }
 
-    .prescription-actions {
+    .rx-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .rx-filter-bar {
         flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
     }
 
-    .btn-download-pdf,
-    .btn-reminder {
+    .rx-filter-group {
+        width: 100%;
+    }
+
+    .rx-filter-group-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .rx-filter-group-row>div {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .rx-filter-group-row .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .rx-search-box {
+        width: 100%;
+    }
+
+    .rx-filter-actions {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .rx-apply-btn,
+    .rx-reset-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .rx-table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rx-table-actions {
+        width: 100%;
+    }
+
+    .rx-tbl-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .rx-pagination-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Mobile (max-width: 640px) - Convert table to card layout */
+@media (max-width: 640px) {
+    .rx-table-container {
+        padding: 14px;
+    }
+
+    .rx-card-actions-inline {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .rx-page-title {
+        font-size: 18px;
+    }
+
+    .rx-breadcrumb {
+        font-size: 11px;
+    }
+
+    .rx-stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .rx-stat-card {
+        padding: 10px 8px;
+        gap: 8px;
+    }
+
+    .rx-stat-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rx-stat-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .rx-stat-value {
+        font-size: 18px;
+    }
+
+    .rx-stat-label {
+        font-size: 9px;
+    }
+
+    .rx-stat-sub {
+        font-size: 8px;
+    }
+
+    .rx-filter-bar {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .rx-filter-item {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .rx-filter-group {
+        gap: 8px;
+    }
+
+    .rx-search-box {
+        padding: 8px 12px;
+    }
+
+    .rx-search-box input {
+        font-size: 11px;
+    }
+
+    .rx-apply-btn,
+    .rx-reset-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .rx-table-header {
+        padding: 12px;
+    }
+
+    .rx-table-title {
+        font-size: 13px;
+    }
+
+    .rx-tbl-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    /* Hide serial column */
+    .rx-serial-td {
+        display: none !important;
+    }
+
+    /* Vital Signs — full width row */
+    .rx-vital-td {
+        display: block !important;
+        width: 100%;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .rx-vital-td::before {
+        content: "Vital Signs";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .rx-vital-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .rx-vital-item {
+        font-size: 11px;
+        color: #475569;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Hide separate Status column (badge already shown in ID row) */
+    .rx-table td[data-label="Status"] {
+        display: none !important;
+    }
+
+    /* Table → card */
+    .rx-table-responsive-wrapper {
+        overflow-x: visible;
+    }
+
+    .rx-table,
+    .rx-table thead,
+    .rx-table tbody,
+    .rx-table th,
+    .rx-table td,
+    .rx-table tr {
+        display: block;
+    }
+
+    .rx-table {
+        min-width: unset;
+    }
+
+    .rx-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    /* Card styling */
+    .rx-table tbody tr {
+        margin-bottom: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 0;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: relative;
+    }
+
+    .rx-table tbody tr:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Status color top border */
+    .rx-table tbody tr:has(.rx-status-badge.dispensed) {
+        border-top: 3px solid #16a34a;
+    }
+
+    .rx-table tbody tr:has(.rx-status-badge.pending) {
+        border-top: 3px solid #ca8a04;
+    }
+
+    .rx-table tbody tr:has(.rx-status-badge.cancelled) {
+        border-top: 3px solid #ef4444;
+    }
+
+    /* Row 1: Prescription ID + Status */
+    .rx-table td.rx-prescription-id {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        background: #fff;
+    }
+
+    .rx-card-rxid {
+        font-size: 14px;
+        font-weight: 700;
+        color: #014fa1;
+    }
+
+    .rx-status-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* Row 2: Patient Info + Action Buttons */
+    .rx-table td.rx-patient-td {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 10px;
+    }
+
+    .rx-patient-cell {
+        flex: 1;
+        gap: 10px;
+    }
+
+    .rx-card-actions {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    /* Hide desktop action column */
+    .rx-table td[data-label="Action"] {
+        display: none !important;
+    }
+
+    /* Row 3: Date and Medicines side by side */
+    .rx-table td[data-label="Date"] {
+        display: inline-flex !important;
+        width: 50%;
+        flex-direction: column;
+        padding: 10px 14px;
+        border-top: 1px solid #f1f5f9;
+        border-right: 1px solid #f1f5f9;
+        vertical-align: top;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .rx-table td[data-label="Date"]::before {
+        display: none;
+    }
+
+    .rx-date-primary {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a202c;
+        margin: 0 0 2px;
+    }
+
+    .rx-date-time {
+        font-size: 11px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .rx-table td[data-label="Medicines"] {
+        display: inline-flex !important;
+        width: 50%;
+        align-items: center;
+        padding: 10px 14px;
+        border-top: 1px solid #f1f5f9;
+        vertical-align: top;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .rx-table td[data-label="Medicines"]::before {
+        display: none;
+    }
+
+    .rx-medicine-icon-wrap {
+        gap: 10px;
+    }
+
+    .rx-med-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rx-med-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .rx-med-count {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0 0 2px;
+    }
+
+    .rx-instr-count {
+        font-size: 10px;
+    }
+
+    .rx-act-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .rx-act-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .rx-patient-avatar {
+        width: 48px;
+        height: 48px;
+    }
+
+    .rx-patient-name {
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0 0 2px;
+    }
+
+    .rx-patient-id,
+    .rx-patient-age {
+        font-size: 11px;
+    }
+
+}
+
+
+@media (min-width: 641px) {
+    .rx-table .rx-prescription-id .rx-status-badge.rx-card-status {
+        display: none !important;
+    }
+}
+
+/* On mobile, show it inside Prescription ID row */
+@media (max-width: 640px) {
+    .rx-table .rx-prescription-id .rx-status-badge.rx-card-status {
+        display: inline-flex !important;
+        margin-left: auto;
+        /* push to right */
+    }
+}
+
+/* Extra Small (max-width: 480px) */
+@media (max-width: 480px) {
+    .rx-filter-group-row {
+        flex-direction: column;
+    }
+
+    .rx-filter-group-row>div {
+        width: 100%;
+    }
+
+    .rx-filter-group-row .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .rx-stats-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .rx-stat-card {
+        padding: 12px;
+    }
+
+    .rx-stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .rx-stat-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .rx-stat-value {
+        font-size: 22px;
+    }
+
+    .rx-filter-group {
+        flex-direction: column;
+    }
+
+    .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .rx-filter-actions {
+        flex-direction: column;
+    }
+
+    .rx-apply-btn,
+    .rx-reset-btn {
+        width: 100%;
+    }
+
+    .rx-pagination-btns {
+        gap: 3px;
+    }
+
+    .rx-page-btn {
+        min-width: 28px;
+        height: 28px;
+        font-size: 10px;
+        padding: 0 6px;
+    }
+}
+
+/* Very Small (max-width: 380px) */
+@media (max-width: 380px) {
+    .rx-table td {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .rx-table td::before {
+        margin-bottom: 8px;
+        min-width: unset;
+    }
+
+    .rx-table td .rx-patient-cell,
+    .rx-table td .rx-doctor-cell,
+    .rx-table td .rx-medicine-icon-wrap,
+    .rx-table td .rx-action-btns {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .rx-patient-cell {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .rx-patient-avatar {
+        margin-bottom: 0;
+    }
+
+    .rx-medicine-icon-wrap {
+        justify-content: flex-start;
+    }
+
+    .rx-action-btns {
+        justify-content: flex-start;
+        gap: 8px;
+    }
+}
+
+/* Touch-friendly improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+
+    .rx-filter-item,
+    .rx-apply-btn,
+    .rx-reset-btn,
+    .rx-tbl-btn,
+    .rx-act-btn,
+    .rx-page-btn {
+        min-height: 44px;
+    }
+
+    .rx-filter-item {
+        min-height: 40px;
+    }
+
+    .rx-act-btn {
+        min-height: 32px;
+        width: 32px;
+    }
+
+    .rx-page-btn {
+        min-height: 40px;
+    }
+
+    /* ── Vital Signs ───────────────────────────────────────────────── */
+    .rx-vital-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .rx-vital-item {
+        font-size: 11px;
+        color: #475569;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .rx-date-time-inline {
+        display: none;
+        color: #94a3b8;
+        font-size: 10px;
+        font-weight: 400;
+        margin-left: 4px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+   FULLY RESPONSIVE — Mobile Friendly Breakpoints
+   ══════════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1024px) {
+        .rx-stats-row {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .rx-stat-card {
+            padding: 12px 10px;
+        }
+
+        .rx-stat-icon {
+            width: 36px;
+            height: 36px;
+        }
+
+        .rx-stat-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .rx-stat-value {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .rx-page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .rx-stats-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .rx-filter-bar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .rx-filter-group {
+            width: 100%;
+        }
+
+        .rx-filter-group-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .rx-filter-group-row>div {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rx-filter-group-row .rx-filter-item {
+            width: 100%;
+            justify-content: space-between;
+            padding: 8px 10px;
+            font-size: 11px;
+        }
+
+        .rx-search-box {
+            width: 100%;
+        }
+
+        .rx-filter-actions {
+            width: 100%;
+            display: flex;
+            gap: 8px;
+        }
+
+        .rx-apply-btn,
+        .rx-reset-btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .rx-table-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .rx-table-actions {
+            width: 100%;
+        }
+
+        .rx-tbl-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .rx-pagination-bar {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    /* Mobile (max-width: 640px) - Convert table to card layout */
+    @media (max-width: 640px) {
+        .rx-card-actions-inline {
+            display: none;
+        }
+
+        .rx-page-title {
+            font-size: 18px;
+        }
+
+        .rx-breadcrumb {
+            font-size: 11px;
+        }
+
+        .rx-stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .rx-stat-card {
+            padding: 10px 8px;
+            gap: 8px;
+        }
+
+        .rx-stat-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .rx-stat-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .rx-stat-value {
+            font-size: 18px;
+        }
+
+        .rx-stat-label {
+            font-size: 9px;
+        }
+
+        .rx-stat-sub {
+            font-size: 8px;
+        }
+
+        .rx-filter-bar {
+            padding: 12px;
+            gap: 8px;
+        }
+
+        .rx-filter-item {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        .rx-filter-group {
+            gap: 8px;
+        }
+
+        .rx-search-box {
+            padding: 8px 12px;
+        }
+
+        .rx-search-box input {
+            font-size: 11px;
+        }
+
+        .rx-apply-btn,
+        .rx-reset-btn {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        .rx-table-header {
+            padding: 12px;
+        }
+
+        .rx-table-title {
+            font-size: 13px;
+        }
+
+        .rx-tbl-btn {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        /* Hide serial column */
+        .rx-serial-td {
+            display: none !important;
+        }
+
+        /* Hide vital signs column */
+        .rx-vital-td {
+            display: block !important;
+            width: 100%;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-vital-td::before {
+            content: "Vital Signs";
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hide desktop status column */
+        .rx-table td[data-label="Status"] {
+            display: none !important;
+        }
+
+        /* Hide desktop action column */
+        .rx-table td[data-label="Action"] {
+            display: none !important;
+        }
+
+        /* Table → card */
+        .rx-table-responsive-wrapper {
+            overflow-x: visible;
+        }
+
+        .rx-table,
+        .rx-table thead,
+        .rx-table tbody,
+        .rx-table th,
+        .rx-table td,
+        .rx-table tr {
+            display: block;
+        }
+
+        .rx-table {
+            min-width: unset;
+        }
+
+        .rx-table thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        /* Card styling */
+        .rx-table tbody tr {
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .rx-table tbody tr:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Status color top border */
+        .rx-table tbody tr:has(.rx-status-badge.dispensed) {
+            border-top: 3px solid #16a34a;
+        }
+
+        .rx-table tbody tr:has(.rx-status-badge.pending) {
+            border-top: 3px solid #ca8a04;
+        }
+
+        .rx-table tbody tr:has(.rx-status-badge.cancelled) {
+            border-top: 3px solid #ef4444;
+        }
+
+        /* Row 1: Prescription ID + Status */
+        .rx-table td.rx-prescription-id {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .rx-card-rxid {
+            flex: 1;
+            min-width: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #014fa1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .rx-prescription-id .rx-card-status {
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        /* Row 2: Patient Info + Action Buttons */
+        .rx-table td.rx-patient-td {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 12px;
+        }
+
+        .rx-patient-cell {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .rx-patient-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rx-patient-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rx-patient-avatar svg {
+            width: 22px;
+            height: 22px;
+            stroke: #014fa1;
+            fill: none;
+        }
+
+        .rx-patient-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rx-patient-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 3px;
+            line-height: 1.3;
+        }
+
+        .rx-patient-id {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0 0 2px;
+        }
+
+        .rx-patient-age {
+            font-size: 12px;
+            color: #718096;
+            margin: 0;
+        }
+
+        .rx-card-actions {
+            display: flex !important;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .rx-act-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            text-decoration: none;
+            color: #64748b;
+        }
+
+        .rx-act-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .rx-act-btn:hover {
+            background: #f1f5f9;
+            border-color: #014fa1;
+            color: #014fa1;
+        }
+
+        /* Row 3: Date and Medicines side by side */
+        .rx-table td[data-label="Date"] {
+            display: inline-flex !important;
+            width: 50%;
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px 14px;
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            vertical-align: top;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-table td[data-label="Date"]::before {
+            display: none;
+        }
+
+        .rx-date-primary {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 2px;
+        }
+
+        .rx-date-time {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .rx-table td[data-label="Medicines"] {
+            display: inline-flex !important;
+            width: 50%;
+            align-items: center;
+            padding: 12px 14px;
+            border-top: 1px solid #f1f5f9;
+            vertical-align: top;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-table td[data-label="Medicines"]::before {
+            display: none;
+        }
+
+        .rx-medicine-icon-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rx-med-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #dcfce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rx-med-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: #16a34a;
+            fill: none;
+        }
+
+        .rx-med-count {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 2px;
+            line-height: 1.2;
+        }
+
+        .rx-instr-count {
+            font-size: 11px;
+            color: #718096;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .rx-filter-group-row {
+            flex-direction: column;
+        }
+
+        .rx-filter-group-row>div {
+            width: 100%;
+        }
+
+        .rx-filter-group-row .rx-filter-item {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .rx-stats-row {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .rx-stat-card {
+            padding: 12px;
+        }
+
+        .rx-stat-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .rx-stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .rx-stat-value {
+            font-size: 22px;
+        }
+
+        .rx-filter-group {
+            flex-direction: column;
+        }
+
+        .rx-filter-item {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .rx-filter-actions {
+            flex-direction: column;
+        }
+
+        .rx-apply-btn,
+        .rx-reset-btn {
+            width: 100%;
+        }
+
+        .rx-pagination-btns {
+            gap: 3px;
+        }
+
+        .rx-page-btn {
+            min-width: 28px;
+            height: 28px;
+            font-size: 10px;
+            padding: 0 6px;
+        }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+
+        .rx-filter-item,
+        .rx-apply-btn,
+        .rx-reset-btn,
+        .rx-tbl-btn,
+        .rx-act-btn,
+        .rx-page-btn {
+            min-height: 40px;
+        }
+
+        .rx-filter-item {
+            min-height: 40px;
+        }
+
+        .rx-act-btn {
+            min-height: 32px;
+            width: 32px;
+        }
+
+        .rx-page-btn {
+            min-height: 40px;
+        }
     }
 }

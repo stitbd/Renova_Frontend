@@ -75,7 +75,7 @@ export default function Footer() {
             <p className="footer-description">
               Bangladesh's most trusted healthcare provider, delivering compassionate, world-class medicine since {siteConfig.established}.
             </p>
-            
+
             {/* Contact Info */}
             <div className="footer-contact">
               <div className="footer-contact-item">

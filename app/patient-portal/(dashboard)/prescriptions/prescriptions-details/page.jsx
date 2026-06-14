@@ -144,12 +144,12 @@ export default function PrescriptionDetailsPage() {
             {/* Sub Header */}
             <div className="rxd-sub-header">
                 <div className="rxd-breadcrumb">
-                    <Link href="/doctor-portal/prescriptions" className="">Prescriptions</Link>
+                    <Link href="/patient-portal/prescriptions" className="">Prescriptions</Link>
                     <span className="rxd-breadcrumb-sep">›</span>
                     <span className="rxd-breadcrumb-current">Prescription Details</span>
                 </div>
                 <div className="rxd-header-actions">
-                    <Link href="/doctor-portal/prescriptions" className="rxd-header-btn back">
+                    <Link href="/patient-portal/prescriptions" className="rxd-header-btn back">
                         <Icon type="back" /> Back
                     </Link>
                     <button className="rxd-header-btn outline" onClick={handlePrint} disabled={isGenerating}>
@@ -157,14 +157,6 @@ export default function PrescriptionDetailsPage() {
                     </button>
                     <button className="rxd-header-btn outline" onClick={handleDownload} disabled={isGenerating}>
                         <Icon type="download" /> {isGenerating ? "Generating…" : "Download"}
-                    </button>
-                    <button className="rxd-header-btn primary">
-                        <Link
-                            href="/doctor-portal/prescriptions/update-prescriptions"
-                            className="rxd-header-btn primary"
-                        >
-                            <Icon type="edit" /> Edit Prescription
-                        </Link>
                     </button>
                 </div>
             </div>
@@ -352,41 +344,6 @@ export default function PrescriptionDetailsPage() {
 
                 {/* ── Right Column ───────────────────────────────── */}
                 <div className="rxd-right-col">
-
-                    {/* Patient Summary */}
-                    <div className="rxd-patient-card">
-                        <div className="rxd-patient-card-header">
-                            <h4 className="rxd-patient-card-title">Patient Summary</h4>
-                            <Link
-                                href={`/doctor-portal/patients/patient-profile?id=${patient.pid}&from=/doctor-portal/prescriptions/prescriptions-details`}
-                                className="rxd-view-profile-link"
-                                style={{ display: "block", textAlign: "center", textDecoration: "none" }}
-                            >
-                                View Full Profile
-                            </Link>
-                        </div>
-                        <div className="rxd-patient-info-block">
-                            <div className="rxd-patient-avatar">
-                                <img
-                                    src="/images/patients/01.jpg"
-                                    alt={patient.name}
-                                    onError={(e) => {
-                                        e.target.style.display = 'none';
-                                        e.target.parentElement.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#014fa1" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <p className="rxd-patient-name">{patient.name}</p>
-                                <p className="rxd-patient-pid">{patient.pid}</p>
-                            </div>
-                        </div>
-                        <div className="rxd-patient-detail-rows">
-                            <div className="rxd-patient-detail-row">
-                                <Icon type="pin" /> {patient.address}
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Prescription Summary */}
                     <div className="rxd-summary-card">

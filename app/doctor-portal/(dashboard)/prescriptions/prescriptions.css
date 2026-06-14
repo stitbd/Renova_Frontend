@@ -203,6 +203,14 @@
     flex-wrap: wrap;
 }
 
+.rx-filter-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 .rx-filter-item {
     display: flex;
     align-items: center;
@@ -456,8 +464,8 @@
 }
 
 .rx-patient-avatar {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     overflow: hidden;
     background: #dbeafe;
@@ -481,22 +489,40 @@
 }
 
 .rx-patient-name {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 700;
     color: #1a202c;
     margin: 0 0 2px;
 }
 
 .rx-patient-id {
-    font-size: 10px;
+    font-size: 12px;
     color: #94a3b8;
     margin: 0 0 1px;
 }
 
 .rx-patient-age {
-    font-size: 10px;
+    font-size: 12px;
     color: #718096;
     margin: 0;
+}
+
+.rx-card-actions-inline {
+    display: none;
+}
+
+.rx-card-actions {
+    display: none;
+}
+
+.rx-card-rxid {
+    font-size: 13px;
+    font-weight: 700;
+    color: #014fa1;
+}
+
+.rx-card-status {
+    font-size: 11px;
 }
 
 /* Doctor/Vital Signs cell */
@@ -699,6 +725,106 @@
     cursor: not-allowed;
 }
 
+.rx-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.rx-dropdown-item {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.rx-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #014fa1;
+}
+
+
+.rx-date-dropdown {
+    min-width: 280px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rx-date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rx-date-row label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.rx-date-row input[type="date"] {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    width: 100%;
+}
+
+.rx-date-row input[type="date"]:focus {
+    border-color: #014fa1;
+}
+
+.rx-date-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.rx-date-actions button {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.rx-date-actions button:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.rx-date-actions button.apply {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.rx-date-actions button.apply:hover {
+    background: #013d80;
+}
+
 /* ══════════════════════════════════════════════════════════════
    FULLY RESPONSIVE — Mobile Friendly Breakpoints
    ══════════════════════════════════════════════════════════════ */
@@ -744,16 +870,29 @@
     .rx-filter-bar {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
 
     .rx-filter-group {
-        justify-content: space-between;
         width: 100%;
     }
 
-    .rx-filter-item {
+    .rx-filter-group-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .rx-filter-group-row>div {
         flex: 1;
-        justify-content: center;
+        min-width: 0;
+    }
+
+    .rx-filter-group-row .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 11px;
     }
 
     .rx-search-box {
@@ -762,6 +901,8 @@
 
     .rx-filter-actions {
         width: 100%;
+        display: flex;
+        gap: 8px;
     }
 
     .rx-apply-btn,
@@ -792,6 +933,17 @@
 
 /* Mobile (max-width: 640px) - Convert table to card layout */
 @media (max-width: 640px) {
+    .rx-table-container {
+        padding: 14px;
+    }
+
+    .rx-card-actions-inline {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
     .rx-page-title {
         font-size: 18px;
     }
@@ -840,8 +992,6 @@
     .rx-filter-item {
         padding: 8px 12px;
         font-size: 11px;
-        white-space: normal;
-        word-break: keep-all;
     }
 
     .rx-filter-group {
@@ -875,7 +1025,50 @@
         font-size: 11px;
     }
 
-    /* Convert table to card layout */
+    /* Hide serial column */
+    .rx-serial-td {
+        display: none !important;
+    }
+
+    /* Vital Signs — full width row */
+    .rx-vital-td {
+        display: block !important;
+        width: 100%;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .rx-vital-td::before {
+        content: "Vital Signs";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .rx-vital-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .rx-vital-item {
+        font-size: 11px;
+        color: #475569;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Hide separate Status column (badge already shown in ID row) */
+    .rx-table td[data-label="Status"] {
+        display: none !important;
+    }
+
+    /* Table → card */
     .rx-table-responsive-wrapper {
         overflow-x: visible;
     }
@@ -899,67 +1092,213 @@
         left: -9999px;
     }
 
+    /* Card styling */
     .rx-table tbody tr {
-        display: block;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         border: 1px solid #e2e8f0;
         border-radius: 12px;
-        padding: 12px;
+        padding: 0;
         background: #fff;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: relative;
     }
 
     .rx-table tbody tr:last-child {
         margin-bottom: 0;
     }
 
-    .rx-table td {
-        display: flex;
+    /* Status color top border */
+    .rx-table tbody tr:has(.rx-status-badge.dispensed) {
+        border-top: 3px solid #16a34a;
+    }
+
+    .rx-table tbody tr:has(.rx-status-badge.pending) {
+        border-top: 3px solid #ca8a04;
+    }
+
+    .rx-table tbody tr:has(.rx-status-badge.cancelled) {
+        border-top: 3px solid #ef4444;
+    }
+
+    /* Row 1: Prescription ID + Status */
+    .rx-table td.rx-prescription-id {
+        display: flex !important;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0;
+        padding: 12px 14px;
         border-bottom: 1px solid #f1f5f9;
-        text-align: right;
-        gap: 12px;
+        background: #fff;
     }
 
-    .rx-table td:last-child {
-        border-bottom: none;
+    .rx-card-rxid {
+        font-size: 14px;
+        font-weight: 700;
+        color: #014fa1;
     }
 
-    .rx-table td::before {
-        content: attr(data-label);
-        font-weight: 600;
+    .rx-status-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
         font-size: 11px;
-        color: #64748b;
-        text-align: left;
-        min-width: 100px;
+        font-weight: 600;
+    }
+
+    /* Row 2: Patient Info + Action Buttons */
+    .rx-table td.rx-patient-td {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 10px;
+    }
+
+    .rx-patient-cell {
+        flex: 1;
+        gap: 10px;
+    }
+
+    .rx-card-actions {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
         flex-shrink: 0;
     }
 
-    /* Card layout alignment fixes */
-    .rx-table td .rx-patient-cell,
-    .rx-table td .rx-doctor-cell,
-    .rx-table td .rx-medicine-icon-wrap {
-        justify-content: flex-end;
+    /* Hide desktop action column */
+    .rx-table td[data-label="Action"] {
+        display: none !important;
     }
 
-    .rx-table td .rx-status-badge {
-        display: inline-flex;
+    /* Row 3: Date and Medicines side by side */
+    .rx-table td[data-label="Date"] {
+        display: inline-flex !important;
+        width: 50%;
+        flex-direction: column;
+        padding: 10px 14px;
+        border-top: 1px solid #f1f5f9;
+        border-right: 1px solid #f1f5f9;
+        vertical-align: top;
+        box-sizing: border-box;
+        background: #fff;
     }
 
-    .rx-pagination-info {
+    .rx-table td[data-label="Date"]::before {
+        display: none;
+    }
+
+    .rx-date-primary {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a202c;
+        margin: 0 0 2px;
+    }
+
+    .rx-date-time {
+        font-size: 11px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .rx-table td[data-label="Medicines"] {
+        display: inline-flex !important;
+        width: 50%;
+        align-items: center;
+        padding: 10px 14px;
+        border-top: 1px solid #f1f5f9;
+        vertical-align: top;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .rx-table td[data-label="Medicines"]::before {
+        display: none;
+    }
+
+    .rx-medicine-icon-wrap {
+        gap: 10px;
+    }
+
+    .rx-med-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rx-med-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .rx-med-count {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0 0 2px;
+    }
+
+    .rx-instr-count {
+        font-size: 10px;
+    }
+
+    .rx-act-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .rx-act-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .rx-patient-avatar {
+        width: 48px;
+        height: 48px;
+    }
+
+    .rx-patient-name {
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0 0 2px;
+    }
+
+    .rx-patient-id,
+    .rx-patient-age {
         font-size: 11px;
     }
 
-    .rx-page-btn {
-        min-width: 30px;
-        height: 30px;
-        font-size: 11px;
+}
+
+
+@media (min-width: 641px) {
+    .rx-table .rx-prescription-id .rx-status-badge.rx-card-status {
+        display: none !important;
+    }
+}
+
+/* On mobile, show it inside Prescription ID row */
+@media (max-width: 640px) {
+    .rx-table .rx-prescription-id .rx-status-badge.rx-card-status {
+        display: inline-flex !important;
+        margin-left: auto;
+        /* push to right */
     }
 }
 
 /* Extra Small (max-width: 480px) */
 @media (max-width: 480px) {
+    .rx-filter-group-row {
+        flex-direction: column;
+    }
+
+    .rx-filter-group-row>div {
+        width: 100%;
+    }
+
+    .rx-filter-group-row .rx-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
     .rx-stats-row {
         grid-template-columns: 1fr;
         gap: 8px;
@@ -1071,11 +1410,620 @@
     }
 
     .rx-act-btn {
-        min-height: 40px;
-        width: 40px;
+        min-height: 32px;
+        width: 32px;
     }
 
     .rx-page-btn {
         min-height: 40px;
+    }
+
+    /* ── Vital Signs ───────────────────────────────────────────────── */
+    .rx-vital-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .rx-vital-item {
+        font-size: 11px;
+        color: #475569;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .rx-date-time-inline {
+        display: none;
+        color: #94a3b8;
+        font-size: 10px;
+        font-weight: 400;
+        margin-left: 4px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+   FULLY RESPONSIVE — Mobile Friendly Breakpoints
+   ══════════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1024px) {
+        .rx-stats-row {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .rx-stat-card {
+            padding: 12px 10px;
+        }
+
+        .rx-stat-icon {
+            width: 36px;
+            height: 36px;
+        }
+
+        .rx-stat-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .rx-stat-value {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .rx-page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .rx-stats-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .rx-filter-bar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .rx-filter-group {
+            width: 100%;
+        }
+
+        .rx-filter-group-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .rx-filter-group-row>div {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rx-filter-group-row .rx-filter-item {
+            width: 100%;
+            justify-content: space-between;
+            padding: 8px 10px;
+            font-size: 11px;
+        }
+
+        .rx-search-box {
+            width: 100%;
+        }
+
+        .rx-filter-actions {
+            width: 100%;
+            display: flex;
+            gap: 8px;
+        }
+
+        .rx-apply-btn,
+        .rx-reset-btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .rx-table-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .rx-table-actions {
+            width: 100%;
+        }
+
+        .rx-tbl-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .rx-pagination-bar {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    /* Mobile (max-width: 640px) - Convert table to card layout */
+    @media (max-width: 640px) {
+        .rx-card-actions-inline {
+            display: none;
+        }
+
+        .rx-page-title {
+            font-size: 18px;
+        }
+
+        .rx-breadcrumb {
+            font-size: 11px;
+        }
+
+        .rx-stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .rx-stat-card {
+            padding: 10px 8px;
+            gap: 8px;
+        }
+
+        .rx-stat-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .rx-stat-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .rx-stat-value {
+            font-size: 18px;
+        }
+
+        .rx-stat-label {
+            font-size: 9px;
+        }
+
+        .rx-stat-sub {
+            font-size: 8px;
+        }
+
+        .rx-filter-bar {
+            padding: 12px;
+            gap: 8px;
+        }
+
+        .rx-filter-item {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        .rx-filter-group {
+            gap: 8px;
+        }
+
+        .rx-search-box {
+            padding: 8px 12px;
+        }
+
+        .rx-search-box input {
+            font-size: 11px;
+        }
+
+        .rx-apply-btn,
+        .rx-reset-btn {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        .rx-table-header {
+            padding: 12px;
+        }
+
+        .rx-table-title {
+            font-size: 13px;
+        }
+
+        .rx-tbl-btn {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        /* Hide serial column */
+        .rx-serial-td {
+            display: none !important;
+        }
+
+        /* Hide vital signs column */
+        .rx-vital-td {
+            display: block !important;
+            width: 100%;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-vital-td::before {
+            content: "Vital Signs";
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hide desktop status column */
+        .rx-table td[data-label="Status"] {
+            display: none !important;
+        }
+
+        /* Hide desktop action column */
+        .rx-table td[data-label="Action"] {
+            display: none !important;
+        }
+
+        /* Table → card */
+        .rx-table-responsive-wrapper {
+            overflow-x: visible;
+        }
+
+        .rx-table,
+        .rx-table thead,
+        .rx-table tbody,
+        .rx-table th,
+        .rx-table td,
+        .rx-table tr {
+            display: block;
+        }
+
+        .rx-table {
+            min-width: unset;
+        }
+
+        .rx-table thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        /* Card styling */
+        .rx-table tbody tr {
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .rx-table tbody tr:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Status color top border */
+        .rx-table tbody tr:has(.rx-status-badge.dispensed) {
+            border-top: 3px solid #16a34a;
+        }
+
+        .rx-table tbody tr:has(.rx-status-badge.pending) {
+            border-top: 3px solid #ca8a04;
+        }
+
+        .rx-table tbody tr:has(.rx-status-badge.cancelled) {
+            border-top: 3px solid #ef4444;
+        }
+
+        /* Row 1: Prescription ID + Status */
+        .rx-table td.rx-prescription-id {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .rx-card-rxid {
+            flex: 1;
+            min-width: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #014fa1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .rx-prescription-id .rx-card-status {
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        /* Row 2: Patient Info + Action Buttons */
+        .rx-table td.rx-patient-td {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 12px;
+        }
+
+        .rx-patient-cell {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .rx-patient-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rx-patient-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rx-patient-avatar svg {
+            width: 22px;
+            height: 22px;
+            stroke: #014fa1;
+            fill: none;
+        }
+
+        .rx-patient-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rx-patient-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 3px;
+            line-height: 1.3;
+        }
+
+        .rx-patient-id {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0 0 2px;
+        }
+
+        .rx-patient-age {
+            font-size: 12px;
+            color: #718096;
+            margin: 0;
+        }
+
+        .rx-card-actions {
+            display: flex !important;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .rx-act-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            text-decoration: none;
+            color: #64748b;
+        }
+
+        .rx-act-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .rx-act-btn:hover {
+            background: #f1f5f9;
+            border-color: #014fa1;
+            color: #014fa1;
+        }
+
+        /* Row 3: Date and Medicines side by side */
+        .rx-table td[data-label="Date"] {
+            display: inline-flex !important;
+            width: 50%;
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px 14px;
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            vertical-align: top;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-table td[data-label="Date"]::before {
+            display: none;
+        }
+
+        .rx-date-primary {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 2px;
+        }
+
+        .rx-date-time {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .rx-table td[data-label="Medicines"] {
+            display: inline-flex !important;
+            width: 50%;
+            align-items: center;
+            padding: 12px 14px;
+            border-top: 1px solid #f1f5f9;
+            vertical-align: top;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-table td[data-label="Medicines"]::before {
+            display: none;
+        }
+
+        .rx-medicine-icon-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rx-med-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #dcfce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rx-med-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: #16a34a;
+            fill: none;
+        }
+
+        .rx-med-count {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 2px;
+            line-height: 1.2;
+        }
+
+        .rx-instr-count {
+            font-size: 11px;
+            color: #718096;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .rx-filter-group-row {
+            flex-direction: column;
+        }
+
+        .rx-filter-group-row>div {
+            width: 100%;
+        }
+
+        .rx-filter-group-row .rx-filter-item {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .rx-stats-row {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .rx-stat-card {
+            padding: 12px;
+        }
+
+        .rx-stat-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .rx-stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .rx-stat-value {
+            font-size: 22px;
+        }
+
+        .rx-filter-group {
+            flex-direction: column;
+        }
+
+        .rx-filter-item {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .rx-filter-actions {
+            flex-direction: column;
+        }
+
+        .rx-apply-btn,
+        .rx-reset-btn {
+            width: 100%;
+        }
+
+        .rx-pagination-btns {
+            gap: 3px;
+        }
+
+        .rx-page-btn {
+            min-width: 28px;
+            height: 28px;
+            font-size: 10px;
+            padding: 0 6px;
+        }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+
+        .rx-filter-item,
+        .rx-apply-btn,
+        .rx-reset-btn,
+        .rx-tbl-btn,
+        .rx-act-btn,
+        .rx-page-btn {
+            min-height: 40px;
+        }
+
+        .rx-filter-item {
+            min-height: 40px;
+        }
+
+        .rx-act-btn {
+            min-height: 32px;
+            width: 32px;
+        }
+
+        .rx-page-btn {
+            min-height: 40px;
+        }
     }
 }

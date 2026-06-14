@@ -275,7 +275,7 @@ export default function VideoCallPage() {
                             {!isCallAccepted && (
                                 <div className="video-waiting-text">Ringing...</div>
                             )}
-                            
+
                             {error && (
                                 <div className="video-waiting-text">
                                     {error}

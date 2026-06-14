@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/constants/siteData";
-import "@/styles/components/HeroSection.css";
-import "@/styles/pages/about.css";
+import "@/styles/pages/signup-signin.css";
 
 export const metadata = {
   title: `Sign Up | ${siteConfig.name}`,
@@ -10,69 +9,46 @@ export const metadata = {
 
 export default function SignUpSelectionPage() {
   return (
-    <>
-      {/* Page Hero */}
-      {/* <section className="page-hero">
-        <div className="page-hero__container">
-          <span className="page-hero__label">Join Us</span>
-          <h1 className="page-hero__title">
-            Sign Up <span className="page-hero__highlight">Options</span>
-          </h1>
-          <p className="page-hero__subtitle">
-            Please select the portal panel below to create your new account.
-          </p>
-          <nav aria-label="Breadcrumb" className="page-hero__breadcrumb">
-            <Link href="/">Home</Link>
-            <span aria-hidden="true"> / </span>
-            <span aria-current="page">Sign Up</span>
-          </nav>
-        </div>
-      </section> */}
+    <section className="page-section page-section--slate">
+      <div className="panel-grid">
 
-      {/* Selection Cards */}
-      <section className="page-section page-section--slate">
-        <style>{`
-          .panel-card:hover {
-            transform: translateY(-5px) !important;
-            box-shadow: var(--shadow-lg) !important;
-          }
-        `}</style>
-        <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-          
-          <Link href="/patient-portal/patient-signup" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="panel-card" style={{ background: '#fff', borderRadius: '1rem', padding: '2.5rem 1.5rem', textAlign: 'center', boxShadow: 'var(--shadow-md)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}>
-              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-              </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Patient Panel</h3>
-              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Create a patient account to manage health records.</p>
-              <span className="btn btn-primary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign Up</span>
-            </div>
-          </Link>
+        <Link href="/patient-portal/patient-signup" className="panel-card">
+          <div className="panel-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+          </div>
+          <h3 className="panel-card__title">Patient Panel</h3>
+          <p className="panel-card__desc">Create a patient account to manage health records.</p>
+          <span className="btn btn-primary panel-card__btn">Sign Up</span>
+        </Link>
 
-          <Link href="/doctor-portal/doctor-signup" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="panel-card" style={{ background: '#fff', borderRadius: '1rem', padding: '2.5rem 1.5rem', textAlign: 'center', boxShadow: 'var(--shadow-md)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}>
-              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--accent-light)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="9" width="18" height="11" rx="2" /><path d="M8 9V5a4 4 0 0 1 8 0v4" /><line x1="12" y1="13" x2="12" y2="17" /><line x1="10" y1="15" x2="14" y2="15" /></svg>
-              </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Doctor Panel</h3>
-              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Register as a doctor to manage patients and schedules.</p>
-              <span className="btn btn-secondary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign Up</span>
-            </div>
-          </Link>
-          <Link href="/outlet-portal/outlet-signup" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="panel-card" style={{ background: '#fff', borderRadius: '1rem', padding: '2.5rem 1.5rem', textAlign: 'center', boxShadow: 'var(--shadow-md)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}>
-              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
-              </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Patient Panel</h3>
-              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Create a patient account to manage health records.</p>
-              <span className="btn btn-primary" style={{ display: 'inline-flex', width: '100%', justifyContent: 'center' }}>Sign Up</span>
-            </div>
-          </Link>
+        <Link href="/doctor-portal/doctor-signup" className="panel-card">
+          <div className="panel-card__icon panel-card__icon--accent">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="9" width="18" height="11" rx="2" /><path d="M8 9V5a4 4 0 0 1 8 0v4" /><line x1="12" y1="13" x2="12" y2="17" /><line x1="10" y1="15" x2="14" y2="15" /></svg>
+          </div>
+          <h3 className="panel-card__title">Doctor Panel</h3>
+          <p className="panel-card__desc">Register as a doctor to manage patients and schedules.</p>
+          <span className="btn btn-secondary panel-card__btn">Sign Up</span>
+        </Link>
 
-        </div>
-      </section>
-    </>
+        <Link href="/outlet-portal/outlet-signup" className="panel-card">
+          <div className="panel-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
+          </div>
+          <h3 className="panel-card__title">Outlet Panel</h3>
+          <p className="panel-card__desc">Register your outlet to manage orders and inventory.</p>
+          <span className="btn btn-primary panel-card__btn">Sign Up</span>
+        </Link>
+
+        <Link href="/supar-admin-panel/supar-admin-signup" className="panel-card">
+          <div className="panel-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
+          </div>
+          <h3 className="panel-card__title">Super Admin Panel</h3>
+          <p className="panel-card__desc">Create a super admin account for the platform.</p>
+          <span className="btn btn-primary panel-card__btn">Sign Up</span>
+        </Link>
+
+      </div>
+    </section>
   );
 }
