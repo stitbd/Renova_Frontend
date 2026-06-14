@@ -537,45 +537,69 @@ export default function PatientMessagesPage() {
               <div className="msg-chat-body" ref={chatBodyRef}>
                 {isLoadingMessages && <p>Loading messages...</p>}
 
-                {!isLoadingMessages &&
-                  selectedMessages.map((msg) => (
+                {!isLoadingMessages && selectedMessages.map((msg) => {
+                  const isCall = msg.type === "CALL";
+
+                  return (
                     <div
                       key={msg.id}
                       className={`msg-bubble-wrap${msg.mine ? " sent" : ""}`}
                     >
-                      {!msg.mine && (
+                      {!msg.mine && !isCall && (
                         <div className="msg-bubble-avatar">
                           <span>{getInitials(selectedConv.name)}</span>
                         </div>
                       )}
 
-                      <div>
-                        {msg.type === "CALL" ? (
-                          <div className="msg-call-history">
-                            {msg.text || msg.message}
+                      {isCall ? (
+                        <div className={`msg-call-message ${msg.mine ? "sent" : "received"}`}>
+                          {!msg.mine && (
+                            <div className="msg-bubble-avatar">
+                              <span>{getInitials(selectedConv.name)}</span>
+                            </div>
+                          )}
+
+                          <div className="msg-call-stack">
+                            <div className={`msg-call-bubble ${msg.mine ? "sent" : "received"}`}>
+                              {/* <div className="msg-call-icon">
+                                {msg.text?.toLowerCase().includes("video") ? "🎥" : "📞"}
+                              </div> */}
+
+                              <div className="msg-call-content">
+                                <div className="msg-call-title">
+                                  {msg.text || msg.message}
+                                </div>
+                                <div className="msg-call-subtitle">Call history</div>
+                              </div>
+                            </div>
+
+                            <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
+                              {formatTime(msg.createdAt)}
+                            </div>
                           </div>
-                        ) : (
-                          <div
-                            className={`msg-bubble${msg.mine ? " sent" : " received"}`}
-                          >
+                        </div>
+                      ) : (
+                        <div>
+                          <div className={`msg-bubble${msg.mine ? " sent" : " received"}`}>
                             {msg.text}
 
                             {msg.fileUrl && (
-                              <div style={{ marginTop: 6 }}>
+                              <div className="msg-attachment">
                                 <a href={msg.fileUrl} target="_blank" rel="noreferrer">
                                   {msg.fileName || "Attachment"}
                                 </a>
                               </div>
                             )}
                           </div>
-                        )}
 
-                        <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
-                          {formatTime(msg.createdAt)}
+                          <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
+                            {formatTime(msg.createdAt)}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
-                  ))}
+                  );
+                })}
               </div>
 
               {error && <p style={{ color: "red", padding: "0 16px" }}>{error}</p>}
