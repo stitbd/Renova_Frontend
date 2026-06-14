@@ -85,6 +85,9 @@ export default function AudioCallPage() {
     const router = useRouter();
 
     const {
+
+
+        isCallAccepted,
         callSession,
         isJoined,
         isMuted,
@@ -264,10 +267,14 @@ export default function AudioCallPage() {
                         </p>
 
                         <p className="audio-patient-role">
-                            {isJoined ? "Connected" : "Connecting..."}
+                            {isCallAccepted ? "Connected" : "Ringing..."}
                         </p>
 
-                        <p className="audio-timer">{formatDuration()}</p>
+                        <p className="audio-timer">
+                            {isCallAccepted ? formatDuration() : ""}
+                        </p>
+
+
 
                         {error && <p style={{ color: "red" }}>{error}</p>}
 

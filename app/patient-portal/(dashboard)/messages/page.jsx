@@ -56,6 +56,7 @@ function normalizeConversation(conv) {
 function normalizeMessage(msg, authUserId) {
   return {
     id: msg.id,
+    type: msg.type, // add this
     text: msg.message || "",
     fileUrl: msg.fileUrl,
     fileName: msg.fileName,
@@ -256,9 +257,22 @@ export default function PatientMessagesPage() {
       );
     };
     const handleIncomingCall = (payload) => {
-      setIncomingCall(payload);
+      setIncomingCall({
+        ...payload,
+        receivedAt: Date.now(),
+      });
     };
 
+    const handleCallMissed = (payload) => {
+      setIncomingCall((prev) => {
+        if (!prev) return null;
+        if (!payload?.callId || prev.callId === payload.callId) return null;
+        return prev;
+      });
+    };
+
+    socket.on("audio_call_missed", handleCallMissed);
+    socket.on("video_call_missed", handleCallMissed);
 
     socket.on("incoming_audio_call", handleIncomingCall);
     socket.on("incoming_video_call", handleIncomingCall);
@@ -273,6 +287,8 @@ export default function PatientMessagesPage() {
       socket.off("message_seen", handleSeenMessage);
       socket.off("incoming_audio_call", handleIncomingCall);
       socket.off("incoming_video_call", handleIncomingCall);
+      socket.off("audio_call_missed", handleCallMissed);
+      socket.off("video_call_missed", handleCallMissed);
     };
   }, [token, selectedConv?.id]);
 
@@ -282,6 +298,21 @@ export default function PatientMessagesPage() {
       behavior: "smooth",
     });
   }, [selectedMessages.length]);
+
+  useEffect(() => {
+    if (!incomingCall?.callId) return;
+
+    const timer = setTimeout(() => {
+      setIncomingCall((prev) => {
+        if (prev?.callId === incomingCall.callId) return null;
+        return prev;
+      });
+    }, 31_000);
+
+    return () => clearTimeout(timer);
+  }, [incomingCall?.callId]);
+
+
 
   const handleSend = async () => {
     const text = messageText.trim();
@@ -519,29 +550,28 @@ export default function PatientMessagesPage() {
                       )}
 
                       <div>
-                        <div
-                          className={`msg-bubble${msg.mine ? " sent" : " received"
-                            }`}
-                        >
-                          {msg.text}
+                        {msg.type === "CALL" ? (
+                          <div className="msg-call-history">
+                            {msg.text || msg.message}
+                          </div>
+                        ) : (
+                          <div
+                            className={`msg-bubble${msg.mine ? " sent" : " received"}`}
+                          >
+                            {msg.text}
 
-                          {msg.fileUrl && (
-                            <div style={{ marginTop: 6 }}>
-                              <a href={msg.fileUrl} target="_blank" rel="noreferrer">
-                                {msg.fileName || "Attachment"}
-                              </a>
-                            </div>
-                          )}
-                        </div>
+                            {msg.fileUrl && (
+                              <div style={{ marginTop: 6 }}>
+                                <a href={msg.fileUrl} target="_blank" rel="noreferrer">
+                                  {msg.fileName || "Attachment"}
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        )}
 
-                        <div
-                          className={`msg-bubble-meta${msg.mine ? " sent" : ""
-                            }`}
-                        >
+                        <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
                           {formatTime(msg.createdAt)}
-                          {msg.mine && msg.seenAt && (
-                            <span className="msg-double-tick">  <CheckCheck size={14} /></span>
-                          )}
                         </div>
                       </div>
                     </div>

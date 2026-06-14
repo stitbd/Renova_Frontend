@@ -1761,6 +1761,15 @@
     font-weight: 700;
 }
 
+/* .msg-call-history {
+  display: inline-flex;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+} */
 
 
 @keyframes pulse {

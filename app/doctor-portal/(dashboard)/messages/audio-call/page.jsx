@@ -87,22 +87,16 @@ export default function AudioCallPage() {
     const router = useRouter();
 
     const {
-        callSession,
+
         isJoined,
+        isCallAccepted,
+        callSession,
         isMuted,
         error,
         toggleMute,
         endCall,
         formatDuration,
     } = useAgoraCall({ mode: "AUDIO" });
-
-
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then((stream) => {
-            console.log("MIC OK----------------------------------", stream);
-            stream.getTracks().forEach((track) => track.stop());
-        })
-        .catch((err) => console.error("MIC FAILED-------------------------------", err.name, err.message));
 
 
     const handleSend = () => {
@@ -274,10 +268,12 @@ export default function AudioCallPage() {
                         </p>
 
                         <p className="audio-patient-role">
-                            {isJoined ? "Connected" : "Connecting..."}
+                            {isCallAccepted ? "Connected" : "Ringing..."}
                         </p>
 
-                        <p className="audio-timer">{formatDuration()}</p>
+                        <p className="audio-timer">
+                            {isCallAccepted ? formatDuration() : ""}
+                        </p>
 
                         {error && <p style={{ color: "red" }}>{error}</p>}
 
