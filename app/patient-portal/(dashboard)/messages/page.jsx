@@ -92,6 +92,17 @@ export default function PatientMessagesPage() {
   const [messageText, setMessageText] = useState("");
   const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+
+
+  const MESSAGE_LIMIT = 20;
+
+  const [messagePage, setMessagePage] = useState(1);
+  const [hasMoreMessages, setHasMoreMessages] = useState(false);
+  const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(false);
+  const isPrependingRef = useRef(false);
+  const previousScrollHeightRef = useRef(0);
+
+
   const [error, setError] = useState("");
 
   const router = useRouter();
@@ -121,6 +132,60 @@ export default function PatientMessagesPage() {
     return list;
   }, [conversations, activeTab, searchTerm]);
 
+  const loadOlderMessages = async () => {
+    if (
+      !token ||
+      !selectedConv?.id ||
+      isLoadingOlderMessages ||
+      !hasMoreMessages
+    ) {
+      return;
+    }
+
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    const nextPage = messagePage + 1;
+
+    isPrependingRef.current = true;
+    previousScrollHeightRef.current = container.scrollHeight;
+
+    try {
+      setIsLoadingOlderMessages(true);
+
+      const result = await chatApi.getMessages(
+        token,
+        selectedConv.id,
+        nextPage,
+        MESSAGE_LIMIT
+      );
+
+      const olderMessages = Array.isArray(result?.data?.data)
+        ? result.data.data
+        : [];
+
+      const meta = result?.data?.meta;
+
+      setMessages((prev) => uniqueMessages([...olderMessages, ...prev]));
+      setMessagePage(nextPage);
+      setHasMoreMessages(Boolean(meta && meta.page < meta.totalPage));
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const newScrollHeight = container.scrollHeight;
+          const previousScrollHeight = previousScrollHeightRef.current;
+
+          container.scrollTop = newScrollHeight - previousScrollHeight;
+          isPrependingRef.current = false;
+        });
+      });
+    } catch (err) {
+      setError(err.message || "Failed to load older messages");
+      isPrependingRef.current = false;
+    } finally {
+      setIsLoadingOlderMessages(false);
+    }
+  };
   useEffect(() => {
     if (!token) return;
 
@@ -166,10 +231,24 @@ export default function PatientMessagesPage() {
         setIsLoadingMessages(true);
         setError("");
 
-        const result = await chatApi.getMessages(token, selectedConv.id);
-        const list = Array.isArray(result?.data?.data) ? result.data.data : [];
+        const result = await chatApi.getMessages(
+          token,
+          selectedConv.id,
+          1,
+          MESSAGE_LIMIT
+        );
 
-        if (!ignore) setMessages(list);
+        const list = Array.isArray(result?.data?.data)
+          ? result.data.data
+          : [];
+
+        const meta = result?.data?.meta;
+
+        if (ignore) return;
+
+        setMessages(list);
+        setMessagePage(1);
+        setHasMoreMessages(meta?.page < meta?.totalPage);
       } catch (err) {
         if (!ignore) setError(err.message || "Failed to load messages");
       } finally {
@@ -294,10 +373,20 @@ export default function PatientMessagesPage() {
   }, [token, selectedConv?.id]);
 
   useEffect(() => {
-    chatBodyRef.current?.scrollTo({
-      top: chatBodyRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    if (isPrependingRef.current) return;
+
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+
+    if (distanceFromBottom < 120) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [selectedMessages.length]);
 
   useEffect(() => {
@@ -313,6 +402,15 @@ export default function PatientMessagesPage() {
     return () => clearTimeout(timer);
   }, [incomingCall?.callId]);
 
+
+  const handleChatScroll = () => {
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    if (container.scrollTop <= 80) {
+      loadOlderMessages();
+    }
+  };
 
 
   const handleSend = async () => {
@@ -546,7 +644,16 @@ export default function PatientMessagesPage() {
                 </div>
               </div>
 
-              <div className="msg-chat-body" ref={chatBodyRef}>
+              <div
+                className="msg-chat-body"
+                ref={chatBodyRef}
+                onScroll={handleChatScroll}
+              >
+
+                {isLoadingOlderMessages && (
+                  <div className="msg-load-older">Loading older messages...</div>
+                )}
+
                 {isLoadingMessages && <p>Loading messages...</p>}
 
                 {!isLoadingMessages && selectedMessages.map((msg) => {

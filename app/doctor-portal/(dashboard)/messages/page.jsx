@@ -90,22 +90,95 @@ export default function MessagesPage() {
 
   const [conversations, setConversations] = useState([]);
   const [selectedConv, setSelectedConv] = useState(null);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const [messageText, setMessageText] = useState("");
+  const MESSAGE_LIMIT = 20;
+
+  const [messagePage, setMessagePage] = useState(1);
+  const [hasMoreMessages, setHasMoreMessages] = useState(false);
+  const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(false);
   const [isLoadingConversations, setIsLoadingConversations] = useState(false);
-  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+
+  const isPrependingRef = useRef(false);
+  const previousScrollHeightRef = useRef(0);
+
+
   const [error, setError] = useState("");
-
   const router = useRouter();
-
   const chatBodyRef = useRef(null);
-
   const selectedMessages = useMemo(() => {
     return uniqueMessages(messages).map((msg) =>
       normalizeMessage(msg, authUser?.id)
     );
   }, [messages, authUser?.id]);
+
+
+  const loadOlderMessages = async () => {
+    if (
+      !token ||
+      !selectedConv?.id ||
+      isLoadingOlderMessages ||
+      !hasMoreMessages
+    ) {
+      return;
+    }
+
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    const nextPage = messagePage + 1;
+
+    isPrependingRef.current = true;
+    previousScrollHeightRef.current = container.scrollHeight;
+
+    try {
+      setIsLoadingOlderMessages(true);
+
+      const result = await chatApi.getMessages(
+        token,
+        selectedConv.id,
+        nextPage,
+        MESSAGE_LIMIT
+      );
+
+      const olderMessages = Array.isArray(result?.data?.data)
+        ? result.data.data
+        : [];
+
+      const meta = result?.data?.meta;
+
+      setMessages((prev) => uniqueMessages([...olderMessages, ...prev]));
+      setMessagePage(nextPage);
+      setHasMoreMessages(Boolean(meta && meta.page < meta.totalPage));
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const newScrollHeight = container.scrollHeight;
+          const previousScrollHeight = previousScrollHeightRef.current;
+
+          container.scrollTop = newScrollHeight - previousScrollHeight;
+          isPrependingRef.current = false;
+        });
+      });
+    } catch (err) {
+      setError(err.message || "Failed to load older messages");
+      isPrependingRef.current = false;
+    } finally {
+      setIsLoadingOlderMessages(false);
+    }
+  };
+
+  const handleChatScroll = () => {
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    if (container.scrollTop <= 80) {
+      loadOlderMessages();
+    }
+  };
+
 
 
   useEffect(() => {
@@ -170,7 +243,12 @@ export default function MessagesPage() {
   }, [token, receiverIdFromUrl, appointmentIdFromUrl]);
 
   useEffect(() => {
-    if (!token || !selectedConv?.id) return;
+    if (!token || !selectedConv?.id) {
+      setMessages([]);
+      setMessagePage(1);
+      setHasMoreMessages(false);
+      return;
+    }
 
     let ignore = false;
 
@@ -181,15 +259,22 @@ export default function MessagesPage() {
 
         const result = await chatApi.getMessages(
           token,
-          selectedConv.id
+          selectedConv.id,
+          1,
+          MESSAGE_LIMIT
         );
 
         const list = Array.isArray(result?.data?.data)
           ? result.data.data
           : [];
-        setMessages(list);
 
-        if (!ignore) setMessages(list);
+        const meta = result?.data?.meta;
+
+        if (ignore) return;
+
+        setMessages(list);
+        setMessagePage(1);
+        setHasMoreMessages(Boolean(meta && meta.page < meta.totalPage));
       } catch (err) {
         if (!ignore) setError(err.message || "Failed to load messages");
       } finally {
@@ -266,11 +351,22 @@ export default function MessagesPage() {
   }, [token, selectedConv?.id]);
 
   useEffect(() => {
-    chatBodyRef.current?.scrollTo({
-      top: chatBodyRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    if (isPrependingRef.current) return;
+
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+
+    if (distanceFromBottom < 120) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [selectedMessages.length]);
+
 
   const handleSend = async () => {
     const text = messageText.trim();
@@ -480,8 +576,18 @@ export default function MessagesPage() {
                 </div>
               </div>
 
-              <div className="msg-chat-body" ref={chatBodyRef}>
-                {isLoadingMessages && <p>Loading messages...</p>}
+              <div
+                className="msg-chat-body"
+                ref={chatBodyRef}
+                onScroll={handleChatScroll}
+              >
+                {isLoadingOlderMessages && (
+                  <div className="msg-load-older">Loading older messages...</div>
+                )}
+                {isLoadingMessages && (
+                  <div className="msg-load-older">Loading  messages...</div>
+                )}
+
 
                 {!isLoadingMessages && selectedMessages.map((msg) => {
                   const isCall = msg.type === "CALL";
@@ -581,7 +687,7 @@ export default function MessagesPage() {
                     onClick={handleSend}
                     disabled={!messageText.trim()}
                   >
-                    <Send  size={18} />
+                    <Send size={18} />
                   </button>
                 </div>
               </div>

@@ -40,9 +40,12 @@ export const chatApi = {
         );
     },
 
-    getMessages(token, conversationId) {
-        return request(`/chat/conversations/${conversationId}/messages`, token);
-    },
+getMessages(token, conversationId, page = 1, limit = 20) {
+  return request(
+    `/chat/conversations/${conversationId}/messages?page=${page}&limit=${limit}`,
+    token
+  );
+},
 
     sendMessage(token, payload) {
         return request("/chat/send", token, {
