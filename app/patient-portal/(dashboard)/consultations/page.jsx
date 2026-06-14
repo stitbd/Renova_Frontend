@@ -230,10 +230,14 @@ const ITEMS_PER_PAGE = 10;
 
 export default function ConsultationsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState("All Doctors");
-  const [selectedVisitType, setSelectedVisitType] = useState("All Visit Types");
-  const [dateRange, setDateRange] = useState("01 Jan 2025 - 31 May 2025");
+  const [selectedDoctor, setSelectedDoctor] = useState("all");
+  const [selectedVisitType, setSelectedVisitType] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showDoctorDropdown, setShowDoctorDropdown] = useState(false);
+  const [showVisitTypeDropdown, setShowVisitTypeDropdown] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   // Filter consultations
   const filteredConsultations = useMemo(() => {
@@ -245,15 +249,28 @@ export default function ConsultationsPage() {
         consultation.reason.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesDoctor =
-        selectedDoctor === "All Doctors" || consultation.doctor.name === selectedDoctor;
+        selectedDoctor === "all" || consultation.doctor.name === selectedDoctor;
 
       const matchesVisitType =
-        selectedVisitType === "All Visit Types" ||
-        consultation.visitType === selectedVisitType.toLowerCase().replace(" ", "-");
+        selectedVisitType === "all" || consultation.visitType === selectedVisitType;
 
-      return matchesSearch && matchesDoctor && matchesVisitType;
+      const matchDate = (() => {
+        if (!dateFrom && !dateTo) return true;
+        const cDate = new Date(consultation.date);
+        const from = dateFrom ? new Date(dateFrom) : null;
+        const to = dateTo ? new Date(dateTo) : null;
+        if (from && cDate < from) return false;
+        if (to && cDate > to) return false;
+        return true;
+      })();
+
+      return matchesSearch && matchesDoctor && matchesVisitType && matchDate;
     });
-  }, [searchTerm, selectedDoctor, selectedVisitType]);
+  }, [searchTerm, selectedDoctor, selectedVisitType, dateFrom, dateTo]);
+
+  const doctorList = [...new Map(
+    consultationsData.map(c => [c.doctor.name, c.doctor])
+  ).values()];
 
   // Pagination
   const totalPages = Math.ceil(filteredConsultations.length / ITEMS_PER_PAGE);
@@ -407,39 +424,129 @@ export default function ConsultationsPage() {
 
           {/* Filter Bar */}
           <div className="ch-filter-bar">
-            <div className="ch-filter-select-wrap">
-              <Icons.User className="ch-sel-icon" />
-              <select
-                className="ch-filter-select"
-                value={selectedDoctor}
-                onChange={(e) => setSelectedDoctor(e.target.value)}
-              >
-                <option>All Doctors</option>
-                <option>Dr. Abdullah Al Noman</option>
-                <option>Dr. Farhana Akter</option>
-                <option>Dr. Hasan Mahmud</option>
-              </select>
-              <Icons.ChevronDown className="ch-chev" />
+            <div className="ch-filter-group">
+              <div className="ch-filter-group-row">
+                {/* Date Range */}
+                <div style={{ position: "relative", flex: 1 }}>
+                  <button
+                    className="ch-filter-item"
+                    onClick={() => {
+                      setShowDatePicker(v => !v);
+                      setShowDoctorDropdown(false);
+                      setShowVisitTypeDropdown(false);
+                    }}
+                  >
+                    <Icons.Calendar className="ch-filter-svg" />
+                    <span>
+                      {dateFrom && dateTo
+                        ? `${dateFrom} – ${dateTo}`
+                        : dateFrom
+                          ? `From ${dateFrom}`
+                          : dateTo
+                            ? `To ${dateTo}`
+                            : "Date Range"}
+                    </span>
+                    <Icons.ChevronDown className="ch-filter-chevron" />
+                  </button>
+                  {showDatePicker && (
+                    <div className="ch-dropdown ch-date-dropdown">
+                      <div className="ch-date-row">
+                        <label>From</label>
+                        <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+                      </div>
+                      <div className="ch-date-row">
+                        <label>To</label>
+                        <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} />
+                      </div>
+                      <div className="ch-date-actions">
+                        <button onClick={() => { setDateFrom(""); setDateTo(""); }}>Clear</button>
+                        <button className="apply" onClick={() => setShowDatePicker(false)}>Apply</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Doctor Dropdown */}
+                <div style={{ position: "relative", flex: 1 }}>
+                  <button
+                    className="ch-filter-item"
+                    onClick={() => {
+                      setShowDoctorDropdown(v => !v);
+                      setShowVisitTypeDropdown(false);
+                      setShowDatePicker(false);
+                    }}
+                  >
+                    <span>{selectedDoctor === "all" ? "All Doctors" : selectedDoctor}</span>
+                    <Icons.ChevronDown className="ch-filter-chevron" />
+                  </button>
+                  {showDoctorDropdown && (
+                    <div className="ch-dropdown">
+                      <div
+                        className="ch-dropdown-item"
+                        onClick={() => { setSelectedDoctor("all"); setShowDoctorDropdown(false); }}
+                      >
+                        All Doctors
+                      </div>
+                      {doctorList.map(d => (
+                        <div
+                          key={d.name}
+                          className="ch-dropdown-item"
+                          onClick={() => { setSelectedDoctor(d.name); setShowDoctorDropdown(false); }}
+                        >
+                          {d.name}
+                          <span style={{ color: "#94a3b8", fontSize: "10px", marginLeft: 4 }}>
+                            {d.specialty}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Visit Type Dropdown */}
+                <div style={{ position: "relative", flex: 1 }}>
+                  <button
+                    className="ch-filter-item"
+                    onClick={() => {
+                      setShowVisitTypeDropdown(v => !v);
+                      setShowDoctorDropdown(false);
+                      setShowDatePicker(false);
+                    }}
+                  >
+                    <span>
+                      {selectedVisitType === "all"
+                        ? "All Visit Types"
+                        : selectedVisitType === "follow-up"
+                          ? "Follow-up"
+                          : selectedVisitType === "lab-test"
+                            ? "Lab Test"
+                            : "Consultation"}
+                    </span>
+                    <Icons.ChevronDown className="ch-filter-chevron" />
+                  </button>
+                  {showVisitTypeDropdown && (
+                    <div className="ch-dropdown">
+                      {[
+                        ["all", "All Visit Types"],
+                        ["follow-up", "Follow-up"],
+                        ["lab-test", "Lab Test"],
+                        ["consultation", "Consultation"],
+                      ].map(([val, label]) => (
+                        <div
+                          key={val}
+                          className="ch-dropdown-item"
+                          onClick={() => { setSelectedVisitType(val); setShowVisitTypeDropdown(false); }}
+                        >
+                          {label}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="ch-filter-select-wrap">
-              <Icons.Activity className="ch-sel-icon" />
-              <select
-                className="ch-filter-select"
-                value={selectedVisitType}
-                onChange={(e) => setSelectedVisitType(e.target.value)}
-              >
-                <option>All Visit Types</option>
-                <option>Follow-up</option>
-                <option>Lab Test</option>
-                <option>Consultation</option>
-              </select>
-              <Icons.ChevronDown className="ch-chev" />
-            </div>
-            <div className="ch-date-filter-wrap">
-              <Icons.Calendar />
-              <span>{dateRange}</span>
-              <Icons.ChevronDown className="ch-chev2" />
-            </div>
+
+            {/* Search */}
             <div className="ch-search-wrap">
               <Icons.Search />
               <input
@@ -449,10 +556,25 @@ export default function ConsultationsPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <button className="ch-filter-btn">
-              <Icons.Filter />
-              Apply Filter
-            </button>
+
+            <div className="ch-filter-actions">
+              <button className="ch-apply-btn">
+                <Icons.Filter className="ch-filter-svg" /> Apply Filter
+              </button>
+              <button
+                className="ch-reset-btn"
+                onClick={() => {
+                  setSelectedDoctor("all");
+                  setSelectedVisitType("all");
+                  setSearchTerm("");
+                  setDateFrom("");
+                  setDateTo("");
+                  setCurrentPage(1);
+                }}
+              >
+                Reset
+              </button>
+            </div>
           </div>
 
           {/* Consultations Table */}

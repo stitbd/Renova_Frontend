@@ -279,151 +279,263 @@
     border-color: #014fa1;
 }
 
-/* ── Filter Bar ────────────────────────────────────────────────── */
+/* ── Filter Bar (Mobile responsive like PrescriptionsPage) ─────── */
 .ch-filter-bar {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     flex-wrap: wrap;
 }
 
-.ch-filter-select-wrap {
+.ch-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.ch-filter-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.ch-filter-group-row>div {
+    flex: 1;
+    min-width: 0;
+}
+
+.ch-filter-item {
     display: flex;
     align-items: center;
     gap: 7px;
-    padding: 8px 12px;
-    background: #fff;
+    padding: 8px 14px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    min-width: 150px;
-    flex: 1;
-    max-width: 200px;
-    position: relative;
+    background: #f8fafc;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.ch-filter-select-wrap svg.ch-sel-icon {
+.ch-filter-item:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.ch-filter-svg {
     width: 14px;
     height: 14px;
-    stroke: #64748b;
+    stroke: currentColor;
     fill: none;
     flex-shrink: 0;
 }
 
-.ch-filter-select-wrap svg.ch-chev {
+.ch-filter-chevron {
     width: 13px;
     height: 13px;
     stroke: #94a3b8;
     fill: none;
-    flex-shrink: 0;
     margin-left: auto;
-}
-
-.ch-filter-select {
-    flex: 1;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 12.5px;
-    color: #1a202c;
-    font-weight: 500;
-    cursor: pointer;
-    appearance: none;
-    min-width: 0;
-}
-
-/* Date range filter */
-.ch-date-filter-wrap {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 12px;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    flex: 1;
-    min-width: 200px;
-    max-width: 260px;
-}
-
-.ch-date-filter-wrap svg {
-    width: 14px;
-    height: 14px;
-    stroke: #64748b;
-    fill: none;
     flex-shrink: 0;
 }
 
-.ch-date-filter-wrap span {
-    font-size: 12.5px;
-    color: #1a202c;
-    font-weight: 500;
-    flex: 1;
-}
-
-.ch-date-filter-wrap svg.ch-chev2 {
-    stroke: #94a3b8;
-}
-
-/* Search */
 .ch-search-wrap {
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px 12px;
-    background: #fff;
+    gap: 8px;
+    padding: 8px 14px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    background: #f8fafc;
     flex: 1;
-    min-width: 180px;
-    max-width: 240px;
+    min-width: 200px;
 }
 
 .ch-search-wrap svg {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     stroke: #94a3b8;
     fill: none;
     flex-shrink: 0;
 }
 
 .ch-search-wrap input {
-    flex: 1;
     border: none;
     background: transparent;
     outline: none;
-    font-size: 12.5px;
+    font-size: 12px;
     color: #1a202c;
-    min-width: 0;
+    width: 100%;
 }
 
 .ch-search-wrap input::placeholder {
     color: #94a3b8;
 }
 
-.ch-filter-btn {
+.ch-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ch-apply-btn,
+.ch-reset-btn {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 9px 18px;
-    background: #014fa1;
-    color: #fff;
-    border: none;
+    padding: 8px 16px;
     border-radius: 8px;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
     white-space: nowrap;
 }
 
-.ch-filter-btn svg {
+.ch-apply-btn svg,
+.ch-reset-btn svg {
     width: 14px;
     height: 14px;
-    stroke: #fff;
     fill: none;
 }
 
-.ch-filter-btn:hover {
+.ch-apply-btn {
+    background: #014fa1;
+    color: #fff;
+    border: none;
+}
+
+.ch-apply-btn svg {
+    stroke: #fff;
+}
+
+.ch-apply-btn:hover {
+    background: #013d80;
+}
+
+.ch-reset-btn {
+    background: #fff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.ch-reset-btn:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+/* Dropdown */
+.ch-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.ch-dropdown-item {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.ch-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #014fa1;
+}
+
+.ch-date-dropdown {
+    min-width: 280px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ch-date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ch-date-row label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.ch-date-row input[type="date"] {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ch-date-row input[type="date"]:focus {
+    border-color: #014fa1;
+}
+
+.ch-date-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.ch-date-actions button {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.ch-date-actions button:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.ch-date-actions button.apply {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.ch-date-actions button.apply:hover {
     background: #013d80;
 }
 
@@ -571,11 +683,6 @@
 .ch-visit-badge.consultation {
     background: #dbeafe;
     color: #014fa1;
-}
-
-.ch-visit-badge.prescription {
-    background: #fef3c7;
-    color: #d97706;
 }
 
 /* Reason / Diagnosis text */
@@ -1180,7 +1287,78 @@
     stroke: #014fa1;
 }
 
-/* ── Responsive ────────────────────────────────────────────────── */
+/* ── Responsive: Mobile filter like PrescriptionsPage ─────────── */
+@media (max-width: 768px) {
+    .ch-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .ch-filter-group {
+        width: 100%;
+    }
+
+    .ch-filter-group-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .ch-filter-group-row>div {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ch-filter-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .ch-search-wrap {
+        width: 100%;
+    }
+
+    .ch-filter-actions {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .ch-apply-btn,
+    .ch-reset-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .ch-filter-group-row {
+        flex-direction: column;
+    }
+
+    .ch-filter-group-row>div {
+        width: 100%;
+    }
+
+    .ch-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .ch-filter-actions {
+        flex-direction: column;
+    }
+
+    .ch-apply-btn,
+    .ch-reset-btn {
+        width: 100%;
+    }
+}
+
+/* ── General Responsive ────────────────────────────────────────── */
 @media (max-width: 1280px) {
     .ch-layout {
         grid-template-columns: 1fr 280px;
@@ -1223,16 +1401,6 @@
         grid-template-columns: 1fr;
     }
 
-    .ch-filter-bar {
-        gap: 6px;
-    }
-
-    .ch-filter-select-wrap,
-    .ch-search-wrap,
-    .ch-date-filter-wrap {
-        max-width: 100%;
-    }
-
     .ch-sub-header {
         flex-direction: column;
         align-items: flex-start;
@@ -1265,7 +1433,6 @@
         padding: 0;
     }
 
-    /* Sub-header */
     .ch-sub-header {
         margin-bottom: 12px;
         gap: 8px;
@@ -1282,7 +1449,6 @@
         font-size: 11.5px;
     }
 
-    /* Patient card compact */
     .ch-patient-card {
         padding: 13px;
     }
@@ -1346,36 +1512,6 @@
         text-overflow: ellipsis;
     }
 
-    /* Filter bar */
-    .ch-filter-bar {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 7px;
-    }
-
-    .ch-filter-select-wrap {
-        max-width: 100%;
-        min-width: 0;
-        flex: unset;
-    }
-
-    .ch-date-filter-wrap {
-        grid-column: 1 / 3;
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    .ch-search-wrap {
-        grid-column: 1 / 3;
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    .ch-filter-btn {
-        grid-column: 1 / 3;
-        justify-content: center;
-    }
-
     /* Hide desktop table, show cards */
     .ch-table-wrap {
         display: none;
@@ -1388,7 +1524,6 @@
         padding: 12px;
     }
 
-    /* Pagination stays inside table-section */
     .ch-pagination {
         padding: 10px 12px;
     }
@@ -1403,7 +1538,6 @@
         font-size: 11px;
     }
 
-    /* Right col */
     .ch-right-col {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -1432,18 +1566,8 @@
     }
 }
 
-/* ── Extra small (max-width: 400px) ──────────────────────────── */
+/* Extra small (max-width: 400px) */
 @media (max-width: 400px) {
-    .ch-filter-bar {
-        grid-template-columns: 1fr;
-    }
-
-    .ch-date-filter-wrap,
-    .ch-search-wrap,
-    .ch-filter-btn {
-        grid-column: 1 / 2;
-    }
-
     .ch-con-card-mid {
         grid-template-columns: 1fr;
     }
@@ -1462,7 +1586,7 @@
 @media (hover: none) and (pointer: coarse) {
 
     .ch-export-btn,
-    .ch-filter-btn,
+    .ch-filter-item,
     .ch-view-profile-btn,
     .ch-page-btn {
         min-height: 44px;
