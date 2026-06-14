@@ -52,37 +52,9 @@ const summary = {
     status: "dispensed",
 };
 
-
 const doctor = {
     email: "dr.noman@hospital.com",
     phone: "+880 1XXX XXXXXX",
-};
-
-const getPdfData = () =>
-    buildPrescriptionDataFromDetails({ prescription, medicines, additionalInstructions, patient, summary, doctor });
-
-const handleDownload = async () => {
-    setIsGenerating(true);
-    await generatePrescriptionPDF(getPdfData(), "download");
-    setIsGenerating(false);
-};
-
-const handlePrint = async () => {
-    setIsGenerating(true);
-    await generatePrescriptionPDF(getPdfData(), "print");
-    setIsGenerating(false);
-};
-
-const handlePreview = async () => {
-    setIsGenerating(true);
-    const url = await generatePrescriptionPDF(getPdfData(), "preview");
-    setPreviewUrl(url);
-    setIsGenerating(false);
-};
-
-const handleClosePreview = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(null);
 };
 
 function Icon({ type }) {
@@ -112,6 +84,60 @@ function Icon({ type }) {
 export default function PrescriptionDetailsPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [isGenerating, setIsGenerating] = useState(false);
+
+    const getPdfData = () =>
+        buildPrescriptionDataFromDetails({ prescription, medicines, additionalInstructions, patient, summary, doctor });
+
+    const handleDownload = async () => {
+        setIsGenerating(true);
+        await generatePrescriptionPDF(getPdfData(), "download");
+        setIsGenerating(false);
+    };
+
+    const handlePrint = async () => {
+        setIsGenerating(true);
+        await generatePrescriptionPDF(getPdfData(), "print");
+        setIsGenerating(false);
+    };
+
+    const handlePreview = async () => {
+        setIsGenerating(true);
+        const url = await generatePrescriptionPDF(getPdfData(), "preview");
+        setPreviewUrl(url);
+        setIsGenerating(false);
+    };
+
+    const handleClosePreview = () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+    };
+
+    const handleWhatsApp = async () => {
+        setIsGenerating(true);
+        const blob = await generatePrescriptionPDF(getPdfData(), "blob");
+        const file = new File([blob], `${prescription.id}.pdf`, { type: "application/pdf" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: "Prescription", text: `Prescription for ${patient.name} (${prescription.id})` });
+        } else {
+            const text = encodeURIComponent(`Prescription ${prescription.id} for ${patient.name}`);
+            window.open(`https://wa.me/?text=${text}`, "_blank");
+        }
+        setIsGenerating(false);
+    };
+
+    const handleShare = async () => {
+        setIsGenerating(true);
+        const blob = await generatePrescriptionPDF(getPdfData(), "blob");
+        const file = new File([blob], `${prescription.id}.pdf`, { type: "application/pdf" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: "Prescription", text: `Prescription ${prescription.id}` });
+        } else if (navigator.share) {
+            await navigator.share({ title: "Prescription", text: `Prescription ${prescription.id}` });
+        } else {
+            alert("Sharing not supported on this browser. Please use Download.");
+        }
+        setIsGenerating(false);
+    };
 
     return (
         <>
@@ -361,17 +387,11 @@ export default function PrescriptionDetailsPage() {
                     <div className="rxd-actions-card">
                         <h4 className="rxd-actions-title">Actions</h4>
                         <div className="rxd-actions-grid">
-                            <button className="rxd-action-btn whatsapp">
+                            <button className="rxd-action-btn whatsapp" onClick={handleWhatsApp} disabled={isGenerating}>
                                 <Icon type="whatsapp" /> WhatsApp
                             </button>
-                            <button className="rxd-action-btn email">
-                                <Icon type="mail" /> Send Email
-                            </button>
-                            <button className="rxd-action-btn share">
+                            <button className="rxd-action-btn share" onClick={handleShare} disabled={isGenerating}>
                                 <Icon type="share" /> Share
-                            </button>
-                            <button className="rxd-action-btn cancel">
-                                <Icon type="cancel" /> Cancel Prescription
                             </button>
                         </div>
                     </div>
