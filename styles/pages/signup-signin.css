@@ -1,0 +1,102 @@
+/* =============================================
+   AUTH SELECTION PAGES (Sign In / Sign Up)
+   All values pulled from global.css :root tokens
+   ============================================= */
+
+.panel-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-7);
+}
+
+.panel-card {
+    display: block;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-9) var(--space-6);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-hover);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.panel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.panel-card__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-6);
+    background: rgba(1, 79, 161, 0.1);
+    color: var(--color-primary);
+}
+
+.panel-card__icon--accent {
+    background: rgba(66, 138, 38, 0.1);
+    color: var(--color-authority);
+}
+
+.panel-card__title {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.panel-card__desc {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    margin-bottom: var(--space-6);
+}
+
+.panel-card__btn {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .panel-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-5);
+    }
+}
+
+@media (max-width: 640px) {
+    .panel-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    .panel-card {
+        padding: var(--space-6) var(--space-4);
+    }
+
+    .panel-card__icon {
+        width: 52px;
+        height: 52px;
+        margin-bottom: var(--space-4);
+    }
+
+    .panel-card__title {
+        font-size: var(--font-size-lg);
+    }
+
+    .panel-card__desc {
+        font-size: var(--font-size-xs);
+        margin-bottom: var(--space-4);
+    }
+}

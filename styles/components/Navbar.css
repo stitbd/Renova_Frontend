@@ -90,7 +90,27 @@
 }
 
 .topbar-account-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-4);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-full);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
   cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.topbar-account-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--color-white);
+  transform: translateY(-1px);
 }
 
 .topbar-account-btn svg:last-child {
@@ -187,10 +207,12 @@
   .top-bar {
     display: none;
   }
+
   .main-header {
     padding: 0;
   }
 }
+
 @media (max-width: 640px) {
   .main-header {
     padding: 0;
@@ -345,6 +367,7 @@
   .nav-buttons {
     display: none;
   }
+
   .nav-link {
     position: relative;
     padding: var(--space-2) var(--space-2);
@@ -469,7 +492,8 @@
   max-width: 1536px;
   padding: var(--space-5);
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* ✅ 3 Equal Columns */
+  grid-template-columns: repeat(3, 1fr);
+  /* ✅ 3 Equal Columns */
   gap: var(--space-4);
   left: 50%;
   transform: translateX(-50%) translateY(-10px);
@@ -554,12 +578,12 @@
     margin-top: var(--space-2);
     padding: var(--space-3);
   }
-  
+
   .dropdown-menu.mega-menu {
     grid-template-columns: 1fr;
     padding: var(--space-3);
   }
-  
+
   .dropdown-column-header {
     padding: var(--space-2) 0;
   }
@@ -999,7 +1023,7 @@
     left: 0;
     transform: translateY(-10px);
   }
-  
+
   .nav-item-dropdown:hover .dropdown-menu {
     transform: translateY(0);
   }
@@ -1030,6 +1054,7 @@
 
 /* ── Reduce Motion Preference ── */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1037,11 +1062,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .dropdown-menu {
     transition: none;
   }
-  
+
   .mobile-drawer {
     transition: none;
   }
@@ -1273,6 +1298,7 @@
       opacity: 0;
       transform: translateY(6px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -1316,4 +1342,6 @@
     margin: 0;
   }
 
-} /* end @media (max-width: 1024px) */
+}
+
+/* end @media (max-width: 1024px) */
