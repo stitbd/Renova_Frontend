@@ -329,6 +329,10 @@ export default function PatientHealthSummary() {
                       <span className="history-card-value">{record.doctor}</span>
                     </div>
                     <div className="history-card-row">
+                      <span className="history-card-label">Date</span>
+                      <span className="history-card-value">{record.date}</span>
+                    </div>
+                    <div className="history-card-row full">
                       <span className="history-card-label">Notes</span>
                       <span className="history-card-value">{record.notes}</span>
                     </div>

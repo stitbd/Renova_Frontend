@@ -541,9 +541,10 @@
 
 .history-card {
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 10px;
 }
 
 .history-card:last-child {
@@ -554,50 +555,75 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    padding: 9px 13px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .history-card-date {
-    font-size: 12px;
-    color: #94a3b8;
-    font-weight: 600;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 700;
 }
 
 .history-card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .history-card-row {
+    padding: 9px 13px;
+    border-bottom: 1px solid #f1f5f9;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+}
+
+.history-card-row:nth-child(odd) {
+    border-right: 1px solid #f1f5f9;
+}
+
+.history-card-row.full {
+    grid-column: 1 / 3;
+    border-right: none;
+    background: #fafbfc;
+    border-bottom: none;
 }
 
 .history-card-label {
-    font-size: 11px;
+    font-size: 9.5px;
     color: #94a3b8;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.4px;
 }
 
 .history-card-value {
-    font-size: 13px;
-    color: #475569;
+    font-size: 12px;
+    color: #1e293b;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 .history-card-action {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 6px;
-    width: 100%;
-    padding: 8px;
-    font-size: 13px;
+    padding: 9px 13px;
+    background: #f8fafc;
+    font-size: 12px;
     font-weight: 600;
+    color: #3b82f6;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.history-card-action:hover {
+    background: #eff6ff;
 }
 
 @media (max-width: 768px) {
@@ -607,6 +633,101 @@
 
     .history-cards {
         display: block;
+    }
+
+    /* Section spacing */
+    .vitals-section,
+    .trend-section,
+    .history-section,
+    .conditions-section,
+    .health-score-section {
+        padding: 14px;
+        margin-bottom: 14px;
+    }
+
+    .section-header {
+        margin-bottom: 12px;
+    }
+
+    .section-header h3 {
+        font-size: 14px;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .stat-card {
+        padding: 14px 12px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+    }
+
+    .stat-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    /* Patient header */
+    .patient-header {
+        padding: 14px;
+        margin-bottom: 14px;
+        gap: 14px;
+    }
+
+    /* Vitals compact */
+    .vital-item {
+        padding: 6px 4px;
+        gap: 6px;
+    }
+
+    .vital-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .vital-label {
+        font-size: 11.5px;
+    }
+
+    .vital-value {
+        font-size: 13px;
+    }
+
+    .vital-date {
+        font-size: 11px;
+        min-width: 78px;
+    }
+
+    /* Score */
+    .score-content {
+        gap: 16px;
+    }
+
+    .score-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .score-value span:first-child {
+        font-size: 26px;
+    }
+
+    /* Chart */
+    .x-axis span {
+        font-size: 9.5px;
+    }
+
+    .chart-legend {
+        gap: 12px;
     }
 }
 
@@ -787,50 +908,266 @@
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    /* Patient header — compact horizontal layout */
+    .patient-header {
+        flex-direction: column;
+        padding: 14px;
+        margin-bottom: 14px;
+        gap: 12px;
+    }
+
+    .patient-info {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .patient-avatar {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        border-width: 2px;
+    }
+
+    .patient-details h2 {
+        font-size: 15px;
+        margin-bottom: 2px;
+    }
+
+    .patient-id {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .patient-meta {
+        gap: 6px 14px;
+        margin-bottom: 5px;
+    }
+
+    .patient-meta span {
+        font-size: 11.5px;
+    }
+
+    .patient-extra-info {
+        gap: 6px 14px;
+        font-size: 11.5px;
+    }
+
+    .patient-meta,
+    .patient-extra-info {
+        justify-content: flex-start;
+    }
+
+    /* Visit info — horizontal row on mobile */
+    .visit-info {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        align-items: unset;
+    }
+
+    .visit-item {
+        padding: 9px 12px;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 6px;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    /* Primary Doctor spans full width */
+    .visit-item:last-child {
+        grid-column: 1 / 3;
+        border-bottom: none;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .visit-item:first-child,
+    .visit-item:nth-child(2) {
+        border-right: 1px solid #f1f5f9;
+    }
+
+    .visit-item:nth-child(2) {
+        border-right: none;
+    }
+
+    .visit-item svg {
+        display: none;
+    }
+
+    .visit-item .label {
+        font-size: 10px;
+        color: #94a3b8;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .visit-item .value {
+        font-size: 12.5px;
+        font-weight: 700;
+        text-align: left;
+    }
+
+    .visit-item .sub-value {
+        font-size: 11px;
+        text-align: left;
+    }
+
+    .visit-item>div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .visit-item:last-child>div {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .visit-item:last-child .value-stack {
+        align-items: flex-end;
+    }
+
+    /* Stats */
+    .stats-grid {
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .stat-card {
+        padding: 12px 10px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .stat-label {
+        font-size: 10.5px;
+    }
+
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Sections */
+    .vitals-section,
+    .trend-section,
+    .history-section,
+    .conditions-section,
+    .health-score-section {
+        padding: 14px;
+        margin-bottom: 14px;
+    }
+
+    .section-header {
+        margin-bottom: 12px;
+    }
+
+    .section-header h3 {
+        font-size: 14px;
+    }
+
+    /* History */
+    .history-table {
+        display: none;
+    }
+
+    .history-cards {
+        display: block;
+    }
+
+    /* Vitals */
+    .vital-item {
+        padding: 6px 4px;
+        gap: 6px;
+    }
+
+    .vital-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .vital-label {
+        font-size: 11.5px;
+    }
+
+    .vital-value {
+        font-size: 13px;
+    }
+
+    .vital-date {
+        font-size: 11px;
+        min-width: 78px;
+    }
+
+    /* Score */
+    .score-content {
+        gap: 16px;
+    }
+
+    .score-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .score-value span:first-child {
+        font-size: 26px;
+    }
+
+    /* Chart */
+    .x-axis span {
+        font-size: 9.5px;
+    }
+
+    .chart-legend {
+        gap: 12px;
+    }
+
+    .right-column {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
     .stats-grid {
         grid-template-columns: 1fr;
     }
-}
 
-@media (max-width: 768px) {
-    .patient-header {
-        flex-direction: column;
+    .vital-item {
+        flex-wrap: wrap;
     }
 
-    .patient-info {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .patient-meta,
-    .patient-extra-info {
-        justify-content: center;
-    }
-
-    .visit-info {
+    .vital-date {
         width: 100%;
-        align-items: center;
+        margin-top: 4px;
     }
 
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .right-column {
+    /* Stack visit items fully on very small screens */
+    .visit-info {
         grid-template-columns: 1fr;
     }
 
-    .history-table {
-        font-size: 12px;
+    .visit-item:first-child,
+    .visit-item:nth-child(2) {
+        border-right: none;
+        border-bottom: 1px solid #f1f5f9;
     }
 
-    .history-table th,
-    .history-table td {
-        padding: 8px;
+    .visit-item:last-child {
+        grid-column: 1 / 2;
     }
 }
 
