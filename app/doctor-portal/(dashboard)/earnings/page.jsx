@@ -756,15 +756,6 @@ function EarningsInsights({ data }) {
 export default function EarningsPage() {
   return (
     <div className="earnings-page">
-      <div className="earnings-page-header">
-        <div>
-          <h1 className="earnings-page-title">Earnings</h1>
-          <p className="earnings-page-subtitle">
-            Track your income, withdrawals, and consultation revenue
-          </p>
-        </div>
-      </div>
-
       <EarningsSummaryCards data={earningsSummary} />
 
       <div className="earnings-main-grid">
