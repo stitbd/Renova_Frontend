@@ -135,7 +135,7 @@ export default function PrescriptionDetailsPage() {
                     <button className="rxd-header-btn primary">
                         <Link
                             href="/doctor-portal/prescriptions/update-prescriptions"
-                            className="rx-tbl-btn primary"
+                            className="rxd-header-btn primary"
                         >
                             <Icon type="edit" /> Edit Prescription
                         </Link>
@@ -252,6 +252,36 @@ export default function PrescriptionDetailsPage() {
                                 ))}
                             </tbody>
                         </table>
+                        {/* Medicine Cards — mobile only */}
+                        <div className="rxd-med-cards">
+                            {medicines.map((med) => (
+                                <div key={med.num} className="rxd-med-card">
+                                    <div className="rxd-med-card-header">
+                                        <span className="rxd-med-card-num">{med.num}</span>
+                                        <p className="rxd-med-card-name">{med.name}</p>
+                                        <span className="rxd-med-card-form">{med.form}</span>
+                                    </div>
+                                    <div className="rxd-med-card-body">
+                                        <div className="rxd-med-card-field">
+                                            <p className="rxd-med-field-label">Dose</p>
+                                            <p className="rxd-med-field-value">{med.dose}</p>
+                                        </div>
+                                        <div className="rxd-med-card-field">
+                                            <p className="rxd-med-field-label">Frequency</p>
+                                            <p className="rxd-med-field-value">{med.frequency}</p>
+                                        </div>
+                                        <div className="rxd-med-card-field">
+                                            <p className="rxd-med-field-label">Duration</p>
+                                            <p className="rxd-med-field-value">{med.duration}</p>
+                                        </div>
+                                        <div className="rxd-med-card-field full">
+                                            <p className="rxd-med-field-label">Instructions</p>
+                                            <p className="rxd-med-field-value">{med.instructions}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
                         {/* Additional Instructions */}
                         <div className="rxd-instructions-card" style={{ marginTop: 16 }}>
@@ -311,7 +341,14 @@ export default function PrescriptionDetailsPage() {
                         </div>
                         <div className="rxd-patient-info-block">
                             <div className="rxd-patient-avatar">
-                                <Icon type="user" />
+                                <img
+                                    src="/images/patients/01.jpg"
+                                    alt={patient.name}
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.parentElement.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#014fa1" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+                                    }}
+                                />
                             </div>
                             <div>
                                 <p className="rxd-patient-name">{patient.name}</p>

@@ -132,14 +132,6 @@ export default function PrescriptionDetailsPage() {
                     <button className="rxd-header-btn outline" onClick={handleDownload} disabled={isGenerating}>
                         <Icon type="download" /> {isGenerating ? "Generating…" : "Download"}
                     </button>
-                    <button className="rxd-header-btn primary">
-                        <Link
-                            href="/patient-portal/prescriptions/update-prescriptions"
-                            className="rx-tbl-btn primary"
-                        >
-                            <Icon type="edit" /> Edit Prescription
-                        </Link>
-                    </button>
                 </div>
             </div>
 
@@ -252,6 +244,36 @@ export default function PrescriptionDetailsPage() {
                                 ))}
                             </tbody>
                         </table>
+                        {/* Medicine Cards — mobile only */}
+                        <div className="rxd-med-cards">
+                            {medicines.map((med) => (
+                                <div key={med.num} className="rxd-med-card">
+                                    <div className="rxd-med-card-header">
+                                        <span className="rxd-med-card-num">{med.num}</span>
+                                        <p className="rxd-med-card-name">{med.name}</p>
+                                        <span className="rxd-med-card-form">{med.form}</span>
+                                    </div>
+                                    <div className="rxd-med-card-body">
+                                        <div className="rxd-med-card-field">
+                                            <p className="rxd-med-field-label">Dose</p>
+                                            <p className="rxd-med-field-value">{med.dose}</p>
+                                        </div>
+                                        <div className="rxd-med-card-field">
+                                            <p className="rxd-med-field-label">Frequency</p>
+                                            <p className="rxd-med-field-value">{med.frequency}</p>
+                                        </div>
+                                        <div className="rxd-med-card-field">
+                                            <p className="rxd-med-field-label">Duration</p>
+                                            <p className="rxd-med-field-value">{med.duration}</p>
+                                        </div>
+                                        <div className="rxd-med-card-field full">
+                                            <p className="rxd-med-field-label">Instructions</p>
+                                            <p className="rxd-med-field-value">{med.instructions}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
                         {/* Additional Instructions */}
                         <div className="rxd-instructions-card" style={{ marginTop: 16 }}>
@@ -296,34 +318,6 @@ export default function PrescriptionDetailsPage() {
 
                 {/* ── Right Column ───────────────────────────────── */}
                 <div className="rxd-right-col">
-
-                    {/* Patient Summary */}
-                    <div className="rxd-patient-card">
-                        <div className="rxd-patient-card-header">
-                            <h4 className="rxd-patient-card-title">Patient Summary</h4>
-                            <Link
-                                href={`/patient-portal/profile?id=${patient.pid}&from=/patient-portal/prescriptions/prescriptions-details`}
-                                className="rxd-view-profile-link"
-                                style={{ display: "block", textAlign: "center", textDecoration: "none" }}
-                            >
-                                View Full Profile
-                            </Link>
-                        </div>
-                        <div className="rxd-patient-info-block">
-                            <div className="rxd-patient-avatar">
-                                <Icon type="user" />
-                            </div>
-                            <div>
-                                <p className="rxd-patient-name">{patient.name}</p>
-                                <p className="rxd-patient-pid">{patient.pid}</p>
-                            </div>
-                        </div>
-                        <div className="rxd-patient-detail-rows">
-                            <div className="rxd-patient-detail-row">
-                                <Icon type="pin" /> {patient.address}
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Prescription Summary */}
                     <div className="rxd-summary-card">

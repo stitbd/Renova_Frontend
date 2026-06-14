@@ -264,11 +264,6 @@ export default function PrescriptionsPage() {
       <div className="rx-table-container">
         <div className="rx-table-header">
           <h2 className="rx-table-title">Prescriptions List</h2>
-          <div className="rx-table-actions">
-            <Link href="/doctor-portal/prescriptions/new-prescriptions" className="rx-tbl-btn primary">
-              <Icon type="plus" /> New Prescription
-            </Link>
-          </div>
         </div>
 
         <div className="rx-table-responsive-wrapper">
@@ -311,7 +306,7 @@ export default function PrescriptionsPage() {
                       </div>
                     </div>
                     <div className="rx-card-actions">
-                      <Link href="/doctor-portal/prescriptions/prescriptions-details" className="rx-act-btn" title="View"><Icon type="eye" /></Link>
+                      <Link href="/patient-portal/prescriptions/prescriptions-details" className="rx-act-btn" title="View"><Icon type="eye" /></Link>
                       <button className="rx-act-btn" title="Download" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "download")}><Icon type="download" /></button>
                       <button className="rx-act-btn" title="Print" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "print")}><Icon type="print" /></button>
                     </div>
@@ -343,15 +338,15 @@ export default function PrescriptionsPage() {
                   </td>
                   <td data-label="Action">
                     <div className="rx-action-btns">
-                      <Link href={`/doctor-portal/prescriptions/prescriptions-details`} className="rx-act-btn" title="View">
+                      <Link href={`/patient-portal/prescriptions/prescriptions-details`} className="rx-act-btn" title="View">
                         <Icon type="eye" />
                       </Link>
                       <button className="rx-act-btn" title="Download"
-                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "download")}>
+                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "download")}>
                         <Icon type="download" />
                       </button>
                       <button className="rx-act-btn" title="Print"
-                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "print")}>
+                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "print")}>
                         <Icon type="print" />
                       </button>
                     </div>

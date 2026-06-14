@@ -933,6 +933,10 @@
 
 /* Mobile (max-width: 640px) - Convert table to card layout */
 @media (max-width: 640px) {
+    .rx-table-container {
+        padding: 14px;
+    }
+
     .rx-card-actions-inline {
         display: flex;
         align-items: center;
