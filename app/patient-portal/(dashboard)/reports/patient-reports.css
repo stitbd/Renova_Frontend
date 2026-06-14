@@ -1,6 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   REPORTS PAGE
-   File: styles/pages/reports.css
+   REPORTS PAGE — Fully Responsive & Mobile Friendly
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Page Header ───────────────────────────────────────────────── */
@@ -182,77 +181,84 @@
     margin: 0;
 }
 
-/* ── Filter Bar ────────────────────────────────────────────────── */
+/* ── Filter Bar (Updated to match PrescriptionsPage) ────────────────────────────────── */
 .rpt-filter-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px;
     padding: 14px 16px;
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
 }
 
-.rpt-filter-select-wrap {
+.rpt-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rpt-filter-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.rpt-filter-item {
     display: flex;
     align-items: center;
     gap: 7px;
-    padding: 8px 12px;
-    background: #f8fafc;
+    padding: 8px 14px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    min-width: 160px;
-    flex: 1;
-    max-width: 220px;
-    position: relative;
+    background: #f8fafc;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.rpt-filter-select-wrap svg.rpt-filter-icon {
-    width: 15px;
-    height: 15px;
-    stroke: #64748b;
-    fill: none;
-    flex-shrink: 0;
-}
-
-.rpt-filter-select-wrap svg.rpt-chev {
+.rpt-filter-item svg {
     width: 14px;
     height: 14px;
-    stroke: #94a3b8;
+    stroke: currentColor;
     fill: none;
     flex-shrink: 0;
-    margin-left: auto;
 }
 
-.rpt-filter-select {
-    flex: 1;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 12.5px;
-    color: #1a202c;
-    font-weight: 500;
-    cursor: pointer;
-    appearance: none;
-    min-width: 0;
+.rpt-filter-item:hover {
+    border-color: #014fa1;
+    color: #014fa1;
 }
 
-.rpt-search-wrap {
+.rpt-filter-item .rpt-filter-chevron {
+    width: 13px;
+    height: 13px;
+    stroke: #94a3b8;
+    fill: none;
+    margin-left: 2px;
+}
+
+.rpt-search-box {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
-    background: #f8fafc;
+    padding: 8px 14px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    background: #f8fafc;
     flex: 1;
-    min-width: 180px;
-    max-width: 260px;
+    min-width: 200px;
 }
 
-.rpt-search-wrap svg {
+.rpt-search-box svg {
     width: 15px;
     height: 15px;
     stroke: #94a3b8;
@@ -260,45 +266,54 @@
     flex-shrink: 0;
 }
 
-.rpt-search-wrap input {
-    flex: 1;
+.rpt-search-box input {
     border: none;
     background: transparent;
     outline: none;
-    font-size: 12.5px;
+    font-size: 12px;
     color: #1a202c;
-    min-width: 0;
+    width: 100%;
 }
 
-.rpt-search-wrap input::placeholder {
+.rpt-search-box input::placeholder {
     color: #94a3b8;
 }
 
-.rpt-filter-bar-spacer {
-    flex: 1;
+.rpt-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.rpt-apply-btn {
+.rpt-apply-btn,
+.rpt-reset-btn {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 9px 18px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.rpt-apply-btn svg,
+.rpt-reset-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+}
+
+.rpt-apply-btn {
     background: #014fa1;
     color: #fff;
     border: none;
-    border-radius: 8px;
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s ease;
 }
 
 .rpt-apply-btn svg {
-    width: 14px;
-    height: 14px;
     stroke: #fff;
-    fill: none;
 }
 
 .rpt-apply-btn:hover {
@@ -306,31 +321,117 @@
 }
 
 .rpt-reset-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 16px;
     background: #fff;
     color: #64748b;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s ease;
 }
 
 .rpt-reset-btn svg {
-    width: 14px;
-    height: 14px;
     stroke: currentColor;
-    fill: none;
 }
 
 .rpt-reset-btn:hover {
     border-color: #014fa1;
     color: #014fa1;
+}
+
+.rpt-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.rpt-dropdown-item {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.rpt-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #014fa1;
+}
+
+.rpt-date-dropdown {
+    min-width: 280px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rpt-date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rpt-date-row label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.rpt-date-row input[type="date"] {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    width: 100%;
+}
+
+.rpt-date-row input[type="date"]:focus {
+    border-color: #014fa1;
+}
+
+.rpt-date-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.rpt-date-actions button {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.rpt-date-actions button:hover {
+    border-color: #014fa1;
+    color: #014fa1;
+}
+
+.rpt-date-actions button.apply {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+.rpt-date-actions button.apply:hover {
+    background: #013d80;
 }
 
 /* ── Charts Section ────────────────────────────────────────────── */
@@ -614,6 +715,7 @@
 .rpt-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 700px;
 }
 
 .rpt-table thead th {
@@ -684,6 +786,10 @@
     height: 16px;
     stroke: #014fa1;
     fill: none;
+}
+
+.rpt-patient-info {
+    min-width: 0;
 }
 
 .rpt-patient-name {
@@ -829,8 +935,9 @@
 }
 
 .rpt-page-btn {
-    width: 32px;
+    min-width: 32px;
     height: 32px;
+    padding: 0 8px;
     border: 1px solid #e2e8f0;
     background: #fff;
     border-radius: 6px;
@@ -851,7 +958,7 @@
     fill: none;
 }
 
-.rpt-page-btn:hover:not(:disabled) {
+.rpt-page-btn:hover:not(:disabled):not(.dots) {
     background: #f1f5f9;
     border-color: #014fa1;
     color: #014fa1;
@@ -861,6 +968,13 @@
     background: #014fa1;
     color: #fff;
     border-color: #014fa1;
+}
+
+.rpt-page-btn.dots {
+    border: none;
+    background: none;
+    cursor: default;
+    color: #94a3b8;
 }
 
 .rpt-page-btn:disabled {
@@ -887,28 +1001,90 @@
     .rpt-stats-row {
         grid-template-columns: repeat(3, 1fr);
     }
+
+    .rpt-filter-group-row {
+        flex-wrap: wrap;
+    }
+
+    .rpt-filter-group-row>div {
+        min-width: 150px;
+    }
 }
 
 @media (max-width: 768px) {
     .rpt-stats-row {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .rpt-stat-card {
+        padding: 12px 10px;
+    }
+
+    .rpt-stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .rpt-stat-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .rpt-stat-value {
+        font-size: 20px;
     }
 
     .rpt-charts-row {
         grid-template-columns: 1fr;
     }
 
+    .rpt-charts-row .rpt-chart-card:last-child {
+        grid-column: auto;
+    }
+
     .rpt-filter-bar {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
 
-    .rpt-filter-select-wrap {
-        max-width: 100%;
+    .rpt-filter-group {
+        width: 100%;
     }
 
-    .rpt-search-wrap {
-        max-width: 100%;
+    .rpt-filter-group-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .rpt-filter-group-row>div {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .rpt-filter-group-row .rpt-filter-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .rpt-search-box {
+        width: 100%;
+    }
+
+    .rpt-filter-actions {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .rpt-apply-btn,
+    .rpt-reset-btn {
+        flex: 1;
+        justify-content: center;
     }
 
     .rpt-table-header {
@@ -927,7 +1103,7 @@
 
     .rpt-pagination {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .rpt-donut-wrap {
@@ -936,13 +1112,276 @@
     }
 }
 
-@media (max-width: 480px) {
-    .rpt-stats-row {
-        grid-template-columns: 1fr 1fr;
+/* Mobile (max-width: 640px) - Convert table to card layout */
+@media (max-width: 640px) {
+    .rpt-page-title {
+        font-size: 18px;
     }
 
-    .rpt-table thead th:nth-child(3),
-    .rpt-table td:nth-child(3) {
+    .rpt-stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .rpt-stat-card {
+        padding: 10px 8px;
+        gap: 8px;
+    }
+
+    .rpt-stat-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rpt-stat-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .rpt-stat-value {
+        font-size: 18px;
+    }
+
+    .rpt-stat-label {
+        font-size: 9px;
+    }
+
+    .rpt-stat-sub {
+        font-size: 8px;
+    }
+
+    /* Hide serial column */
+    .rpt-serial-td {
+        display: none !important;
+    }
+
+    /* Table → card */
+    .rpt-table-wrap {
+        overflow-x: visible;
+    }
+
+    .rpt-table,
+    .rpt-table thead,
+    .rpt-table tbody,
+    .rpt-table th,
+    .rpt-table td,
+    .rpt-table tr {
+        display: block;
+    }
+
+    .rpt-table {
+        min-width: unset;
+    }
+
+    .rpt-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    /* Card styling */
+    .rpt-table tbody tr {
+        margin-bottom: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 0;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: relative;
+    }
+
+    .rpt-table tbody tr:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Status color top border */
+    .rpt-table tbody tr:has(.rpt-status-badge.normal) {
+        border-top: 3px solid #428a26;
+    }
+
+    .rpt-table tbody tr:has(.rpt-status-badge.abnormal) {
+        border-top: 3px solid #ef4444;
+    }
+
+    /* Row 1: Report Name + Status */
+    .rpt-table td[data-label="Report Name"] {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        background: #fff;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .rpt-table td[data-label="Report Name"]::before {
         display: none;
+    }
+
+    /* Status badge inside report name row on mobile */
+    .rpt-table td[data-label="Report Name"] .rpt-status-badge {
+        display: inline-flex;
+    }
+
+    /* Hide original status column on mobile */
+    .rpt-table td[data-label="Status"] {
+        display: none !important;
+    }
+
+    /* Row 2: Patient Info */
+    .rpt-table td[data-label="Patient Name"] {
+        display: block !important;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .rpt-table td[data-label="Patient Name"]::before {
+        content: "Patient Name";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Row 3: Report Type */
+    .rpt-table td[data-label="Report Type"] {
+        display: block !important;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .rpt-table td[data-label="Report Type"]::before {
+        content: "Report Type";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Row 4: Date */
+    .rpt-table td[data-label="Date"] {
+        display: block !important;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .rpt-table td[data-label="Date"]::before {
+        content: "Date";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Row 5: Action buttons */
+    .rpt-table td[data-label="Action"] {
+        display: block !important;
+        padding: 12px 14px;
+    }
+
+    .rpt-table td[data-label="Action"]::before {
+        content: "Actions";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .rpt-action-btns {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .rpt-stats-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .rpt-stat-card {
+        padding: 12px;
+    }
+
+    .rpt-stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .rpt-stat-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .rpt-stat-value {
+        font-size: 22px;
+    }
+
+    .rpt-filter-group-row {
+        flex-direction: column;
+    }
+
+    .rpt-filter-group-row>div {
+        width: 100%;
+    }
+
+    .rpt-filter-group-row .rpt-filter-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .rpt-filter-actions {
+        flex-direction: column;
+    }
+
+    .rpt-apply-btn,
+    .rpt-reset-btn {
+        width: 100%;
+    }
+
+    .rpt-pagination-btns {
+        gap: 3px;
+    }
+
+    .rpt-page-btn {
+        min-width: 28px;
+        height: 28px;
+        font-size: 10px;
+        padding: 0 6px;
+    }
+}
+
+/* Touch-friendly improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+
+    .rpt-filter-item,
+    .rpt-apply-btn,
+    .rpt-reset-btn,
+    .rpt-tbl-btn,
+    .rpt-act-btn,
+    .rpt-page-btn {
+        min-height: 44px;
+    }
+
+    .rpt-filter-item {
+        min-height: 40px;
+    }
+
+    .rpt-act-btn {
+        min-height: 32px;
+        width: 32px;
+    }
+
+    .rpt-page-btn {
+        min-height: 40px;
     }
 }
