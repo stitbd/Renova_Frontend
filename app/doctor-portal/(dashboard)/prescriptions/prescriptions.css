@@ -1026,13 +1026,42 @@
         display: none !important;
     }
 
-    /* Hide vital signs column */
+    /* Vital Signs — full width row */
     .rx-vital-td {
-        display: none !important;
+        display: block !important;
+        width: 100%;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        box-sizing: border-box;
+        background: #fff;
     }
 
-    .rx-vital-td {
-        vertical-align: middle;
+    .rx-vital-td::before {
+        content: "Vital Signs";
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .rx-vital-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .rx-vital-item {
+        font-size: 11px;
+        color: #475569;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Hide separate Status column (badge already shown in ID row) */
+    .rx-table td[data-label="Status"] {
+        display: none !important;
     }
 
     /* Table → card */
@@ -1152,13 +1181,7 @@
     }
 
     .rx-table td[data-label="Date"]::before {
-        display: block;
-        content: "Date";
-        font-size: 10px;
-        font-weight: 600;
-        color: #94a3b8;
-        margin-bottom: 6px;
-        letter-spacing: 0.5px;
+        display: none;
     }
 
     .rx-date-primary {
@@ -1383,8 +1406,8 @@
     }
 
     .rx-act-btn {
-        min-height: 40px;
-        width: 40px;
+        min-height: 32px;
+        width: 32px;
     }
 
     .rx-page-btn {
@@ -1611,7 +1634,22 @@
 
         /* Hide vital signs column */
         .rx-vital-td {
-            display: none !important;
+            display: block !important;
+            width: 100%;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .rx-vital-td::before {
+            content: "Vital Signs";
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
 
         /* Hide desktop status column */
@@ -1823,13 +1861,7 @@
         }
 
         .rx-table td[data-label="Date"]::before {
-            display: block;
-            content: "Date";
-            font-size: 11px;
-            font-weight: 600;
-            color: #94a3b8;
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
+            display: none;
         }
 
         .rx-date-primary {
@@ -1974,7 +2006,7 @@
         .rx-tbl-btn,
         .rx-act-btn,
         .rx-page-btn {
-            min-height: 44px;
+            min-height: 40px;
         }
 
         .rx-filter-item {
@@ -1982,8 +2014,8 @@
         }
 
         .rx-act-btn {
-            min-height: 40px;
-            width: 40px;
+            min-height: 32px;
+            width: 32px;
         }
 
         .rx-page-btn {
