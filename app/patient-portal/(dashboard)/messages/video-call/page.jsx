@@ -95,6 +95,7 @@ export default function VideoCallPage() {
     const router = useRouter();
 
     const {
+        isCallAccepted,
         callSession,
         localVideoRef,
         remoteVideoRef,
@@ -271,6 +272,10 @@ export default function VideoCallPage() {
                                 </div>
                             )}
 
+                            {!isCallAccepted && (
+                                <div className="video-waiting-text">Ringing...</div>
+                            )}
+                            
                             {error && (
                                 <div className="video-waiting-text">
                                     {error}

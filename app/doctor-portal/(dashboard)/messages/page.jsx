@@ -57,6 +57,7 @@ function normalizeMessage(msg, authUserId) {
   return {
     id: msg.id,
     text: msg.message || msg.text || "",
+    type: msg.type, // add this
     fileUrl: msg.fileUrl,
     fileName: msg.fileName,
     mine,
@@ -89,6 +90,7 @@ export default function MessagesPage() {
   const [conversations, setConversations] = useState([]);
   const [selectedConv, setSelectedConv] = useState(null);
   const [messages, setMessages] = useState([]);
+  
   const [messageText, setMessageText] = useState("");
   const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
@@ -482,29 +484,27 @@ export default function MessagesPage() {
                       )}
 
                       <div>
-                        <div
-                          className={`msg-bubble${msg.mine ? " sent" : " received"
-                            }`}
-                        >
-                          {msg.text}
+                        {msg.type === "CALL" ? (
+                          <div className="msg-call-history">
+                            {msg.text || msg.message}
+                          </div>
+                        ) : (
+                          <div
+                            className={`msg-bubble${msg.mine ? " sent" : " received"}`}
+                          >
+                            {msg.text}
 
-                          {msg.fileUrl && (
-                            <div style={{ marginTop: 6 }}>
-                              <a
-                                href={msg.fileUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                {msg.fileName || "Attachment"}
-                              </a>
-                            </div>
-                          )}
-                        </div>
+                            {msg.fileUrl && (
+                              <div style={{ marginTop: 6 }}>
+                                <a href={msg.fileUrl} target="_blank" rel="noreferrer">
+                                  {msg.fileName || "Attachment"}
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        )}
 
-                        <div
-                          className={`msg-bubble-meta${msg.mine ? " sent" : ""
-                            }`}
-                        >
+                        <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
                           {formatTime(msg.createdAt)}
                         </div>
                       </div>

@@ -96,6 +96,8 @@ export default function VideoCallPage() {
 
     const {
         callSession,
+
+        isCallAccepted,
         localVideoRef,
         remoteVideoRef,
         isJoined,
@@ -269,6 +271,9 @@ export default function VideoCallPage() {
                                 <div className="video-waiting-text">
                                     Connecting...
                                 </div>
+                            )}
+                            {!isCallAccepted && (
+                                <div className="video-waiting-text">Ringing...</div>
                             )}
 
                             {error && (
