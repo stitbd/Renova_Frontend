@@ -1,689 +1,689 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/hook";
+import { chatApi } from "@/utils/chatApi";
+import { getSocket } from "@/utils/socket";
 import "./patient-massages.css";
-
-const TODAY = new Date().toDateString();
-
-const conversations = [
-  {
-    id: 1,
-    name: "Masud Rana",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Thank you doctor. I will follow...",
-    time: "10:35 AM",
-    unread: 2,
-    online: true,
-    patientId: "PT-2025-00123",
-    phone: "01712-345678",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'8\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Sadia Afrin",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Ok doctor, see you tomorrow.",
-    time: "10:20 AM",
-    unread: 1,
-    online: false,
-    patientId: "PT-2025-00098",
-    phone: "01811-223344",
-    consultationReason: "Fever, Headache",
-    consultationStarted: "Started at 09:15 AM",
-    summary: [
-      { key: "Blood Group", val: "A+" },
-      { key: "Height / Weight", val: "5'4\" / 55 kg" },
-      { key: "Allergies", val: "Penicillin" },
-      { key: "Chronic Condition", val: "None" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Rashed Hasan",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Prescription ta pathiye diben?",
-    time: "09:45 AM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00075",
-    phone: "01912-556677",
-    consultationReason: "Back pain, Fatigue",
-    consultationStarted: "Started at 11:00 AM",
-    summary: [
-      { key: "Blood Group", val: "O+" },
-      { key: "Height / Weight", val: "5'10\" / 80 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Diabetes" },
-    ],
-  },
-  {
-    id: 4,
-    name: "Farzana Akter",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Thank you so much doctor.",
-    time: "10:45 AM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00061",
-    phone: "01712-998877",
-    consultationReason: "Joint pain, Swelling",
-    consultationStarted: "Started at 08:30 AM",
-    summary: [
-      { key: "Blood Group", val: "AB+" },
-      { key: "Height / Weight", val: "5'1\" / 80 kg" },
-      { key: "Allergies", val: "Aspirin" },
-      { key: "Chronic Condition", val: "Arthritis" },
-    ],
-  },
-  {
-    id: 5,
-    name: "Mahmudul Islam",
-    lastMessageDate: new Date().toDateString(),
-    preview: "BP check korar age ki ki khabo na?",
-    time: "11:45 AM",
-    unread: 1,
-    online: true,
-    patientId: "PT-2025-00055",
-    phone: "01611-445566",
-    consultationReason: "High BP",
-    consultationStarted: "Started at 11:45 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'5\" / 80 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 6,
-    name: "Jannatul Ferdous",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Appointment confirm korlam.",
-    time: "12:45 PM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00044",
-    phone: "01922-334455",
-    consultationReason: "Back pain, Fatigue",
-    consultationStarted: "Started at 11:00 AM",
-    summary: [
-      { key: "Blood Group", val: "O+" },
-      { key: "Height / Weight", val: "5'2\" / 80 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Diabetes" },
-    ],
-  },
-  {
-    id: 7,
-    name: "Abdullah Al Mamun",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Report ready hoyeche?",
-    time: "01:45 PM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00038",
-    phone: "01812-667788",
-    consultationReason: "Fever, Headache",
-    consultationStarted: "Started at 09:15 AM",
-    summary: [
-      { key: "Blood Group", val: "A+" },
-      { key: "Height / Weight", val: "5'4\" / 55 kg" },
-      { key: "Allergies", val: "Penicillin" },
-      { key: "Chronic Condition", val: "None" },
-    ],
-  },
-  {
-    id: 8,
-    name: "Tanjina Rahman",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Follow up kobe korbo?",
-    time: "02:45 PM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00031",
-    phone: "01711-223366",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'3\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 9,
-    name: "Masud Rana",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Thank you doctor. I will follow...",
-    time: "10:35 AM",
-    unread: 2,
-    online: true,
-    patientId: "PT-2025-00123",
-    phone: "01712-345678",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'8\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 10,
-    name: "Sadia Afrin",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Ok doctor, see you tomorrow.",
-    time: "10:20 AM",
-    unread: 1,
-    online: false,
-    patientId: "PT-2025-00098",
-    phone: "01811-223344",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'0\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 11,
-    name: "Rashed Hasan",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Prescription ta pathiye diben?",
-    time: "09:45 AM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00075",
-    phone: "01912-556677",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'9\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 12,
-    name: "Farzana Akter",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Thank you so much doctor.",
-    time: "10:45 AM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00061",
-    phone: "01712-998877",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'2\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 13,
-    name: "Mahmudul Islam",
-    lastMessageDate: new Date().toDateString(),
-    preview: "BP check korar age ki ki khabo na?",
-    time: "11:45 AM",
-    unread: 1,
-    online: true,
-    patientId: "PT-2025-00055",
-    phone: "01611-445566",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'5\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 14,
-    name: "Jannatul Ferdous",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Appointment confirm korlam.",
-    time: "12:45 PM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00044",
-    phone: "01922-334455",
-    consultationReason: "Chest pain, Breathing problem",
-    consultationStarted: "Started at 10:30 AM",
-    summary: [
-      { key: "Blood Group", val: "B+" },
-      { key: "Height / Weight", val: "5'1\" / 72 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Hypertension" },
-    ],
-  },
-  {
-    id: 15,
-    name: "Abdullah Al Mamun",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Report ready hoyeche?",
-    time: "01:45 PM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00038",
-    phone: "01812-667788",
-    consultationReason: "Fever, Headache",
-    consultationStarted: "Started at 09:15 AM",
-    summary: [
-      { key: "Blood Group", val: "A+" },
-      { key: "Height / Weight", val: "5'4\" / 55 kg" },
-      { key: "Allergies", val: "Penicillin" },
-      { key: "Chronic Condition", val: "None" },
-    ],
-  },
-  {
-    id: 16,
-    name: "Tanjina Rahman",
-    lastMessageDate: new Date().toDateString(),
-    preview: "Follow up kobe korbo?",
-    time: "02:45 PM",
-    unread: 0,
-    online: false,
-    patientId: "PT-2025-00031",
-    phone: "01711-223366",
-    consultationReason: "Back pain, Fatigue",
-    consultationStarted: "Started at 11:00 AM",
-    summary: [
-      { key: "Blood Group", val: "O+" },
-      { key: "Height / Weight", val: "5'3\" / 80 kg" },
-      { key: "Allergies", val: "No Known Allergies" },
-      { key: "Chronic Condition", val: "Diabetes" },
-    ],
-  },
-];
-
-const chatMessages = [
-  { id: 1, from: "patient", text: "Assalamualaikum Doctor, ami ajker test report gulo pathiyechi.", time: "10:20 AM", date: "May 14, 2025" },
-  { id: 2, from: "doctor", text: "Wa Alaikum Assalam. Report gulo peye gechi. Ami review kore apnake janacchi.", time: "10:22 AM", read: true },
-  { id: 3, from: "patient", text: "Ji doctor, amar sugar ektu besi chilo, eta niye ami chintito.", time: "10:23 AM" },
-  { id: 4, from: "doctor", text: "Chinta korben na. Diet control r regular exercise korle bhalo thakben. Aro details e janar jonno video consultation korbo.", time: "10:25 AM", read: true },
-  { id: 5, from: "patient", text: "Ok doctor. Thanks.", time: "10:26 AM" },
-  { id: 6, from: "doctor", text: "Apnar prescription ready. Please collect from your registered outlet.", time: "09:30 AM", date: "May 15, 2025", read: true },
-  { id: 7, from: "patient", text: "Thank you doctor. I will follow your advice.", time: "10:35 AM" },
-];
-
-const quickActions = [
-  { label: "Send Prescription", icon: "prescription", color: "blue" },
-  { label: "Send Report", icon: "report", color: "red" },
-];
+import {
+  Search,
+  Phone,
+  Video,
+  Send,
+  User
+} from "lucide-react";
+import { CheckCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { videoCallApi } from "@/utils/videoCallApi";
+import { saveCallSession } from "@/utils/callSession";
 
 
-function getIcon(type, cls = "") {
-  const icons = {
-    search: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>,
-    filter: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>,
-    phone: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>,
-    video: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" /></svg>,
-    tick: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>,
-    doubletick: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 12 6 7 1" /><path d="M7 6s-5 5-5 12" /><path d="M22 1 11 12" /></svg>,
-    attach: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>,
-    emoji: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" y1="9" x2="9.01" y2="9" /><line x1="15" y1="9" x2="15.01" y2="9" /></svg>,
-    send: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>,
-    user: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
-    prescription: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>,
-    report: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>,
-    calendar: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
-    clock: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
-    message: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>,
-    chevrondown: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>,
-    doc: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
-    sms: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>,
-  };
-  return icons[type] || null;
+function getInitials(name = "User") {
+  return String(name)
+    .split(" ")
+    .map((p) => p[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 }
 
-const emojis = [
-  "😊", "😷", "🤒", "💊", "🩺", "🏥", "❤️", "👍", "🙏", "✅",
-  "😌", "🤧", "🩹", "💉", "🧬", "🫀", "🧠", "😴", "🤕", "😟",
-  "👋", "📋", "📅", "⏰", "🔬", "🩻", "💪", "🌡️", "🍎", "💧",
-  "😢", "😰", "🥺", "😔", "🫂", "🤝", "👨‍⚕️", "👩‍⚕️", "🏃", "🧘",
-  "🥗", "🥦", "🫁", "🦷", "👁️", "👂", "🦴", "🤞", "💬", "📞"
-];
+function formatTime(date) {
+  if (!date) return "";
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(date));
+}
 
-const qaColorMap = { blue: "blue", red: "red", orange: "orange", teal: "teal", purple: "purple" };
+function normalizeConversation(conv) {
+  const doctor = conv.otherUser || {};
 
-export default function MessagesPage() {
+  return {
+    id: conv.id,
+    receiverId: doctor.id,
+    doctorId: doctor.id,
+    name: doctor.name || "Unknown Doctor",
+    userType: doctor.userType || "DOCTOR",
+    lastMessage: conv.lastMessage?.message || "",
+    lastMessageAt: conv.lastMessage?.createdAt || conv.updatedAt || conv.createdAt,
+    unread: conv.unreadCount || 0,
+    raw: conv,
+  };
+}
+
+function normalizeMessage(msg, authUserId) {
+  return {
+    id: msg.id,
+    type: msg.type, // add this
+    text: msg.message || "",
+    fileUrl: msg.fileUrl,
+    fileName: msg.fileName,
+    mine: msg.senderId === authUserId,
+    createdAt: msg.createdAt,
+    seenAt: msg.seenAt,
+  };
+}
+
+function uniqueMessages(messages) {
+  const map = new Map();
+
+  for (const msg of messages) {
+    if (!msg?.id) continue;
+    map.set(msg.id, msg);
+  }
+
+  return Array.from(map.values()).sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+  );
+}
+
+export default function PatientMessagesPage() {
+  const token = useAppSelector((state) => state.auth.accessToken);
+  const authUser = useAppSelector((state) => state.auth.user);
+
   const [activeTab, setActiveTab] = useState("all");
-  const [selectedConv, setSelectedConv] = useState(conversations[0]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [conversations, setConversations] = useState([]);
+  const [selectedConv, setSelectedConv] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
-  const [charCount, setCharCount] = useState(0);
-  const [attachedFiles, setAttachedFiles] = useState([]);
-  const [showEmoji, setShowEmoji] = useState(false);
+  const [isLoadingConversations, setIsLoadingConversations] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleTextChange = (e) => {
-    setMessageText(e.target.value);
-    setCharCount(e.target.value.length);
-  };
+  const router = useRouter();
+  const [incomingCall, setIncomingCall] = useState(null);
 
-  const handleFileAttach = (accept = "*") => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = accept;
-    input.multiple = true;
-    input.onchange = (e) => {
-      const files = Array.from(e.target.files);
-      setAttachedFiles(prev => [...prev, ...files]);
+
+  const chatBodyRef = useRef(null);
+
+  const selectedMessages = useMemo(() => {
+    return uniqueMessages(messages).map((msg) =>
+      normalizeMessage(msg, authUser?.id)
+    );
+  }, [messages, authUser?.id]);
+
+  const filteredConversations = useMemo(() => {
+    let list = [...conversations];
+
+    if (activeTab === "unread") {
+      list = list.filter((conv) => conv.unread > 0);
+    }
+
+    if (searchTerm.trim()) {
+      const q = searchTerm.toLowerCase();
+      list = list.filter((conv) => conv.name.toLowerCase().includes(q));
+    }
+
+    return list;
+  }, [conversations, activeTab, searchTerm]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    let ignore = false;
+
+    async function loadConversations() {
+      try {
+        setIsLoadingConversations(true);
+        setError("");
+
+        const result = await chatApi.getConversations(token);
+        const list = Array.isArray(result.data) ? result.data : [];
+        const normalized = list.map(normalizeConversation);
+
+        if (ignore) return;
+
+        setConversations(normalized);
+        setSelectedConv((prev) => prev || normalized[0] || null);
+      } catch (err) {
+        if (!ignore) setError(err.message || "Failed to load conversations");
+      } finally {
+        if (!ignore) setIsLoadingConversations(false);
+      }
+    }
+
+    loadConversations();
+
+    return () => {
+      ignore = true;
     };
-    input.click();
-  };
+  }, [token]);
 
-  const handleRemoveFile = (index) => {
-    setAttachedFiles(prev => prev.filter((_, i) => i !== index));
-  };
+  useEffect(() => {
+    if (!token || !selectedConv?.id) {
+      setMessages([]);
+      return;
+    }
 
-  const handleSend = () => {
-    if (!messageText.trim() && attachedFiles.length === 0) return;
+    let ignore = false;
+
+    async function loadMessages() {
+      try {
+        setIsLoadingMessages(true);
+        setError("");
+
+        const result = await chatApi.getMessages(token, selectedConv.id);
+        const list = Array.isArray(result?.data?.data) ? result.data.data : [];
+
+        if (!ignore) setMessages(list);
+      } catch (err) {
+        if (!ignore) setError(err.message || "Failed to load messages");
+      } finally {
+        if (!ignore) setIsLoadingMessages(false);
+      }
+    }
+
+    loadMessages();
+
+    return () => {
+      ignore = true;
+    };
+  }, [token, selectedConv?.id]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const socket = getSocket(token);
+    if (!socket) return;
+
+    const handleIncomingMessage = (payload) => {
+      const msg = payload?.data || payload;
+      if (!msg?.id) return;
+
+      const conversationId = msg.conversationId;
+
+      if (conversationId === selectedConv?.id) {
+        setMessages((prev) => {
+          const exists = prev.some((item) => item.id === msg.id);
+
+          if (exists) {
+            return prev.map((item) => (item.id === msg.id ? msg : item));
+          }
+
+          return [...prev, msg];
+        });
+      }
+
+      setConversations((prev) => {
+        const exists = prev.some((conv) => conv.id === conversationId);
+
+        if (exists) {
+          return prev
+            .map((conv) =>
+              conv.id === conversationId
+                ? {
+                  ...conv,
+                  lastMessage: msg.message,
+                  lastMessageAt: msg.createdAt,
+                  unread:
+                    selectedConv?.id === conversationId
+                      ? conv.unread
+                      : (conv.unread || 0) + 1,
+                }
+                : conv
+            )
+            .sort(
+              (a, b) =>
+                new Date(b.lastMessageAt || 0) - new Date(a.lastMessageAt || 0)
+            );
+        }
+
+        const newConversation = {
+          id: conversationId,
+          receiverId: msg.senderId,
+          doctorId: msg.senderId,
+          name: msg.sender?.name || msg.sender?.fullName || "Doctor",
+          userType: msg.sender?.userType || "DOCTOR",
+          lastMessage: msg.message || "",
+          lastMessageAt: msg.createdAt,
+          unread: selectedConv?.id === conversationId ? 0 : 1,
+          raw: null,
+        };
+
+        return [newConversation, ...prev];
+      });
+    };
+
+    const handleSeenMessage = (payload) => {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === payload.messageId
+            ? { ...msg, seenAt: payload.seenAt }
+            : msg
+        )
+      );
+    };
+    const handleIncomingCall = (payload) => {
+      setIncomingCall({
+        ...payload,
+        receivedAt: Date.now(),
+      });
+    };
+
+    const handleCallMissed = (payload) => {
+      setIncomingCall((prev) => {
+        if (!prev) return null;
+        if (!payload?.callId || prev.callId === payload.callId) return null;
+        return prev;
+      });
+    };
+
+    socket.on("audio_call_missed", handleCallMissed);
+    socket.on("video_call_missed", handleCallMissed);
+
+    socket.on("incoming_audio_call", handleIncomingCall);
+    socket.on("incoming_video_call", handleIncomingCall);
+
+    socket.on("receive_message", handleIncomingMessage);
+    socket.on("message_sent", handleIncomingMessage);
+    socket.on("message_seen", handleSeenMessage);
+
+    return () => {
+      socket.off("receive_message", handleIncomingMessage);
+      socket.off("message_sent", handleIncomingMessage);
+      socket.off("message_seen", handleSeenMessage);
+      socket.off("incoming_audio_call", handleIncomingCall);
+      socket.off("incoming_video_call", handleIncomingCall);
+      socket.off("audio_call_missed", handleCallMissed);
+      socket.off("video_call_missed", handleCallMissed);
+    };
+  }, [token, selectedConv?.id]);
+
+  useEffect(() => {
+    chatBodyRef.current?.scrollTo({
+      top: chatBodyRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [selectedMessages.length]);
+
+  useEffect(() => {
+    if (!incomingCall?.callId) return;
+
+    const timer = setTimeout(() => {
+      setIncomingCall((prev) => {
+        if (prev?.callId === incomingCall.callId) return null;
+        return prev;
+      });
+    }, 31_000);
+
+    return () => clearTimeout(timer);
+  }, [incomingCall?.callId]);
+
+
+
+  const handleSend = async () => {
+    const text = messageText.trim();
+
+    if (!text || !token || !selectedConv?.receiverId) return;
+
+    const optimisticMessage = {
+      id: `temp-${Date.now()}`,
+      conversationId: selectedConv.id,
+      senderId: authUser?.id,
+      receiverId: selectedConv.receiverId,
+      message: text,
+      createdAt: new Date().toISOString(),
+      optimistic: true,
+    };
+
+    setMessages((prev) => [...prev, optimisticMessage]);
     setMessageText("");
-    setCharCount(0);
-    setAttachedFiles([]);
+
+    try {
+      const result = await chatApi.sendMessage(token, {
+        receiverId: selectedConv.receiverId,
+        message: text,
+      });
+
+      const savedMessage = result.data;
+
+      setMessages((prev) => {
+        const withoutTemp = prev.filter((msg) => msg.id !== optimisticMessage.id);
+        const exists = withoutTemp.some((msg) => msg.id === savedMessage.id);
+
+        if (exists) {
+          return withoutTemp.map((msg) =>
+            msg.id === savedMessage.id ? savedMessage : msg
+          );
+        }
+
+        return [...withoutTemp, savedMessage];
+      });
+
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === selectedConv.id
+            ? {
+              ...conv,
+              lastMessage: savedMessage.message,
+              lastMessageAt: savedMessage.createdAt,
+            }
+            : conv
+        )
+      );
+    } catch (err) {
+      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticMessage.id));
+      setError(err.message || "Failed to send message");
+    }
   };
 
-  const filteredConversations = conversations.filter(conv => {
-    if (activeTab === "unread") return conv.unread > 0;
-    if (activeTab === "all") return conv.lastMessageDate === TODAY;
-    return true;
-  });
+  const handleAcceptCall = async () => {
+    if (!incomingCall?.callId || !token) return;
+
+    const result = await videoCallApi.accept(token, incomingCall.callId);
+
+    saveCallSession({
+      ...result.data,
+      callerId: incomingCall.callerId,
+      callerName: incomingCall.callerName,
+      role: "RECEIVER",
+    });
+
+    const path =
+      incomingCall.callType === "AUDIO"
+        ? "/patient-portal/messages/audio-call"
+        : "/patient-portal/messages/video-call";
+
+    setIncomingCall(null);
+    router.push(`${path}?callId=${incomingCall.callId}`);
+  };
+
+  const handleStartCall = async (callType) => {
+    if (!token || !selectedConv?.receiverId) return;
+
+    const result = await videoCallApi.start(token, {
+      receiverId: selectedConv.receiverId,
+      callType,
+    });
+
+    saveCallSession({
+      ...result.data,
+      receiverId: selectedConv.receiverId,
+      receiverName: selectedConv.name,
+      role: "CALLER",
+    });
+
+    const path =
+      callType === "AUDIO"
+        ? "/patient-portal/messages/audio-call"
+        : "/patient-portal/messages/video-call";
+
+    router.push(`${path}?callId=${result.data.callId}`);
+  };
+
+  const handleRejectCall = async () => {
+    if (!incomingCall?.callId || !token) return;
+
+    await videoCallApi.reject(token, incomingCall.callId);
+    setIncomingCall(null);
+  };
+
+  if (!token) {
+    return <div className="apt-empty">Authentication token not found.</div>;
+  }
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
       <div className="msg-page-wrap">
-        {/* ── Left: Conversation List ──────────────────────── */}
         <div className="msg-conv-col">
-          {/* Tabs */}
           <div className="msg-tabs">
-            <button className={`msg-tab${activeTab === "all" ? " active" : ""}`} onClick={() => setActiveTab("all")}>
+            <button
+              className={`msg-tab${activeTab === "all" ? " active" : ""}`}
+              onClick={() => setActiveTab("all")}
+            >
               All Messages
             </button>
-            <button className={`msg-tab${activeTab === "unread" ? " active" : ""}`} onClick={() => setActiveTab("unread")}>
-              Unread <span className="badge">24</span>
-            </button>
-            <button style={{ marginLeft: "auto", padding: "10px 8px", border: "none", background: "transparent", cursor: "pointer" }}>
-              {getIcon("filter")}
+
+            <button
+              className={`msg-tab${activeTab === "unread" ? " active" : ""}`}
+              onClick={() => setActiveTab("unread")}
+            >
+              Unread
             </button>
           </div>
 
-          {/* Search */}
           <div className="msg-search-wrap">
             <div className="msg-search-box">
-              {getIcon("search")}
-              <input type="text" placeholder="Search conversations..." />
+              <Search size={18} />
+              <input
+                type="text"
+                placeholder="Search doctors..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
 
-          {/* List */}
           <div className="msg-conv-list">
-            {filteredConversations.map((conv) => (
-              <div
-                key={conv.id}
-                className={`msg-conv-item${selectedConv?.id === conv.id ? " active" : ""}${conv.unread > 0 ? " unread" : ""}`}
-                onClick={() => setSelectedConv(conv)}
-              >
-                <div className="msg-conv-avatar">
-                  <img
-                    src={`/images/patients/${String(conv.id).padStart(2, "0")}.jpg`}
-                    alt={conv.name}
-                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                  />
-                  <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}><img
-                    src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                    alt={selectedConv?.name}
-                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                  />
-                    <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span></span>
-                  {conv.online && <span className="msg-online-dot" />}
-                </div>
-                <div className="msg-conv-body">
-                  <div className="msg-conv-row">
-                    <p className="msg-conv-name">{conv.name}</p>
-                    <span className="msg-conv-time">{conv.time}</span>
+            {isLoadingConversations && (
+              <div className="msg-conv-item">Loading conversations...</div>
+            )}
+
+            {!isLoadingConversations && filteredConversations.length === 0 && (
+              <div className="msg-conv-item">No conversations found</div>
+            )}
+
+            {!isLoadingConversations &&
+              filteredConversations.map((conv) => (
+                <div
+                  key={conv.id}
+                  className={`msg-conv-item${selectedConv?.id === conv.id ? " active" : ""
+                    }${conv.unread > 0 ? " unread" : ""}`}
+                  onClick={() => setSelectedConv(conv)}
+                >
+                  <div className="msg-conv-avatar">
+                    <span>{getInitials(conv.name)}</span>
                   </div>
-                  <p className="msg-conv-preview">{conv.preview}</p>
+
+                  <div className="msg-conv-body">
+                    <div className="msg-conv-row">
+                      <p className="msg-conv-name">{conv.name}</p>
+                      <span className="msg-conv-time">
+                        {formatTime(conv.lastMessageAt)}
+                      </span>
+                    </div>
+
+                    <p className="msg-conv-preview">
+                      {conv.lastMessage || "No messages yet"}
+                    </p>
+                  </div>
+
+                  {conv.unread > 0 && (
+                    <span className="msg-unread-badge">{conv.unread}</span>
+                  )}
                 </div>
-                {conv.unread > 0 && (
-                  <span className="msg-unread-badge">{conv.unread}</span>
-                )}
-              </div>
-            ))}
+              ))}
           </div>
         </div>
 
-        {/* ── Middle: Chat ─────────────────────────────────── */}
         <div className="msg-chat-col">
-          {/* Chat Header */}
-          <div className="msg-chat-header">
-            <div className="msg-chat-patient">
-              <div className="msg-chat-patient-avatar">
-                <img
-                  src="/images/patients/01.jpg"
-                  alt="Patient"
-                  onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                />
-                <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-              </div>
-              <div className="msg-chat-patient-info">
-                <h4>
-                  {selectedConv?.name}
-                  <span className="msg-verified-badge">Verified Patient</span>
-                </h4>
-                <p>{selectedConv?.phone} • Patient ID: {selectedConv?.patientId}</p>
-              </div>
-            </div>
-            <div className="msg-chat-actions">
-              <Link href="/patient-portal/messages/audio-call" className="msg-action-btn">
-                {getIcon("phone")}
-              </Link>
-              <Link href="/patient-portal/messages/video-call" className="msg-action-btn blue">
-                {getIcon("video")}
-              </Link>
-            </div>
-          </div>
+          {selectedConv ? (
+            <>
+              <div className="msg-chat-header">
+                <div className="msg-chat-patient">
+                  <div className="msg-chat-patient-avatar">
+                    <span>{getInitials(selectedConv.name)}</span>
+                  </div>
 
-          {/* Chat Body */}
-          <div className="msg-chat-body">
-            {chatMessages.map((msg, i) => {
-              const isDoctor = msg.from === "doctor";
-              const showDate = msg.date && (i === 0 || chatMessages[i - 1].date !== msg.date);
-              return (
-                <div key={msg.id}>
-                  {showDate && (
-                    <div className="msg-date-divider">
-                      <span>{msg.date}</span>
-                    </div>
-                  )}
-                  <div className={`msg-bubble-wrap${isDoctor ? " sent" : ""}`}>
-                    {!isDoctor && (
-                      <div className="msg-bubble-avatar">
-                        <img
-                          src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                          alt={selectedConv?.name}
-                          onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                        />
-                        <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-                      </div>
-                    )}
-                    <div>
-                      <div className={`msg-bubble${isDoctor ? " sent" : " received"}`}>
-                        {msg.text}
-                      </div>
-                      <div className={`msg-bubble-meta${isDoctor ? " sent" : ""}`}>
-                        {msg.time}
-                        {isDoctor && (
-                          <span className="msg-double-tick">
-                            {getIcon("tick")}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {isDoctor && (
-                      <div className="msg-bubble-avatar">
-                        <img
-                          src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                          alt={selectedConv?.name}
-                          onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                        />
-                        <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-                      </div>
-                    )}
+                  <div className="msg-chat-patient-info">
+                    <h4>
+                      {selectedConv.name}
+                      <span className="msg-verified-badge">Doctor</span>
+                    </h4>
+                    <p>Doctor ID: {selectedConv.doctorId}</p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Chat Input */}
-          <div className="msg-chat-input-wrap" style={{ position: "relative" }}>
-            <div className="msg-char-count">{charCount}/160</div>
-            {attachedFiles.length > 0 && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-                {attachedFiles.map((file, index) => (
-                  <div key={index} style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 6, fontSize: 11.5, color: "#014fa1" }}>
-                    <span style={{ maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{file.name}</span>
-                    <button onClick={() => handleRemoveFile(index)} style={{ border: "none", background: "none", cursor: "pointer", color: "#64748b", fontSize: 14, lineHeight: 1, padding: 0 }}>×</button>
-                  </div>
-                ))}
-              </div>
-            )}
-            <div className="msg-input-box">
-              <textarea
-                placeholder="Type your message..."
-                value={messageText}
-                onChange={handleTextChange}
-                rows={1}
-              />
-            </div>
-            <div className="msg-input-actions">
-              <div className="msg-input-tools">
-                <button className="msg-tool-btn" onClick={() => handleFileAttach("image/*,application/pdf")}>
-                  {getIcon("attach")} Attach File
-                </button>
-                <div>
-                  <button className="msg-tool-btn" onClick={() => setShowEmoji(prev => !prev)}>
-                    {getIcon("emoji")} Emoji
+                <div className="msg-chat-actions">
+                  <button
+                    className="msg-action-btn"
+                    onClick={() => handleStartCall("AUDIO")}
+                  >
+                    <Phone size={18} />
                   </button>
-                  {showEmoji && (
-                    <div style={{
-                      position: "absolute", bottom: "calc(100% + 8px)", left: 0,
-                      background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)", padding: 10,
-                      marginLeft: "15px",
-                      display: "grid", gridTemplateColumns: "repeat(10, 1fr)", zIndex: 100,
-                    }}>
-                      <div style={{ gridColumn: "1/-1", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: "#64748b" }}>Quick Emojis</span>
-                        <button onClick={() => setShowEmoji(false)} style={{ border: "none", background: "none", cursor: "pointer", fontSize: 16, color: "#94a3b8", lineHeight: 1, padding: 0 }}>×</button>
-                      </div>
-                      {emojis.map((emoji, i) => (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            setMessageText(prev => { const updated = prev + emoji; setCharCount(updated.length); return updated; });
-                            setShowEmoji(false);
-                          }}
-                          style={{ border: "none", background: "none", cursor: "pointer", fontSize: 20, padding: "4px 2px", borderRadius: 6, transition: "background 0.15s" }}
-                          onMouseEnter={e => e.currentTarget.style.background = "#f1f5f9"}
-                          onMouseLeave={e => e.currentTarget.style.background = "none"}
-                        >
-                          {emoji}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+
+                  <button
+                    className="msg-action-btn blue"
+                    onClick={() => handleStartCall("VIDEO")}
+                  >
+                    <Video size={18} />
+                  </button>
                 </div>
               </div>
-              <button className="msg-send-btn" onClick={handleSend}>
-                Send SMS {getIcon("send")}
+
+              <div className="msg-chat-body" ref={chatBodyRef}>
+                {isLoadingMessages && <p>Loading messages...</p>}
+
+                {!isLoadingMessages && selectedMessages.map((msg) => {
+                  const isCall = msg.type === "CALL";
+
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`msg-bubble-wrap${msg.mine ? " sent" : ""}`}
+                    >
+                      {!msg.mine && !isCall && (
+                        <div className="msg-bubble-avatar">
+                          <span>{getInitials(selectedConv.name)}</span>
+                        </div>
+                      )}
+
+                      {isCall ? (
+                        <div className={`msg-call-message ${msg.mine ? "sent" : "received"}`}>
+                          {!msg.mine && (
+                            <div className="msg-bubble-avatar">
+                              <span>{getInitials(selectedConv.name)}</span>
+                            </div>
+                          )}
+
+                          <div className="msg-call-stack">
+                            <div className={`msg-call-bubble ${msg.mine ? "sent" : "received"}`}>
+                              {/* <div className="msg-call-icon">
+                                {msg.text?.toLowerCase().includes("video") ? "🎥" : "📞"}
+                              </div> */}
+
+                              <div className="msg-call-content">
+                                <div className="msg-call-title">
+                                  {msg.text || msg.message}
+                                </div>
+                                <div className="msg-call-subtitle">Call history</div>
+                              </div>
+                            </div>
+
+                            <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
+                              {formatTime(msg.createdAt)}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className={`msg-bubble${msg.mine ? " sent" : " received"}`}>
+                            {msg.text}
+
+                            {msg.fileUrl && (
+                              <div className="msg-attachment">
+                                <a href={msg.fileUrl} target="_blank" rel="noreferrer">
+                                  {msg.fileName || "Attachment"}
+                                </a>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
+                            {formatTime(msg.createdAt)}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {error && <p style={{ color: "red", padding: "0 16px" }}>{error}</p>}
+
+              <div className="msg-chat-input-wrap">
+                <div className="msg-input-box">
+                  <textarea
+                    placeholder="Type your message..."
+                    value={messageText}
+                    onChange={(e) => setMessageText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSend();
+                      }
+                    }}
+                    rows={1}
+                  />
+                </div>
+
+                <div className="msg-input-actions">
+                  <button
+                    className="msg-send-btn"
+                    onClick={handleSend}
+                    disabled={!messageText.trim()}
+                  >
+                    Send <Send size={18} />
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="msg-chat-body">
+              <p>Select a conversation</p>
+            </div>
+          )}
+        </div>
+
+        <div className="msg-info-col">
+          {selectedConv && (
+            <div className="msg-patient-card">
+              <div className="msg-patient-avatar-lg">
+                <span>{getInitials(selectedConv.name)}</span>
+              </div>
+
+              <h3>{selectedConv.name}</h3>
+              <p className="msg-patient-id">Doctor ID: {selectedConv.doctorId}</p>
+
+              <Link
+                href={`/patient-portal/doctors/profile?id=${selectedConv.doctorId}&from=/patient-portal/messages`}
+                className="msg-view-profile-btn"
+                style={{
+                  display: "block",
+                  textAlign: "center",
+                  textDecoration: "none",
+                }}
+              >
+                View Doctor Profile
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+      {incomingCall && (
+        <div className="incoming-call-overlay">
+          <div className="incoming-call-card">
+            <p className="incoming-call-label">
+              Incoming {incomingCall.callType === "AUDIO" ? "Audio" : "Video"} Call
+            </p>
+
+            <h3>{incomingCall.callerName}</h3>
+
+            <div className="incoming-call-actions">
+              <button className="incoming-call-reject" onClick={handleRejectCall}>
+                Reject
+              </button>
+
+              <button className="incoming-call-accept" onClick={handleAcceptCall}>
+                Accept
               </button>
             </div>
           </div>
         </div>
-
-        {/* ── Right: Patient Info ──────────────────────────── */}
-        <div className="msg-info-col">
-          {/* Patient Card */}
-          <div className="msg-patient-card">
-            <div className="msg-patient-avatar-lg">
-              <img
-                src={`/images/patients/${String(selectedConv?.id).padStart(2, "0")}.jpg`}
-                alt={selectedConv?.name}
-                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-              />
-              <span style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{getIcon("user")}</span>
-            </div>
-            <h3>{selectedConv?.name}</h3>
-            <p>32 Years, Male</p>
-            <p className="msg-patient-id">{selectedConv?.phone}</p>
-            <p className="msg-patient-id">{selectedConv?.patientId}</p>
-            <Link
-              href={`/patient-portal/profile?id=${selectedConv?.patientId}&from=/patient-portal/messages`}
-              className="msg-view-profile-btn"
-              style={{ display: "block", textAlign: "center", textDecoration: "none" }}
-            >
-              View Full Profile
-            </Link>
-          </div>
-
-
-          {/* Consultation Reason */}
-          <div>
-            <p className="call-section-label">Consultation Reason</p>
-            <p className="call-reason-text">{selectedConv?.consultationReason || "—"}</p>
-            <p className="call-started-text">{selectedConv?.consultationStarted || ""}</p>
-          </div>
-
-          {/* Patient Summary */}
-          <div>
-            <div className="call-panel-list-header">
-              <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
-            </div>
-            {(selectedConv?.summary || []).map((r) => (
-              <div key={r.key} className="call-summary-row">
-                <span className="call-summary-key">{r.key}</span>
-                <span className="call-summary-val">{r.val}</span>
-              </div>
-            ))}
-          </div>
-          {/* Quick Actions */}
-          <div className="msg-quick-actions">
-            <p className="msg-info-section-title">Quick Actions</p>
-            {quickActions.map((qa) => (
-              <div
-                key={qa.label}
-                className="msg-quick-action-item"
-                onClick={() => {
-                  if (qa.label === "Send Prescription") handleFileAttach("application/pdf,image/*");
-                  if (qa.label === "Send Report") handleFileAttach("application/pdf,image/*");
-                }}
-              >
-                <div className={`msg-qa-icon ${qaColorMap[qa.color]}`}>
-                  {getIcon(qa.icon)}
-                </div>
-                <span>{qa.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

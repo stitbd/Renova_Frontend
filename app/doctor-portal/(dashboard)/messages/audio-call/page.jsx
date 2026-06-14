@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import "../doctor-dashboard-massages.css";
+import { useAgoraCall } from "@/utils/useAgoraCall";
+
+
 
 const recentReports = [
     { name: "Full Body Check-up", date: "12 May 2025" },
@@ -72,7 +75,6 @@ function Toggle({ checked, onChange }) {
 
 export default function AudioCallPage() {
     const [activeTab, setActiveTab] = useState("Chat");
-    const [seconds, setSeconds] = useState(504); // 8:24
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
     const [recording, setRecording] = useState(true);
@@ -83,6 +85,18 @@ export default function AudioCallPage() {
     const [inputText, setInputText] = useState("");
     const [pendingFiles, setPendingFiles] = useState([]);
     const router = useRouter();
+
+    const {
+
+        isJoined,
+        isCallAccepted,
+        callSession,
+        isMuted,
+        error,
+        toggleMute,
+        endCall,
+        formatDuration,
+    } = useAgoraCall({ mode: "AUDIO" });
 
 
     const handleSend = () => {
@@ -110,20 +124,11 @@ export default function AudioCallPage() {
         input.click();
     };
 
-    useEffect(() => {
-        const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
-        return () => clearInterval(timer);
-    }, []);
 
-    const fmt = (s) => {
-        const m = Math.floor(s / 60).toString().padStart(2, "0");
-        const sec = (s % 60).toString().padStart(2, "0");
-        return `${m}:${sec}`;
-    };
 
     return (
-        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-            <div className="msg-page-wrap">
+        <div className="call-page-shell">
+            <div className="call-page-layout">
                 {/* ── Left: Patient Panel ────────────────────────── */}
                 <div className="call-patient-panel">
                     <Link href="/doctor-portal/messages" className="call-back-link">
@@ -258,28 +263,41 @@ export default function AudioCallPage() {
                                 {[...Array(10)].map((_, i) => <span key={i} />)}
                             </div>
                         </div>
+                        <p className="audio-patient-name">
+                            {callSession?.receiverName || "Patient"}
+                        </p>
 
-                        <p className="audio-patient-name">Masud Rana</p>
-                        <p className="audio-patient-role">Patient</p>
-                        <p className="audio-timer">{fmt(seconds)}</p>
+                        <p className="audio-patient-role">
+                            {isCallAccepted ? "Connected" : "Ringing..."}
+                        </p>
+
+                        <p className="audio-timer">
+                            {isCallAccepted ? formatDuration() : ""}
+                        </p>
+
+                        {error && <p style={{ color: "red" }}>{error}</p>}
 
                         {/* Controls bar — inside video, bottom center, pill shape */}
                         <div className="video-controls-bar">
-                            {[
-                                { icon: "mic", label: "Mute" },
-                                { icon: "speaker", label: "Speaker" },
-                            ].map((btn) => (
-                                <button key={btn.label} className="video-ctrl-btn">
-                                    <div className="video-ctrl-icon">
-                                        <Icon type={btn.icon} />
-                                    </div>
-                                    <span className="video-ctrl-label">{btn.label}</span>
-                                </button>
-                            ))}
+                            <button className="video-ctrl-btn" onClick={toggleMute}>
+                                <div className="video-ctrl-icon">
+                                    <Icon type="mic" />
+                                </div>
+                                <span className="video-ctrl-label">
+                                    {isMuted ? "Unmute" : "Mute"}
+                                </span>
+                            </button>
+
+                            <button className="video-ctrl-btn" type="button">
+                                <div className="video-ctrl-icon">
+                                    <Icon type="speaker" />
+                                </div>
+                                <span className="video-ctrl-label">Speaker</span>
+                            </button>
 
                             <div className="video-ctrl-divider" />
 
-                            <button className="video-ctrl-btn" onClick={() => router.push("/doctor-portal/messages?activeConv=masud-rana")}>
+                            <button className="video-ctrl-btn" onClick={endCall}>
                                 <div className="video-ctrl-icon end-call">
                                     <Icon type="endcall" />
                                 </div>

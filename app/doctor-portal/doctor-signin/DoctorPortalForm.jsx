@@ -20,7 +20,7 @@ export default function DoctorPortalForm() {
   const [login, { isLoading }] = useLoginMutation();
 
   const user = useAppSelector((state) => state.auth.user);
-  console.log('doctor form redux', user);
+  // console.log('doctor form redux', user);
 
 
 

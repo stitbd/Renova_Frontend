@@ -434,7 +434,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
   const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
-  console.log('selected doctor object:', doctor);
+  // console.log('selected doctor object:', doctor);
 
   /* Doctors for the chosen department (from API) */
   const doctors = useMemo(() => {
@@ -1208,7 +1208,7 @@ export default function AppointmentForm({
 
         // Extract slots from response - handle API response format
         const slots = result?.data?.slots || result?.slots || result?.data || [];
-        console.log("Raw slots data received:", slots);
+        // console.log("Raw slots data received:", slots);
 
         const normalizedSlots = Array.isArray(slots)
           ? slots.map(slot => ({

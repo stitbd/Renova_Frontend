@@ -248,7 +248,7 @@ function Select({ icon: IconComp, children, ...props }) {
 /* ─────────────────────────────────────────────────────────────────
    Main Component
 ───────────────────────────────────────────────────────────────── */
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5001/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.0.164:5001/api/v1";
 
 const DOCUMENT_FIELDS = [
   { Ic: Icon.Photo, title: "Profile Photo", req: false, hint: "JPG, PNG (Max 2MB)", btn: "Upload Photo", documentType: "OTHER" },

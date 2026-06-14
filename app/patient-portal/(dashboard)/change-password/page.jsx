@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useAppSelector } from "@/redux/hook";
 import "./change-password.css";
 
-const API_URL = "http://localhost:5001/api/v1/auth/change-password";
+const API_URL = "http://192.168.0.164:5001/api/v1/auth/change-password";
 
 const PASSWORD_REQUIREMENTS = [
   { id: "length", label: "Minimum 6 characters", test: (v) => v.length >= 6 },

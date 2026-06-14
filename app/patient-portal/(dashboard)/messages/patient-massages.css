@@ -1696,6 +1696,254 @@
     animation: pulse 1.5s infinite;
 }
 
+.patient-call-shell {
+    width: 100%;
+    height: calc(100dvh - 88px);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.patient-call-layout {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 320px;
+    overflow: hidden;
+    background: #f0f4f8;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.patient-call-layout .call-patient-panel,
+.patient-call-layout .call-center-col,
+.patient-call-layout .call-right-panel {
+    height: 100%;
+    min-height: 0;
+}
+
+.patient-call-layout .call-center-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-call-layout .audio-call-display,
+.patient-call-layout .video-call-display {
+    flex: 1;
+    min-height: 0;
+}
+
+.call-page-shell {
+    flex: 1;
+    min-height: 0;
+    height: calc(100dvh - 88px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.call-page-layout {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 320px;
+    overflow: hidden;
+    background: #f0f4f8;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.agora-remote-video,
+.agora-local-video {
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+}
+
+.agora-remote-video video,
+.agora-local-video video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.video-waiting-text {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.55);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* css for video and audio call */
+.incoming-call-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.incoming-call-card {
+    width: 320px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+}
+
+.incoming-call-label {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.incoming-call-card h3 {
+    margin: 0 0 20px;
+    font-size: 20px;
+    color: #0f172a;
+}
+
+.incoming-call-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.incoming-call-actions button {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.incoming-call-reject {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.incoming-call-accept {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+.agora-remote-video,
+.agora-local-video {
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+}
+
+.agora-remote-video video,
+.agora-local-video video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.video-waiting-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    background: rgba(15, 23, 42, 0.55);
+    z-index: 5;
+}
+
+.msg-call-history {
+  display: inline-flex;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* chat message design  */
+.msg-call-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.msg-call-message.sent {
+  justify-content: flex-end;
+}
+
+.msg-call-message.received {
+  justify-content: flex-start;
+}
+
+.msg-call-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.msg-call-stack .msg-bubble-meta {
+  margin-top: 4px;
+}
+
+.msg-call-bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border-radius: 14px;
+  min-width: 190px;
+  max-width: 280px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.msg-call-bubble.sent {
+  background: linear-gradient(135deg, #075bb5, #0b72d9);
+  color: #fff;
+  border-bottom-right-radius: 6px;
+}
+
+.msg-call-bubble.received {
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  border-bottom-left-radius: 6px;
+}
+
+.msg-call-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.msg-call-title {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-transform: capitalize;
+}
+
+.msg-call-subtitle {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+}
 @keyframes pulse {
 
     0%,
@@ -1707,6 +1955,9 @@
         opacity: 0.4;
     }
 }
+
+
+
 
 /* ══════════════════════════════════════════════════════════════
    RESPONSIVE
