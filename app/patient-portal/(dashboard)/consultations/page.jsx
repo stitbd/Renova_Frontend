@@ -401,7 +401,6 @@ export default function ConsultationsPage() {
               </div>
               <button className="ch-view-profile-btn">
                 View Full Profile
-                <Icons.ArrowRight />
               </button>
             </div>
           </div>
@@ -534,6 +533,73 @@ export default function ConsultationsPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Consultation Cards — mobile only */}
+            <div className="ch-con-cards">
+              {paginatedConsultations.map((consultation, idx) => (
+                <div key={consultation.id} className="ch-con-card">
+                  <div className="ch-con-card-top">
+                    <span className="ch-con-card-serial">
+                      # {(currentPage - 1) * ITEMS_PER_PAGE + idx + 1}
+                    </span>
+                    <span className={`ch-visit-badge ${getVisitTypeBadgeClass(consultation.visitType)}`}>
+                      {getVisitTypeLabel(consultation.visitType)}
+                    </span>
+                  </div>
+                  <div className="ch-con-card-mid">
+                    <div className="ch-con-card-doctor">
+                      <div className="ch-con-card-doc-avatar">
+                        <img
+                          src={getDoctorImage(consultation.id)}
+                          alt={consultation.doctor.name}
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                            const parent = e.currentTarget.parentElement;
+                            if (parent) {
+                              const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                              svg.setAttribute("viewBox", "0 0 24 24");
+                              svg.setAttribute("fill", "none");
+                              svg.setAttribute("stroke", "#16a34a");
+                              svg.setAttribute("stroke-width", "2");
+                              svg.innerHTML = '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>';
+                              parent.appendChild(svg);
+                            }
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <p className="ch-con-card-doc-name">{consultation.doctor.name}</p>
+                        <p className="ch-con-card-doc-spec">{consultation.doctor.specialty}</p>
+                      </div>
+                    </div>
+                    <div className="ch-con-card-datetime">
+                      <p className="ch-con-card-date">{consultation.date}</p>
+                      <p className="ch-con-card-time">{consultation.time}</p>
+                    </div>
+                  </div>
+                  <div className="ch-con-card-reason">
+                    <p className="ch-con-card-reason-label">Reason / Diagnosis</p>
+                    <p className="ch-con-card-reason-text">{consultation.reason}</p>
+                    <p className="ch-con-card-diag-text">{consultation.diagnosis}</p>
+                  </div>
+                  <div className="ch-con-card-footer">
+                    <div className="ch-con-card-next">
+                      <span className="ch-con-card-next-label">Next Visit</span>
+                      {consultation.nextVisit ? (
+                        <span className="ch-con-card-next-val">
+                          {consultation.nextVisit.date} · {consultation.nextVisit.time}
+                        </span>
+                      ) : (
+                        <span className="ch-con-card-next-none">—</span>
+                      )}
+                    </div>
+                    <button className="ch-con-card-view-btn" title="View Details">
+                      <Icons.Eye />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Pagination */}
