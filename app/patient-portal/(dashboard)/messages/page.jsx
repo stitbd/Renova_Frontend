@@ -11,7 +11,8 @@ import {
   Phone,
   Video,
   Send,
-  User
+  User,
+  Paperclip
 } from "lucide-react";
 import { CheckCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -421,6 +422,17 @@ export default function PatientMessagesPage() {
     setIncomingCall(null);
   };
 
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    console.log(file);
+
+    // upload file here
+  };
+
   if (!token) {
     return <div className="apt-empty">Authentication token not found.</div>;
   }
@@ -605,9 +617,9 @@ export default function PatientMessagesPage() {
               {error && <p style={{ color: "red", padding: "0 16px" }}>{error}</p>}
 
               <div className="msg-chat-input-wrap">
-                <div className="msg-input-box">
+                <div className="msg-input-composer">
                   <textarea
-                    placeholder="Type your message..."
+                    placeholder="Type a message..."
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
                     onKeyDown={(e) => {
@@ -618,15 +630,22 @@ export default function PatientMessagesPage() {
                     }}
                     rows={1}
                   />
-                </div>
 
-                <div className="msg-input-actions">
+                  <label className="msg-attach-btn">
+                    <Paperclip size={18} />
+                    <input
+                      type="file"
+                      hidden
+                      onChange={handleFileSelect}
+                    />
+                  </label>
+
                   <button
-                    className="msg-send-btn"
+                    className="msg-send-icon-btn"
                     onClick={handleSend}
                     disabled={!messageText.trim()}
                   >
-                    Send <Send size={18} />
+                    <Send size={18} />
                   </button>
                 </div>
               </div>
