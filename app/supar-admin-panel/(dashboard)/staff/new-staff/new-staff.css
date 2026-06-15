@@ -1,0 +1,563 @@
+/* ======================================================
+   CSS FILE: new-staff.css
+   Add New Staff Page Styles
+   ====================================================== */
+
+/* Page Header */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0;
+}
+
+.page-breadcrumb {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+.breadcrumb-active {
+    color: #014fa1;
+}
+
+.page-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Buttons */
+.btn-primary {
+    padding: 8px 18px;
+    background: #014fa1;
+    border: none;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #013d80;
+}
+
+.btn-primary-green {
+    padding: 8px 18px;
+    background: #428a26;
+    border: none;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary-green:hover {
+    background: #015a1a;
+}
+
+.btn-secondary-outline {
+    padding: 8px 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary-outline:hover {
+    background: #f8fafc;
+}
+
+/* Section Card */
+.section-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.section-card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-card-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #1a202c;
+}
+
+.section-card-body {
+    padding: 20px;
+}
+
+/* Grids */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+/* Form Fields */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.field-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #374151;
+    display: flex;
+    gap: 3px;
+}
+
+.required-star {
+    color: #ef4444;
+}
+
+.field-hint {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.input-field {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1a202c;
+    background: #ffffff;
+    outline: none;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.input-field:focus,
+.input-field.focused {
+    border-color: #014fa1;
+    box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.1);
+}
+
+.input-readonly {
+    background: #f8fafc;
+    color: #64748b;
+}
+
+.input-icon-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+}
+
+/* Phone Input */
+.phone-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.country-code {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.country-code .flag {
+    font-size: 16px;
+}
+
+.btn-otp {
+    padding: 9px 16px;
+    background: #428a26;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Password Field */
+.password-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+}
+
+.strength-bar {
+    height: 3px;
+    border-radius: 2px;
+    background: #e2e8f0;
+    margin-top: 6px;
+}
+
+.strength-fill {
+    height: 100%;
+    border-radius: 2px;
+}
+
+.strength-fill.weak {
+    width: 25%;
+    background: #ef4444;
+}
+
+.strength-text {
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.strength-text.weak {
+    color: #ef4444;
+}
+
+/* Select */
+.select-wrapper {
+    position: relative;
+}
+
+.select-field {
+    width: 100%;
+    padding: 9px 32px 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1a202c;
+    background: #ffffff;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.select-field:focus,
+.select-field.focused {
+    border-color: #014fa1;
+    box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.1);
+}
+
+.select-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Textarea */
+.textarea-field {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1a202c;
+    background: #ffffff;
+    outline: none;
+    font-family: inherit;
+    min-height: 80px;
+    resize: vertical;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+}
+
+.textarea-field:focus,
+.textarea-field.focused {
+    border-color: #014fa1;
+    box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.1);
+}
+
+.textarea-icon-wrapper {
+    position: relative;
+}
+
+.textarea-icon {
+    position: absolute;
+    left: 10px;
+    top: 11px;
+}
+
+/* Upload Box */
+.upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.upload-box.hover {
+    border-color: #014fa1;
+    background: #eff6ff;
+}
+
+.upload-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #e0e7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.upload-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a202c;
+    text-align: center;
+}
+
+.upload-sub {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.upload-labels {
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+}
+
+.upload-labels>div {
+    flex: 1;
+    text-align: center;
+    font-size: 11.5px;
+    color: #94a3b8;
+}
+
+/* Toggle Switch */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.toggle-desc {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.toggle-btn {
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    transition: background 0.2s;
+    background: #cbd5e1;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-btn.checked {
+    background: #428a26;
+}
+
+.toggle-knob {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn.checked .toggle-knob {
+    transform: translateX(20px);
+}
+
+/* Permissions Grid */
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.permission-card {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid #f1f5f9;
+}
+
+.permission-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 10px;
+}
+
+/* Status Box */
+.status-box {
+    border-radius: 10px;
+    padding: 14px 18px;
+    border: 1px solid;
+}
+
+.status-box.success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+/* Form Footer */
+.form-footer {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.form-footer.right {
+    justify-content: flex-end;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.checkbox-label input {
+    width: 15px;
+    height: 15px;
+    accent-color: #014fa1;
+}
+
+.footer-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.mt-4 {
+    margin-top: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .grid-2,
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .permissions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .form-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-buttons {
+        width: 100%;
+    }
+
+    .footer-buttons button {
+        flex: 1;
+    }
+
+    .phone-input-group {
+        flex-direction: column;
+    }
+
+    .country-code {
+        justify-content: center;
+    }
+
+    .btn-otp {
+        width: 100%;
+    }
+}

@@ -323,11 +323,6 @@ const navItems = [
   },
 ];
 
-const prefetchableRoutes = [
-  "/supar-admin-panel/dashboard",
-  "/supar-admin-panel/website-content",
-];
-
 function isActivePath(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -335,13 +330,7 @@ function isActivePath(pathname, href) {
 export default function SuperAdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-  const prefetchRoute = useRoutePrefetch(prefetchableRoutes);
-
-  const prefetchIfAvailable = (href) => {
-    if (prefetchableRoutes.includes(href)) {
-      prefetchRoute(href);
-    }
-  };
+  const prefetchRoute = useRoutePrefetch(navItems.map((item) => item.href).filter(Boolean));
 
   return (
     <div className="admin-dashboard-container">
@@ -375,9 +364,9 @@ export default function SuperAdminLayout({ children }) {
                 href={item.href}
                 key={item.href}
                 className={`nav-item${active ? " active" : ""}`}
-                onMouseEnter={() => prefetchIfAvailable(item.href)}
-                onFocus={() => prefetchIfAvailable(item.href)}
-                onTouchStart={() => prefetchIfAvailable(item.href)}
+                onMouseEnter={() => prefetchRoute(item.href)}
+                onFocus={() => prefetchRoute(item.href)}
+                onTouchStart={() => prefetchRoute(item.href)}
                 onClick={() => setSidebarOpen(false)}
               >
                 {renderIcon(item.icon)}
@@ -437,6 +426,11 @@ export default function SuperAdminLayout({ children }) {
         {/* Page Content */}
         <div className="admin-dashboard-content">
           {children}
+          <footer className="admin-footer">
+            <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
+            <span>Developed by <span className="highlight">STITBD</span></span>
+            <span>Version 1.0.0</span>
+          </footer>
         </div>
       </main>
     </div>
