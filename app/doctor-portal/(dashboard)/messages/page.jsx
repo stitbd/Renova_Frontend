@@ -9,7 +9,7 @@ import { useAppSelector } from "@/redux/hook";
 import "./doctor-dashboard-massages.css";
 import { chatApi } from "@/utils/chatApi";
 import { getSocket } from "@/utils/socket";
-import { Paperclip, Phone, Send, Video } from "lucide-react";
+import { ArrowDownToLine, Check, CheckCheck, Paperclip, Phone, Search, Send, Video } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { videoCallApi } from "@/utils/videoCallApi";
 import { saveCallSession } from "@/utils/callSession";
@@ -52,17 +52,15 @@ function normalizeConversation(conv) {
 }
 
 function normalizeMessage(msg, authUserId) {
-  const senderId = msg.senderId || msg.sender?.id;
-  const mine = senderId === authUserId;
-
   return {
     id: msg.id,
+    type: msg.type,
     text: msg.message || msg.text || "",
-    type: msg.type, // add this
     fileUrl: msg.fileUrl,
     fileName: msg.fileName,
-    mine,
+    mine: msg.senderId === authUserId,
     createdAt: msg.createdAt,
+    seenAt: msg.seenAt,
   };
 }
 
@@ -90,22 +88,103 @@ export default function MessagesPage() {
 
   const [conversations, setConversations] = useState([]);
   const [selectedConv, setSelectedConv] = useState(null);
-  const [messages, setMessages] = useState([]);
-
-  const [messageText, setMessageText] = useState("");
-  const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [messageText, setMessageText] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const [onlineUserIds, setOnlineUserIds] = useState(new Set());
+  const [typingUsers, setTypingUsers] = useState({});
+  const [chatSearchTerm, setChatSearchTerm] = useState("");
+
+  const typingTimeoutRef = useRef(null);
+
+  const MESSAGE_LIMIT = 20;
+
+  const [messagePage, setMessagePage] = useState(1);
+  const [hasMoreMessages, setHasMoreMessages] = useState(false);
+  const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(false);
+  const [isLoadingConversations, setIsLoadingConversations] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const isPrependingRef = useRef(false);
+  const previousScrollHeightRef = useRef(0);
+
+
   const [error, setError] = useState("");
-
   const router = useRouter();
-
   const chatBodyRef = useRef(null);
-
   const selectedMessages = useMemo(() => {
     return uniqueMessages(messages).map((msg) =>
       normalizeMessage(msg, authUser?.id)
     );
   }, [messages, authUser?.id]);
+
+
+  const loadOlderMessages = async () => {
+    if (
+      !token ||
+      !selectedConv?.id ||
+      isLoadingOlderMessages ||
+      !hasMoreMessages
+    ) {
+      return;
+    }
+
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    const nextPage = messagePage + 1;
+
+    isPrependingRef.current = true;
+    previousScrollHeightRef.current = container.scrollHeight;
+
+    try {
+      setIsLoadingOlderMessages(true);
+
+      const result = await chatApi.getMessages(
+        token,
+        selectedConv.id,
+        nextPage,
+        MESSAGE_LIMIT
+      );
+
+      const olderMessages = Array.isArray(result?.data?.data)
+        ? result.data.data
+        : [];
+
+      const meta = result?.data?.meta;
+
+      setMessages((prev) => uniqueMessages([...olderMessages, ...prev]));
+      setMessagePage(nextPage);
+      setHasMoreMessages(Boolean(meta && meta.page < meta.totalPage));
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const newScrollHeight = container.scrollHeight;
+          const previousScrollHeight = previousScrollHeightRef.current;
+
+          container.scrollTop = newScrollHeight - previousScrollHeight;
+          isPrependingRef.current = false;
+        });
+      });
+    } catch (err) {
+      setError(err.message || "Failed to load older messages");
+      isPrependingRef.current = false;
+    } finally {
+      setIsLoadingOlderMessages(false);
+    }
+  };
+
+  const handleChatScroll = () => {
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    if (container.scrollTop <= 80) {
+      loadOlderMessages();
+    }
+  };
+
 
 
   useEffect(() => {
@@ -170,7 +249,12 @@ export default function MessagesPage() {
   }, [token, receiverIdFromUrl, appointmentIdFromUrl]);
 
   useEffect(() => {
-    if (!token || !selectedConv?.id) return;
+    if (!token || !selectedConv?.id) {
+      setMessages([]);
+      setMessagePage(1);
+      setHasMoreMessages(false);
+      return;
+    }
 
     let ignore = false;
 
@@ -181,15 +265,27 @@ export default function MessagesPage() {
 
         const result = await chatApi.getMessages(
           token,
-          selectedConv.id
+          selectedConv.id,
+          1,
+          MESSAGE_LIMIT
         );
 
         const list = Array.isArray(result?.data?.data)
           ? result.data.data
           : [];
-        setMessages(list);
 
-        if (!ignore) setMessages(list);
+        const meta = result?.data?.meta;
+
+        if (ignore) return;
+
+        setMessages(list);
+        setMessagePage(1);
+        setHasMoreMessages(Boolean(meta && meta.page < meta.totalPage));
+
+        list.forEach((msg) => {
+          markMessageAsSeen(msg);
+        });
+
       } catch (err) {
         if (!ignore) setError(err.message || "Failed to load messages");
       } finally {
@@ -241,6 +337,19 @@ export default function MessagesPage() {
             : conv
         )
       );
+
+      if (
+        msg.receiverId === authUser?.id &&
+        !msg.seenAt &&
+        token
+      ) {
+        chatApi.markSeen(token, msg.id).catch(() => { });
+      }
+
+      if (msg.receiverId === authUser?.id && !msg.seenAt) {
+        chatApi.markSeen(token, msg.id).catch(() => { });
+      }
+
     };
 
     const handleSeenMessage = (payload) => {
@@ -253,6 +362,46 @@ export default function MessagesPage() {
       );
     };
 
+    const handleOnlineUsers = ({ onlineUserIds = [] }) => {
+      setOnlineUserIds(new Set(onlineUserIds));
+    };
+
+    const handleUserOnline = ({ userId }) => {
+      setOnlineUserIds((prev) => {
+        const next = new Set(prev);
+        next.add(userId);
+        return next;
+      });
+    };
+
+    const handleUserOffline = ({ userId }) => {
+      setOnlineUserIds((prev) => {
+        const next = new Set(prev);
+        next.delete(userId);
+        return next;
+      });
+    };
+
+    const handleTypingStart = ({ userId }) => {
+      setTypingUsers((prev) => ({
+        ...prev,
+        [userId]: true,
+      }));
+    };
+
+    const handleTypingStop = ({ userId }) => {
+      setTypingUsers((prev) => ({
+        ...prev,
+        [userId]: false,
+      }));
+    };
+
+    socket.on("typing_start", handleTypingStart);
+    socket.on("typing_stop", handleTypingStop);
+
+    socket.on("online_users", handleOnlineUsers);
+    socket.on("user_online", handleUserOnline);
+    socket.on("user_offline", handleUserOffline);
 
     socket.on("receive_message", handleIncomingMessage);
     socket.on("message_sent", handleIncomingMessage);
@@ -262,59 +411,85 @@ export default function MessagesPage() {
       socket.off("receive_message", handleIncomingMessage);
       socket.off("new_message", handleIncomingMessage);
       socket.off("message", handleIncomingMessage);
+      socket.off("message_seen", handleSeenMessage);
+      socket.off("online_users", handleOnlineUsers);
+      socket.off("user_online", handleUserOnline);
+      socket.off("user_offline", handleUserOffline);
+      socket.off("typing_start", handleTypingStart);
+      socket.off("typing_stop", handleTypingStop);
     };
   }, [token, selectedConv?.id]);
 
   useEffect(() => {
-    chatBodyRef.current?.scrollTo({
-      top: chatBodyRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    if (isPrependingRef.current) return;
+
+    const container = chatBodyRef.current;
+    if (!container) return;
+
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+
+    if (distanceFromBottom < 120) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [selectedMessages.length]);
+
 
   const handleSend = async () => {
     const text = messageText.trim();
 
-    if (!text || !token || !selectedConv?.receiverId) return;
+    const socket = getSocket(token);
+
+    socket?.emit("typing_stop", {
+      receiverId: selectedConv.receiverId,
+    });
+
+    if ((!text && !selectedFile) || !token || !selectedConv?.receiverId) {
+      return;
+    }
 
     const optimisticMessage = {
       id: `temp-${Date.now()}`,
-      message: text,
+      conversationId: selectedConv.id,
       senderId: authUser?.id,
       receiverId: selectedConv.receiverId,
-      conversationId: selectedConv.id,
-      ...(selectedConv.appointmentId || appointmentIdFromUrl
-        ? { appointmentId: selectedConv.appointmentId || appointmentIdFromUrl }
-        : {}),
+      message: text || selectedFile?.name || "Attachment",
+      fileName: selectedFile?.name,
+      fileUrl: selectedFile ? URL.createObjectURL(selectedFile) : undefined,
+      type: selectedFile ? "FILE" : "TEXT",
       createdAt: new Date().toISOString(),
       optimistic: true,
     };
 
     setMessages((prev) => [...prev, optimisticMessage]);
     setMessageText("");
+    setSelectedFile(null);
 
     try {
-      const payload = {
-        receiverId: selectedConv.receiverId,
-        message: text,
-      };
+      const formData = new FormData();
 
-      const appointmentId = selectedConv.appointmentId || appointmentIdFromUrl;
+      formData.append("receiverId", selectedConv.receiverId);
 
-      if (appointmentId) {
-        payload.appointmentId = appointmentId;
+      if (text) {
+        formData.append("message", text);
       }
 
-      const result = await chatApi.sendMessage(token, payload);
+      if (selectedFile) {
+        formData.append("file", selectedFile);
+      }
+
+      const result = await chatApi.sendMessage(token, formData, true);
 
       const savedMessage = result.data;
 
       setMessages((prev) => {
         const withoutTemp = prev.filter((msg) => msg.id !== optimisticMessage.id);
+        const exists = withoutTemp.some((msg) => msg.id === savedMessage.id);
 
-        const alreadyExists = withoutTemp.some((msg) => msg.id === savedMessage.id);
-
-        if (alreadyExists) {
+        if (exists) {
           return withoutTemp.map((msg) =>
             msg.id === savedMessage.id ? savedMessage : msg
           );
@@ -323,30 +498,22 @@ export default function MessagesPage() {
         return [...withoutTemp, savedMessage];
       });
 
-      if (!selectedConv.id && savedMessage?.conversationId) {
-        setSelectedConv((prev) => ({
-          ...prev,
-          id: savedMessage.conversationId,
-        }));
-
-        setConversations((prev) => [
-          {
-            ...selectedConv,
-            id: savedMessage.conversationId,
-            lastMessage: savedMessage.message,
-            lastMessageAt: savedMessage.createdAt,
-          },
-          ...prev,
-        ]);
-      }
-    } catch (err) {
-      setMessages((prev) =>
-        prev.filter((msg) => msg.id !== optimisticMessage.id)
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === selectedConv.id
+            ? {
+              ...conv,
+              lastMessage: savedMessage.message || savedMessage.fileName || "Attachment",
+              lastMessageAt: savedMessage.createdAt,
+            }
+            : conv
+        )
       );
+    } catch (err) {
+      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticMessage.id));
       setError(err.message || "Failed to send message");
     }
   };
-
   const handleStartCall = async (callType) => {
     if (!token || !selectedConv?.receiverId) return;
 
@@ -376,16 +543,77 @@ export default function MessagesPage() {
     router.push(`${path}?callId=${result.data.callId}`);
   };
 
+  const markMessageAsSeen = async (msg) => {
+    if (!token || !msg?.id || msg.seenAt) return;
+    if (msg.receiverId !== authUser?.id) return;
+
+    try {
+      await chatApi.markSeen(token, msg.id);
+    } catch {
+      // silent fail
+    }
+  };
+
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    console.log(file);
+    const maxSize = 50 * 1024 * 1024; // 50MB
 
-    // upload file here
+    const allowedTypes = [
+      // Images
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/jpg",
+
+      // Documents
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+      // Videos
+      "video/mp4",
+      "video/quicktime", // mov
+      "video/x-msvideo", // avi
+      "video/webm",
+      "video/x-matroska", // mkv
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      setError(
+        "Only images, documents, and videos are allowed."
+      );
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > maxSize) {
+      setError("File size must be less than 50MB.");
+      e.target.value = "";
+      return;
+    }
+
+    setError("");
+    setSelectedFile(file);
+    e.target.value = "";
   };
+
+
+  const visibleMessages = useMemo(() => {
+    const q = chatSearchTerm.trim().toLowerCase();
+
+    if (!q) return selectedMessages;
+
+    return selectedMessages.filter((msg) => {
+      return (
+        msg.text?.toLowerCase().includes(q) ||
+        msg.fileName?.toLowerCase().includes(q)
+      );
+    });
+  }, [selectedMessages, chatSearchTerm]);
 
 
   if (!token) {
@@ -450,20 +678,52 @@ export default function MessagesPage() {
                     <h4>
                       {selectedConv.name}
                       <span className="msg-verified-badge">
-                        Verified Patient
+                        Patient
                       </span>
                     </h4>
 
-                    <p>
-                      {selectedConv.phone} • Patient ID: {selectedConv.patientId}
-                    </p>
+                    <div className="msg-user-status">
+                      {onlineUserIds.has(selectedConv.receiverId) ? (
+                        <>
+                          <span className="status-dot online" />
+                          Online
+                        </>
+                      ) : (
+                        <>
+                          <span className="status-dot offline" />
+                          Offline
+                        </>
+                      )}
+                    </div>
                   </div>
+
+
                 </div>
 
                 {/* CALL ACTIONS */}
                 <div className="msg-chat-actions">
+
+                  <div className="msg-chat-search">
+                    <Search size={16} />
+
+                    <input
+                      type="text"
+                      placeholder="Search messages..."
+                      value={chatSearchTerm}
+                      onChange={(e) => setChatSearchTerm(e.target.value)}
+                    />
+
+                    {chatSearchTerm && (
+                      <button
+                        type="button"
+                        onClick={() => setChatSearchTerm("")}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+
                   <button
-                    type="button"
                     className="msg-action-btn"
                     onClick={() => handleStartCall("AUDIO")}
                   >
@@ -471,19 +731,29 @@ export default function MessagesPage() {
                   </button>
 
                   <button
-                    type="button"
                     className="msg-action-btn blue"
                     onClick={() => handleStartCall("VIDEO")}
                   >
                     <Video size={18} />
                   </button>
+
                 </div>
               </div>
 
-              <div className="msg-chat-body" ref={chatBodyRef}>
-                {isLoadingMessages && <p>Loading messages...</p>}
+              <div
+                className="msg-chat-body"
+                ref={chatBodyRef}
+                onScroll={handleChatScroll}
+              >
+                {isLoadingOlderMessages && (
+                  <div className="msg-load-older">Loading older messages...</div>
+                )}
+                {isLoadingMessages && (
+                  <div className="msg-load-older">Loading  messages...</div>
+                )}
 
-                {!isLoadingMessages && selectedMessages.map((msg) => {
+
+                {!isLoadingMessages && visibleMessages.map((msg) => {
                   const isCall = msg.type === "CALL";
 
                   return (
@@ -507,10 +777,6 @@ export default function MessagesPage() {
 
                           <div className="msg-call-stack">
                             <div className={`msg-call-bubble ${msg.mine ? "sent" : "received"}`}>
-                              {/* <div className="msg-call-icon">
-                                {msg.text?.toLowerCase().includes("video") ? "🎥" : "📞"}
-                              </div> */}
-
                               <div className="msg-call-content">
                                 <div className="msg-call-title">
                                   {msg.text || msg.message}
@@ -521,25 +787,99 @@ export default function MessagesPage() {
 
                             <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
                               {formatTime(msg.createdAt)}
+
+                              {msg.mine && (
+                                <span className={`msg-seen-status${msg.seenAt ? " seen" : ""}`}>
+                                  {msg.seenAt ? <CheckCheck size={16} /> : <Check size={16} />}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div>
-                          <div className={`msg-bubble${msg.mine ? " sent" : " received"}`}>
-                            {msg.text}
+                        <div className={`msg-content-stack${msg.mine ? " sent" : ""}`}>
+                          <div
+                            className={`msg-bubble${msg.mine ? " sent" : " received"}${msg.fileUrl ? " has-file" : ""
+                              }`}
+                          >
+                            {msg.text && <div className="msg-text-content">{msg.text}</div>}
 
                             {msg.fileUrl && (
-                              <div className="msg-attachment">
-                                <a href={msg.fileUrl} target="_blank" rel="noreferrer">
-                                  {msg.fileName || "Attachment"}
-                                </a>
+                              <div className="msg-media-wrapper">
+                                {msg.type === "IMAGE" ||
+                                  msg.fileName?.match(/\.(jpg|jpeg|png|webp)$/i) ? (
+                                  <button
+                                    type="button"
+                                    className="msg-image-preview-btn"
+                                    onClick={() =>
+                                      setPreviewImage({
+                                        url: msg.fileUrl,
+                                        name: msg.fileName || "Image",
+                                      })
+                                    }
+                                  >
+                                    <img
+                                      src={msg.fileUrl}
+                                      alt={msg.fileName || "Image attachment"}
+                                      className="msg-image-preview"
+                                    />
+                                  </button>
+                                ) : msg.fileName?.match(/\.(mp4|mov|avi|webm|mkv)$/i) ? (
+                                  <video controls className="msg-video-preview">
+                                    <source src={msg.fileUrl} />
+                                  </video>
+                                ) : (
+                                  <div className="msg-file-card">
+                                    <button
+                                      type="button"
+                                      className="msg-file-main"
+                                      onClick={() => window.open(msg.fileUrl, "_blank", "noopener,noreferrer")}
+                                    >
+                                      <div className="msg-file-icon">
+                                        {msg.fileName?.toLowerCase().endsWith(".pdf")
+                                          ? "📄"
+                                          : msg.fileName?.match(/\.(doc|docx)$/i)
+                                            ? "📝"
+                                            : msg.fileName?.match(/\.(xls|xlsx|csv)$/i)
+                                              ? "📊"
+                                              : "📎"}
+                                      </div>
+
+                                      <div className="msg-file-info">
+                                        <div className="msg-file-name">
+                                          {msg.fileName || "Attachment"}
+                                        </div>
+
+                                        <div className="msg-file-type">
+                                          {msg.fileName?.split(".").pop()?.toUpperCase() || "FILE"}
+                                        </div>
+                                      </div>
+                                    </button>
+
+                                    <a
+                                      href={msg.fileUrl}
+                                      download={msg.fileName || "attachment"}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="msg-file-download"
+                                      title="Download"
+                                    >
+                                      <ArrowDownToLine size={16} />
+                                    </a>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
 
                           <div className={`msg-bubble-meta${msg.mine ? " sent" : ""}`}>
                             {formatTime(msg.createdAt)}
+
+                            {msg.mine && (
+                              <span className={`msg-seen-status${msg.seenAt ? " seen" : ""}`}>
+                                {msg.seenAt ? <CheckCheck size={16} /> : <Check size={16} />}
+                              </span>
+                            )}
                           </div>
                         </div>
                       )}
@@ -552,12 +892,58 @@ export default function MessagesPage() {
                 <p style={{ color: "red", padding: "0 16px" }}>{error}</p>
               )}
 
+              {typingUsers[selectedConv?.receiverId] && (
+                <div className="msg-typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <p>{selectedConv?.name} is typing...</p>
+                </div>
+              )}
+
               <div className="msg-chat-input-wrap">
+                {selectedFile && (
+                  <div className="msg-selected-file">
+                    <div>
+                      <strong>{selectedFile.name}</strong>
+
+                      <span>
+                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setSelectedFile(null)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+
                 <div className="msg-input-composer">
                   <textarea
                     placeholder="Type a message..."
                     value={messageText}
-                    onChange={(e) => setMessageText(e.target.value)}
+                    onChange={(e) => {
+                      setMessageText(e.target.value);
+
+                      if (!selectedConv?.receiverId) return;
+
+                      const socket = getSocket(token);
+
+                      socket?.emit("typing_start", {
+                        receiverId: selectedConv.receiverId,
+                      });
+
+                      clearTimeout(typingTimeoutRef.current);
+
+                      typingTimeoutRef.current = setTimeout(() => {
+                        socket?.emit("typing_stop", {
+                          receiverId: selectedConv.receiverId,
+                        });
+                      }, 1000);
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
@@ -579,9 +965,9 @@ export default function MessagesPage() {
                   <button
                     className="msg-send-icon-btn"
                     onClick={handleSend}
-                    disabled={!messageText.trim()}
+                    disabled={!messageText.trim() && !selectedFile}
                   >
-                    <Send  size={18} />
+                    <Send size={18} />
                   </button>
                 </div>
               </div>
@@ -621,6 +1007,35 @@ export default function MessagesPage() {
           )}
         </div>
       </div>
+      {previewImage && (
+        <div className="msg-image-modal">
+          <div className="msg-image-modal-header">
+            <span>{previewImage.name}</span>
+
+            <div>
+              <a
+                href={previewImage.url}
+                download={previewImage.name}
+                target="_blank"
+                rel="noreferrer"
+                className="msg-image-modal-action"
+              >
+                Download
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setPreviewImage(null)}
+                className="msg-image-modal-close"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+
+          <img src={previewImage.url} alt={previewImage.name} />
+        </div>
+      )}
     </div>
   );
 }
