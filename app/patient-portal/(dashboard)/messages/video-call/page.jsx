@@ -157,6 +157,14 @@ export default function VideoCallPage() {
         call.playRemoteAudio?.();
     }, [call?.isCallAccepted]);
 
+    // ADD THIS — handles track arriving after page load
+    useEffect(() => {
+        if (!call?.isJoined || !call?.isCallAccepted) return;
+        call.playRemoteAudio?.();
+    }, [call?.isJoined]);
+
+
+
 
     return (
         <div className="call-page-shell">
