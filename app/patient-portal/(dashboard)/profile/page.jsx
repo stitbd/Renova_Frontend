@@ -97,6 +97,7 @@ const initialProfile = {
   smoking: "Never",
   alcohol: "Occasionally",
   physicalActivity: "Moderate",
+  sleep: "6–7 hrs/night"
 };
 
 const healthSummary = [
@@ -137,6 +138,7 @@ const chronicDiseaseOptions = [
 const lifestyleFields = [
   { key: "smoking", label: "Smoking", icon: Cigarette, options: ["Never", "Former", "Current"] },
   { key: "alcohol", label: "Alcohol", icon: Wine, options: ["Never", "Occasionally", "Regularly"] },
+  { key: "sleep", label: "Sleep", icon: Wine, options: ["6–7 hrs/night", "5–6 hrs/night", "4–5 hrs/night"] },
   { key: "physicalActivity", label: "Physical Activity", icon: Dumbbell, options: ["Sedentary", "Light", "Moderate", "Active"] },
 ];
 

@@ -144,7 +144,6 @@ export default function AudioCallPage() {
     useEffect(() => {
         if (!call?.isCallAccepted) return;
 
-        call.playRemoteAudio?.();
     }, [call?.isCallAccepted]);
 
 

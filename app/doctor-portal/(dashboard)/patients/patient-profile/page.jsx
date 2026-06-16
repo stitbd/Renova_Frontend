@@ -100,7 +100,6 @@ const patientsDB = {
             smoking: "Non-Smoker",
             alcohol: "None",
             activity: "Moderate",
-            occupation: "Business Owner",
             sleep: "6–7 hrs/night",
         },
         doctorNotes: "Patient is compliant with medication. BP remains slightly elevated despite Amlodipine. Consider adding ARB if no improvement in next visit. Advise strict low-sodium diet and daily 30-min walk.",
@@ -196,7 +195,6 @@ const patientsDB = {
             smoking: "Non-Smoker",
             alcohol: "None",
             activity: "Light",
-            occupation: "Student",
             sleep: "7–8 hrs/night",
         },
         doctorNotes: "Young patient with recurrent viral illnesses. Immunity may be low. Advise Vitamin C supplements and balanced diet. Rule out underlying cause if fever persists.",
@@ -638,7 +636,6 @@ export default function PatientProfilePage() {
                                 { emoji: "🚬", key: "Smoking", val: p.lifestyle.smoking },
                                 { emoji: "🍷", key: "Alcohol", val: p.lifestyle.alcohol },
                                 { emoji: "🏃", key: "Activity", val: p.lifestyle.activity },
-                                { emoji: "💼", key: "Occupation", val: p.lifestyle.occupation },
                                 { emoji: "😴", key: "Sleep", val: p.lifestyle.sleep },
                             ].map((l) => (
                                 <div key={l.key} className="pp-lifestyle-item">
