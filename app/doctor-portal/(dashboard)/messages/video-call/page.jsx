@@ -152,10 +152,9 @@ export default function VideoCallPage() {
 
 
     useEffect(() => {
-        if (!call?.isCallAccepted) return;
-
+        if (!call?.isJoined || !call?.isCallAccepted) return;
         call.playRemoteAudio?.();
-    }, [call?.isCallAccepted]);
+    }, [call?.isJoined, call?.isCallAccepted]);
 
     return (
         <div className="call-page-shell">
