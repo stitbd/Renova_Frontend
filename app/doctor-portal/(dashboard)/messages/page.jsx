@@ -9,11 +9,10 @@ import { useAppSelector } from "@/redux/hook";
 import "./doctor-dashboard-massages.css";
 import { chatApi } from "@/utils/chatApi";
 import { getSocket } from "@/utils/socket";
-import { ArrowDownToLine, Check, CheckCheck, Paperclip, Phone, Search, Send, Video } from "lucide-react";
+import { ArrowDownToLine, Check, CheckCheck, Paperclip, Phone, PhoneOff, Search, Send, Video } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { videoCallApi } from "@/utils/videoCallApi";
-import { saveCallSession } from "@/utils/callSession";
-
+import { useCall } from "@/providers/CallProvider";
 
 function getInitials(name = "Patient") {
   return name
@@ -79,6 +78,7 @@ function uniqueMessages(messages) {
 
 
 export default function MessagesPage() {
+  const call = useCall();
   const token = useAppSelector((state) => state.auth.accessToken);
   const authUser = useAppSelector((state) => state.auth.user);
   const searchParams = useSearchParams();
@@ -95,17 +95,18 @@ export default function MessagesPage() {
 
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
   const [typingUsers, setTypingUsers] = useState({});
+  const typingTimeoutRef = useRef(null);
   const [chatSearchTerm, setChatSearchTerm] = useState("");
 
-  const typingTimeoutRef = useRef(null);
-
-  const MESSAGE_LIMIT = 20;
+  const MESSAGE_LIMIT = 30;
 
   const [messagePage, setMessagePage] = useState(1);
   const [hasMoreMessages, setHasMoreMessages] = useState(false);
   const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(false);
   const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const [busyCall, setBusyCall] = useState(null);
 
   const isPrependingRef = useRef(false);
   const previousScrollHeightRef = useRef(0);
@@ -184,7 +185,6 @@ export default function MessagesPage() {
       loadOlderMessages();
     }
   };
-
 
 
   useEffect(() => {
@@ -396,6 +396,14 @@ export default function MessagesPage() {
       }));
     };
 
+    const handleCallBusy = (payload) => {
+      setBusyCall({
+        message: payload?.message || "User is currently busy in another call",
+        createdAt: Date.now(),
+      });
+    };
+
+    socket.on("call_busy", handleCallBusy);
     socket.on("typing_start", handleTypingStart);
     socket.on("typing_stop", handleTypingStop);
 
@@ -417,6 +425,7 @@ export default function MessagesPage() {
       socket.off("user_offline", handleUserOffline);
       socket.off("typing_start", handleTypingStart);
       socket.off("typing_stop", handleTypingStop);
+      socket.off("call_busy", handleCallBusy);
     };
   }, [token, selectedConv?.id]);
 
@@ -517,30 +526,37 @@ export default function MessagesPage() {
   const handleStartCall = async (callType) => {
     if (!token || !selectedConv?.receiverId) return;
 
-    const payload = {
-      receiverId: selectedConv.receiverId,
-      callType,
-    };
+    try {
+      const result = await videoCallApi.start(token, {
+        receiverId: selectedConv.receiverId,
+        callType,
+      });
 
-    if (selectedConv.appointmentId || appointmentIdFromUrl) {
-      payload.appointmentId = selectedConv.appointmentId || appointmentIdFromUrl;
+      await call.createCallSession({
+        ...result.data,
+        receiverId: selectedConv.receiverId,
+        receiverName: selectedConv.name,
+        role: "CALLER",
+        portal: "PATIENT",
+      });
+
+      const path =
+        callType === "AUDIO"
+          ? "/doctor-portal/messages/audio-call"
+          : "/doctor-portal/messages/video-call";
+
+      router.push(`${path}?callId=${result.data.callId}`);
+    } catch (err) {
+      if (err?.message?.toLowerCase().includes("busy")) {
+        setBusyCall({
+          message: err.message,
+          createdAt: Date.now(),
+        });
+        return;
+      }
+
+      setError(err.message || "Failed to start call");
     }
-
-    const result = await videoCallApi.start(token, payload);
-
-    saveCallSession({
-      ...result.data,
-      receiverId: selectedConv.receiverId,
-      receiverName: selectedConv.name,
-      role: "CALLER",
-    });
-
-    const path =
-      callType === "AUDIO"
-        ? "/doctor-portal/messages/audio-call"
-        : "/doctor-portal/messages/video-call";
-
-    router.push(`${path}?callId=${result.data.callId}`);
   };
 
   const markMessageAsSeen = async (msg) => {
@@ -1007,6 +1023,50 @@ export default function MessagesPage() {
           )}
         </div>
       </div>
+
+      {busyCall && (
+        <div className="call-busy-overlay">
+          <div className="call-busy-card">
+            <button
+              type="button"
+              className="call-busy-close"
+              onClick={() => setBusyCall(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            <div className="call-busy-icon-wrap">
+              <div className="call-busy-pulse"></div>
+              <div className="call-busy-icon">  <PhoneOff size={28} />
+              </div>
+            </div>
+
+            <div className="call-busy-content">
+              <span className="call-busy-label">Call unavailable</span>
+
+              <h3 className="call-busy-title">
+                {selectedConv?.name || "User"} is busy
+              </h3>
+
+              <p className="call-busy-text">
+                {busyCall.message ||
+                  "This user is currently on another call. Please try again later."}
+              </p>
+            </div>
+
+            <div className="call-busy-actions">
+              <button
+                type="button"
+                className="call-busy-primary"
+                onClick={() => setBusyCall(null)}
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {previewImage && (
         <div className="msg-image-modal">
           <div className="msg-image-modal-header">

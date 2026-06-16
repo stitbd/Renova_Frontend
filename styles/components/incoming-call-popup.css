@@ -1,0 +1,110 @@
+.global-call-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+
+  background: rgba(15, 23, 42, 0.48);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.global-call-card {
+  width: 100%;
+  max-width: 380px;
+
+  background: #ffffff;
+  border-radius: 24px;
+
+  padding: 28px 24px;
+  text-align: center;
+
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.22),
+    0 8px 22px rgba(15, 23, 42, 0.1);
+
+  animation: incomingCallPop 0.22s ease-out;
+}
+
+.global-call-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 16px;
+
+  border-radius: 999px;
+
+  background: #eff6ff;
+  color: #075bb5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.global-call-label {
+  margin: 0 0 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.global-call-card h3 {
+  margin: 0;
+
+  font-size: 21px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.global-call-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  margin-top: 24px;
+}
+
+.global-call-actions button {
+  height: 46px;
+
+  border: none;
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.global-call-reject {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.global-call-accept {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+@keyframes incomingCallPop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

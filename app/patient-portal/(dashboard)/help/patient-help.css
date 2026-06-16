@@ -491,6 +491,25 @@
     margin-top: 12px;
 }
 
+/* View Button */
+.btn-view-ticket {
+    padding: 6px 10px;
+    background: #014fa1;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-view-ticket:hover {
+    background: #013d80;
+    transform: scale(1.05);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .contact-options-grid {
@@ -526,4 +545,22 @@
         font-size: 13px;
     }
 
+}
+
+
+.btn-view-all-tickets {
+    padding: 8px 20px;
+    background: #eff6ff;
+    color: #014fa1;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-view-all-tickets:hover {
+    background: #014fa1;
+    color: #fff;
 }

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Mail, Phone, HelpCircle, AlertTriangle, ChevronDown } from "lucide-react";
+import { MessageCircle, Mail, Phone, HelpCircle, AlertTriangle, ChevronDown, Eye } from "lucide-react";
 import "./patient-help.css";
 
 // Animation variants
@@ -76,6 +76,7 @@ export default function HelpSupportPage() {
   const [activeFaqCategory, setActiveFaqCategory] = useState("Appointments");
   const [message, setMessage] = useState("");
   const [rating, setRating] = useState(0);
+  const [tickets, setTickets] = useState(myTickets);
   const [formData, setFormData] = useState({
     category: "",
     priority: "Medium",
@@ -86,8 +87,22 @@ export default function HelpSupportPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newTicket = {
+      id: `#SUP-${String(Math.floor(1000 + Math.random() * 9000))}`,
+      subject: formData.subject,
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" }),
+      status: "Open",
+      priority: formData.priority,
+    };
+    setTickets((prev) => {
+      const updated = [newTicket, ...prev];
+      sessionStorage.setItem("allTickets", JSON.stringify(updated));
+      return updated;
+    });
+    setFormData({ category: "", priority: "Medium", subject: "", message: "", contactMethod: "Email" });
     setMessage("Thank you! Your support request has been submitted.");
     setTimeout(() => setMessage(""), 4000);
+    document.getElementById("tickets-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleFileChange = (e) => {
@@ -103,7 +118,6 @@ export default function HelpSupportPage() {
     >
       {/* Support Header */}
       <motion.div className="support-header" variants={item}>
-        <h1>Help & Support</h1>
         <p>We're here to help you 24/7. Find answers, contact support, or report a problem.</p>
       </motion.div>
 
@@ -133,7 +147,11 @@ export default function HelpSupportPage() {
               style={{ color: opt.color, borderColor: opt.color }}
               whileHover={{ scale: 1.05, backgroundColor: opt.color, color: "#fff" }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => opt.icon === "faq" ? router.push("/patient-portal/help/faq") : undefined}
+              onClick={() => {
+                if (opt.icon === "faq") router.push("/patient-portal/help/faq");
+                else if (opt.icon === "phone") window.location.href = "tel:+8809612345678";
+                else if (opt.icon === "email") window.location.href = "mailto:support@renovalifecare.com";
+              }}
             >
               {opt.action}
             </motion.button>
@@ -154,10 +172,10 @@ export default function HelpSupportPage() {
       </motion.div>
 
       {/* My Support Tickets */}
-      <motion.div className="tickets-section" variants={item}>
+      <motion.div className="tickets-section" variants={item} id="tickets-section">
         <div className="tickets-section-header">
           <h3>My Support Tickets List</h3>
-          <button className="btn-create-ticket">
+          <button className="btn-create-ticket" onClick={() => document.getElementById("support-form")?.scrollIntoView({ behavior: "smooth" })}>
             <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
             Create Ticket
           </button>
@@ -175,14 +193,14 @@ export default function HelpSupportPage() {
               </tr>
             </thead>
             <tbody>
-              {myTickets.map((ticket, idx) => (
+              {tickets.slice(0, 10).map((ticket, idx) => (
                 <tr key={idx}>
                   <td>{ticket.id}</td>
                   <td>{ticket.subject}</td>
                   <td>{ticket.date}</td>
                   <td><span className={`status-badge status-${ticket.status.toLowerCase()}`}>{ticket.status}</span></td>
                   <td><span className={`priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span></td>
-                  <td><button className="btn-view-ticket">View</button></td>
+                  <td><button className="btn-view-ticket"><Eye size={14} /></button></td>
                 </tr>
               ))}
             </tbody>
@@ -190,7 +208,7 @@ export default function HelpSupportPage() {
 
           {/* Mobile Cards */}
           <div className="ticket-cards">
-            {myTickets.map((ticket, idx) => (
+            {tickets.slice(0, 10).map((ticket, idx) => (
               <div key={idx} className="ticket-card">
                 <div className="ticket-card-header">
                   <div>
@@ -204,11 +222,18 @@ export default function HelpSupportPage() {
                     <span className="ticket-card-date">{ticket.date}</span>
                     <span className={`priority-${ticket.priority.toLowerCase()}`}>● {ticket.priority}</span>
                   </div>
-                  <button className="btn-view-ticket">View</button>
+                  <button className="btn-view-ticket"><Eye size={14} /></button>
                 </div>
               </div>
             ))}
           </div>
+          {tickets.length > 10 && (
+            <div style={{ textAlign: "center", padding: "12px" }}>
+              <button className="btn-view-all-tickets" onClick={() => router.push("/patient-portal/help/tickets")}>
+                View All Tickets
+              </button>
+            </div>
+          )}
         </div>
       </motion.div>
 
@@ -226,7 +251,7 @@ export default function HelpSupportPage() {
       </motion.div>
 
       {/* Enhanced Contact Form */}
-      <motion.div className="contact-form-section" variants={item}>
+      <motion.div className="contact-form-section" variants={item} id="support-form">
         <h3>Send a Support Request</h3>
         <motion.form onSubmit={handleSubmit} className="contact-form" variants={container} initial="hidden" animate="show">
           <div className="form-grid">
