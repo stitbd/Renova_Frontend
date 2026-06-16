@@ -670,9 +670,9 @@ export default function PatientProfilePage() {
               </div>
             </div>
 
-            <button className="pp-btn pp-btn-outline pp-full-btn" type="button">
+            <Link href="/patient-portal/change-password?from=profile" className="pp-btn pp-btn-outline pp-full-btn">
               <Lock size={14} /> Change Password
-            </button>
+            </Link>
           </motion.div>
         </div>
       </div>

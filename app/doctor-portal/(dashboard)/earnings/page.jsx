@@ -479,9 +479,6 @@ function TransactionHistory({ transactions }) {
           <button className="export-btn">
             <IconDownload /> Excel
           </button>
-          <button className="export-btn">
-            <IconDownload /> CSV
-          </button>
         </div>
       </div>
 

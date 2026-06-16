@@ -156,9 +156,9 @@ export default function Footer() {
 
           {/* About Us Column */}
           <nav className="footer-nav" aria-label="About Us links">
-            <h3 className="footer-nav-title">About Us</h3>
+            <h3 className="footer-nav-title">Quick Links</h3>
             <ul className="footer-nav-list" role="list">
-              {footerLinks.company.slice(0, 5).map((link) => (
+              {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="footer-nav-link">
                     {link.label}

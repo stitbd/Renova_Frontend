@@ -49,6 +49,46 @@
     box-shadow: var(--shadow-sm);
 }
 
+.earnings-overview-card.c-blue {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.earnings-overview-card.c-green {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.earnings-overview-card.c-purple {
+    background: #faf5ff;
+    border-color: #ddd6fe;
+}
+
+.earnings-overview-card.c-orange {
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+.earnings-overview-card.c-amber {
+    background: #fefce8;
+    border-color: #fef08a;
+}
+
+.earnings-overview-card.c-teal {
+    background: #f0fdfa;
+    border-color: #99f6e4;
+}
+
+.earnings-overview-card.c-cyan {
+    background: #ecfeff;
+    border-color: #a5f3fc;
+}
+
+.earnings-overview-card.c-pink {
+    background: #fdf4ff;
+    border-color: #e9d5ff;
+}
+
 .earnings-overview-icon {
     width: 42px;
     height: 42px;

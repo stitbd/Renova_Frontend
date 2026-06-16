@@ -2,8 +2,8 @@ export const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Doctors", href: "/doctors" },
-  { 
-    label: "Services", 
+  {
+    label: "Services",
     href: "/services",
     children: [
       { label: "Pathology & Laboratory Testing", href: "/services/pathology-laboratory-testing" },
@@ -44,8 +44,8 @@ export const navLinks = [
   },
   { label: "Packages", href: "/packages" },
   { label: "Shop", href: "/shop" },
-  { 
-    label: "Media", 
+  {
+    label: "Media",
     href: "/media",
     children: [
       { label: "Blog", href: "/blog" },
@@ -59,18 +59,18 @@ export const navLinks = [
 
 export const footerLinks = {
   company: [
-    { label: "About Us", href: "/about" },
+    // { label: "About Us", href: "/about" },
     { label: "Events", href: "/events" },
     { label: "Careers", href: "/careers" },
     { label: "Our Team", href: "/our-team" },
-    { label: "Contact Us", href: "/contact" },
+    // { label: "Contact Us", href: "/contact" },
     { label: "Complain & Advise", href: "/complain" },
+    { label: "Ticket", href: "ticket" },
   ],
   support: [
     { label: "Book Appointment", href: "/appointment" },
-    { label: "Doctor Portal", href: "/doctor-portal/doctor-signin" },
+    // { label: "Doctor Portal", href: "/doctor-portal/doctor-signin" },
     // { label: "Patient Portal", href: "/patient-portal/patient-signin" },
-    // { label: "Outlet Portal", href: "/outlet-portal/outlet-signin" },
     { label: "FAQ", href: "/faq" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },

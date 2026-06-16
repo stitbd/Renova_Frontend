@@ -343,7 +343,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-4);
-  max-width: 900px;
+  max-width: 1536px;
   margin: 0 auto;
 }
 
@@ -424,6 +424,7 @@
    Print Styles
 ───────────────────────────────────────────── */
 @media print {
+
   .policy-trust-grid,
   .page-hero__breadcrumb {
     display: none;

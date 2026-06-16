@@ -2,6 +2,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import "./change-password.css";
 
@@ -117,11 +118,19 @@ export default function ChangePasswordPage() {
     setSuccess(false);
   };
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const handleCancel = () => {
     setFormData(INITIAL_FORM_DATA);
     setErrors({});
     setSuccess(false);
     setShow({ cur: false, new: false, conf: false });
+    if (searchParams.get("from") === "profile") {
+      router.push("/patient-portal/profile");
+    } else {
+      router.push("/patient-portal/dashboard");
+    }
   };
 
   const handleSubmit = async (e) => {

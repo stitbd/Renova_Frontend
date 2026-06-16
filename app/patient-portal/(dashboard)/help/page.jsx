@@ -1,8 +1,9 @@
 // app/patient/help/page.jsx
 "use client";
-
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, Mail, Phone, HelpCircle, AlertTriangle, ChevronDown } from "lucide-react";
 import "./patient-help.css";
 
 // Animation variants
@@ -23,29 +24,74 @@ const item = {
   }
 };
 
-const faqs = [
-  { q: "How do I book an appointment?", a: "Click on 'Book Appointment' from the dashboard or appointments page, select your preferred doctor, date, and time slot." },
-  { q: "How can I view my prescriptions?", a: "Go to the Prescriptions section from the sidebar. Click on any prescription to view details and download PDF." },
-  { q: "What if I need to reschedule?", a: "Navigate to Appointments, find your upcoming appointment, and click 'Reschedule' to choose a new time." },
-  { q: "How do I contact support?", a: "Use the chat button in the bottom right corner, or email us at support@renovalife.com" },
-  { q: "Is my data secure?", a: "Yes, all your health data is encrypted and stored securely. We comply with healthcare privacy regulations." },
+const quickSupport = [
+  { icon: "chat", title: "Live Chat", desc: "Chat with Support", meta: "Avg. response: < 2 mins • Online", action: "Start Chat", color: "#014fa1" },
+  { icon: "email", title: "Email Support", desc: "support@renovalifecare.com", meta: "Response within 24 hours", action: "Send Email", color: "#428a26" },
+  { icon: "phone", title: "Call Support", desc: "+880 9612-345678", meta: "Sat–Thu, 9 AM – 10 PM", action: "Call Now", color: "#f59e0b" },
+  { icon: "faq", title: "FAQs", desc: "Browse common questions", meta: "120+ Answers Available", action: "View FAQs", color: "#7c3aed" },
 ];
 
-const contactOptions = [
-  { icon: "chat", title: "Live Chat", desc: "Chat with our support team", action: "Start Chat", color: "#014fa1" },
-  { icon: "email", title: "Email Support", desc: "support@renovalife.com", action: "Send Email", color: "#428a26" },
-  { icon: "phone", title: "Call Us", desc: "+880 9612-345678", action: "Call Now", color: "#f59e0b" },
-  { icon: "faq", title: "FAQs", desc: "Browse common questions", action: "View FAQs", color: "#7c3aed" },
+const myTickets = [
+  { id: "#SUP-1005", subject: "Payment Issue for Consultation", date: "Jun 14, 2026", status: "Open", priority: "High" },
+  { id: "#SUP-1002", subject: "Video freezing during session", date: "Jun 10, 2026", status: "Pending", priority: "Medium" },
+  { id: "#SUP-0998", subject: "Refund request for cancelled app", date: "Jun 05, 2026", status: "Closed", priority: "Low" },
+];
+
+const systemStatus = [
+  { name: "Video Service", status: "Operational", type: "operational" },
+  { name: "Payment Gateway", status: "Operational", type: "operational" },
+  { name: "Notifications", status: "Under Maintenance", type: "maintenance" },
+];
+
+const categorizedFaqs = {
+  "Appointments": [
+    { q: "How do I book an appointment?", a: "Click on 'Book Appointment' from the dashboard, select your preferred doctor, date, and time slot." },
+    { q: "Can I cancel an appointment?", a: "Yes, go to Appointments, find your booking, and click 'Cancel'. Cancellations are free up to 2 hours before the slot." },
+  ],
+  "Video Consultation": [
+    { q: "Camera/Microphone isn't working.", a: "Please check your browser permissions. Ensure you have allowed camera and mic access for our website." },
+    { q: "Doctor didn't join the session.", a: "Wait for 5 minutes. If the doctor doesn't join, you will automatically receive a full refund and can reschedule." },
+  ],
+  "Prescriptions": [
+    { q: "How do I download my prescription?", a: "Go to the Prescriptions section, click on the specific prescription, and select 'Download PDF'." },
+  ],
+  "Payments": [
+    { q: "My payment failed but amount was deducted.", a: "Don't worry. Failed transactions are automatically reversed within 5-7 working days." },
+  ],
+  "Account": [
+    { q: "How do I change my password?", a: "Go to Profile > Security > Change Password. You will need to verify your email/phone." },
+  ]
+};
+
+const contactDetails = [
+  { label: "Email", value: "support@renovalifecare.com" },
+  { label: "Phone", value: "+880 9612-345678" },
+  { label: "Office Hours", value: "Sat–Thu, 9 AM – 10 PM" },
+  { label: "Address", value: "House 12, Road 5, Dhanmondi, Dhaka" },
 ];
 
 export default function HelpSupportPage() {
+  const router = useRouter();
   const [openFaq, setOpenFaq] = useState(null);
+  const [activeFaqCategory, setActiveFaqCategory] = useState("Appointments");
   const [message, setMessage] = useState("");
+  const [rating, setRating] = useState(0);
+  const [formData, setFormData] = useState({
+    category: "",
+    priority: "Medium",
+    subject: "",
+    message: "",
+    contactMethod: "Email",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMessage("Thank you! We'll get back to you soon.");
-    setTimeout(() => setMessage(""), 3000);
+    setMessage("Thank you! Your support request has been submitted.");
+    setTimeout(() => setMessage(""), 4000);
+  };
+
+  const handleFileChange = (e) => {
+    // Handle file upload logic here
   };
 
   return (
@@ -55,55 +101,39 @@ export default function HelpSupportPage() {
       initial="hidden"
       animate="show"
     >
-      {/* Quick Contact */}
-      <motion.div
-        className="contact-options-grid"
-        variants={container}
-        initial="hidden"
-        animate="show"
-      >
-        {contactOptions.map((opt, idx) => (
+      {/* Support Header */}
+      <motion.div className="support-header" variants={item}>
+        <h1>Help & Support</h1>
+        <p>We're here to help you 24/7. Find answers, contact support, or report a problem.</p>
+      </motion.div>
+
+      {/* Quick Support Cards */}
+      <motion.div className="contact-options-grid" variants={container} initial="hidden" animate="show">
+        {quickSupport.map((opt, idx) => (
           <motion.div
             key={idx}
             className="contact-option-card"
             variants={item}
-            whileHover={{
-              y: -6,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-              transition: { duration: 0.2 }
-            }}
+            whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
             style={{ borderLeftColor: opt.color }}
           >
-            <motion.div
-              className="contact-icon"
-              style={{ backgroundColor: `${opt.color}15`, color: opt.color }}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 400 }}
-            >
-              {opt.icon === "chat" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>}
-              {opt.icon === "email" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>}
-              {opt.icon === "phone" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 0-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>}
-              {opt.icon === "faq" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>}
+            <motion.div className="contact-icon" style={{ backgroundColor: `${opt.color}15`, color: opt.color }} whileHover={{ scale: 1.1, rotate: 5 }} transition={{ type: "spring", stiffness: 400 }}>
+              {opt.icon === "chat" && <MessageCircle size={20} />}
+              {opt.icon === "email" && <Mail size={20} />}
+              {opt.icon === "phone" && <Phone size={20} />}
+              {opt.icon === "faq" && <HelpCircle size={20} />}
             </motion.div>
             <div className="contact-info">
-              <motion.h4
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-              >
-                {opt.title}
-              </motion.h4>
+              <h4>{opt.title}</h4>
               <p>{opt.desc}</p>
+              <small style={{ color: "#94a3b8", fontSize: "11px" }}>{opt.meta}</small>
             </div>
             <motion.button
               className="contact-action-btn"
               style={{ color: opt.color, borderColor: opt.color }}
-              whileHover={{
-                scale: 1.05,
-                backgroundColor: opt.color,
-                color: "#fff"
-              }}
+              whileHover={{ scale: 1.05, backgroundColor: opt.color, color: "#fff" }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => opt.icon === "faq" ? router.push("/patient-portal/help/faq") : undefined}
             >
               {opt.action}
             </motion.button>
@@ -111,141 +141,164 @@ export default function HelpSupportPage() {
         ))}
       </motion.div>
 
-      {/* FAQs */}
-      <motion.div
-        className="faqs-section"
-        variants={item}
-      >
-        <motion.h3
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
-          Frequently Asked Questions
-        </motion.h3>
-        <motion.div
-          className="faqs-list"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {faqs.map((faq, idx) => (
-            <motion.div
-              key={idx}
-              className={`faq-item ${openFaq === idx ? "open" : ""}`}
-              variants={item}
-              layout
-            >
-              <motion.button
-                className="faq-question"
-                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                whileHover={{ backgroundColor: "#f8fafc" }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.span
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 }}
-                >
-                  {faq.q}
-                </motion.span>
-                <motion.svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  animate={{ rotate: openFaq === idx ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <polyline points={openFaq === idx ? "18 15 12 9 6 15" : "6 9 12 15 18 9"} />
-                </motion.svg>
-              </motion.button>
-
-              <AnimatePresence>
-                {openFaq === idx && (
-                  <motion.p
-                    className="faq-answer"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {faq.a}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </motion.div>
+      {/* Emergency Support */}
+      <motion.div className="emergency-card" variants={item}>
+        <div className="emergency-icon">
+          <AlertTriangle size={24} color="#fff" />
+        </div>
+        <div className="emergency-content">
+          <h4>Medical Emergency?</h4>
+          <p>If this is a life-threatening emergency, call your local emergency services immediately. Do not use this app for emergencies.</p>
+          <div className="emergency-number">Call 999</div>
+        </div>
       </motion.div>
 
-      {/* Contact Form */}
-      <motion.div
-        className="contact-form-section"
-        variants={item}
-      >
-        <motion.h3
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
-          Send us a Message
-        </motion.h3>
-        <motion.form
-          onSubmit={handleSubmit}
-          className="contact-form"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.div
-            className="form-field"
-            variants={item}
-          >
+      {/* My Support Tickets */}
+      <motion.div className="tickets-section" variants={item}>
+        <div className="tickets-section-header">
+          <h3>My Support Tickets List</h3>
+          <button className="btn-create-ticket">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+            Create Ticket
+          </button>
+        </div>
+        <div className="tickets-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Subject</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {myTickets.map((ticket, idx) => (
+                <tr key={idx}>
+                  <td>{ticket.id}</td>
+                  <td>{ticket.subject}</td>
+                  <td>{ticket.date}</td>
+                  <td><span className={`status-badge status-${ticket.status.toLowerCase()}`}>{ticket.status}</span></td>
+                  <td><span className={`priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span></td>
+                  <td><button className="btn-view-ticket">View</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Mobile Cards */}
+          <div className="ticket-cards">
+            {myTickets.map((ticket, idx) => (
+              <div key={idx} className="ticket-card">
+                <div className="ticket-card-header">
+                  <div>
+                    <div className="ticket-card-id">{ticket.id}</div>
+                    <div className="ticket-card-subject">{ticket.subject}</div>
+                  </div>
+                  <span className={`status-badge status-${ticket.status.toLowerCase()}`}>{ticket.status}</span>
+                </div>
+                <div className="ticket-card-footer">
+                  <div className="ticket-card-meta">
+                    <span className="ticket-card-date">{ticket.date}</span>
+                    <span className={`priority-${ticket.priority.toLowerCase()}`}>● {ticket.priority}</span>
+                  </div>
+                  <button className="btn-view-ticket">View</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Contact Information */}
+      <motion.div className="contact-info-section" variants={item}>
+        <h3>Contact Information</h3>
+        <div className="contact-info-grid">
+          {contactDetails.map((info, idx) => (
+            <div key={idx} className="contact-detail-card">
+              <h4>{info.label}</h4>
+              <p>{info.value}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Enhanced Contact Form */}
+      <motion.div className="contact-form-section" variants={item}>
+        <h3>Send a Support Request</h3>
+        <motion.form onSubmit={handleSubmit} className="contact-form" variants={container} initial="hidden" animate="show">
+          <div className="form-grid">
+            <motion.div className="form-field" variants={item}>
+              <label>Issue Category</label>
+              <select required value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
+                <option value="">Select Category</option>
+                <option>Appointment</option>
+                <option>Video Consultation</option>
+                <option>Prescription</option>
+                <option>Payment</option>
+                <option>Refund</option>
+                <option>Account</option>
+                <option>Technical Issue</option>
+                <option>Other</option>
+              </select>
+            </motion.div>
+            <motion.div className="form-field" variants={item}>
+              <label>Priority</label>
+              <select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })}>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </motion.div>
+          </div>
+
+          <motion.div className="form-field" variants={item}>
             <label>Subject</label>
-            <motion.input
-              type="text"
-              placeholder="What do you need help with?"
-              required
-              whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
-            />
+            <input type="text" placeholder="Brief summary of your issue" required value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} />
           </motion.div>
-          <motion.div
-            className="form-field full"
-            variants={item}
-          >
+
+          <motion.div className="form-field" variants={item}>
             <label>Message</label>
-            <motion.textarea
-              rows={4}
-              placeholder="Describe your issue..."
-              required
-              whileFocus={{ borderColor: "#014fa1", boxShadow: "0 0 0 3px rgba(1,79,161,0.1)" }}
-            />
+            <textarea rows={4} placeholder="Describe your issue in detail..." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} />
           </motion.div>
-          <motion.button
-            type="submit"
-            className="btn-send-message"
-            variants={item}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            Send Message
+
+          <motion.div className="form-field" variants={item}>
+            <label>Attachment (Optional)</label>
+            <label className="file-upload-area">
+              <input type="file" hidden accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} />
+              <p>Drag & drop or <span>browse files</span></p>
+              <p style={{ fontSize: "11px", marginTop: "4px" }}>Supported: JPG, PNG, PDF</p>
+            </label>
+          </motion.div>
+
+          <motion.div className="form-field" variants={item}>
+            <label>Preferred Contact Method</label>
+            <div className="radio-group">
+              {["Email", "Phone", "Live Chat"].map((method) => (
+                <label key={method} className="radio-option">
+                  <input type="radio" name="contactMethod" value={method} checked={formData.contactMethod === method} onChange={(e) => setFormData({ ...formData, contactMethod: e.target.value })} />
+                  {method}
+                </label>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.button type="submit" className="btn-send-message" variants={item} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 300 }}>
+            Submit Support Request
           </motion.button>
 
           <AnimatePresence>
             {message && (
-              <motion.p
-                className="form-success"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+              <motion.p className="form-success" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ type: "spring", stiffness: 300 }}>
                 {message}
               </motion.p>
             )}
           </AnimatePresence>
         </motion.form>
       </motion.div>
+
     </motion.div>
   );
 }
