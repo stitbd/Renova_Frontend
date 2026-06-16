@@ -106,24 +106,50 @@
 /* Info Grid */
 .td-info-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
 }
 
 .td-info-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 10px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.td-info-card:nth-child(1) {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    border-left-color: #014fa1;
+}
+
+.td-info-card:nth-child(2) {
+    background: #fefce8;
+    border-color: #fef08a;
+    border-left-color: #f59e0b;
+}
+
+.td-info-card:nth-child(3) {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    border-left-color: #64748b;
+}
+
+.td-info-card:nth-child(4) {
+    background: #faf5ff;
+    border-color: #ddd6fe;
+    border-left-color: #7c3aed;
 }
 
 .td-info-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;

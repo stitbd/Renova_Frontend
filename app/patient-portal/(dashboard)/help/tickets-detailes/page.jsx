@@ -94,34 +94,58 @@ function TicketDetailContent() {
 
             {/* Info Cards */}
             <motion.div className="td-info-grid" variants={item}>
-                <div className="td-info-card">
-                    <div className="td-info-icon td-icon-blue"><Tag size={15} /></div>
+                <motion.div className="td-info-card"
+                    whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+                    transition={{ duration: 0.2 }}>
+                    <motion.div className="td-info-icon td-icon-blue"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 400 }}>
+                        <Tag size={15} />
+                    </motion.div>
                     <div>
                         <p className="td-info-label">Category</p>
                         <p className="td-info-value">{ticket.category || "Payment"}</p>
                     </div>
-                </div>
-                <div className="td-info-card">
-                    <div className="td-info-icon td-icon-amber"><AlertCircle size={15} /></div>
+                </motion.div>
+                <motion.div className="td-info-card"
+                    whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+                    transition={{ duration: 0.2 }}>
+                    <motion.div className="td-info-icon td-icon-amber"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 400 }}>
+                        <AlertCircle size={15} />
+                    </motion.div>
                     <div>
                         <p className="td-info-label">Priority</p>
                         <p className={`td-priority td-priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</p>
                     </div>
-                </div>
-                <div className="td-info-card">
-                    <div className="td-info-icon td-icon-slate"><Clock size={15} /></div>
+                </motion.div>
+                <motion.div className="td-info-card"
+                    whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+                    transition={{ duration: 0.2 }}>
+                    <motion.div className="td-info-icon td-icon-slate"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 400 }}>
+                        <Clock size={15} />
+                    </motion.div>
                     <div>
                         <p className="td-info-label">Created</p>
                         <p className="td-info-value">{ticket.date}</p>
                     </div>
-                </div>
-                <div className="td-info-card">
-                    <div className="td-info-icon td-icon-purple"><MessageSquare size={15} /></div>
+                </motion.div>
+                <motion.div className="td-info-card"
+                    whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+                    transition={{ duration: 0.2 }}>
+                    <motion.div className="td-info-icon td-icon-purple"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 400 }}>
+                        <MessageSquare size={15} />
+                    </motion.div>
                     <div>
                         <p className="td-info-label">Replies</p>
                         <p className="td-info-value">{replies.length} messages</p>
                     </div>
-                </div>
+                </motion.div>
             </motion.div>
 
             {/* Subject */}
