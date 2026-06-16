@@ -57,57 +57,66 @@
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 16px 18px;
+    padding: 14px 12px;
     display: flex;
     align-items: center;
-    gap: 14px;
-    transition: box-shadow 0.2s ease;
+    gap: 10px;
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .rpt-stat-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .rpt-stat-card.green {
     background: #f0fdf4;
     border-color: #bbf7d0;
+    border-left-color: #16a34a;
 }
 
 .rpt-stat-card.blue {
     background: #eff6ff;
     border-color: #bfdbfe;
+    border-left-color: #014fa1;
 }
 
 .rpt-stat-card.purple {
     background: #faf5ff;
     border-color: #ddd6fe;
+    border-left-color: #7c3aed;
 }
 
 .rpt-stat-card.orange {
     background: #fff7ed;
     border-color: #fed7aa;
+    border-left-color: #f59e0b;
 }
 
 .rpt-stat-card.teal {
     background: #f0fdfa;
     border-color: #99f6e4;
+    border-left-color: #0d9488;
 }
 
 .rpt-stat-icon {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rpt-stat-icon svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     stroke: currentColor;
     fill: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rpt-stat-icon.green {
@@ -115,9 +124,17 @@
     color: #428a26;
 }
 
+.rpt-stat-icon.green:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
 .rpt-stat-icon.blue {
     background: #dbeafe;
     color: #014fa1;
+}
+
+.rpt-stat-icon.blue:hover {
+    transform: scale(1.1) rotate(5deg);
 }
 
 .rpt-stat-icon.purple {
@@ -125,14 +142,26 @@
     color: #7c3aed;
 }
 
+.rpt-stat-icon.purple:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
 .rpt-stat-icon.orange {
     background: #fef3c7;
     color: #f59e0b;
 }
 
+.rpt-stat-icon.orange:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
 .rpt-stat-icon.teal {
     background: #ccfbf1;
     color: #14b8a6;
+}
+
+.rpt-stat-icon.teal:hover {
+    transform: scale(1.1) rotate(5deg);
 }
 
 .rpt-stat-body {

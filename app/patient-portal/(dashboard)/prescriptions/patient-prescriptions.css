@@ -63,20 +63,22 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: box-shadow 0.2s ease;
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .rx-stat-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.stat-card.stat-green {
+.rx-stat-card.green {
     background: #f0fdf4;
     border-color: #bbf7d0;
     border-left-color: #16a34a;
 }
 
-.stat-card.stat-blue {
+.rx-stat-card.blue {
     background: #eff6ff;
     border-color: #bfdbfe;
     border-left-color: #014fa1;
@@ -85,16 +87,19 @@
 .rx-stat-card.yellow {
     background: #fefce8;
     border-color: #fef08a;
+    border-left-color: #ca8a04;
 }
 
 .rx-stat-card.teal {
     background: #f0fdfa;
     border-color: #99f6e4;
+    border-left-color: #0d9488;
 }
 
 .rx-stat-card.red {
     background: #fff5f5;
     border-color: #fecaca;
+    border-left-color: #ef4444;
 }
 
 .rx-stat-icon {

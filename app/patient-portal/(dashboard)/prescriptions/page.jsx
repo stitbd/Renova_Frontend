@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import "./patient-prescriptions.css";
 
@@ -170,16 +171,24 @@ export default function PrescriptionsPage() {
     <>
       <div className="rx-stats-row">
         {stats.map((s) => (
-          <div key={s.label} className={`rx-stat-card ${s.color}`}>
-            <div className={`rx-stat-icon ${s.color}`}>
+          <motion.div
+            key={s.label}
+            className={`rx-stat-card ${s.color}`}
+            whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
+          >
+            <motion.div
+              className={`rx-stat-icon ${s.color}`}
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
               <Icon type={s.icon} />
-            </div>
+            </motion.div>
             <div className="rx-stat-body">
               <p className="rx-stat-label">{s.label}</p>
               <p className={`rx-stat-value ${s.color}`}>{s.value}</p>
               <p className="rx-stat-sub">{s.sub}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
