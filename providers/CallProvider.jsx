@@ -33,6 +33,8 @@ export default function CallProvider({ children }) {
   const localAudioTrackRef = useRef(null);
   const localVideoTrackRef = useRef(null);
   const remoteVideoTrackRef = useRef(null);
+  // Add this ref near the others at the top of CallProvider
+  const audioPlayPendingRef = useRef(false);
 
   const localVideoContainerRef = useRef(null);
   const remoteVideoContainerRef = useRef(null);
@@ -42,6 +44,7 @@ export default function CallProvider({ children }) {
   const callRef = useRef(null);
   const acceptedRef = useRef(false);
   const leavingRef = useRef(false);
+
 
   const [activeCall, setActiveCall] = useState(null);
   const [isJoined, setIsJoined] = useState(false);
@@ -123,6 +126,16 @@ export default function CallProvider({ children }) {
     setError("");
   }, []);
 
+  const startAudioLevelDebug = (audioTrack, label) => {
+    const timer = setInterval(() => {
+      const level = audioTrack?.getVolumeLevel?.() || 0;
+      console.log(`${label} AUDIO LEVEL:`, level);
+    }, 1000);
+
+    return timer;
+  };
+
+
   const joinAgora = useCallback(
 
     async (session) => {
@@ -175,14 +188,23 @@ export default function CallProvider({ children }) {
             await client.subscribe(user, mediaType);
 
             if (mediaType === "audio" && user.audioTrack) {
-              console.log("AUDIO SUBSCRIBED");
-
               remoteAudioTrackRef.current = user.audioTrack;
+              user.audioTrack.setVolume?.(100);
 
-              user.audioTrack.play();
-
-              console.log("REMOTE AUDIO PLAYING");
+              if (acceptedRef.current || audioPlayPendingRef.current) {
+                try {
+                  user.audioTrack.play();
+                  audioPlayPendingRef.current = false;
+                } catch (err) {
+                  console.warn("Autoplay blocked:", err);
+                  audioPlayPendingRef.current = true;
+                }
+              } else {
+                audioPlayPendingRef.current = true;
+              }
             }
+
+
 
             if (mediaType === "video" && user.videoTrack) {
               console.log("VIDEO SUBSCRIBED");
@@ -198,6 +220,7 @@ export default function CallProvider({ children }) {
           }
         });
         client.on("user-unpublished", (user, mediaType) => {
+
           if (mediaType === "audio") {
             console.log("REMOTE AUDIO UNPUBLISHED");
             user.audioTrack?.stop();
@@ -226,10 +249,13 @@ export default function CallProvider({ children }) {
         for (const remoteUser of client.remoteUsers) {
           if (remoteUser.hasAudio) {
             await client.subscribe(remoteUser, "audio");
-
             if (remoteUser.audioTrack) {
               remoteAudioTrackRef.current = remoteUser.audioTrack;
-              remoteUser.audioTrack.play();
+              if (acceptedRef.current) {
+                remoteUser.audioTrack.play();
+              } else {
+                audioPlayPendingRef.current = true;
+              }
             }
           }
 
@@ -249,8 +275,15 @@ export default function CallProvider({ children }) {
 
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
           encoderConfig: "speech_standard",
+          AEC: true,
+          ANS: true,
+          AGC: true,
         });
+
         localAudioTrackRef.current = audioTrack;
+
+        startAudioLevelDebug(audioTrack, "LOCAL MIC");
+
 
         if (session.callType === "VIDEO") {
           const videoTrack = await AgoraRTC.createCameraVideoTrack();
@@ -503,13 +536,23 @@ export default function CallProvider({ children }) {
     setIncomingCall(null);
   };
 
-  const playRemoteAudio = () => {
-    try {
-      remoteAudioTrackRef.current?.play();
-    } catch (err) {
-      console.warn("Failed to play remote audio:", err);
+  const playRemoteAudio = useCallback(() => {
+    const track = remoteAudioTrackRef.current;
+    if (!track) {
+      // Mark pending — track hasn't arrived yet, will play when it does
+      audioPlayPendingRef.current = true;
+      return;
     }
-  };
+    try {
+      track.setVolume?.(100);
+      track.play();
+      audioPlayPendingRef.current = false;
+      console.log("Remote audio played successfully");
+    } catch (err) {
+      console.warn("playRemoteAudio failed:", err);
+      audioPlayPendingRef.current = true;
+    }
+  }, []);
 
   return (
     <CallContext.Provider
