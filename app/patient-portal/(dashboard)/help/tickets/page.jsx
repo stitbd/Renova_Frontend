@@ -81,7 +81,7 @@ export default function AllTicketsPage() {
                                     </span>
                                 </td>
                                 <td>
-                                    <button className="btn-view-ticket">
+                                    <button className="btn-view-ticket" onClick={() => router.push(`/patient-portal/help/tickets-detailes?id=${encodeURIComponent(ticket.id)}`)}>
                                         <Eye size={16} />
                                     </button>
                                 </td>

@@ -200,7 +200,9 @@ export default function HelpSupportPage() {
                   <td>{ticket.date}</td>
                   <td><span className={`status-badge status-${ticket.status.toLowerCase()}`}>{ticket.status}</span></td>
                   <td><span className={`priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span></td>
-                  <td><button className="btn-view-ticket"><Eye size={14} /></button></td>
+                  <td><button className="btn-view-ticket" onClick={() => router.push(`/patient-portal/help/tickets-detailes?id=${encodeURIComponent(ticket.id)}`)}>
+                    <Eye size={16} />
+                  </button></td>
                 </tr>
               ))}
             </tbody>
