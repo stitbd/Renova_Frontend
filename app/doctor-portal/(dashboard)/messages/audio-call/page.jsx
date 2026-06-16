@@ -99,18 +99,6 @@ export default function AudioCallPage() {
     const [pendingFiles, setPendingFiles] = useState([]);
     const router = useRouter();
 
-    // const {
-
-    //     isJoined,
-    //     isCallAccepted,
-    //     callSession,
-    //     isMuted,
-    //     error,
-    //     toggleMute,
-    //     endCall,
-    //     formatDuration,
-    // } = useAgoraCall({ mode: "AUDIO" });
-
 
     const handleSend = () => {
         if (!inputText.trim() && pendingFiles.length === 0) return;
