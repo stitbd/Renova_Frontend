@@ -29,6 +29,7 @@ export default function CallProvider({ children }) {
   const accessToken = useAppSelector((state) => state.auth.accessToken);
 
   const clientRef = useRef(null);
+  const remoteAudioTrackRef = useRef(null);
   const localAudioTrackRef = useRef(null);
   const localVideoTrackRef = useRef(null);
   const remoteVideoTrackRef = useRef(null);
@@ -130,24 +131,49 @@ export default function CallProvider({ children }) {
         clientRef.current = client;
 
         client.on("user-published", async (user, mediaType) => {
-          await client.subscribe(user, mediaType);
+          console.log("USER PUBLISHED:", mediaType);
+          try {
+            await client.subscribe(user, mediaType);
 
-          if (mediaType === "video") {
-            remoteVideoTrackRef.current = user.videoTrack || null;
+            if (mediaType === "audio" && user.audioTrack) {
+              remoteAudioTrackRef.current = user.audioTrack;
 
-            if (remoteVideoContainerRef.current && user.videoTrack) {
-              user.videoTrack.play(remoteVideoContainerRef.current);
+              try {
+                user.audioTrack.play();
+              } catch (err) {
+                console.warn("Remote audio autoplay blocked:", err);
+              }
             }
-          }
 
-          if (mediaType === "audio") {
-            user.audioTrack?.play();
+            if (mediaType === "video" && user.videoTrack) {
+              remoteVideoTrackRef.current = user.videoTrack;
+
+              if (remoteVideoContainerRef.current) {
+                user.videoTrack.play(remoteVideoContainerRef.current);
+              }
+            }
+          } catch (err) {
+            console.error("Failed to subscribe remote user:", err);
           }
         });
 
-        client.on("user-unpublished", (user) => {
-          user.audioTrack?.stop();
-          user.videoTrack?.stop();
+        client.on("user-unpublished", (user, mediaType) => {
+          if (mediaType === "audio") {
+            console.log("REMOTE AUDIO RECEIVED");
+            user.audioTrack?.stop();
+
+            if (remoteAudioTrackRef.current === user.audioTrack) {
+              remoteAudioTrackRef.current = null;
+            }
+          }
+
+          if (mediaType === "video") {
+            user.videoTrack?.stop();
+
+            if (remoteVideoTrackRef.current === user.videoTrack) {
+              remoteVideoTrackRef.current = null;
+            }
+          }
         });
 
         await client.join(
@@ -157,7 +183,33 @@ export default function CallProvider({ children }) {
           Number(session.uid)
         );
 
-        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        for (const remoteUser of client.remoteUsers) {
+          if (remoteUser.hasAudio) {
+            await client.subscribe(remoteUser, "audio");
+
+            if (remoteUser.audioTrack) {
+              remoteAudioTrackRef.current = remoteUser.audioTrack;
+              remoteUser.audioTrack.play();
+            }
+          }
+
+          if (remoteUser.hasVideo) {
+            await client.subscribe(remoteUser, "video");
+
+            if (remoteUser.videoTrack) {
+              remoteVideoTrackRef.current = remoteUser.videoTrack;
+
+              if (remoteVideoContainerRef.current) {
+                remoteUser.videoTrack.play(remoteVideoContainerRef.current);
+              }
+            }
+          }
+        }
+
+
+        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+          encoderConfig: "speech_standard",
+        });
         localAudioTrackRef.current = audioTrack;
 
         if (session.callType === "VIDEO") {
@@ -411,6 +463,14 @@ export default function CallProvider({ children }) {
     setIncomingCall(null);
   };
 
+  const playRemoteAudio = () => {
+    try {
+      remoteAudioTrackRef.current?.play();
+    } catch (err) {
+      console.warn("Failed to play remote audio:", err);
+    }
+  };
+
   return (
     <CallContext.Provider
       value={{
@@ -434,6 +494,7 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
+        playRemoteAudio
       }}
     >
       {children}

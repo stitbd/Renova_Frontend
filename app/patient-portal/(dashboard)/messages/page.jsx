@@ -784,14 +784,14 @@ export default function PatientMessagesPage() {
 
                   <button
                     className="msg-action-btn"
-                    onClick={() => handleStartCall("AUDIO")}
+                  // onClick={() => handleStartCall("AUDIO")}
                   >
                     <Phone size={18} />
                   </button>
 
                   <button
                     className="msg-action-btn blue"
-                    onClick={() => handleStartCall("VIDEO")}
+                  // onClick={() => handleStartCall("VIDEO")}
                   >
                     <Video size={18} />
                   </button>
