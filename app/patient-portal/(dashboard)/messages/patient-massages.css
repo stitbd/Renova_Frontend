@@ -2423,6 +2423,230 @@
 }
 
 
+/* busy dialog */
+/* Busy Call Popup */
+.call-busy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.68),
+      rgba(15, 23, 42, 0.82)
+    );
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.call-busy-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+
+  background: #ffffff;
+  border-radius: 26px;
+
+  padding: 34px 28px 26px;
+  text-align: center;
+
+  box-shadow:
+    0 28px 70px rgba(15, 23, 42, 0.28),
+    0 8px 22px rgba(15, 23, 42, 0.12);
+
+  animation: callBusyEnter 0.24s ease-out;
+}
+
+.call-busy-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  padding: 1px;
+  background: linear-gradient(135deg, #dbeafe, #fecaca);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.call-busy-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #f1f5f9;
+  color: #64748b;
+
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.call-busy-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.call-busy-icon-wrap {
+  position: relative;
+
+  width: 84px;
+  height: 84px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.call-busy-pulse {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 999px;
+    background: #f1f5f9;
+
+
+  animation: callBusyPulse 1.6s ease-out infinite;
+}
+
+.call-busy-icon {
+  position: relative;
+  z-index: 1;
+
+  width: 68px;
+  height: 68px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+
+  color: #475569;
+  font-size: 26px;
+
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.call-busy-content {
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.call-busy-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 10px;
+  margin-bottom: 12px;
+
+  border-radius: 999px;
+
+background: #f8fafc;
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.call-busy-title {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+
+  line-height: 1.25;
+}
+
+.call-busy-text {
+  margin: 10px 0 0;
+
+  font-size: 14px;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.call-busy-actions {
+  margin-top: 24px;
+}
+
+.call-busy-primary {
+  width: 100%;
+  height: 46px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #075bb5;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.call-busy-primary:hover {
+  background: #064f9f;
+  transform: translateY(-1px);
+}
+
+@keyframes callBusyEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes callBusyPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+
+  70% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+
+
+
 @keyframes typingBounce {
   0%, 60%, 100% {
     transform: translateY(0);

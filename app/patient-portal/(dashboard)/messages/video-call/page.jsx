@@ -1,9 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "../patient-massages.css";
-import { useAgoraCall } from "@/utils/useAgoraCall";
+import { useCall } from "@/providers/CallProvider";
 
 const recentReports = [
     { name: "Full Body Check-up", date: "12 May 2025" },
@@ -81,6 +81,21 @@ function Toggle({ checked, onChange }) {
 }
 
 export default function VideoCallPage() {
+    const call = useCall();
+    const callSession = call?.activeCall;
+    const isJoined = call?.isJoined;
+    const isCallAccepted = call?.isCallAccepted;
+    const isMuted = call?.isMuted;
+    const isVideoOff = call?.isVideoOff;
+    const error = call?.error;
+    const toggleMute = call?.toggleMute;
+    const toggleVideo = call?.toggleVideo;
+    const endCall = call?.endCall;
+    const formatDuration = call?.formatDuration;
+
+
+
+
     const [activeTab, setActiveTab] = useState("Chat");
     const [lowBandwidth, setLowBandwidth] = useState(false);
     const [audioFirst, setAudioFirst] = useState(false);
@@ -94,20 +109,20 @@ export default function VideoCallPage() {
     const [isExpanded, setIsExpanded] = useState(false);
     const router = useRouter();
 
-    const {
-        isCallAccepted,
-        callSession,
-        localVideoRef,
-        remoteVideoRef,
-        isJoined,
-        isMuted,
-        isVideoOff,
-        error,
-        toggleMute,
-        toggleVideo,
-        endCall,
-        formatDuration,
-    } = useAgoraCall({ mode: "VIDEO" });
+    // const {
+    //     isCallAccepted,
+    //     callSession,
+    //     localVideoRef,
+    //     remoteVideoRef,
+    //     isJoined,
+    //     isMuted,
+    //     isVideoOff,
+    //     error,
+    //     toggleMute,
+    //     toggleVideo,
+    //     endCall,
+    //     formatDuration,
+    // } = useAgoraCall({ mode: "VIDEO" });
 
 
     const handleSend = () => {
@@ -134,6 +149,23 @@ export default function VideoCallPage() {
         };
         input.click();
     };
+
+
+    const localVideoRef = useRef(null);
+    const remoteVideoRef = useRef(null);
+
+    useEffect(() => {
+        if (!call?.activeCall) return;
+
+        call.attachVideoContainers(localVideoRef.current, remoteVideoRef.current);
+    }, [call?.activeCall, call?.isJoined]);
+
+    useEffect(() => {
+        if (!call?.activeCall) {
+            router.replace("/patient-portal/messages");
+        }
+    }, [call?.activeCall, router]);
+
 
     return (
         <div className="call-page-shell">
