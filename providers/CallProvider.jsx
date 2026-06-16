@@ -84,6 +84,10 @@ export default function CallProvider({ children }) {
 
   const cleanupCall = useCallback(async () => {
     leavingRef.current = true;
+    clearCallSession();  // ← MOVE THIS TO THE TOP
+    audioPlayedRef.current = false;      // ← ADD
+    audioPlayPendingRef.current = false; // ← ADD
+
 
     try {
       localAudioTrackRef.current?.stop();
@@ -111,8 +115,6 @@ export default function CallProvider({ children }) {
       await clientRef.current?.leave();
       clientRef.current = null;
     } catch { }
-
-    clearCallSession();
 
     callRef.current = null;
     acceptedRef.current = false;
@@ -280,7 +282,12 @@ export default function CallProvider({ children }) {
   );
 
   const createCallSession = useCallback(
+
     async (session) => {
+      // Reset audio flags for new call
+      audioPlayedRef.current = false;
+      audioPlayPendingRef.current = false;
+
       saveCallSession(session);
 
       callRef.current = session;
@@ -305,6 +312,12 @@ export default function CallProvider({ children }) {
       saved?.token &&
       saved?.uid
     ) {
+
+      // Don't restore if we're already in a call
+      if (clientRef.current) return;
+
+
+
       callRef.current = saved;
       acceptedRef.current = saved.role === "RECEIVER";
 
