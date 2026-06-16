@@ -332,8 +332,19 @@ export default function PatientProfilePage() {
       {/* ── 5. Health Summary ── */}
       <motion.div className="pp-summary-grid" variants={container} initial="hidden" animate="show">
         {healthSummary.map((s, i) => (
-          <motion.div key={i} className={`pp-summary-card pp-${s.color}`} variants={item} whileHover={{ y: -3 }}>
-            <div className="pp-summary-icon"><s.icon size={20} /></div>
+          <motion.div
+            key={i}
+            className={`pp-summary-card pp-${s.color}`}
+            variants={item}
+            whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
+          >
+            <motion.div
+              className="pp-summary-icon"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              <s.icon size={20} />
+            </motion.div>
             <div className="pp-summary-text">
               <span className="pp-summary-value">{s.value}</span>
               <span className="pp-summary-label">{s.label}</span>

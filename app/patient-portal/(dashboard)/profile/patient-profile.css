@@ -253,7 +253,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    transition: box-shadow 0.2s ease;
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .pp-summary-card:hover {
@@ -263,26 +264,31 @@
 .pp-summary-card.pp-blue {
     background: #eff6ff;
     border-color: #bfdbfe;
+    border-left-color: #014fa1;
 }
 
 .pp-summary-card.pp-orange {
     background: #fff7ed;
     border-color: #fed7aa;
+    border-left-color: #f59e0b;
 }
 
 .pp-summary-card.pp-green {
     background: #f0fdf4;
     border-color: #bbf7d0;
+    border-left-color: #16a34a;
 }
 
 .pp-summary-card.pp-purple {
     background: #faf5ff;
     border-color: #ddd6fe;
+    border-left-color: #7c3aed;
 }
 
 .pp-summary-card.pp-cyan {
     background: #ecfeff;
     border-color: #a5f3fc;
+    border-left-color: #0891b2;
 }
 
 .pp-summary-icon {
@@ -348,31 +354,6 @@
 .pp-red .pp-record-icon {
     background: #fee2e2;
     color: #ef4444;
-}
-
-.pp-summary-card.pp-blue {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.pp-summary-card.pp-green {
-    background: #f0fdf4;
-    border-color: #bbf7d0;
-}
-
-.pp-summary-card.pp-orange {
-    background: #fff7ed;
-    border-color: #fed7aa;
-}
-
-.pp-summary-card.pp-purple {
-    background: #faf5ff;
-    border-color: #ddd6fe;
-}
-
-.pp-summary-card.pp-cyan {
-    background: #ecfeff;
-    border-color: #a5f3fc;
 }
 
 /* ══════════════════════════════════════════════════════════════

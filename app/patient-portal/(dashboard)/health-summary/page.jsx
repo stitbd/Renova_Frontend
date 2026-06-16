@@ -91,7 +91,7 @@ const patientData = {
   healthScore: 82
 };
 
-export default function PatientHealthSummary() {
+export default function PatientHealthSummaryPage() {
   return (
     <div className="patient-health-summary">
       {/* Main Content Grid */}
@@ -171,16 +171,20 @@ export default function PatientHealthSummary() {
                 key={idx}
                 className={`stat-card stat-${stat.color}`}
                 variants={item}
-                whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.1)" }}
+                whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
               >
                 <div className="stat-content">
                   <span className="stat-label">{stat.label}</span>
                   <span className="stat-value">{stat.value}</span>
                   <span className="stat-link">View details</span>
                 </div>
-                <div className="stat-icon">
+                <motion.div
+                  className="stat-icon"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <stat.icon size={32} />
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </motion.div>

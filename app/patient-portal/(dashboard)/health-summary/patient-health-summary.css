@@ -171,32 +171,38 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid #e2e8f0;
-    transition: all 0.3s;
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .stat-card.stat-green {
     background: #f0fdf4;
     border-color: #bbf7d0;
+    border-left-color: #16a34a;
 }
 
 .stat-card.stat-blue {
     background: #eff6ff;
     border-color: #bfdbfe;
+    border-left-color: #014fa1;
 }
 
 .stat-card.stat-purple {
     background: #faf5ff;
     border-color: #e9d5ff;
+    border-left-color: #7c3aed;
 }
 
 .stat-card.stat-orange {
     background: #fff7ed;
     border-color: #fed7aa;
+    border-left-color: #f59e0b;
 }
 
 .stat-card.stat-cyan {
     background: #ecfeff;
     border-color: #a5f3fc;
+    border-left-color: #0891b2;
 }
 
 .stat-content {

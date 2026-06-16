@@ -70,14 +70,16 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
-.rx-stat-card.green {
+.stat-card.stat-green {
     background: #f0fdf4;
     border-color: #bbf7d0;
+    border-left-color: #16a34a;
 }
 
-.rx-stat-card.blue {
+.stat-card.stat-blue {
     background: #eff6ff;
     border-color: #bfdbfe;
+    border-left-color: #014fa1;
 }
 
 .rx-stat-card.yellow {
