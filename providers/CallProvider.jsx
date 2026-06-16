@@ -94,6 +94,11 @@ export default function CallProvider({ children }) {
     } catch { }
 
     try {
+      remoteAudioTrackRef.current?.stop();
+      remoteAudioTrackRef.current = null;
+    } catch { }
+
+    try {
       remoteVideoTrackRef.current?.stop();
       remoteVideoTrackRef.current = null;
     } catch { }
@@ -119,7 +124,12 @@ export default function CallProvider({ children }) {
   }, []);
 
   const joinAgora = useCallback(
+
     async (session) => {
+
+      console.log("JOIN AGORA");
+      console.log("CLIENT EXISTS:", !!clientRef.current);
+
       if (clientRef.current) return;
 
       try {
@@ -130,22 +140,53 @@ export default function CallProvider({ children }) {
 
         clientRef.current = client;
 
+        // client.on("user-published", async (user, mediaType) => {
+        //   console.log("USER PUBLISHED:", mediaType);
+        //   try {
+        //     await client.subscribe(user, mediaType);
+
+        //     if (mediaType === "audio" && user.audioTrack) {
+        //       remoteAudioTrackRef.current = user.audioTrack;
+
+        //       try {
+        //         user.audioTrack.play();
+        //       } catch (err) {
+        //         console.warn("Remote audio autoplay blocked:", err);
+        //       }
+        //     }
+
+        //     if (mediaType === "video" && user.videoTrack) {
+        //       remoteVideoTrackRef.current = user.videoTrack;
+
+        //       if (remoteVideoContainerRef.current) {
+        //         user.videoTrack.play(remoteVideoContainerRef.current);
+        //       }
+        //     }
+        //   } catch (err) {
+        //     console.error("Failed to subscribe remote user:", err);
+        //   }
+        // });
+
         client.on("user-published", async (user, mediaType) => {
           console.log("USER PUBLISHED:", mediaType);
+          console.log("REMOTE USER:", user.uid);
+
           try {
             await client.subscribe(user, mediaType);
 
             if (mediaType === "audio" && user.audioTrack) {
+              console.log("AUDIO SUBSCRIBED");
+
               remoteAudioTrackRef.current = user.audioTrack;
 
-              try {
-                user.audioTrack.play();
-              } catch (err) {
-                console.warn("Remote audio autoplay blocked:", err);
-              }
+              user.audioTrack.play();
+
+              console.log("REMOTE AUDIO PLAYING");
             }
 
             if (mediaType === "video" && user.videoTrack) {
+              console.log("VIDEO SUBSCRIBED");
+
               remoteVideoTrackRef.current = user.videoTrack;
 
               if (remoteVideoContainerRef.current) {
@@ -156,10 +197,9 @@ export default function CallProvider({ children }) {
             console.error("Failed to subscribe remote user:", err);
           }
         });
-
         client.on("user-unpublished", (user, mediaType) => {
           if (mediaType === "audio") {
-            console.log("REMOTE AUDIO RECEIVED");
+            console.log("REMOTE AUDIO UNPUBLISHED");
             user.audioTrack?.stop();
 
             if (remoteAudioTrackRef.current === user.audioTrack) {
