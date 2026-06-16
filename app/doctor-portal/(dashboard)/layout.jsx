@@ -5,6 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 import "@/styles/pages/doctor-dashboard.css";
+import FloatingCallWidget from "@/components/FloatingCallWidget";
+import CallProvider from "@/providers/CallProvider";
+import IncomingCallPopup from "@/components/IncomingCallPopup";
 
 const messageCount = 3;
 
@@ -143,145 +146,150 @@ export default function DoctorPortalDashboardLayout({ children }) {
   const prefetchRoute = useRoutePrefetch(navItems.map((item) => item.href));
 
   return (
-    <div className="doctor-dashboard-container">
-      <div
-        className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
-        onClick={() => setSidebarOpen(false)}
-      />
+    <CallProvider>
+      <div className="doctor-dashboard-container">
+        <div
+          className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
+          onClick={() => setSidebarOpen(false)}
+        />
 
-      <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <img src="/images/logo2.png" alt="Renova Life Care" />
-          </div>
-        </div>
-
-        <div className="sidebar-profile">
-          <div className="profile-avatar">
-            <img
-              src="/images/doctors/doctor-2.jpg"
-              alt="Dr. Tasnim Farin"
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
-            />
-          </div>
-          <div className="profile-info">
-            <h3 className="profile-name">Dr. Tasnim Farin</h3>
-            <p className="profile-specialty">Cardiologist</p>
-            <span className="profile-status online">
-              <span className="status-dot" />
-              Online
-            </span>
-          </div>
-        </div>
-
-        <nav className="sidebar-nav">
-          {navItems.map((item) => {
-            const active = isActivePath(pathname, item.href);
-            return (
-              <Link
-                href={item.href}
-                key={item.href}
-                className={`nav-item${active ? " active" : ""}`}
-                onMouseEnter={() => prefetchRoute(item.href)}
-                onFocus={() => prefetchRoute(item.href)}
-                onTouchStart={() => prefetchRoute(item.href)}
-                onClick={() => setSidebarOpen(false)}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-                {item.badge ? <span className="nav-badge">{item.badge}</span> : null}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="sidebar-footer">
-          <button className="support-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-            </svg>
-            <div className="support-text">
-              <span>Need Support?</span>
-              <span>Contact Support</span>
-            </div>
-          </button>
-        </div>
-      </aside>
-
-      <main className="dashboard-main">
-        <header className="dashboard-header">
-          <div className="header-left">
-            <button
-              className="menu-toggle"
-              onClick={() => setSidebarOpen((prev) => !prev)}
-              aria-label="Toggle sidebar"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            </button>
-            <div className="header-greeting">
-              <h1 className="greeting-title">Good Morning, Dr. Tasnim Farin 👋</h1>
-              <p className="greeting-subtitle">Here's what's happening with your practice today.</p>
+        <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : ""}`}>
+          <div className="sidebar-header">
+            <div className="sidebar-logo">
+              <img src="/images/logo2.png" alt="Renova Life Care" />
             </div>
           </div>
 
-          <div className="header-right">
-            <div className="status-toggle">
-              <span className="status-indicator online" />
-              <span>Online</span>
+          <div className="sidebar-profile">
+            <div className="profile-avatar">
+              <img
+                src="/images/doctors/doctor-2.jpg"
+                alt="Dr. Tasnim Farin"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                }}
+              />
             </div>
-
-            <button className="header-icon-btn" aria-label="Notifications">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
-              <span className="notification-badge">5</span>
-            </button>
-
-            <Link
-              href="/doctor-portal/messages"
-              className="header-icon-btn"
-              aria-label="Messages"
-              onMouseEnter={() => prefetchRoute("/doctor-portal/messages")}
-              onFocus={() => prefetchRoute("/doctor-portal/messages")}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-              </svg>
-              <span
-                className="notification-badge"
-                style={{ background: "#014fa1" }}
-              >
-                {messageCount}
+            <div className="profile-info">
+              <h3 className="profile-name">Dr. Tasnim Farin</h3>
+              <p className="profile-specialty">Cardiologist</p>
+              <span className="profile-status online">
+                <span className="status-dot" />
+                Online
               </span>
-            </Link>
+            </div>
+          </div>
 
-            <div className="header-profile">
-              <div className="profile-avatar-small">
+          <nav className="sidebar-nav">
+            {navItems.map((item) => {
+              const active = isActivePath(pathname, item.href);
+              return (
+                <Link
+                  href={item.href}
+                  key={item.href}
+                  className={`nav-item${active ? " active" : ""}`}
+                  onMouseEnter={() => prefetchRoute(item.href)}
+                  onFocus={() => prefetchRoute(item.href)}
+                  onTouchStart={() => prefetchRoute(item.href)}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                  {item.badge ? <span className="nav-badge">{item.badge}</span> : null}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="sidebar-footer">
+            <button className="support-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <div className="support-text">
+                <span>Need Support?</span>
+                <span>Contact Support</span>
+              </div>
+            </button>
+          </div>
+        </aside>
+
+        <main className="dashboard-main">
+          <header className="dashboard-header">
+            <div className="header-left">
+              <button
+                className="menu-toggle"
+                onClick={() => setSidebarOpen((prev) => !prev)}
+                aria-label="Toggle sidebar"
+              >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
                 </svg>
+              </button>
+              <div className="header-greeting">
+                <h1 className="greeting-title">Good Morning, Dr. Tasnim Farin 👋</h1>
+                <p className="greeting-subtitle">Here's what's happening with your practice today.</p>
               </div>
             </div>
-          </div>
-        </header>
 
-        <div className="doctor-dashboard-content">
-          {children}
-          <footer className="admin-footer">
-            <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
-            <span>Developed by <span className="highlight">STITBD</span></span>
-            <span>Version 1.0.0</span>
-          </footer>
-        </div>
-      </main>
-    </div>
+            <div className="header-right">
+              <div className="status-toggle">
+                <span className="status-indicator online" />
+                <span>Online</span>
+              </div>
+
+              <button className="header-icon-btn" aria-label="Notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span className="notification-badge">5</span>
+              </button>
+
+              <Link
+                href="/doctor-portal/messages"
+                className="header-icon-btn"
+                aria-label="Messages"
+                onMouseEnter={() => prefetchRoute("/doctor-portal/messages")}
+                onFocus={() => prefetchRoute("/doctor-portal/messages")}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                </svg>
+                <span
+                  className="notification-badge"
+                  style={{ background: "#014fa1" }}
+                >
+                  {messageCount}
+                </span>
+              </Link>
+
+              <div className="header-profile">
+                <div className="profile-avatar-small">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="doctor-dashboard-content">
+            {children}
+            <footer className="admin-footer">
+              <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
+              <span>Developed by <span className="highlight">STITBD</span></span>
+              <span>Version 1.0.0</span>
+            </footer>
+          </div>
+        </main>
+        
+        <FloatingCallWidget />
+        <IncomingCallPopup />
+      </div>
+    </CallProvider>
   );
 }

@@ -6,6 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useRoutePrefetch from "@/components/common/useRoutePrefetch";
 import "@/styles/pages/patient-dashboard.css";
+import CallProvider from "@/providers/CallProvider";
+import FloatingCallWidget from "@/components/FloatingCallWidget";
+import IncomingCallPopup from "@/components/IncomingCallPopup";
 
 const messageCount = 3;
 
@@ -152,6 +155,7 @@ export default function PatientPortalLayout({ children }) {
   const prefetchRoute = useRoutePrefetch(navItems.map((item) => item.href));
 
   return (
+     <CallProvider>
     <div className="patient-dashboard-container">
       {/* Mobile overlay */}
       <div
@@ -270,6 +274,10 @@ export default function PatientPortalLayout({ children }) {
           </footer>
         </div>
       </main>
+
+        <FloatingCallWidget />
+          <IncomingCallPopup />
     </div>
+     </CallProvider>
   );
 }

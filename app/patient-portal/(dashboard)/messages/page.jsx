@@ -14,12 +14,13 @@ import {
   User,
   Paperclip,
   Check,
-  ArrowDownToLine
+  ArrowDownToLine,
+  PhoneOff
 } from "lucide-react";
 import { CheckCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { videoCallApi } from "@/utils/videoCallApi";
-import { saveCallSession } from "@/utils/callSession";
+import { useCall } from "@/providers/CallProvider";
 
 
 function getInitials(name = "User") {
@@ -83,6 +84,7 @@ function uniqueMessages(messages) {
 }
 
 export default function PatientMessagesPage() {
+  const call = useCall();
   const token = useAppSelector((state) => state.auth.accessToken);
   const authUser = useAppSelector((state) => state.auth.user);
 
@@ -101,7 +103,7 @@ export default function PatientMessagesPage() {
 
   const typingTimeoutRef = useRef(null);
 
-  const MESSAGE_LIMIT = 20;
+  const MESSAGE_LIMIT = 30
 
   const [messagePage, setMessagePage] = useState(1);
   const [hasMoreMessages, setHasMoreMessages] = useState(false);
@@ -110,15 +112,13 @@ export default function PatientMessagesPage() {
   const previousScrollHeightRef = useRef(0);
   const [selectedFile, setSelectedFile] = useState(null);
 
-
-
   const [previewImage, setPreviewImage] = useState(null);
 
   const [error, setError] = useState("");
 
   const router = useRouter();
   const [incomingCall, setIncomingCall] = useState(null);
-
+  const [busyCall, setBusyCall] = useState(null);
 
   const chatBodyRef = useRef(null);
 
@@ -407,6 +407,14 @@ export default function PatientMessagesPage() {
       }));
     };
 
+    const handleCallBusy = (payload) => {
+      setBusyCall({
+        message: payload?.message || "User is currently busy in another call",
+        createdAt: Date.now(),
+      });
+    };
+
+    socket.on("call_busy", handleCallBusy);
     socket.on("typing_start", handleTypingStart);
     socket.on("typing_stop", handleTypingStop);
 
@@ -438,6 +446,7 @@ export default function PatientMessagesPage() {
       socket.off("user_offline", handleUserOffline);
       socket.off("typing_start", handleTypingStart);
       socket.off("typing_stop", handleTypingStop);
+      socket.off("call_busy", handleCallBusy);
     };
   }, [token, selectedConv?.id, authUser?.id]);
 
@@ -569,11 +578,12 @@ export default function PatientMessagesPage() {
 
     const result = await videoCallApi.accept(token, incomingCall.callId);
 
-    saveCallSession({
+    await call.createCallSession({
       ...result.data,
       callerId: incomingCall.callerId,
       callerName: incomingCall.callerName,
       role: "RECEIVER",
+      portal: "PATIENT",
     });
 
     const path =
@@ -588,24 +598,37 @@ export default function PatientMessagesPage() {
   const handleStartCall = async (callType) => {
     if (!token || !selectedConv?.receiverId) return;
 
-    const result = await videoCallApi.start(token, {
-      receiverId: selectedConv.receiverId,
-      callType,
-    });
+    try {
+      const result = await videoCallApi.start(token, {
+        receiverId: selectedConv.receiverId,
+        callType,
+      });
 
-    saveCallSession({
-      ...result.data,
-      receiverId: selectedConv.receiverId,
-      receiverName: selectedConv.name,
-      role: "CALLER",
-    });
+      await call.createCallSession({
+        ...result.data,
+        receiverId: selectedConv.receiverId,
+        receiverName: selectedConv.name,
+        role: "CALLER",
+        portal: "PATIENT",
+      });
 
-    const path =
-      callType === "AUDIO"
-        ? "/patient-portal/messages/audio-call"
-        : "/patient-portal/messages/video-call";
+      const path =
+        callType === "AUDIO"
+          ? "/patient-portal/messages/audio-call"
+          : "/patient-portal/messages/video-call";
 
-    router.push(`${path}?callId=${result.data.callId}`);
+      router.push(`${path}?callId=${result.data.callId}`);
+    } catch (err) {
+      if (err?.message?.toLowerCase().includes("busy")) {
+        setBusyCall({
+          message: err.message,
+          createdAt: Date.now(),
+        });
+        return;
+      }
+
+      setError(err.message || "Failed to start call");
+    }
   };
 
   const handleRejectCall = async () => {
@@ -1126,6 +1149,49 @@ export default function PatientMessagesPage() {
 
               <button className="incoming-call-accept" onClick={handleAcceptCall}>
                 Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {busyCall && (
+        <div className="call-busy-overlay">
+          <div className="call-busy-card">
+            <button
+              type="button"
+              className="call-busy-close"
+              onClick={() => setBusyCall(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            <div className="call-busy-icon-wrap">
+              <div className="call-busy-pulse"></div>
+              <div className="call-busy-icon">  <PhoneOff size={28} />
+              </div>
+            </div>
+
+            <div className="call-busy-content">
+              <span className="call-busy-label">Call unavailable</span>
+
+              <h3 className="call-busy-title">
+                {selectedConv?.name || "User"} is busy
+              </h3>
+
+              <p className="call-busy-text">
+                {busyCall.message ||
+                  "This user is currently on another call. Please try again later."}
+              </p>
+            </div>
+
+            <div className="call-busy-actions">
+              <button
+                type="button"
+                className="call-busy-primary"
+                onClick={() => setBusyCall(null)}
+              >
+                Got it
               </button>
             </div>
           </div>
