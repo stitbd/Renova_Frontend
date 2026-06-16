@@ -537,7 +537,7 @@ export default function MessagesPage() {
         receiverId: selectedConv.receiverId,
         receiverName: selectedConv.name,
         role: "CALLER",
-        portal: "PATIENT",
+        portal: "DOCTOR",
       });
 
       const path =
