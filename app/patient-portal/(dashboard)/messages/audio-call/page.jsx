@@ -146,17 +146,10 @@ export default function AudioCallPage() {
     }, [call?.activeCall, router]);
 
     useEffect(() => {
-        if (!call?.isCallAccepted) return;
-
-        call.playRemoteAudio?.();
-    }, [call?.isCallAccepted]);
-
-
-    // ADD THIS — handles track arriving after page load
-    useEffect(() => {
         if (!call?.isJoined || !call?.isCallAccepted) return;
         call.playRemoteAudio?.();
-    }, [call?.isJoined]);
+    }, [call?.isJoined, call?.isCallAccepted]);
+
 
 
     return (
