@@ -117,7 +117,6 @@ export default function PatientMessagesPage() {
   const [error, setError] = useState("");
 
   const router = useRouter();
-  const [incomingCall, setIncomingCall] = useState(null);
   const [busyCall, setBusyCall] = useState(null);
 
   const chatBodyRef = useRef(null);
@@ -358,20 +357,6 @@ export default function PatientMessagesPage() {
       );
     };
 
-    const handleIncomingCall = (payload) => {
-      setIncomingCall({
-        ...payload,
-        receivedAt: Date.now(),
-      });
-    };
-
-    const handleCallMissed = (payload) => {
-      setIncomingCall((prev) => {
-        if (!prev) return null;
-        if (!payload?.callId || prev.callId === payload.callId) return null;
-        return prev;
-      });
-    };
 
     const handleOnlineUsers = ({ onlineUserIds = [] }) => {
       setOnlineUserIds(new Set(onlineUserIds));
@@ -422,10 +407,7 @@ export default function PatientMessagesPage() {
     socket.on("message_sent", handleIncomingMessage);
     socket.on("message_seen", handleSeenMessage);
 
-    socket.on("incoming_audio_call", handleIncomingCall);
-    socket.on("incoming_video_call", handleIncomingCall);
-    socket.on("audio_call_missed", handleCallMissed);
-    socket.on("video_call_missed", handleCallMissed);
+
 
     socket.on("online_users", handleOnlineUsers);
     socket.on("user_online", handleUserOnline);
@@ -436,10 +418,6 @@ export default function PatientMessagesPage() {
       socket.off("message_sent", handleIncomingMessage);
       socket.off("message_seen", handleSeenMessage);
 
-      socket.off("incoming_audio_call", handleIncomingCall);
-      socket.off("incoming_video_call", handleIncomingCall);
-      socket.off("audio_call_missed", handleCallMissed);
-      socket.off("video_call_missed", handleCallMissed);
 
       socket.off("online_users", handleOnlineUsers);
       socket.off("user_online", handleUserOnline);
@@ -466,19 +444,6 @@ export default function PatientMessagesPage() {
       });
     }
   }, [selectedMessages.length]);
-
-  useEffect(() => {
-    if (!incomingCall?.callId) return;
-
-    const timer = setTimeout(() => {
-      setIncomingCall((prev) => {
-        if (prev?.callId === incomingCall.callId) return null;
-        return prev;
-      });
-    }, 31_000);
-
-    return () => clearTimeout(timer);
-  }, [incomingCall?.callId]);
 
 
   const handleChatScroll = () => {
@@ -573,27 +538,6 @@ export default function PatientMessagesPage() {
     }
   };
 
-  const handleAcceptCall = async () => {
-    if (!incomingCall?.callId || !token) return;
-
-    const result = await videoCallApi.accept(token, incomingCall.callId);
-
-    await call.createCallSession({
-      ...result.data,
-      callerId: incomingCall.callerId,
-      callerName: incomingCall.callerName,
-      role: "RECEIVER",
-      portal: "PATIENT",
-    });
-
-    const path =
-      incomingCall.callType === "AUDIO"
-        ? "/patient-portal/messages/audio-call"
-        : "/patient-portal/messages/video-call";
-
-    setIncomingCall(null);
-    router.push(`${path}?callId=${incomingCall.callId}`);
-  };
 
   const handleStartCall = async (callType) => {
     if (!token || !selectedConv?.receiverId) return;
@@ -631,12 +575,6 @@ export default function PatientMessagesPage() {
     }
   };
 
-  const handleRejectCall = async () => {
-    if (!incomingCall?.callId || !token) return;
-
-    await videoCallApi.reject(token, incomingCall.callId);
-    setIncomingCall(null);
-  };
 
   const markMessageAsSeen = async (msg) => {
     if (!token || !msg?.id || msg.seenAt) return;
@@ -1133,27 +1071,6 @@ export default function PatientMessagesPage() {
           )}
         </div>
       </div>
-      {incomingCall && (
-        <div className="incoming-call-overlay">
-          <div className="incoming-call-card">
-            <p className="incoming-call-label">
-              Incoming {incomingCall.callType === "AUDIO" ? "Audio" : "Video"} Call
-            </p>
-
-            <h3>{incomingCall.callerName}</h3>
-
-            <div className="incoming-call-actions">
-              <button className="incoming-call-reject" onClick={handleRejectCall}>
-                Reject
-              </button>
-
-              <button className="incoming-call-accept" onClick={handleAcceptCall}>
-                Accept
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       {busyCall && (
         <div className="call-busy-overlay">
           <div className="call-busy-card">

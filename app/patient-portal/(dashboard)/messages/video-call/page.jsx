@@ -109,21 +109,6 @@ export default function VideoCallPage() {
     const [isExpanded, setIsExpanded] = useState(false);
     const router = useRouter();
 
-    // const {
-    //     isCallAccepted,
-    //     callSession,
-    //     localVideoRef,
-    //     remoteVideoRef,
-    //     isJoined,
-    //     isMuted,
-    //     isVideoOff,
-    //     error,
-    //     toggleMute,
-    //     toggleVideo,
-    //     endCall,
-    //     formatDuration,
-    // } = useAgoraCall({ mode: "VIDEO" });
-
 
     const handleSend = () => {
         if (!inputText.trim() && pendingFiles.length === 0) return;
