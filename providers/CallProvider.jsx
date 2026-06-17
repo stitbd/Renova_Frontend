@@ -24,6 +24,39 @@ const CallContext = createContext(null);
 
 export const useCall = () => useContext(CallContext);
 
+
+const getPreferredMicrophone = async () => {
+  const microphones = await AgoraRTC.getMicrophones();
+
+  if (!microphones.length) {
+    throw new Error("No microphone found");
+  }
+
+  const savedMicId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("renova_preferred_mic_id")
+      : null;
+
+  const savedMic = microphones.find((mic) => mic.deviceId === savedMicId);
+
+  if (savedMic) return savedMic;
+
+  const headsetMic = microphones.find((mic) => {
+    const label = mic.label.toLowerCase();
+
+    return (
+      label.includes("headset") ||
+      label.includes("headphone") ||
+      label.includes("earphone") ||
+      label.includes("bluetooth") ||
+      label.includes("buds")
+    );
+  });
+
+  return headsetMic || microphones[0];
+};
+
+
 export default function CallProvider({ children }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -214,11 +247,6 @@ export default function CallProvider({ children }) {
             console.log("AUDIO SUBSCRIBED FROM:", user.uid);
 
             await playRemoteAudioTrack(user.audioTrack);
-
-            setTimeout(() => {
-              console.log("RETRY REMOTE AUDIO PLAY");
-              user.audioTrack.play();
-            }, 1000);
           }
 
           if (mediaType === "video" && user.videoTrack) {
@@ -282,25 +310,13 @@ export default function CallProvider({ children }) {
           }
         }
 
+        const selectedMic = await getPreferredMicrophone();
 
-        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-        //   encoderConfig: {
-        //     sampleRate: 48000,
-        //     stereo: false,
-        //     bitrate: 64,
-        //   },
-        //   AEC: true,
-        //   ANS: false,
-        //   AGC: true,
-        // });
+        console.log("SELECTED MIC:", selectedMic);
 
-        const microphones = await AgoraRTC.getMicrophones();
-
-        console.log("AVAILABLE MICROPHONES:");
-        console.table(microphones);
-
-
-        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+          microphoneId: selectedMic.deviceId,
+        });
 
         // const selectedMic = microphones.find((mic) =>
         //   mic.label.toLowerCase().includes("headset")
