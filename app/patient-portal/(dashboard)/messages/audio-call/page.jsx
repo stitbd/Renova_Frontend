@@ -147,10 +147,9 @@ export default function AudioCallPage() {
 
     useEffect(() => {
         if (!call?.isJoined || !call?.isCallAccepted) return;
-     
+
+        call.restartRemoteAudio?.();
     }, [call?.isJoined, call?.isCallAccepted]);
-
-
 
     return (
         <div className="call-page-shell">

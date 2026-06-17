@@ -142,9 +142,10 @@ export default function AudioCallPage() {
     }, [call?.activeCall, router]);
 
     useEffect(() => {
-        if (!call?.isCallAccepted) return;
+        if (!call?.isJoined || !call?.isCallAccepted) return;
 
-    }, [call?.isCallAccepted]);
+        call.restartRemoteAudio?.();
+    }, [call?.isJoined, call?.isCallAccepted]);
 
 
     return (
