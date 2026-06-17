@@ -2,7 +2,7 @@
 
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "https://d55e-2401-f40-1587-0-ed4f-4bed-3dd2-b569.ngrok-free.app";
+const SOCKET_URL = "http://192.168.0.164:5001";
 
 let socket = null;
 
