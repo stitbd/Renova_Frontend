@@ -227,6 +227,8 @@ export default function CallProvider({ children }) {
           }
         });
 
+
+
         client.on("user-unpublished", (user, mediaType) => {
 
           if (mediaType === "audio") {
@@ -246,6 +248,8 @@ export default function CallProvider({ children }) {
             }
           }
         });
+
+
 
         await client.join(
           session.appId,
@@ -277,11 +281,18 @@ export default function CallProvider({ children }) {
 
 
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-          encoderConfig: "speech_standard",
+          encoderConfig: {
+            sampleRate: 48000,
+            stereo: false,
+            bitrate: 64,
+          },
           AEC: true,
-          ANS: true,
+          ANS: false,
           AGC: true,
         });
+
+
+        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
 
         localAudioTrackRef.current = audioTrack;
 
@@ -300,6 +311,16 @@ export default function CallProvider({ children }) {
         } else {
           await client.publish([audioTrack]);
         }
+
+
+        console.log("LOCAL AUDIO PUBLISHED:", {
+          uid: session.uid,
+          callId: session.callId,
+          role: session.role,
+          enabled: audioTrack.enabled,
+          level: audioTrack.getVolumeLevel?.(),
+        });
+
 
         setIsJoined(true);
       } catch (err) {
@@ -458,6 +479,15 @@ export default function CallProvider({ children }) {
 
     return () => clearTimeout(timer);
   }, [incomingCall?.callId]);
+
+
+  useEffect(() => {
+    console.log("CALL PROVIDER MOUNTED:", pathname);
+
+    return () => {
+      console.log("CALL PROVIDER UNMOUNTED:", pathname);
+    };
+  }, []);
 
 
   const toggleMute = async () => {
