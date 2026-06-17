@@ -24,6 +24,39 @@ const CallContext = createContext(null);
 
 export const useCall = () => useContext(CallContext);
 
+
+const getPreferredMicrophone = async () => {
+  const microphones = await AgoraRTC.getMicrophones();
+
+  if (!microphones.length) {
+    throw new Error("No microphone found");
+  }
+
+  const savedMicId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("renova_preferred_mic_id")
+      : null;
+
+  const savedMic = microphones.find((mic) => mic.deviceId === savedMicId);
+
+  if (savedMic) return savedMic;
+
+  const headsetMic = microphones.find((mic) => {
+    const label = mic.label.toLowerCase();
+
+    return (
+      label.includes("headset") ||
+      label.includes("headphone") ||
+      label.includes("earphone") ||
+      label.includes("bluetooth") ||
+      label.includes("buds")
+    );
+  });
+
+  return headsetMic || microphones[0];
+};
+
+
 export default function CallProvider({ children }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -146,6 +179,48 @@ export default function CallProvider({ children }) {
     return timer;
   };
 
+  // const playRemoteAudioTrack = useCallback(async (audioTrack) => {
+  //   if (!audioTrack) return;
+
+  //   try {
+  //     remoteAudioTrackRef.current = audioTrack;
+
+  //     audioTrack.setVolume?.(100);
+  //     // audioTrack.play();
+
+  //     const mediaStreamTrack = audioTrack.getMediaStreamTrack?.();
+
+  //     if (mediaStreamTrack) {
+  //       let audioEl = remoteAudioElementRef.current;
+
+  //       if (!audioEl) {
+  //         audioEl = document.createElement("audio");
+  //         audioEl.autoplay = true;
+  //         audioEl.playsInline = true;
+  //         audioEl.controls = false;
+  //         audioEl.style.display = "none";
+  //         document.body.appendChild(audioEl);
+  //         remoteAudioElementRef.current = audioEl;
+  //       }
+
+  //       audioEl.srcObject = new MediaStream([mediaStreamTrack]);
+  //       audioEl.volume = 1;
+  //       audioEl.muted = false;
+
+  //       try {
+  //         await audioEl.play();
+  //       } catch (err) {
+  //         console.warn("Forced audio element play failed:", err);
+  //       }
+  //     }
+
+  //     console.log("REMOTE AUDIO FORCE PLAYING");
+  //   } catch (err) {
+  //     console.warn("Remote audio play failed:", err);
+  //   }
+  // }, []);
+
+
   const playRemoteAudioTrack = useCallback(async (audioTrack) => {
     if (!audioTrack) return;
 
@@ -153,39 +228,15 @@ export default function CallProvider({ children }) {
       remoteAudioTrackRef.current = audioTrack;
 
       audioTrack.setVolume?.(100);
-      // audioTrack.play();
+      audioTrack.play();
 
-      const mediaStreamTrack = audioTrack.getMediaStreamTrack?.();
-
-      if (mediaStreamTrack) {
-        let audioEl = remoteAudioElementRef.current;
-
-        if (!audioEl) {
-          audioEl = document.createElement("audio");
-          audioEl.autoplay = true;
-          audioEl.playsInline = true;
-          audioEl.controls = false;
-          audioEl.style.display = "none";
-          document.body.appendChild(audioEl);
-          remoteAudioElementRef.current = audioEl;
-        }
-
-        audioEl.srcObject = new MediaStream([mediaStreamTrack]);
-        audioEl.volume = 1;
-        audioEl.muted = false;
-
-        try {
-          await audioEl.play();
-        } catch (err) {
-          console.warn("Forced audio element play failed:", err);
-        }
-      }
-
-      console.log("REMOTE AUDIO FORCE PLAYING");
+      console.log("REMOTE AUDIO PLAYING BY AGORA");
     } catch (err) {
       console.warn("Remote audio play failed:", err);
     }
   }, []);
+
+
 
   const joinAgora = useCallback(
 
@@ -214,11 +265,6 @@ export default function CallProvider({ children }) {
             console.log("AUDIO SUBSCRIBED FROM:", user.uid);
 
             await playRemoteAudioTrack(user.audioTrack);
-
-            setTimeout(() => {
-              console.log("RETRY REMOTE AUDIO PLAY");
-              user.audioTrack.play();
-            }, 1000);
           }
 
           if (mediaType === "video" && user.videoTrack) {
@@ -282,35 +328,23 @@ export default function CallProvider({ children }) {
           }
         }
 
-
-        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-        //   encoderConfig: {
-        //     sampleRate: 48000,
-        //     stereo: false,
-        //     bitrate: 64,
-        //   },
-        //   AEC: true,
-        //   ANS: false,
-        //   AGC: true,
-        // });
-
-        const microphones = await AgoraRTC.getMicrophones();
-
-        console.log("AVAILABLE MICROPHONES:");
-        console.table(microphones);
-
-
-        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-
-        const selectedMic = microphones.find((mic) =>
-          mic.label.toLowerCase().includes("headset")
-        ) || microphones[0];
+        const selectedMic = await getPreferredMicrophone();
 
         console.log("SELECTED MIC:", selectedMic);
 
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
           microphoneId: selectedMic.deviceId,
         });
+
+        // const selectedMic = microphones.find((mic) =>
+        //   mic.label.toLowerCase().includes("headset")
+        // ) || microphones[0];
+
+        // console.log("SELECTED MIC:", selectedMic);
+
+        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+        //   microphoneId: selectedMic.deviceId,
+        // });
 
 
         console.log(
@@ -631,6 +665,16 @@ export default function CallProvider({ children }) {
     setIncomingCall(null);
   };
 
+  const restartRemoteAudio = async () => {
+    const track = remoteAudioTrackRef.current;
+    if (!track) return;
+
+    track.setVolume?.(100);
+    track.play();
+
+    console.log("REMOTE AUDIO RESTARTED");
+  };
+
 
   return (
     <CallContext.Provider
@@ -655,6 +699,7 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
+        restartRemoteAudio
 
       }}
     >
