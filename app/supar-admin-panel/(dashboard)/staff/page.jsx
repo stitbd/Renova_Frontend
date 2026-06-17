@@ -2,6 +2,7 @@
 // OutletStaffPage.jsx
 import { useState } from "react";
 import "./outlet-staff.css";
+import { motion } from "framer-motion";
 import { StatusBadge } from "./StaffFormComponents";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -78,15 +79,24 @@ export default function OutletStaffPage() {
         <div>
             <div className="stats-grid">
                 {stats.map(stat => (
-                    <div key={stat.label} className={`stat-card ${stat.cls}`}>
-                        <div className="stat-icon" style={{ background: stat.bg }}>
+                    <motion.div
+                        key={stat.label}
+                        className={`stat-card ${stat.cls}`}
+                        whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
+                    >
+                        <motion.div
+                            className="stat-icon"
+                            style={{ background: stat.bg }}
+                            whileHover={{ scale: 1.1, rotate: 5 }}
+                            transition={{ type: "spring", stiffness: 400 }}
+                        >
                             <Icon n={stat.icon} s={20} c={stat.color} />
-                        </div>
+                        </motion.div>
                         <div>
                             <div className="stat-value" style={{ color: stat.color }}>{stat.value}</div>
                             <div className="stat-label">{stat.label}</div>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
 

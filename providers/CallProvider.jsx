@@ -21,6 +21,7 @@ import { getSocket } from "@/utils/socket";
 
 const CallContext = createContext(null);
 
+
 export const useCall = () => useContext(CallContext);
 
 export default function CallProvider({ children }) {
@@ -306,7 +307,7 @@ export default function CallProvider({ children }) {
         setError(err.message || "Failed to join call");
       }
     },
-    []
+    [playRemoteAudioTrack]
   );
 
   const createCallSession = useCallback(
@@ -571,7 +572,7 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
-        
+
       }}
     >
       {children}
