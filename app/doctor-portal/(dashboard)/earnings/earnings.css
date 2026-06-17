@@ -540,7 +540,16 @@
 .earnings-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 640px;
+}
+
+.withdrawal-history-table {
+    min-width: unset;
+}
+
+.withdrawal-history-table th,
+.withdrawal-history-table td {
+    padding: 10px 12px;
+    font-size: 12px;
 }
 
 .earnings-table th {
@@ -573,40 +582,41 @@
     color: var(--color-primary);
 }
 
-.earnings-table .status-cell {
+.status-cell {
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 600;
     display: inline-block;
+    white-space: nowrap;
 }
 
-.earnings-table .status-cell.completed {
+.status-cell.completed {
     background: #dcfce7;
     color: #16a34a;
 }
 
-.earnings-table .status-cell.pending {
+.status-cell.pending {
     background: #fef3c7;
     color: #d97706;
 }
 
-.earnings-table .status-cell.refunded {
+.status-cell.refunded {
     background: #dbeafe;
     color: #1d4ed8;
 }
 
-.earnings-table .status-cell.cancelled {
+.status-cell.cancelled {
     background: #fee2e2;
     color: #dc2626;
 }
 
-.earnings-table .status-cell.processing {
+.status-cell.processing {
     background: #fef3c7;
     color: #d97706;
 }
 
-.earnings-table .status-cell.failed {
+.status-cell.failed {
     background: #fee2e2;
     color: #dc2626;
 }
@@ -914,13 +924,11 @@
     }
 }
 
-
-
 /* ===== Page Layout ===== */
 .earnings-page {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
 }
 
 .earnings-page-header {
@@ -1307,7 +1315,6 @@
 .earnings-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 640px;
 }
 
 .earnings-table th {
@@ -1407,6 +1414,157 @@
 .pagination-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+.transaction-cards {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transaction-card {
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border-default);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transaction-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.transaction-card-id {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.transaction-card-patient {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin: 2px 0 0;
+}
+
+.transaction-card-type {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin: 2px 0 0;
+}
+
+.transaction-card-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.transaction-card-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.transaction-card-field-label {
+    font-size: 10px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.transaction-card-field-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.transaction-card-field-value.net {
+    color: var(--color-primary);
+}
+
+.transaction-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border-muted);
+}
+
+.transaction-card-apt {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.transaction-card-date {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+/* ===== Refund Cards (Mobile) ===== */
+.refund-cards {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.refund-card {
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border-default);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.refund-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.refund-card-patient {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+}
+
+.refund-card-apt {
+    font-size: 11px;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.refund-card-amount {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.refund-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border-muted);
+}
+
+.refund-card-reason {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.refund-card-date {
+    font-size: 11px;
+    color: var(--color-text-muted);
 }
 
 /* ===== Withdrawal Section ===== */
@@ -1657,6 +1815,10 @@
         grid-template-columns: 1fr;
     }
 
+    .breakdown-card {
+        padding: 5px;
+    }
+
     .withdrawal-methods-grid {
         grid-template-columns: 1fr;
     }
@@ -1678,5 +1840,50 @@
     .settlement-card {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .transaction-filters {
+        gap: 8px;
+    }
+
+    .filter-pills {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-pills::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-pill {
+        flex-shrink: 0;
+    }
+
+    .transaction-table-wrapper {
+        display: none;
+    }
+
+    .transaction-cards {
+        display: flex;
+    }
+
+    .transaction-card-body {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .refund-table-wrapper {
+        display: none;
+    }
+
+    .refund-cards {
+        display: flex;
+    }
+
+    .withdrawal-history-table th,
+    .withdrawal-history-table td {
+        padding: 8px 10px;
+        font-size: 11px;
     }
 }

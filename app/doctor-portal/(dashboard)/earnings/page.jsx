@@ -493,7 +493,7 @@ function TransactionHistory({ transactions }) {
         </div>
       </div>
 
-      <div className="table-scroll">
+      <div className="table-scroll transaction-table-wrapper">
         <table className="earnings-table">
           <thead>
             <tr>
@@ -533,6 +533,44 @@ function TransactionHistory({ transactions }) {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="transaction-cards">
+        {paged.map((t) => (
+          <div key={t.id} className="transaction-card">
+            <div className="transaction-card-header">
+              <div>
+                <div className="transaction-card-id">{t.id}</div>
+                <div className="transaction-card-patient">{t.patient}</div>
+                <div className="transaction-card-type">{t.type}</div>
+              </div>
+              <span className={`status-cell ${t.status.toLowerCase()}`}>{t.status}</span>
+            </div>
+            <div className="transaction-card-body">
+              <div className="transaction-card-field">
+                <span className="transaction-card-field-label">Fee</span>
+                <span className="transaction-card-field-value">৳{t.fee}</span>
+              </div>
+              <div className="transaction-card-field">
+                <span className="transaction-card-field-label">Charge</span>
+                <span className="transaction-card-field-value">৳{t.charge}</span>
+              </div>
+              <div className="transaction-card-field">
+                <span className="transaction-card-field-label">Receives</span>
+                <span className="transaction-card-field-value net">৳{t.net}</span>
+              </div>
+            </div>
+            <div className="transaction-card-footer">
+              <span className="transaction-card-apt">{t.appointmentId}</span>
+              <span className="transaction-card-date">{t.date}</span>
+            </div>
+          </div>
+        ))}
+        {paged.length === 0 && (
+          <p style={{ textAlign: "center", color: "var(--color-text-muted)", padding: "20px 0" }}>
+            No transactions found
+          </p>
+        )}
       </div>
 
       <div className="table-pagination">
@@ -656,7 +694,7 @@ function WithdrawalHistory({ history }) {
         <h3 className="earnings-section-title">Withdrawal History</h3>
       </div>
       <div className="table-scroll">
-        <table className="earnings-table">
+        <table className="earnings-table withdrawal-history-table">
           <thead>
             <tr>
               <th>Date</th>
@@ -704,30 +742,51 @@ function SettlementAndRefunds({ settlement, refunds }) {
       </div>
 
       {refunds.length > 0 && (
-        <div className="table-scroll" style={{ marginTop: "16px" }}>
-          <table className="earnings-table">
-            <thead>
-              <tr>
-                <th>Patient</th>
-                <th>Appointment ID</th>
-                <th>Amount</th>
-                <th>Reason</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {refunds.map((r, i) => (
-                <tr key={i}>
-                  <td>{r.patient}</td>
-                  <td>{r.appointmentId}</td>
-                  <td className="amount-cell">৳{r.amount}</td>
-                  <td>{r.reason}</td>
-                  <td>{r.date}</td>
+        <>
+          <div className="table-scroll refund-table-wrapper" style={{ marginTop: "16px" }}>
+            <table className="earnings-table">
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Appointment ID</th>
+                  <th>Amount</th>
+                  <th>Reason</th>
+                  <th>Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {refunds.map((r, i) => (
+                  <tr key={i}>
+                    <td>{r.patient}</td>
+                    <td>{r.appointmentId}</td>
+                    <td className="amount-cell">৳{r.amount}</td>
+                    <td>{r.reason}</td>
+                    <td>{r.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Refund Cards */}
+          <div className="refund-cards">
+            {refunds.map((r, i) => (
+              <div key={i} className="refund-card">
+                <div className="refund-card-header">
+                  <div>
+                    <div className="refund-card-patient">{r.patient}</div>
+                    <div className="refund-card-apt">{r.appointmentId}</div>
+                  </div>
+                  <div className="refund-card-amount">৳{r.amount}</div>
+                </div>
+                <div className="refund-card-footer">
+                  <span className="refund-card-reason">{r.reason}</span>
+                  <span className="refund-card-date">{r.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

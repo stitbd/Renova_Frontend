@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { siteConfig } from "@/constants/siteData";
+import { motion } from "framer-motion";
 import "./dashboard.css";
 import StatCard from "@/components/doctor-dashboard/StatCard";
 import PatientQueueList from "@/components/doctor-dashboard/PatientQueueList";

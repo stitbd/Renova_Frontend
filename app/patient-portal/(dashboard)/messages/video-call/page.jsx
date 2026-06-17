@@ -152,11 +152,10 @@ export default function VideoCallPage() {
     }, [call?.activeCall, router]);
 
     useEffect(() => {
-  if (!call?.isJoined || !call?.isCallAccepted) return;
+        if (!call?.isJoined || !call?.isCallAccepted) return;
 
-}, [call?.isJoined, call?.isCallAccepted]);
-
-
+        call.restartRemoteAudio?.();
+    }, [call?.isJoined, call?.isCallAccepted]);
 
 
     return (

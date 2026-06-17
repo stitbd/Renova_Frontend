@@ -40,6 +40,8 @@ export default function CallProvider({ children }) {
   const [incomingCall, setIncomingCall] = useState(null);
 
 
+  const remoteAudioElementRef = useRef(null);
+
   const callRef = useRef(null);
   const acceptedRef = useRef(false);
   const leavingRef = useRef(false);
@@ -83,6 +85,15 @@ export default function CallProvider({ children }) {
   const cleanupCall = useCallback(async () => {
     leavingRef.current = true;
     clearCallSession();  // ← MOVE THIS TO THE TOP
+
+    try {
+      if (remoteAudioElementRef.current) {
+        remoteAudioElementRef.current.pause();
+        remoteAudioElementRef.current.srcObject = null;
+        remoteAudioElementRef.current.remove();
+        remoteAudioElementRef.current = null;
+      }
+    } catch { }
 
 
     try {
@@ -134,6 +145,46 @@ export default function CallProvider({ children }) {
     return timer;
   };
 
+  const playRemoteAudioTrack = useCallback(async (audioTrack) => {
+    if (!audioTrack) return;
+
+    try {
+      remoteAudioTrackRef.current = audioTrack;
+
+      audioTrack.setVolume?.(100);
+      // audioTrack.play();
+
+      const mediaStreamTrack = audioTrack.getMediaStreamTrack?.();
+
+      if (mediaStreamTrack) {
+        let audioEl = remoteAudioElementRef.current;
+
+        if (!audioEl) {
+          audioEl = document.createElement("audio");
+          audioEl.autoplay = true;
+          audioEl.playsInline = true;
+          audioEl.controls = false;
+          audioEl.style.display = "none";
+          document.body.appendChild(audioEl);
+          remoteAudioElementRef.current = audioEl;
+        }
+
+        audioEl.srcObject = new MediaStream([mediaStreamTrack]);
+        audioEl.volume = 1;
+        audioEl.muted = false;
+
+        try {
+          await audioEl.play();
+        } catch (err) {
+          console.warn("Forced audio element play failed:", err);
+        }
+      }
+
+      console.log("REMOTE AUDIO FORCE PLAYING");
+    } catch (err) {
+      console.warn("Remote audio play failed:", err);
+    }
+  }, []);
 
   const joinAgora = useCallback(
 
@@ -156,13 +207,12 @@ export default function CallProvider({ children }) {
         client.on("user-published", async (user, mediaType) => {
           await client.subscribe(user, mediaType);
 
+
+
           if (mediaType === "audio" && user.audioTrack) {
             console.log("AUDIO SUBSCRIBED");
 
-            remoteAudioTrackRef.current = user.audioTrack;
-
-            user.audioTrack.setVolume?.(100);
-            user.audioTrack.play();
+            await playRemoteAudioTrack(user.audioTrack);
 
             console.log("REMOTE AUDIO PLAYING");
           }
@@ -207,10 +257,7 @@ export default function CallProvider({ children }) {
           if (remoteUser.hasAudio) {
             await client.subscribe(remoteUser, "audio");
             if (remoteUser.audioTrack) {
-              remoteAudioTrackRef.current = remoteUser.audioTrack;
-
-              remoteUser.audioTrack.setVolume?.(100);
-              remoteUser.audioTrack.play();
+              await playRemoteAudioTrack(remoteUser.audioTrack);
             }
           }
 
@@ -524,6 +571,7 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
+        
       }}
     >
       {children}
