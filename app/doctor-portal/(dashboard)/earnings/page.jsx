@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import "./earnings.css";
 
 // ========== ICONS ==========
@@ -299,15 +300,25 @@ function EarningsSummaryCards({ data }) {
   return (
     <div className="earnings-overview-grid">
       {cards.map((card) => (
-        <div key={card.key} className={`earnings-overview-card ${card.color}`}>
-          <div className="earnings-overview-icon">{card.icon}</div>
+        <motion.div
+          key={card.key}
+          className={`earnings-overview-card ${card.color}`}
+          whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
+        >
+          <motion.div
+            className="earnings-overview-icon"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
+            {card.icon}
+          </motion.div>
           <div className="earnings-overview-info">
             <p className="earnings-overview-label">{card.label}</p>
             <h3 className="earnings-overview-value">
               {card.isCount ? card.value : `৳${card.value.toLocaleString("en-IN")}`}
             </h3>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );
