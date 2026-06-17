@@ -283,19 +283,19 @@ export default function CallProvider({ children }) {
         }
 
 
-        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-          encoderConfig: {
-            sampleRate: 48000,
-            stereo: false,
-            bitrate: 64,
-          },
-          AEC: true,
-          ANS: false,
-          AGC: true,
-        });
+        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+        //   encoderConfig: {
+        //     sampleRate: 48000,
+        //     stereo: false,
+        //     bitrate: 64,
+        //   },
+        //   AEC: true,
+        //   ANS: false,
+        //   AGC: true,
+        // });
 
 
-        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
 
         localAudioTrackRef.current = audioTrack;
 
