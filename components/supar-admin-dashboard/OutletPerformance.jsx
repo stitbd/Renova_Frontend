@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion"; // ✅ Added
+import { motion } from "framer-motion";
+import { TrendingUp, ArrowRight } from "lucide-react";
 
 export default function OutletPerformance({ data }) {
   return (
-    <motion.div 
+    <motion.div
       className="performance-card"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -14,9 +15,7 @@ export default function OutletPerformance({ data }) {
         <h3 className="card-title">Outlet Performance (Top 5)</h3>
         <a href="#" className="view-all-link">
           View All
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+          <ArrowRight size={13} />
         </a>
       </div>
       <div className="performance-table">
@@ -27,8 +26,8 @@ export default function OutletPerformance({ data }) {
           <span className="header-col">Growth</span>
         </div>
         {data.map((outlet, index) => (
-          <motion.div 
-            key={index} 
+          <motion.div
+            key={index}
             className="table-row"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -38,14 +37,11 @@ export default function OutletPerformance({ data }) {
             <span className="row-col outlet-name">{outlet.name}</span>
             <span className="row-col">{outlet.patients.toLocaleString()}</span>
             <span className="row-col">৳ {outlet.revenue}</span>
-            <motion.span 
+            <motion.span
               className="row-col growth-positive"
               whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                <polyline points="17 6 23 6 23 12" />
-              </svg>
+              <TrendingUp size={12} />
               {outlet.growth}
             </motion.span>
           </motion.div>

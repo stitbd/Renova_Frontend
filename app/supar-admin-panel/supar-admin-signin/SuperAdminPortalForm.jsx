@@ -1,12 +1,13 @@
 // src/app/supar-admin-panel/supar-admin-signin/SuperAdminPortalForm.jsx
 "use client";
-import { useRouter } from "next/navigation"; // ADD THIS
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import "./supar-admin-signin.css";
+import { User, Lock, Shield, LogIn, RefreshCw, KeyRound } from "lucide-react";
 
 export default function SuperAdminPortalForm() {
-  const router = useRouter(); // ADD THIS
+  const router = useRouter();
   const [outletId, setOutletId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -107,21 +108,7 @@ export default function SuperAdminPortalForm() {
               autoComplete="username"
               aria-label="Outlet ID"
             />
-            <svg
-              className="outlet-portal__icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
+            <User className="outlet-portal__icon" size={18} />
           </div>
 
           <div className="outlet-portal__input-group">
@@ -137,36 +124,22 @@ export default function SuperAdminPortalForm() {
               autoComplete="current-password"
               aria-label="Password"
             />
-            <svg
-              className="outlet-portal__icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
+            <Lock className="outlet-portal__icon" size={18} />
           </div>
 
           <div className="outlet-portal__buttons">
             <button type="submit" className="btn-outlet-portal btn-signin">
-              Sign In
+              <LogIn size={16} /> Sign In
             </button>
             <button
               type="button"
               onClick={handleReset}
               className="btn-outlet-portal btn-reset"
             >
-              Reset
+              <RefreshCw size={16} /> Reset
             </button>
             <button type="button" className="btn-outlet-portal btn-forgot">
-              Forgot Password
+              <KeyRound size={16} /> Forgot Password
             </button>
           </div>
 
@@ -185,9 +158,7 @@ export default function SuperAdminPortalForm() {
 
         {/* Security Notice */}
         <div className="outlet-portal__security-notice">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
+          <Shield size={14} />
           <span>Your connection is secure. Never share your credentials.</span>
         </div>
       </div>

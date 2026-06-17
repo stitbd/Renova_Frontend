@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { User, ArrowRight, Check, X } from "lucide-react";
 
 // components/doctor-dashboard/PatientQueueList.jsx
 export default function PatientQueueList({ appointments }) {
@@ -22,9 +23,7 @@ export default function PatientQueueList({ appointments }) {
           className="view-all-link"
         >
           View All
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+          <ArrowRight size={16} />
         </a>
       </div>
 
@@ -40,10 +39,7 @@ export default function PatientQueueList({ appointments }) {
                   alt={patient?.patient?.fullName}
                 />
               ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
+                <User size={18} />
               )}
             </div>
 
@@ -54,14 +50,14 @@ export default function PatientQueueList({ appointments }) {
             </div>
 
             <div className="queue-actions">
-              <button className="btn-queue-action btn-accept">Accept</button>
-              <button className="btn-queue-action btn-reject">Reject</button>
+              <button className="btn-queue-action btn-accept"><Check size={14} /> Accept</button>
+              <button className="btn-queue-action btn-reject"><X size={14} /> Reject</button>
             </div>
           </div>
         ))}
       </div>
 
-      <button 
+      <button
         onClick={() => router.push("/doctor-portal/patient-queue")}
         className="view-all-queue-btn"
       >

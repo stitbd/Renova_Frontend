@@ -1,11 +1,7 @@
-// components/doctor-dashboard/Recentappointments.jsx
-import { MdInsertPageBreak } from "react-icons/md";
+import { User, ArrowRight, FileText, Calendar, Clock, DollarSign } from "lucide-react";
 
+export default function RecentConsultations({ appointments = [] }) {
 
-
-export default function Recentappointments({ appointments = [] }) {
-
-  console.log('completed appointment', appointments);
   const formatDate = (date) => {
     if (!date) return "N/A";
 
@@ -28,16 +24,14 @@ export default function Recentappointments({ appointments = [] }) {
   return (
     <div>
       <div className="section-header-dashboard">
-        <h2 className="section-title">Recent appointments</h2>
+        <h2 className="section-title">Recent Consultations</h2>
         <a href="#" className="view-all-link">
           View All
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+          <ArrowRight size={16} />
         </a>
       </div>
 
-      <div className="appointments-list">
+      <div className="consultations-list">
         {appointments?.map((c, index) => {
           const patient = c?.patient;
 
@@ -47,10 +41,7 @@ export default function Recentappointments({ appointments = [] }) {
                 {patient?.avatar ? (
                   <img src={patient.avatar} alt={patient?.fullName || "Patient"} />
                 ) : (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
+                  <User size={18} />
                 )}
               </div>
 
@@ -84,13 +75,8 @@ export default function Recentappointments({ appointments = [] }) {
               </div>
 
               <div className="consultation-view flex flex-col justify-between " title="View Report">
-                <button >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                  </svg>
+                <button>
+                  <FileText size={16} />
                 </button>
                 <p className="text-sm hover:text-white ">View </p>
               </div>

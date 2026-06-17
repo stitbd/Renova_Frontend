@@ -2,6 +2,30 @@
 import { useState } from "react";
 import Link from "next/link";
 import "./patient-dashboard.css";
+import {
+  Calendar,
+  User,
+  Droplet,
+  Phone,
+  Building2,
+  FileText,
+  Pill,
+  Stethoscope,
+  Clock,
+  CheckCircle,
+  Activity,
+  Eye,
+  Download,
+  Upload,
+  MessageSquare,
+  Plus,
+  Edit,
+  Camera,
+  MapPin,
+  Heart,
+  ChevronDown,
+  ChevronUp
+} from "lucide-react";
 
 const dashboardData = {
   profile: {
@@ -43,21 +67,9 @@ const dashboardData = {
 };
 
 function TimelineIcon({ type, statusType }) {
-  if (type === "Machine Report") return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
-    </svg>
-  );
-  if (type === "Doctor Note") return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" />
-    </svg>
-  );
+  if (type === "Machine Report") return <FileText size={16} />;
+  if (type === "Doctor Note") return <User size={16} />;
+  return <Pill size={16} />;
 }
 
 function getTimelineColor(type, statusType) {
@@ -93,10 +105,7 @@ export default function PatientDashboardPage() {
               />
             </div>
             <button className="edit-avatar-btn" aria-label="Change photo">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
+              <Camera size={16} />
             </button>
           </div>
           <div className="profile-details">
@@ -108,29 +117,22 @@ export default function PatientDashboardPage() {
             <p className="profile-id">{dashboardData.profile.patientId}</p>
           </div>
           <Link href="/patient-portal/profile" className="edit-profile-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-            </svg>
+            <Edit size={16} />
             <span>Edit Profile</span>
           </Link>
         </div>
 
         <div className="profile-info-grid">
           {[
-            { icon: "age", value: `${dashboardData.profile.age} Years`, label: dashboardData.profile.birthDate },
-            { icon: "gender", value: dashboardData.profile.gender, label: "Gender" },
-            { icon: "blood", value: dashboardData.profile.bloodGroup, label: "Blood Group" },
-            { icon: "phone", value: dashboardData.profile.mobile, label: "Mobile" },
-            { icon: "outlet", value: dashboardData.profile.outlet, label: "Registered Outlet" },
+            { icon: Calendar, value: `${dashboardData.profile.age} Years`, label: dashboardData.profile.birthDate },
+            { icon: User, value: dashboardData.profile.gender, label: "Gender" },
+            { icon: Droplet, value: dashboardData.profile.bloodGroup, label: "Blood Group" },
+            { icon: Phone, value: dashboardData.profile.mobile, label: "Mobile" },
+            { icon: Building2, value: dashboardData.profile.outlet, label: "Registered Outlet" },
           ].map((item, i) => (
             <div key={i} className="info-item">
               <div className="info-icon">
-                {item.icon === "age" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>}
-                {item.icon === "gender" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>}
-                {item.icon === "blood" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg>}
-                {item.icon === "phone" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>}
-                {item.icon === "outlet" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>}
+                <item.icon size={18} />
               </div>
               <div className="info-content">
                 <span className="info-value">{item.value}</span>
@@ -144,7 +146,7 @@ export default function PatientDashboardPage() {
       {/* ── Stats Grid ── */}
       <div className="stats-grid">
         <div className="stat-card reports">
-          <div className="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg></div>
+          <div className="stat-icon"><FileText size={22} /></div>
           <div className="stat-content">
             <span className="stat-label">Total Reports</span>
             <span className="stat-value">{String(dashboardData.stats.totalReports).padStart(2, "0")}</span>
@@ -152,7 +154,7 @@ export default function PatientDashboardPage() {
           </div>
         </div>
         <div className="stat-card prescriptions">
-          <div className="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg></div>
+          <div className="stat-icon"><Pill size={22} /></div>
           <div className="stat-content">
             <span className="stat-label">Prescriptions</span>
             <span className="stat-value">{String(dashboardData.stats.prescriptions).padStart(2, "0")}</span>
@@ -160,7 +162,7 @@ export default function PatientDashboardPage() {
           </div>
         </div>
         <div className="stat-card consultations">
-          <div className="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></div>
+          <div className="stat-icon"><Stethoscope size={22} /></div>
           <div className="stat-content">
             <span className="stat-label">Consultations</span>
             <span className="stat-value">{String(dashboardData.stats.consultations).padStart(2, "0")}</span>
@@ -168,7 +170,7 @@ export default function PatientDashboardPage() {
           </div>
         </div>
         <div className="stat-card appointments">
-          <div className="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /><polyline points="9 16 11 18 15 14" /></svg></div>
+          <div className="stat-icon"><Calendar size={22} /></div>
           <div className="stat-content">
             <span className="stat-label">Upcoming Appointments</span>
             <span className="stat-value">{String(dashboardData.stats.appointments).padStart(2, "0")}</span>
@@ -235,9 +237,7 @@ export default function PatientDashboardPage() {
               })}
             </div>
             <button className="load-more-btn" onClick={() => setShowAll(!showAll)}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points={showAll ? "18 15 12 9 6 15" : "6 9 12 15 18 9"} />
-              </svg>
+              {showAll ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               {showAll ? "Show Less" : "Load More"}
             </button>
           </div>
@@ -266,11 +266,11 @@ export default function PatientDashboardPage() {
                 </div>
                 <div className="appointment-meta">
                   <div className="meta-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                    <Clock size={16} />
                     <span>{dashboardData.upcomingAppointment.time}</span>
                   </div>
                   <div className="meta-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                    <MapPin size={16} />
                     <span>{dashboardData.upcomingAppointment.location}</span>
                   </div>
                 </div>
@@ -287,19 +287,19 @@ export default function PatientDashboardPage() {
             <h3 className="quick-actions-title">Quick Actions</h3>
             <div className="quick-actions-grid">
               <Link href="/patient-portal/appointments" className="quick-action-btn">
-                <div className="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg></div>
+                <div className="action-icon"><Calendar size={20} /></div>
                 <span className="action-label">Book Appointment</span>
               </Link>
               <button className="quick-action-btn">
-                <div className="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg></div>
+                <div className="action-icon"><Upload size={20} /></div>
                 <span className="action-label">Upload Report</span>
               </button>
               <button className="quick-action-btn">
-                <div className="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg></div>
+                <div className="action-icon"><Download size={20} /></div>
                 <span className="action-label">Download Records</span>
               </button>
               <button className="quick-action-btn">
-                <div className="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></div>
+                <div className="action-icon"><MessageSquare size={20} /></div>
                 <span className="action-label">Contact Doctor</span>
               </button>
             </div>

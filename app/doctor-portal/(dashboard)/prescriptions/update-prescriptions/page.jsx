@@ -5,179 +5,35 @@ import { useState } from "react";
 import { generatePrescriptionPDF, buildPrescriptionDataFromForm } from "@/utils/prescriptionPDF";
 import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 import "./update-prescriptions.css";
-
-// ==================== ICONS COMPONENT ====================
-function Icon({ type }) {
-    const icons = {
-        arrowLeft: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-        ),
-        home: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-        ),
-        plus: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 5v14M5 12h14" />
-            </svg>
-        ),
-        save: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                <polyline points="17 21 17 13 7 13 7 21" />
-                <polyline points="7 3 7 8 15 8" />
-            </svg>
-        ),
-        fileText: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-                <polyline points="10 9 9 9 8 9" />
-            </svg>
-        ),
-        pill: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z" />
-                <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
-            </svg>
-        ),
-        clipboard: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-            </svg>
-        ),
-        paperclip: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-            </svg>
-        ),
-        upload: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-        ),
-        user: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-            </svg>
-        ),
-        search: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-        ),
-        x: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-        ),
-        mail: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-            </svg>
-        ),
-        phone: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-            </svg>
-        ),
-        calendar: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-        ),
-        mapPin: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-            </svg>
-        ),
-        clock: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-            </svg>
-        ),
-        doctor: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-        ),
-        stethoscope: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4.5 4.5v7a7 7 0 0 0 14 0v-7" />
-                <path d="M9 2.5v3M15 2.5v3" />
-                <circle cx="4.5" cy="10.5" r="2.5" />
-                <circle cx="19.5" cy="10.5" r="2.5" />
-            </svg>
-        ),
-        eye: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-            </svg>
-        ),
-        trash: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="3 6 5 6 21 6" />
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-            </svg>
-        ),
-        file: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-                <polyline points="13 2 13 9 20 9" />
-            </svg>
-        ),
-        image: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="2" y="2" width="20" height="20" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="2.5" />
-                <polyline points="21 15 16 10 5 21" />
-            </svg>
-        ),
-        fileText2: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-                <polyline points="10 9 9 9 8 9" />
-            </svg>
-        ),
-        printer: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="6 9 6 2 18 2 18 9" />
-                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                <rect x="6" y="14" width="12" height="8" />
-            </svg>
-        ),
-        chevdown: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="6 9 12 15 18 9" />
-            </svg>
-        ),
-    };
-    return icons[type] || null;
-}
+import {
+    ArrowLeft,
+    Home,
+    Plus,
+    Save,
+    FileText,
+    Pill,
+    Clipboard,
+    Paperclip,
+    Upload,
+    User,
+    Search,
+    X,
+    Mail,
+    Phone,
+    Calendar,
+    MapPin,
+    Clock,
+    Stethoscope,
+    Eye,
+    Trash2,
+    File,
+    Image,
+    Printer,
+    ChevronDown,
+    MessageCircle,
+    Video,
+    Mic
+} from "lucide-react";
 
 // ==================== UPDATE PRESCRIPTION PAGE ====================
 export default function UpdatePrescriptionPage() {
@@ -298,20 +154,7 @@ export default function UpdatePrescriptionPage() {
         return (bytes / 1048576).toFixed(1) + " MB";
     };
 
-    const getFileIconType = (fileType) => {
-        if (fileType.includes("pdf")) return "file";
-        if (fileType.includes("image")) return "image";
-        return "fileText2";
-    };
-
-    const getFileIconClass = (fileType) => {
-        if (fileType.includes("pdf")) return "pdf";
-        if (fileType.includes("image")) return "img";
-        return "doc";
-    };
-
-    // --- State for patient search ---
-    const [patientSearchQuery, setPatientSearchQuery] = useState("");
+    // --- State for patient ---
     const [selectedPatient, setSelectedPatient] = useState({
         id: "PT-2025-000123",
         name: "Ayesha Rahman",
@@ -322,35 +165,6 @@ export default function UpdatePrescriptionPage() {
         address: "Mirpur, Dhaka",
         avatar: null,
     });
-    const [showPatientSuggestions, setShowPatientSuggestions] = useState(false);
-
-    // Today's patient list (mock — replace with API call)
-    const mockPatients = [
-        { id: "PT-2025-000123", name: "Ayesha Rahman", age: 28, gender: "Female", phone: "017XXXXXXXXXX", email: "ayesha@example.com", address: "Mirpur, Dhaka", avatar: null },
-        { id: "PT-2025-000456", name: "Md. Kamal Hossain", age: 45, gender: "Male", phone: "018XXXXXXXXXX", email: "kamal@example.com", address: "Uttara, Dhaka", avatar: null },
-        { id: "PT-2025-000789", name: "Fatema Begum", age: 35, gender: "Female", phone: "019XXXXXXXXXX", email: "fatema@example.com", address: "Gulshan, Dhaka", avatar: null },
-        { id: "PT-2025-000790", name: "Rafiq Ahmed", age: 38, gender: "Male", phone: "016XXXXXXXXXX", email: "rafiq@example.com", address: "Banani, Dhaka", avatar: null },
-        { id: "PT-2025-000791", name: "Nusrat Jahan", age: 26, gender: "Female", phone: "015XXXXXXXXXX", email: "nusrat@example.com", address: "Dhanmondi, Dhaka", avatar: null },
-        { id: "PT-2025-000792", name: "Sakib Khan", age: 41, gender: "Male", phone: "014XXXXXXXXXX", email: "sakib@example.com", address: "Mohammadpur, Dhaka", avatar: null },
-        { id: "PT-2025-000793", name: "Sumaiya Akter", age: 30, gender: "Female", phone: "013XXXXXXXXXX", email: "sumaiya@example.com", address: "Khilgaon, Dhaka", avatar: null },
-        { id: "PT-2025-000794", name: "Tanvir Hossain", age: 52, gender: "Male", phone: "012XXXXXXXXXX", email: "tanvir@example.com", address: "Wari, Dhaka", avatar: null },
-    ];
-
-    const filteredPatients = mockPatients.filter(
-        (p) =>
-            p.name.toLowerCase().includes(patientSearchQuery.toLowerCase()) ||
-            p.id.toLowerCase().includes(patientSearchQuery.toLowerCase())
-    );
-
-    const handleSelectPatient = (patient) => {
-        setSelectedPatient(patient);
-        setPatientSearchQuery("");
-        setShowPatientSuggestions(false);
-    };
-
-    const handleClearPatient = () => {
-        setSelectedPatient(null);
-    };
 
     // --- Summary data ---
     const summary = {
@@ -408,11 +222,6 @@ export default function UpdatePrescriptionPage() {
         window.location.href = "/doctor-portal/prescriptions";
     };
 
-    const handleSaveAsDraft = () => {
-        console.log("Saving as draft");
-        alert("Prescription saved as draft");
-    };
-
     const handlePreview = async () => {
         setIsGenerating(true);
         const formData = buildPrescriptionDataFromForm({
@@ -442,25 +251,24 @@ export default function UpdatePrescriptionPage() {
                 </div>
                 <div className="nrx-header-actions">
                     <Link href="/doctor-portal/prescriptions" className="nrx-header-btn back">
-                        <Icon type="arrowLeft" /> Back
+                        <ArrowLeft size={16} /> Back
                     </Link>
                     <button className="nrx-header-btn outline" onClick={handlePreview} disabled={isGenerating}>
-                        <Icon type="eye" /> {isGenerating ? "Generating…" : "Preview"}
+                        <Eye size={16} /> {isGenerating ? "Generating…" : "Preview"}
                     </button>
                     <button className="nrx-header-btn primary" onClick={handleSavePrescription}>
-                        <Icon type="save" /> Save Prescription
+                        <Save size={16} /> Save Prescription
                     </button>
                 </div>
             </div>
 
-            {/* Main 2-column layout */}
+            {/* Main 2-column layout - same as new-prescriptions */}
             <div className="nrx-layout">
-                {/* Left Column */}
                 <div className="nrx-left-col">
                     {/* Prescription Information Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <Icon type="fileText" /> Prescription Information
+                            <FileText size={16} /> Prescription Information
                         </h3>
                         <div className="nrx-form-grid">
                             <div className="nrx-form-group">
@@ -469,7 +277,7 @@ export default function UpdatePrescriptionPage() {
                                 </label>
                                 <div className="nrx-input-wrap">
                                     <span className="nrx-input-icon">
-                                        <Icon type="calendar" />
+                                        <Calendar size={16} />
                                     </span>
                                     <input
                                         type="date"
@@ -502,21 +310,21 @@ export default function UpdatePrescriptionPage() {
                                         className={`nrx-type-btn ${prescriptionType === "new" ? "active" : ""}`}
                                         onClick={() => setPrescriptionType("new")}
                                     >
-                                        <Icon type="fileText" /> Update Prescription
+                                        <FileText size={14} /> Update Prescription
                                     </button>
                                     <button
                                         type="button"
                                         className={`nrx-type-btn ${prescriptionType === "refill" ? "active" : ""}`}
                                         onClick={() => setPrescriptionType("refill")}
                                     >
-                                        <Icon type="clipboard" /> Refill
+                                        <Clipboard size={14} /> Refill
                                     </button>
                                     <button
                                         type="button"
                                         className={`nrx-type-btn ${prescriptionType === "repeat" ? "active" : ""}`}
                                         onClick={() => setPrescriptionType("repeat")}
                                     >
-                                        <Icon type="clock" /> Repeat
+                                        <Clock size={14} /> Repeat
                                     </button>
                                 </div>
                             </div>
@@ -524,7 +332,7 @@ export default function UpdatePrescriptionPage() {
                                 <label className="nrx-label">Follow-up Date</label>
                                 <div className="nrx-input-wrap">
                                     <span className="nrx-input-icon">
-                                        <Icon type="calendar" />
+                                        <Calendar size={16} />
                                     </span>
                                     <input
                                         type="date"
@@ -550,7 +358,7 @@ export default function UpdatePrescriptionPage() {
                     {/* Prescribed Medicines Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <Icon type="pill" /> Prescribed Medicines
+                            <Pill size={16} /> Prescribed Medicines
                         </h3>
                         <div className="nrx-med-table-wrap">
                             <table className="nrx-med-table">
@@ -676,7 +484,7 @@ export default function UpdatePrescriptionPage() {
                                                     className="nrx-row-del-btn"
                                                     onClick={() => deleteMedicineRow(med.id)}
                                                 >
-                                                    <Icon type="trash" />
+                                                    <Trash2 size={14} />
                                                 </button>
                                             </td>
                                         </tr>
@@ -685,7 +493,7 @@ export default function UpdatePrescriptionPage() {
                             </table>
                         </div>
 
-                        {/* Mobile card view — shown only on small screens via CSS */}
+                        {/* Mobile card view */}
                         <div className="nrx-med-cards">
                             {medicines.map((med, idx) => (
                                 <div key={med.id} className="nrx-med-card">
@@ -696,7 +504,7 @@ export default function UpdatePrescriptionPage() {
                                             className="nrx-row-del-btn"
                                             onClick={() => deleteMedicineRow(med.id)}
                                         >
-                                            <Icon type="trash" />
+                                            <Trash2 size={14} />
                                         </button>
                                     </div>
                                     <div className="nrx-med-card-body">
@@ -812,14 +620,14 @@ export default function UpdatePrescriptionPage() {
                             ))}
                         </div>
                         <button type="button" className="nrx-add-row-btn" onClick={addMedicineRow}>
-                            <Icon type="plus" /> Add Medicine
+                            <Plus size={14} /> Add Medicine
                         </button>
                     </div>
 
                     {/* Additional Instructions Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <Icon type="clipboard" /> Additional Instructions
+                            <Clipboard size={16} /> Additional Instructions
                         </h3>
                         <div className="nrx-instr-list">
                             {additionalInstructions.map((instruction, idx) => (
@@ -837,20 +645,20 @@ export default function UpdatePrescriptionPage() {
                                         className="nrx-instr-del-btn"
                                         onClick={() => deleteInstruction(idx)}
                                     >
-                                        <Icon type="trash" />
+                                        <Trash2 size={14} />
                                     </button>
                                 </div>
                             ))}
                         </div>
                         <button type="button" className="nrx-add-instr-btn" onClick={addInstruction}>
-                            <Icon type="plus" /> Add Instruction
+                            <Plus size={14} /> Add Instruction
                         </button>
                     </div>
                 </div>
 
                 {/* Right Column */}
                 <div className="nrx-right-col">
-                    {/* Patient Search Card */}
+                    {/* Patient Information Card */}
                     <div className="nrx-patient-search-card">
                         <h4 className="nrx-right-section-title">Patient Information</h4>
                         <div className="nrx-selected-patient">
@@ -858,7 +666,7 @@ export default function UpdatePrescriptionPage() {
                                 {selectedPatient.avatar ? (
                                     <img src={selectedPatient.avatar} alt="" />
                                 ) : (
-                                    <Icon type="user" />
+                                    <User size={16} />
                                 )}
                             </div>
                             <div>
@@ -868,17 +676,16 @@ export default function UpdatePrescriptionPage() {
                                 </p>
                                 <p className="nrx-sel-patient-pid">{selectedPatient.id}</p>
                             </div>
-                            {/* clear button নেই — update page এ patient change হবে না */}
                         </div>
                         <div className="nrx-patient-detail-rows">
                             <div className="nrx-patient-detail-row">
-                                <Icon type="phone" /> {selectedPatient.phone}
+                                <Phone size={14} /> {selectedPatient.phone}
                             </div>
                             <div className="nrx-patient-detail-row">
-                                <Icon type="mail" /> {selectedPatient.email}
+                                <Mail size={14} /> {selectedPatient.email}
                             </div>
                             <div className="nrx-patient-detail-row">
-                                <Icon type="mapPin" /> {selectedPatient.address}
+                                <MapPin size={14} /> {selectedPatient.address}
                             </div>
                         </div>
                     </div>
@@ -918,12 +725,10 @@ export default function UpdatePrescriptionPage() {
                         </div>
                     </div>
 
-
-
                     {/* Attachments Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <Icon type="paperclip" /> Attachments
+                            <Paperclip size={16} /> Attachments
                         </h3>
                         <div
                             className={`nrx-upload-zone ${isDragOver ? "drag-over" : ""}`}
@@ -932,12 +737,12 @@ export default function UpdatePrescriptionPage() {
                             onDragLeave={handleDragLeave}
                         >
                             <div className="nrx-upload-icon">
-                                <Icon type="upload" />
+                                <Upload size={24} />
                             </div>
                             <p className="nrx-upload-title">Drag & drop files here</p>
                             <p className="nrx-upload-sub">or</p>
                             <label className="nrx-upload-btn-label">
-                                <Icon type="upload" /> Browse Files
+                                <Upload size={14} /> Browse Files
                                 <input
                                     type="file"
                                     multiple
@@ -951,8 +756,8 @@ export default function UpdatePrescriptionPage() {
                             <div className="nrx-uploaded-files">
                                 {attachments.map((att) => (
                                     <div key={att.id} className="nrx-uploaded-file">
-                                        <div className={`nrx-file-icon ${getFileIconClass(att.type)}`}>
-                                            <Icon type={getFileIconType(att.type)} />
+                                        <div className="nrx-file-icon">
+                                            <File size={16} />
                                         </div>
                                         <div className="nrx-file-info">
                                             <p className="nrx-file-name">{att.name}</p>
@@ -963,7 +768,7 @@ export default function UpdatePrescriptionPage() {
                                             className="nrx-file-del-btn"
                                             onClick={() => removeAttachment(att.id)}
                                         >
-                                            <Icon type="trash" />
+                                            <Trash2 size={14} />
                                         </button>
                                     </div>
                                 ))}

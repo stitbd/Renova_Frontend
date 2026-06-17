@@ -3,96 +3,22 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import "./super-admin-signup.css";
-
-/* ── inline SVG icons ──────────────────────────────────────────── */
-const Icon = {
-    ID: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <rect x="1" y="3" width="14" height="10" rx="2" stroke="#94a3b8" strokeWidth="1.3" />
-            <circle cx="5.5" cy="8" r="1.5" stroke="#94a3b8" strokeWidth="1.2" />
-            <path d="M9 6.5h4M9 8h3M9 9.5h4" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
-        </svg>
-    ),
-    User: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <circle cx="8" cy="5.5" r="2.5" stroke="#94a3b8" strokeWidth="1.3" />
-            <path d="M2.5 14c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-        </svg>
-    ),
-    Email: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-            <path d="M1.5 4.5L8 9l6.5-4.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-        </svg>
-    ),
-    Phone: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <path d="M5.2 2H3a1 1 0 0 0-1 1c0 5.523 4.477 10 10 10a1 1 0 0 0 1-1v-2.2a1 1 0 0 0-.684-.949l-2-.667a1 1 0 0 0-1.052.26l-.624.624A7.965 7.965 0 0 1 5.932 5.36l.624-.624a1 1 0 0 0 .26-1.052L6.15 2.684A1 1 0 0 0 5.2 2z" stroke="#94a3b8" strokeWidth="1.2" />
-        </svg>
-    ),
-    Lock: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-            <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-            <circle cx="8" cy="10.5" r="1" fill="#94a3b8" />
-        </svg>
-    ),
-    Briefcase: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <rect x="1.5" y="5" width="13" height="8.5" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-            <path d="M5.5 5V3.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V5" stroke="#94a3b8" strokeWidth="1.3" />
-            <path d="M1.5 8.5h13" stroke="#94a3b8" strokeWidth="1.2" />
-        </svg>
-    ),
-    Key: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <circle cx="5.5" cy="10.5" r="3" stroke="#94a3b8" strokeWidth="1.3" />
-            <path d="M7.7 8.3 13 3M11 5l1.5 1.5M9.3 6.7 10.8 8.2" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-    ChevronDown: () => (
-        <svg viewBox="0 0 16 16" fill="none" width="13" height="13">
-            <path d="M4 6l4 4 4-4" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-    Admin: () => (
-        <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
-            <path d="M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-            <path d="M9 12.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-    Shield: () => (
-        <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
-            <path d="M14 3L5 7.5v6.5C5 19.7 8.9 23.7 14 25c5.1-1.3 9-5.3 9-11V7.5L14 3z" fill="#4caf50" />
-            <path d="M10 14l3 3.5L18 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-    Submit: () => (
-        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
-            <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M7 10l2 2.5L13 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-    /* Sidebar */
-    Access: () => (
-        <svg viewBox="0 0 24 24" fill="none" width="26" height="26">
-            <path d="M12 3L4 7v5c0 4.418 3.582 8 8 9 4.418-1 8-4.582 8-9V7l-8-4z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-            <path d="M9 12.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-    Control: () => (
-        <svg viewBox="0 0 24 24" fill="none" width="26" height="26">
-            <rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M3 9h18M8 21h8M12 17v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
-    ),
-    Monitor: () => (
-        <svg viewBox="0 0 24 24" fill="none" width="26" height="26">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-            <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    ),
-};
+import {
+    User,
+    Mail,
+    Phone,
+    Lock,
+    Briefcase,
+    Key,
+    ChevronDown,
+    Shield,
+    CheckCircle,
+    Settings,
+    LayoutDashboard,
+    Eye,
+    EyeOff,
+    AlertCircle
+} from "lucide-react";
 
 /* ── reusable primitives ───────────────────────────────────────── */
 function Field({ label, required, note, children, className = "" }) {
@@ -113,7 +39,7 @@ function Input({ icon: IconComp, noIcon, ...props }) {
         <div className="sa-input-wrap">
             {IconComp && !noIcon && (
                 <span className="sa-input-icon">
-                    <IconComp />
+                    <IconComp size={14} />
                 </span>
             )}
             <input className={`sa-input${noIcon || !IconComp ? " no-icon" : ""}`} {...props} />
@@ -126,14 +52,14 @@ function Select({ icon: IconComp, children, ...props }) {
         <div className="sa-input-wrap sa-select-wrap">
             {IconComp && (
                 <span className="sa-input-icon">
-                    <IconComp />
+                    <IconComp size={14} />
                 </span>
             )}
             <select className="sa-input sa-select" {...props}>
                 {children}
             </select>
             <span className="sa-select-chevron">
-                <Icon.ChevronDown />
+                <ChevronDown size={13} />
             </span>
         </div>
     );
@@ -311,19 +237,19 @@ export default function SuperAdminSignUpForm() {
                         <div className="sa-features">
                             <div className="sa-feature">
                                 <div className="sa-feature-circle">
-                                    <Icon.Access />
+                                    <Shield size={26} />
                                 </div>
                                 <span className="sa-feature-label">Full<br />Access</span>
                             </div>
                             <div className="sa-feature">
                                 <div className="sa-feature-circle">
-                                    <Icon.Control />
+                                    <Settings size={26} />
                                 </div>
                                 <span className="sa-feature-label">Total<br />Control</span>
                             </div>
                             <div className="sa-feature">
                                 <div className="sa-feature-circle">
-                                    <Icon.Monitor />
+                                    <LayoutDashboard size={26} />
                                 </div>
                                 <span className="sa-feature-label">Live<br />Monitoring</span>
                             </div>
@@ -337,7 +263,7 @@ export default function SuperAdminSignUpForm() {
                         <div className="sa-form-header">
                             <div className="sa-form-header-top">
                                 <div className="sa-header-icon">
-                                    <Icon.Admin />
+                                    <Shield size={24} />
                                 </div>
                                 <h1 className="sa-form-title">Super Admin <span>Registration</span></h1>
                             </div>
@@ -355,6 +281,7 @@ export default function SuperAdminSignUpForm() {
 
                         {error && (
                             <div className="sa-error" role="alert">
+                                <AlertCircle size={16} />
                                 {error}
                             </div>
                         )}
@@ -364,11 +291,11 @@ export default function SuperAdminSignUpForm() {
 
                         <div className="sa-grid">
                             <Field label="Admin ID" note="(Auto-generated)">
-                                <Input icon={Icon.ID} value="SA-2025-000001" disabled readOnly />
+                                <Input icon={User} value="SA-2025-000001" disabled readOnly />
                             </Field>
                             <Field label="Full Name" required>
                                 <Input
-                                    icon={Icon.User}
+                                    icon={User}
                                     type="text"
                                     placeholder="Enter full name"
                                     value={formData.fullName}
@@ -381,7 +308,7 @@ export default function SuperAdminSignUpForm() {
                         <div className="sa-grid">
                             <Field label="Email Address" required>
                                 <Input
-                                    icon={Icon.Email}
+                                    icon={Mail}
                                     type="email"
                                     placeholder="Enter email address"
                                     value={formData.email}
@@ -392,7 +319,7 @@ export default function SuperAdminSignUpForm() {
                             <Field label="Mobile Number (OTP)" required>
                                 <div className="sa-otp-row">
                                     <Input
-                                        icon={Icon.Phone}
+                                        icon={Phone}
                                         type="tel"
                                         placeholder="+880 1XXX-XXXXXX"
                                         value={formData.mobile}
@@ -407,7 +334,7 @@ export default function SuperAdminSignUpForm() {
                         <div className="sa-grid">
                             <Field label="Password" required>
                                 <Input
-                                    icon={Icon.Lock}
+                                    icon={Lock}
                                     type="password"
                                     placeholder="Create a password"
                                     value={formData.password}
@@ -417,7 +344,7 @@ export default function SuperAdminSignUpForm() {
                             </Field>
                             <Field label="Confirm Password" required>
                                 <Input
-                                    icon={Icon.Lock}
+                                    icon={Lock}
                                     type="password"
                                     placeholder="Re-enter password"
                                     value={formData.confirmPassword}
@@ -433,7 +360,7 @@ export default function SuperAdminSignUpForm() {
                         <div className="sa-grid">
                             <Field label="Designation" required>
                                 <Select
-                                    icon={Icon.Briefcase}
+                                    icon={Briefcase}
                                     value={formData.designation}
                                     onChange={set("designation")}
                                     required
@@ -447,7 +374,7 @@ export default function SuperAdminSignUpForm() {
                             <Field label="Admin Access Code" required note="(Provided by IT)">
                                 <div className="sa-access-wrap">
                                     <Input
-                                        icon={Icon.Key}
+                                        icon={Key}
                                         type="password"
                                         placeholder="Enter security access code"
                                         value={formData.accessCode}
@@ -461,7 +388,7 @@ export default function SuperAdminSignUpForm() {
                         {/* Verification banner */}
                         <div className="sa-verify-banner">
                             <div className="sa-verify-icon">
-                                <Icon.Shield />
+                                <Shield size={28} />
                             </div>
                             <div className="sa-verify-text">
                                 <h4>Restricted access registration.</h4>
@@ -490,7 +417,7 @@ export default function SuperAdminSignUpForm() {
                                 className="sa-signup__btn-submit"
                                 disabled={!agreed || loading}
                             >
-                                <Icon.Submit />
+                                <CheckCircle size={18} />
                                 {loading ? "Submitting..." : "Create Account"}
                             </button>
                         </div>
@@ -503,9 +430,7 @@ export default function SuperAdminSignUpForm() {
 
                     {/* Security notice */}
                     <div className="sa-security-notice">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
+                        <Shield size={14} />
                         <span>Your connection is secure. All data is encrypted end-to-end.</span>
                     </div>
                 </main>

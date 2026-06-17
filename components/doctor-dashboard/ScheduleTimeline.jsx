@@ -1,3 +1,5 @@
+import { ArrowRight, Calendar, Clock, CheckCircle, Circle, Coffee } from "lucide-react";
+
 // components/doctor-dashboard/ScheduleTimeline.jsx
 export default function ScheduleTimeline({ schedule }) {
   return (
@@ -6,9 +8,7 @@ export default function ScheduleTimeline({ schedule }) {
         <h2 className="section-title">Today's Schedule</h2>
         <a href="#" className="view-all-link">
           View Calendar
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+          <ArrowRight size={16} />
         </a>
       </div>
 

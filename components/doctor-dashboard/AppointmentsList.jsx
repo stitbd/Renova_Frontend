@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { ArrowRight, Clock, Calendar, User } from "lucide-react";
 
 // components/doctor-dashboard/AppointmentsList.jsx
 export default function AppointmentsList({ appointments }) {
@@ -9,14 +10,12 @@ export default function AppointmentsList({ appointments }) {
         <h2 className="section-title">Today's Appointments</h2>
         <a href="#" onClick={() => router.push('/doctor-portal/appointments')} className="view-all-link">
           View All
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+          <ArrowRight size={16} />
         </a>
       </div>
 
       <div className="appointments-list">
-        {appointments.map((apt, index) => (
+        {appointments?.map((apt, index) => (
           <div key={index} className="appointment-item">
             <div className="appointment-time">
               {new Date(apt?.startTime || apt?.time).toLocaleTimeString("en-BD", {

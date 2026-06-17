@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/redux/hook";
 import "./patient-queue.css";
+import { Search, User, Calendar, Clock, Phone, Mail, Check, X, AlertCircle } from "lucide-react";
 
 const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
 const CONFIRM_API_URL = "http://192.168.0.164:5001/api/v1/appointments/confirm";
@@ -300,11 +301,7 @@ export default function PatientQueuePage() {
 
       <div className="dq-toolbar">
         <div className="dq-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-
+          <Search size={17} />
           <input
             type="text"
             placeholder="Search by patient, phone, code, or reason..."

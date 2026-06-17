@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import "./patients.css";
+import { Search, Eye, User, Phone, Mail } from "lucide-react";
 
 const patientsData = [
   { id: 1, name: "Masud Rana", age: 32, gender: "Male", phone: "+880 1712-345678", email: "masud.rana@email.com", lastVisit: "10 May 2025", totalVisits: 5, bloodGroup: "O+", avatar: "/images/patients/01.jpg" },
@@ -25,10 +26,7 @@ export default function PatientsPage() {
     <div className="dashboard-content">
       <div className="patients-search">
         <div className="search-input-wrapper">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
+          <Search size={20} />
           <input
             type="text"
             placeholder="Search by name or phone..."
@@ -77,10 +75,7 @@ export default function PatientsPage() {
                   <div className="table-actions">
                     <button className="btn-icon-small">
                       <Link href={`/doctor-portal/patients/patient-profile?id=${patient.id}&from=/doctor-portal/patients`}>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
+                        <Eye size={14} />
                       </Link>
                     </button>
                   </div>
@@ -93,5 +88,3 @@ export default function PatientsPage() {
     </div>
   );
 }
-
-

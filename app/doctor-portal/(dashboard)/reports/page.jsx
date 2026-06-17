@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import "./reports.css";
+import { FileText, Download, Eye } from "lucide-react";
 
 const reportsData = [
   { id: 1, title: "ECG Report - Masud Rana", type: "ECG", date: "10 May 2025", size: "2.4 MB", status: "completed" },
@@ -19,10 +20,7 @@ export default function ReportsPage() {
         {reportsData.map((report) => (
           <div key={report.id} className="report-card">
             <div className="report-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-              </svg>
+              <FileText size={22} />
             </div>
             <div className="report-info">
               <h4 className="report-title">{report.title}</h4>
@@ -30,17 +28,10 @@ export default function ReportsPage() {
             </div>
             <div className="report-actions">
               <button className="btn-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
+                <Download size={16} />
               </button>
               <button className="btn-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+                <Eye size={16} />
               </button>
             </div>
           </div>
@@ -49,5 +40,3 @@ export default function ReportsPage() {
     </div>
   );
 }
-
-

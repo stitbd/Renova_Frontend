@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion"; // ✅ Added
+import { motion } from "framer-motion";
 
 export default function ConsultationsOverview({ data }) {
   const consultations = [
@@ -21,7 +21,7 @@ export default function ConsultationsOverview({ data }) {
   });
 
   return (
-    <motion.div 
+    <motion.div
       className="consultations-card"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -32,7 +32,7 @@ export default function ConsultationsOverview({ data }) {
       </div>
 
       <div className="donut-chart-wrapper">
-        <motion.div 
+        <motion.div
           className="donut-chart"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -60,43 +60,42 @@ export default function ConsultationsOverview({ data }) {
               );
             })}
             <circle cx="50" cy="50" r="26" fill="white" />
-              {/* Center text rendered inside SVG to avoid rotation issues */}
-              <text
-                x="50"
-                y="47"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="10"
-                fontWeight="800"
-                fill="#1a202c"
-                style={{ transform: "rotate(90deg)", transformOrigin: "50px 50px" }}
-              >
-                {data.total.toLocaleString()}
-              </text>
-              <text
-                x="50"
-                y="57"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="5.5"
-                fontWeight="400"
-                fill="#718096"
-                style={{ transform: "rotate(90deg)", transformOrigin: "50px 50px" }}
-              >
-                Total
-              </text>
+            <text
+              x="50"
+              y="47"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="10"
+              fontWeight="800"
+              fill="#1a202c"
+              style={{ transform: "rotate(90deg)", transformOrigin: "50px 50px" }}
+            >
+              {data.total.toLocaleString()}
+            </text>
+            <text
+              x="50"
+              y="57"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="5.5"
+              fontWeight="400"
+              fill="#718096"
+              style={{ transform: "rotate(90deg)", transformOrigin: "50px 50px" }}
+            >
+              Total
+            </text>
           </svg>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="chart-legend"
           initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.35, duration: 0.4 }}
         >
           {consultations.map((item, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               className="legend-item"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}

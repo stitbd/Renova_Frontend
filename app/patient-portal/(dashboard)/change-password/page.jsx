@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import "./change-password.css";
+import { Eye, EyeOff, Check, X, ArrowLeft } from "lucide-react";
 
 const API_URL = "http://192.168.0.164:5001/api/v1/auth/change-password";
 
@@ -183,46 +184,6 @@ export default function ChangePasswordPage() {
     }
   };
 
-  const renderEyeIcon = (visible) =>
-    visible ? (
-      <>
-        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-        <line x1="1" y1="1" x2="23" y2="23" />
-      </>
-    ) : (
-      <>
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-        <circle cx="12" cy="12" r="3" />
-      </>
-    );
-
-  const renderRequirementIcon = (met) =>
-    met ? (
-      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3">
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    ) : (
-      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-      </svg>
-    );
-
-  const getStrengthLabel = () => {
-    if (!formData.newPassword) return "";
-    if (passwordStrength <= 2) return "Weak";
-    if (passwordStrength === 3) return "Medium";
-    return "Strong";
-  };
-
-  const getStrengthClass = () => {
-    if (!formData.newPassword) return "";
-    if (passwordStrength <= 2) return "weak";
-    if (passwordStrength === 3) return "medium";
-    return "strong";
-  };
-
   return (
     <div className="password-page">
       <div className="password-card">
@@ -233,9 +194,7 @@ export default function ChangePasswordPage() {
 
         {success && (
           <div className="success-message">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+            <Check size={18} />
             Password updated successfully.
           </div>
         )}
@@ -263,9 +222,7 @@ export default function ChangePasswordPage() {
               disabled={isLoading}
               aria-label={show.cur ? "Hide current password" : "Show current password"}
             >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-                {renderEyeIcon(show.cur)}
-              </svg>
+              {show.cur ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
 
             {errors.currentPassword && (
@@ -293,9 +250,7 @@ export default function ChangePasswordPage() {
               disabled={isLoading}
               aria-label={show.new ? "Hide new password" : "Show new password"}
             >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-                {renderEyeIcon(show.new)}
-              </svg>
+              {show.new ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
 
             {errors.newPassword && (
@@ -317,7 +272,7 @@ export default function ChangePasswordPage() {
                 return (
                   <li key={req.id} className={state}>
                     <span className="req-icon" aria-hidden="true">
-                      {state !== "pending" && renderRequirementIcon(req.met)}
+                      {state !== "pending" && (req.met ? <Check size={12} /> : <X size={12} />)}
                     </span>
                     {req.label}
                   </li>
@@ -346,9 +301,7 @@ export default function ChangePasswordPage() {
               disabled={isLoading}
               aria-label={show.conf ? "Hide confirm password" : "Show confirm password"}
             >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-                {renderEyeIcon(show.conf)}
-              </svg>
+              {show.conf ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
 
             {errors.confirmPassword && (
@@ -385,9 +338,7 @@ export default function ChangePasswordPage() {
             </button>
 
             <button type="submit" className="btn-update-password" disabled={isLoading}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+              <Check size={16} />
               {isLoading ? "Updating..." : "Update Password"}
             </button>
           </div>
@@ -395,4 +346,21 @@ export default function ChangePasswordPage() {
       </div>
     </div>
   );
+}
+
+// Helper functions
+function getStrengthLabel() {
+  const passwordStrength = this?.passwordStrength || 0;
+  if (!this?.formData?.newPassword) return "";
+  if (passwordStrength <= 2) return "Weak";
+  if (passwordStrength === 3) return "Medium";
+  return "Strong";
+}
+
+function getStrengthClass() {
+  const passwordStrength = this?.passwordStrength || 0;
+  if (!this?.formData?.newPassword) return "";
+  if (passwordStrength <= 2) return "weak";
+  if (passwordStrength === 3) return "medium";
+  return "strong";
 }

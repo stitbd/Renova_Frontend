@@ -5,127 +5,27 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import "./patient-consultations.css";
-
-// Icons Component
-const Icons = {
-  User: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  ),
-  Phone: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  ),
-  Mail: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-10 7L2 7" />
-    </svg>
-  ),
-  Calendar: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-  ),
-  Clock: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  ),
-  ChevronDown: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
-  ),
-  ChevronLeft: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  ),
-  ChevronRight: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  ),
-  Search: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  ),
-  Filter: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-    </svg>
-  ),
-  Download: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-  ),
-  Printer: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="6 9 6 2 18 2 18 9" />
-      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-      <rect x="6" y="14" width="12" height="8" />
-    </svg>
-  ),
-  Eye: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  ),
-  Video: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="6" width="16" height="12" rx="2" />
-      <path d="m22 8-4 4 4 4V8z" />
-    </svg>
-  ),
-  UserCheck: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <polyline points="16 11 18 13 22 9" />
-    </svg>
-  ),
-  Activity: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-    </svg>
-  ),
-  HelpCircle: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-  ),
-  ArrowRight: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <line x1="5" y1="12" x2="19" y2="12" />
-      <polyline points="12 5 19 12 12 19" />
-    </svg>
-  ),
-  Share: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="18" cy="5" r="3" />
-      <circle cx="6" cy="12" r="3" />
-      <circle cx="18" cy="19" r="3" />
-      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-    </svg>
-  ),
-};
+import {
+  User,
+  Phone,
+  Mail,
+  Calendar,
+  Clock,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  Filter,
+  Download,
+  Printer,
+  Eye,
+  Video,
+  UserCheck,
+  Activity,
+  HelpCircle,
+  ArrowRight,
+  Share2
+} from "lucide-react";
 
 // Mock Data
 const patientData = {
@@ -327,11 +227,11 @@ export default function ConsultationsPage() {
         </div>
         <div className="ch-export-btns">
           <button className="ch-export-btn">
-            <Icons.Printer />
+            <Printer size={16} />
             Print
           </button>
           <button className="ch-export-btn">
-            <Icons.Share />
+            <Share2 size={16} />
             Share
           </button>
         </div>
@@ -368,11 +268,11 @@ export default function ConsultationsPage() {
                 <p className="ch-patient-pid">{patientData.pid}</p>
                 <div className="ch-patient-contact-row">
                   <span className="ch-contact-item">
-                    <Icons.Phone />
+                    <Phone size={14} />
                     {patientData.phone}
                   </span>
                   <span className="ch-contact-item">
-                    <Icons.Mail />
+                    <Mail size={14} />
                     {patientData.email}
                   </span>
                 </div>
@@ -380,21 +280,21 @@ export default function ConsultationsPage() {
               <div className="ch-patient-stats">
                 <div className="ch-stat-row">
                   <span className="ch-stat-row-left">
-                    <Icons.Calendar />
+                    <Calendar size={14} />
                     Total Consultations
                   </span>
                   <span className="ch-stat-val">{summaryStats.totalConsultations}</span>
                 </div>
                 <div className="ch-stat-row">
                   <span className="ch-stat-row-left">
-                    <Icons.Calendar />
+                    <Calendar size={14} />
                     Last Consultation
                   </span>
                   <span className="ch-stat-val">{summaryStats.lastConsultation}</span>
                 </div>
                 <div className="ch-stat-row">
                   <span className="ch-stat-row-left">
-                    <Icons.UserCheck />
+                    <UserCheck size={14} />
                     Primary Doctor
                   </span>
                   <span className="ch-stat-val-block">
@@ -436,7 +336,7 @@ export default function ConsultationsPage() {
                       setShowVisitTypeDropdown(false);
                     }}
                   >
-                    <Icons.Calendar className="ch-filter-svg" />
+                    <Calendar size={14} className="ch-filter-svg" />
                     <span>
                       {dateFrom && dateTo
                         ? `${dateFrom} – ${dateTo}`
@@ -446,7 +346,7 @@ export default function ConsultationsPage() {
                             ? `To ${dateTo}`
                             : "Date Range"}
                     </span>
-                    <Icons.ChevronDown className="ch-filter-chevron" />
+                    <ChevronDown size={12} className="ch-filter-chevron" />
                   </button>
                   {showDatePicker && (
                     <div className="ch-dropdown ch-date-dropdown">
@@ -477,7 +377,7 @@ export default function ConsultationsPage() {
                     }}
                   >
                     <span>{selectedDoctor === "all" ? "All Doctors" : selectedDoctor}</span>
-                    <Icons.ChevronDown className="ch-filter-chevron" />
+                    <ChevronDown size={12} className="ch-filter-chevron" />
                   </button>
                   {showDoctorDropdown && (
                     <div className="ch-dropdown">
@@ -522,7 +422,7 @@ export default function ConsultationsPage() {
                             ? "Lab Test"
                             : "Consultation"}
                     </span>
-                    <Icons.ChevronDown className="ch-filter-chevron" />
+                    <ChevronDown size={12} className="ch-filter-chevron" />
                   </button>
                   {showVisitTypeDropdown && (
                     <div className="ch-dropdown">
@@ -548,7 +448,7 @@ export default function ConsultationsPage() {
 
             {/* Search */}
             <div className="ch-search-wrap">
-              <Icons.Search />
+              <Search size={16} />
               <input
                 type="text"
                 placeholder="Search consultations..."
@@ -559,7 +459,7 @@ export default function ConsultationsPage() {
 
             <div className="ch-filter-actions">
               <button className="ch-apply-btn">
-                <Icons.Filter className="ch-filter-svg" /> Apply Filter
+                <Filter size={14} className="ch-filter-svg" /> Apply Filter
               </button>
               <button
                 className="ch-reset-btn"
@@ -648,7 +548,7 @@ export default function ConsultationsPage() {
                       </td>
                       <td>
                         <button className="ch-view-btn" title="View Details">
-                          <Icons.Eye />
+                          <Eye size={16} />
                         </button>
                       </td>
                     </tr>
@@ -717,7 +617,7 @@ export default function ConsultationsPage() {
                       )}
                     </div>
                     <button className="ch-con-card-view-btn" title="View Details">
-                      <Icons.Eye />
+                      <Eye size={16} />
                     </button>
                   </div>
                 </div>
@@ -737,7 +637,7 @@ export default function ConsultationsPage() {
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
-                  <Icons.ChevronLeft />
+                  <ChevronLeft size={16} />
                 </button>
                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                   let pageNum;
@@ -765,7 +665,7 @@ export default function ConsultationsPage() {
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
                 >
-                  <Icons.ChevronRight />
+                  <ChevronRight size={16} />
                 </button>
               </div>
             </div>
@@ -908,7 +808,7 @@ export default function ConsultationsPage() {
           <div className="ch-help-card">
             <div className="ch-help-top">
               <div className="ch-help-icon">
-                <Icons.HelpCircle />
+                <HelpCircle size={24} />
               </div>
               <div>
                 <h4 className="ch-help-title">Need Help?</h4>

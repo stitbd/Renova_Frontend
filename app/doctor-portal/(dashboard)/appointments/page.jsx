@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import "./appointments.css";
+import { Calendar, Clock, User, Phone, Mail, AlertCircle, Video, FileText, Eye, MessageSquare, ChevronRight } from "lucide-react";
 
 const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
 const TZ = "Asia/Dhaka";
@@ -239,10 +240,6 @@ export default function AppointmentsPage() {
     };
   }, [normalizedAppointments]);
 
-
-  // console.log('visibleList', visibleList)
-
-
   return (
     <div className="dashboard-content">
       <div className="apt-summary-bar">
@@ -357,19 +354,14 @@ export default function AppointmentsPage() {
                       href={`/doctor-portal/messages?receiverId=${apt.patientId}&appointmentId=${apt.id}`}
                       className="apt-action-btn message-btn"
                     >
-                      Message
+                      <MessageSquare size={14} /> Message
                     </Link>
 
                     <Link
                       href={`/doctor-portal/patients/patient-profile?id=${apt?.patientId}`}
                       className="apt-action-btn details-btn"
                     >
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M12 16v-4" />
-                        <path d="M12 8h.01" />
-                      </svg>
-                      Details
+                      <Eye size={14} /> Details
                     </Link>
                   </div>
                 </div>

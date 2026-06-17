@@ -7,6 +7,7 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import "./doctor-signin.css";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setToken, setUser } from "@/redux/features/auth/authSlice";
+import { User, Lock, Shield, LogIn, RefreshCw, KeyRound } from "lucide-react";
 
 export default function DoctorPortalForm() {
 
@@ -21,9 +22,6 @@ export default function DoctorPortalForm() {
 
   const user = useAppSelector((state) => state.auth.user);
   // console.log('doctor form redux', user);
-
-
-
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -118,21 +116,7 @@ export default function DoctorPortalForm() {
               autoComplete="username"
               aria-label="Doctor ID or Registration Number"
             />
-            <svg
-              className="doctor-portal__icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
+            <User className="doctor-portal__icon" size={18} />
           </div>
 
           <div className="doctor-portal__input-group">
@@ -148,21 +132,7 @@ export default function DoctorPortalForm() {
               autoComplete="current-password"
               aria-label="Password"
             />
-            <svg
-              className="doctor-portal__icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
+            <Lock className="doctor-portal__icon" size={18} />
           </div>
 
           <div className="doctor-portal__buttons">
@@ -172,17 +142,17 @@ export default function DoctorPortalForm() {
               className="btn-doctor-portal btn-signin"
               disabled={isLoading}
             >
-              {isLoading ? "Signing In..." : "Sign In"}
+              <LogIn size={16} /> {isLoading ? "Signing In..." : "Sign In"}
             </button>
             <button
               type="button"
               onClick={handleReset}
               className="btn-doctor-portal btn-reset"
             >
-              Reset
+              <RefreshCw size={16} /> Reset
             </button>
             <button type="button" className="btn-doctor-portal btn-forgot">
-              Forgot Password
+              <KeyRound size={16} /> Forgot Password
             </button>
           </div>
 
@@ -201,9 +171,7 @@ export default function DoctorPortalForm() {
 
         {/* Security Notice */}
         <div className="doctor-portal__security-notice">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
+          <Shield size={14} />
           <span>Your connection is secure. Never share your credentials.</span>
         </div>
       </div>

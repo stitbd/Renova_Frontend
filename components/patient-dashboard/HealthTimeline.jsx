@@ -1,38 +1,25 @@
 // components/patient-dashboard/HealthTimeline.jsx
+import { FileText, User, Pill, ChevronDown } from "lucide-react";
+
 export default function HealthTimeline({ timeline }) {
   const getIconConfig = (type) => {
     switch (type) {
       case "Machine Report":
         return {
           className: "green",
-          svg: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="2" y="3" width="20" height="14" rx="2" />
-              <line x1="8" y1="21" x2="16" y2="21" />
-              <line x1="12" y1="17" x2="12" y2="21" />
-            </svg>
-          ),
+          svg: <FileText size={16} />,
           typeColor: "green",
         };
       case "Doctor Note":
         return {
           className: "blue",
-          svg: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          ),
+          svg: <User size={16} />,
           typeColor: "blue",
         };
       case "Prescription":
         return {
           className: "prescription",
-          svg: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" />
-            </svg>
-          ),
+          svg: <Pill size={16} />,
           typeColor: "green",
         };
       default:
@@ -42,8 +29,8 @@ export default function HealthTimeline({ timeline }) {
 
   const getActionLabel = (type) => {
     if (type === "Machine Report") return "View Report";
-    if (type === "Doctor Note")    return "View Note";
-    if (type === "Prescription")   return "View Prescription";
+    if (type === "Doctor Note") return "View Note";
+    if (type === "Prescription") return "View Prescription";
     return "View";
   };
 
@@ -93,9 +80,7 @@ export default function HealthTimeline({ timeline }) {
 
       <button className="load-more-btn">
         Load More
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
+        <ChevronDown size={18} />
       </button>
     </div>
   );

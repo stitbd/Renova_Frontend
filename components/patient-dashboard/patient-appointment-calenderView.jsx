@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import "../../styles/pages/patient-appointment-calenderView.css";
+import { Calendar, Clock, User, MapPin, Video } from "lucide-react";
 
 const container = {
     hidden: { opacity: 0 },
@@ -85,8 +86,7 @@ export function CalendarView({ appointments = [] }) {
                                     </small>
                                 </div>
 
-                                <span
-                                    className={`appointment-status ${getStatusClass(apt.status)}`}
+                                <span className={`appointment-status ${getStatusClass(apt.status)}`}
                                 >
                                     {getStatusLabel(apt.status)}
                                 </span>

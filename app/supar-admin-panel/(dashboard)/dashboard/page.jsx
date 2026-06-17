@@ -70,7 +70,6 @@ const dashboardData = {
   },
 };
 
-// ✅ Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

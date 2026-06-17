@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import "./calendar.css";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function CalendarPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,9 +13,9 @@ export default function CalendarPage() {
     <div className="dashboard-content">
       <div className="calendar-container">
         <div className="calendar-header">
-          <button className="nav-btn">Previous</button>
+          <button className="nav-btn"><ChevronLeft size={16} /> Previous</button>
           <h2>May 2025</h2>
-          <button className="nav-btn">Next</button>
+          <button className="nav-btn">Next <ChevronRight size={16} /></button>
         </div>
         <div className="calendar-grid">
           {/* Calendar days */}
@@ -23,5 +24,3 @@ export default function CalendarPage() {
     </div>
   );
 }
-
-

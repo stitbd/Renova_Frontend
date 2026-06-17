@@ -4,6 +4,22 @@
 import { useState } from "react";
 import Link from "next/link";
 import "./consultations.css";
+import {
+  Users,
+  DollarSign,
+  Clock,
+  Calendar,
+  FileText,
+  Search,
+  User,
+  Phone,
+  Mail,
+  Eye,
+  ChevronDown,
+  ChevronUp,
+  Prescription,
+  Activity
+} from "lucide-react";
 
 const consultationsData = [
   { id: 1, patient: "Khalid Hasan", age: 45, gender: "Male", date: "10 May 2025", time: "09:15 AM", condition: "Hypertension", diagnosis: "Stage 2 Hypertension", treatment: "Prescribed medication and lifestyle changes", fee: "500", duration: "22 min", type: "In-person", followUp: "25 May 2025", prescription: true, status: "completed", patientId: "PT-2025-00210", phone: "01712-345678", avatar: "/images/patients/01.jpg", bloodGroup: "B+", notes: "Patient advised to reduce sodium intake." },
@@ -46,7 +62,7 @@ export default function ConsultationsPage() {
       <div className="con-stats-row">
         <div className="con-stat-card">
           <div className="con-stat-icon total-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+            <Users size={17} />
           </div>
           <div>
             <span className="con-stat-num">{consultationsData.length}</span>
@@ -55,7 +71,7 @@ export default function ConsultationsPage() {
         </div>
         <div className="con-stat-card">
           <div className="con-stat-icon revenue-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+            <DollarSign size={17} />
           </div>
           <div>
             <span className="con-stat-num">৳{totalRevenue.toLocaleString()}</span>
@@ -64,7 +80,7 @@ export default function ConsultationsPage() {
         </div>
         <div className="con-stat-card">
           <div className="con-stat-icon duration-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+            <Clock size={17} />
           </div>
           <div>
             <span className="con-stat-num">{avgDuration} min</span>
@@ -73,7 +89,7 @@ export default function ConsultationsPage() {
         </div>
         <div className="con-stat-card">
           <div className="con-stat-icon followup-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+            <Calendar size={17} />
           </div>
           <div>
             <span className="con-stat-num">{withFollowUp}</span>
@@ -82,7 +98,7 @@ export default function ConsultationsPage() {
         </div>
         <div className="con-stat-card">
           <div className="con-stat-icon rx-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>
+            <FileText size={17} />
           </div>
           <div>
             <span className="con-stat-num">{withPrescription}</span>
@@ -94,7 +110,7 @@ export default function ConsultationsPage() {
       {/* ── Controls ─────────────────────────────────────── */}
       <div className="con-controls">
         <div className="con-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+          <Search size={16} />
           <input
             type="text"
             placeholder="Search by patient, condition, or ID…"
@@ -119,7 +135,7 @@ export default function ConsultationsPage() {
       <div className="con-list">
         {filtered.length === 0 && (
           <div className="con-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>
+            <FileText size={48} stroke="#cbd5e1" />
             <p>No consultations found</p>
           </div>
         )}
@@ -138,7 +154,7 @@ export default function ConsultationsPage() {
                       onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
                     />
                     <span className="con-avatar-fallback">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                      <User size={22} />
                     </span>
                   </div>
                   <div>
@@ -159,11 +175,11 @@ export default function ConsultationsPage() {
                 {/* Meta */}
                 <div className="con-meta-block">
                   <div className="con-meta-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="con-meta-icon"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                    <Calendar size={13} className="con-meta-icon" />
                     <span>{c.date}, {c.time}</span>
                   </div>
                   <div className="con-meta-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="con-meta-icon"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                    <Clock size={13} className="con-meta-icon" />
                     <span>{c.duration}</span>
                   </div>
                   <div className="con-fee-badge">৳{c.fee}</div>
@@ -222,16 +238,16 @@ export default function ConsultationsPage() {
                   {c.prescription && (
 
                     <Link href="/doctor-portal/prescriptions/prescriptions-details" className="con-btn prescription">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>
+                      <FileText size={14} />
                       View Prescription
                     </Link>
                   )}
                   <button className="con-btn report">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+                    <FileText size={14} />
                     View Report
                   </button>
                   <Link href={`/doctor-portal/patients/patient-profile?id=${c.patientId}`} className="con-btn profile">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                    <User size={14} />
                     Patient Profile
                   </Link>
                 </div>
@@ -240,9 +256,9 @@ export default function ConsultationsPage() {
                   onClick={() => setExpanded(isOpen ? null : c.id)}
                 >
                   {isOpen ? (
-                    <>Less <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15" /></svg></>
+                    <>Less <ChevronUp size={13} /></>
                   ) : (
-                    <>More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg></>
+                    <>More <ChevronDown size={13} /></>
                   )}
                 </button>
               </div>

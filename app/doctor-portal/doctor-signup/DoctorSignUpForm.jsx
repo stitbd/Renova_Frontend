@@ -3,198 +3,34 @@ import { useState } from "react";
 import Image from "next/image";
 import "./doctor-signup.css";
 import { useRouter } from "next/navigation";
-
-
-/* ─────────────────────────────────────────────────────────────────
-   SVG Icons
-───────────────────────────────────────────────────────────────── */
-const Icon = {
-  /* Header icon — doctor silhouette in circle */
-  Doctor: () => (
-    <svg viewBox="0 0 56 56" fill="none" width="40" height="40">
-      <circle cx="28" cy="28" r="26" stroke="#1e6faf" strokeWidth="2" fill="#eef3f9" />
-      <circle cx="28" cy="20" r="6.5" stroke="#1e6faf" strokeWidth="1.8" />
-      <path d="M13 44c0-8.284 6.716-15 15-15s15 6.716 15 15" stroke="#1e6faf" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M24 30v5M32 30v5M24 32.5h8" stroke="#4caf50" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  ),
-
-  /* Field icons */
-  ID: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1" y="3" width="14" height="10" rx="2" stroke="#94a3b8" strokeWidth="1.3" />
-      <circle cx="5.5" cy="8" r="1.5" stroke="#94a3b8" strokeWidth="1.2" />
-      <path d="M9 6.5h4M9 8h3M9 9.5h4" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
-  ),
-  User: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <circle cx="8" cy="5.5" r="2.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M2.5 14c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Phone: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M5.2 2H3a1 1 0 0 0-1 1c0 5.523 4.477 10 10 10a1 1 0 0 0 1-1v-2.2a1 1 0 0 0-.684-.949l-2-.667a1 1 0 0 0-1.052.26l-.624.624A7.965 7.965 0 0 1 5.932 5.36l.624-.624a1 1 0 0 0 .26-1.052L6.15 2.684A1 1 0 0 0 5.2 2z" stroke="#94a3b8" strokeWidth="1.2" />
-    </svg>
-  ),
-  Email: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M1.5 4.5L8 9l6.5-4.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Calendar: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1.5" y="3" width="13" height="11" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M5 1.5v3M11 1.5v3M1.5 7h13" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Blood: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M8 2S4 7 4 10a4 4 0 0 0 8 0C12 7 8 2 8 2z" stroke="#94a3b8" strokeWidth="1.3" strokeLinejoin="round" />
-    </svg>
-  ),
-  Globe: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <circle cx="8" cy="8" r="6" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M8 2c-2 2-2 8 0 12M8 2c2 2 2 8 0 12M2 8h12" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
-  ),
-  BMDC: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M5 5h6M5 7.5h6M5 10h4" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  Stethoscope: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M3 2.5c0 2.5 1.5 4.5 4 4.5s4-2 4-4.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M7 7v3.5a2.5 2.5 0 0 0 5 0V9" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-      <circle cx="12.5" cy="8.5" r="1" fill="#94a3b8" />
-    </svg>
-  ),
-  Degree: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M8 2L1 6l7 4 7-4-7-4z" stroke="#94a3b8" strokeWidth="1.3" strokeLinejoin="round" />
-      <path d="M4 8v3c0 1.105 1.79 2 4 2s4-.895 4-2V8" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Clock: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <circle cx="8" cy="8" r="6" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M8 4.5V8l2.5 2" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Designation: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M5 7h6M5 9.5h4" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  Taka: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <text x="3" y="13" fontFamily="serif" fontSize="12" fill="#94a3b8">৳</text>
-    </svg>
-  ),
-  Chevron: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <path d="M4 6l4 4 4-4" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-
-  /* Consult type */
-  Video: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M11 6.5l4-2v7l-4-2V6.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-    </svg>
-  ),
-  Audio: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <path d="M8 1.5a2.5 2.5 0 0 1 2.5 2.5v4a2.5 2.5 0 0 1-5 0V4A2.5 2.5 0 0 1 8 1.5z" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3 8a5 5 0 0 0 10 0M8 13v2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Chat: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <path d="M13.5 8.5c0 2.485-2.462 4.5-5.5 4.5a6.28 6.28 0 0 1-2.236-.407L2 13.5l1.1-2.8A4.24 4.24 0 0 1 2.5 8.5C2.5 6.015 4.962 4 8 4s5.5 2.015 5.5 4.5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-    </svg>
-  ),
-
-  /* Document icons */
-  Photo: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <circle cx="16" cy="14" r="6" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  NID: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <rect x="3" y="7" width="26" height="18" rx="2" stroke="#64748b" strokeWidth="1.5" />
-      <circle cx="11" cy="16" r="3" stroke="#64748b" strokeWidth="1.4" />
-      <path d="M17 13h8M17 16h6M17 19h8" stroke="#64748b" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  BMDCID: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <rect x="4" y="3" width="24" height="26" rx="2" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M9 10h14M9 14h14M9 18h10" stroke="#64748b" strokeWidth="1.2" strokeLinecap="round" />
-      <circle cx="22" cy="22" r="4" fill="#fff" stroke="#4caf50" strokeWidth="1.5" />
-      <path d="M20 22l1.5 1.5L24 20" stroke="#4caf50" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  EduCert: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <path d="M16 4L3 11l13 7 13-7-13-7z" stroke="#64748b" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M7 15v6c0 2.209 4.03 4 9 4s9-1.791 9-4v-6" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  ExpCert: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <rect x="3" y="7" width="26" height="20" rx="2" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M10 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M9 17h14M9 21h10" stroke="#64748b" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-
-  /* Shield for verify */
-  Shield: () => (
-    <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
-      <path d="M14 3L5 7.5v6.5C5 19.7 8.9 23.7 14 25c5.1-1.3 9-5.3 9-11V7.5L14 3z" fill="#4caf50" />
-      <path d="M10 14l3 3.5L18 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-
-  /* Submit */
-  Submit: () => (
-    <svg viewBox="0 0 20 20" fill="none" width="20" height="20">
-      <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M7 10l2.5 2.5L13 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-
-  /* Sidebar benefit icons */
-  Verified: () => (
-    <svg viewBox="0 0 28 28" fill="none" width="26" height="26">
-      <path d="M14 3L5 7.5v6.5C5 19.7 8.9 23.7 14 25c5.1-1.3 9-5.3 9-11V7.5L14 3z" stroke="white" strokeWidth="1.6" strokeLinejoin="round" />
-      <path d="M10 14l3 3.5L18 11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Grow: () => (
-    <svg viewBox="0 0 28 28" fill="none" width="26" height="26">
-      <circle cx="14" cy="10" r="4" stroke="white" strokeWidth="1.6" />
-      <path d="M6 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M20 16l3 3-3 3M23 19h-5" stroke="#a5d6a7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Manage: () => (
-    <svg viewBox="0 0 28 28" fill="none" width="26" height="26">
-      <path d="M4 20l5-6 4 4 5-7 5 9" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4 23h20" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-};
+import {
+  User,
+  Mail,
+  Phone,
+  Lock,
+  Calendar,
+  Droplet,
+  Globe,
+  Shield,
+  CheckCircle,
+  Stethoscope,
+  GraduationCap,
+  Clock,
+  Briefcase,
+  Video,
+  Mic,
+  MessageCircle,
+  Camera,
+  CreditCard,
+  ChevronDown,
+  Heart,
+  TrendingUp,
+  LayoutDashboard,
+  FileText,
+  Plus,
+  X,
+  DollarSign
+} from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────
    Reusable primitives
@@ -216,7 +52,7 @@ function Input({ icon: IconComp, noIcon, ...props }) {
     <div className="doctor-signup__input-wrap">
       {IconComp && (
         <span className="doctor-signup__input-icon">
-          <IconComp />
+          <IconComp size={14} />
         </span>
       )}
       <input
@@ -232,14 +68,14 @@ function Select({ icon: IconComp, children, ...props }) {
     <div className="doctor-signup__input-wrap">
       {IconComp && (
         <span className="doctor-signup__input-icon">
-          <IconComp />
+          <IconComp size={14} />
         </span>
       )}
       <select className="doctor-signup__select" {...props}>
         {children}
       </select>
       <span className="doctor-signup__select-chevron">
-        <Icon.Chevron />
+        <ChevronDown size={13} />
       </span>
     </div>
   );
@@ -251,11 +87,11 @@ function Select({ icon: IconComp, children, ...props }) {
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.0.164:5001/api/v1";
 
 const DOCUMENT_FIELDS = [
-  { Ic: Icon.Photo, title: "Profile Photo", req: false, hint: "JPG, PNG (Max 2MB)", btn: "Upload Photo", documentType: "OTHER" },
-  { Ic: Icon.NID, title: "NID / Passport", req: true, hint: "JPG, PNG (Max 2MB)", btn: "Upload Document", documentType: "NID" },
-  { Ic: Icon.BMDCID, title: "BMDC Certificate", req: true, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document", documentType: "LICENSE" },
-  { Ic: Icon.EduCert, title: "Educational Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document", documentType: "DEGREE" },
-  { Ic: Icon.ExpCert, title: "Experience Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document", documentType: "CERTIFICATE" },
+  { Ic: Camera, title: "Profile Photo", req: false, hint: "JPG, PNG (Max 2MB)", btn: "Upload Photo", documentType: "OTHER" },
+  { Ic: CreditCard, title: "NID / Passport", req: true, hint: "JPG, PNG (Max 2MB)", btn: "Upload Document", documentType: "NID" },
+  { Ic: Shield, title: "BMDC Certificate", req: true, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document", documentType: "LICENSE" },
+  { Ic: GraduationCap, title: "Educational Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document", documentType: "DEGREE" },
+  { Ic: FileText, title: "Experience Certificate", req: false, hint: "JPG, PNG, PDF (Max 2MB)", btn: "Upload Document", documentType: "CERTIFICATE" },
 ];
 
 const initialFormData = {
@@ -600,9 +436,6 @@ export default function DoctorSignUpForm() {
     try {
       setLoading(true);
 
-
-
-
       const response = await fetch(`${API_BASE_URL}/doctors/create`, {
         method: "POST",
         body,
@@ -611,8 +444,6 @@ export default function DoctorSignUpForm() {
 
       const result = await getSafeJsonResponse(response);
 
-      // conslole.log("API Response:", { status: response.status, body: result }); 
-      // conslole.log("Submitting registration with payload:", payload);
       if (!response.ok || result?.success === false) {
         const fallbackMessage = response.status >= 500
           ? "Server error occurred while creating doctor. Please try again later."
@@ -623,7 +454,6 @@ export default function DoctorSignUpForm() {
 
       resetForm();
       router.push("/doctor-portal/doctor-signin");
-      toast.success("Registration successful! Please sign in to continue.");
 
     } catch (err) {
       if (err?.name === "AbortError") {
@@ -642,28 +472,6 @@ export default function DoctorSignUpForm() {
       setLoading(false);
     }
   };
-
-  /* ── Success Screen ─────────────────── */
-  // if (submitted) {
-  //   return (
-  //     <div className="doctor-signup__success">
-  //       <div className="doctor-signup__success-card">
-  //         <div className="doctor-signup__success-icon">✓</div>
-  //         <h2>Registration Submitted!</h2>
-  //         <p>
-  //           Your application has been received. Our team will review your
-  //           documents and notify you via email once verified.
-  //         </p>
-  //         <button
-  //           onClick={() => { setSubmitted(false); resetForm(); }}
-  //           className="doctor-signup__btn-success"
-  //         >
-  //           Register Another Doctor
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="doctor-container">
@@ -757,7 +565,7 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__benefit">
               <div className="doctor-signup__benefit-icon">
-                <Icon.Verified />
+                <Shield size={26} />
               </div>
               <div className="doctor-signup__benefit-content">
                 <h4>Verified &amp; Secure</h4>
@@ -767,7 +575,7 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__benefit">
               <div className="doctor-signup__benefit-icon">
-                <Icon.Grow />
+                <TrendingUp size={26} />
               </div>
               <div className="doctor-signup__benefit-content">
                 <h4>Grow Your Practice</h4>
@@ -777,7 +585,7 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__benefit">
               <div className="doctor-signup__benefit-icon">
-                <Icon.Manage />
+                <LayoutDashboard size={26} />
               </div>
               <div className="doctor-signup__benefit-content">
                 <h4>Manage Easily</h4>
@@ -795,7 +603,7 @@ export default function DoctorSignUpForm() {
             {/* Header */}
             <div className="doctor-signup__form-header">
               <div className="doctor-signup__form-icon">
-                <Icon.Doctor />
+                <Stethoscope size={40} />
               </div>
               <div>
                 <h1 className="doctor-signup__form-title">
@@ -835,36 +643,36 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__grid-3">
               <Field label="Doctor ID (Auto-generated)">
-                <Input icon={Icon.ID} value="DOC_0005" disabled readOnly />
+                <Input icon={CreditCard} value="DOC_0005" disabled readOnly />
               </Field>
               <Field label="Full Name" required>
-                <Input icon={Icon.User} name="fullName" value={formData.fullName} onChange={handleInputChange} type="text" placeholder="Enter full name" required />
+                <Input icon={User} name="fullName" value={formData.fullName} onChange={handleInputChange} type="text" placeholder="Enter full name" required />
               </Field>
               <Field label="Password" required>
-                <Input icon={Icon.ID} name="password" value={formData.password} onChange={handleInputChange} type="password" placeholder="Enter password" required />
+                <Input icon={Lock} name="password" value={formData.password} onChange={handleInputChange} type="password" placeholder="Enter password" required />
               </Field>
             </div>
 
             <div className="doctor-signup__grid-3">
               <Field label="Mobile Number" required>
                 <div className="doctor-signup__otp-row">
-                  <Input icon={Icon.Phone} name="mobile" value={formData.mobile} onChange={handleInputChange} type="tel" placeholder="Enter mobile number" required />
+                  <Input icon={Phone} name="mobile" value={formData.mobile} onChange={handleInputChange} type="tel" placeholder="Enter mobile number" required />
                   <button type="button" className="doctor-signup__btn-otp">
                     Send OTP
                   </button>
                 </div>
               </Field>
               <Field label="Email Address" required>
-                <Input icon={Icon.Email} name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Enter email address" required />
+                <Input icon={Mail} name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Enter email address" required />
               </Field>
               <Field label="Date of Birth" required>
-                <Input icon={Icon.Calendar} name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} type="date" required />
+                <Input icon={Calendar} name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} type="date" required />
               </Field>
             </div>
 
             <div className="doctor-signup__grid-3">
               <Field label="Gender" required>
-                <Select icon={Icon.User} name="gender" value={formData.gender} onChange={handleInputChange} required>
+                <Select icon={User} name="gender" value={formData.gender} onChange={handleInputChange} required>
                   <option value="" disabled>Select gender</option>
                   <option>Male</option>
                   <option>Female</option>
@@ -872,7 +680,7 @@ export default function DoctorSignUpForm() {
                 </Select>
               </Field>
               <Field label="Blood Group">
-                <Select icon={Icon.Blood} name="bloodGroup" value={formData.bloodGroup} onChange={handleInputChange}>
+                <Select icon={Droplet} name="bloodGroup" value={formData.bloodGroup} onChange={handleInputChange}>
                   <option value="" disabled>Select blood group</option>
                   {["A+", "A−", "B+", "B−", "AB+", "AB−", "O+", "O−"].map((g) => (
                     <option key={g}>{g}</option>
@@ -880,7 +688,7 @@ export default function DoctorSignUpForm() {
                 </Select>
               </Field>
               <Field label="Nationality">
-                <Select icon={Icon.Globe} name="nationality" value={formData.nationality} onChange={handleInputChange}>
+                <Select icon={Globe} name="nationality" value={formData.nationality} onChange={handleInputChange}>
                   <option value="" disabled>Select nationality</option>
                   <option value="Bangladeshi">Bangladeshi</option>
                   <option value="other">Other</option>
@@ -893,10 +701,10 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__grid-3">
               <Field label="BMDC / Registration Number" required>
-                <Input icon={Icon.BMDC} name="bmdcNumber" value={formData.bmdcNumber} onChange={handleInputChange} type="text" placeholder="Enter BMDC / Reg. number" required />
+                <Input icon={Shield} name="bmdcNumber" value={formData.bmdcNumber} onChange={handleInputChange} type="text" placeholder="Enter BMDC / Reg. number" required />
               </Field>
               <Field label="Specialization" required>
-                <Select icon={Icon.Stethoscope} name="specializationName" value={formData.specializationName} onChange={handleInputChange} required>
+                <Select icon={Stethoscope} name="specializationName" value={formData.specializationName} onChange={handleInputChange} required>
                   <option value="" disabled>Select specialization</option>
                   {[
                     "Cardiology", "Dermatology", "ENT", "General Medicine",
@@ -908,7 +716,7 @@ export default function DoctorSignUpForm() {
                 </Select>
               </Field>
               <Field label="Sub Specialization">
-                <Select icon={Icon.Stethoscope} name="subSpecialization" value={formData.subSpecialization} onChange={handleInputChange}>
+                <Select icon={Stethoscope} name="subSpecialization" value={formData.subSpecialization} onChange={handleInputChange}>
                   <option value="" disabled>Select sub specialization</option>
                   <option>Interventional Cardiology</option>
                   <option>Pediatric Surgery</option>
@@ -919,12 +727,12 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__grid-3">
               <Field label="Qualification" required>
-                <Input icon={Icon.Degree} name="qualification" value={formData.qualification} onChange={handleInputChange} type="text" placeholder="Enter highest qualification" required />
+                <Input icon={GraduationCap} name="qualification" value={formData.qualification} onChange={handleInputChange} type="text" placeholder="Enter highest qualification" required />
               </Field>
               <Field label="Experience" required>
                 <div className="doctor-signup__input-wrap">
                   <span className="doctor-signup__input-icon">
-                    <Icon.Clock />
+                    <Clock size={14} />
                   </span>
                   <input
                     className="doctor-signup__input"
@@ -941,7 +749,7 @@ export default function DoctorSignUpForm() {
                 </div>
               </Field>
               <Field label="Current Designation">
-                <Input icon={Icon.Designation} name="currentDesignation" value={formData.currentDesignation} onChange={handleInputChange} type="text" placeholder="Enter current designation" />
+                <Input icon={Briefcase} name="currentDesignation" value={formData.currentDesignation} onChange={handleInputChange} type="text" placeholder="Enter current designation" />
               </Field>
             </div>
 
@@ -953,9 +761,9 @@ export default function DoctorSignUpForm() {
               <Field label="Consultation Type" required>
                 <div className="consult-type-buttons">
                   {[
-                    { id: "video", label: "Video", Ic: Icon.Video },
-                    { id: "audio", label: "Audio", Ic: Icon.Audio },
-                    { id: "chat", label: "Chat", Ic: Icon.Chat },
+                    { id: "video", label: "Video", Ic: Video },
+                    { id: "audio", label: "Audio", Ic: Mic },
+                    { id: "chat", label: "Chat", Ic: MessageCircle },
                   ].map(({ id, label, Ic }) => (
                     <button
                       key={id}
@@ -963,7 +771,7 @@ export default function DoctorSignUpForm() {
                       onClick={() => setConsultType(id)}
                       className={`consult-type-btn ${consultType === id ? 'active' : ''}`}
                     >
-                      <Ic className="icon" />
+                      <Ic size={14} />
                       {label}
                     </button>
                   ))}
@@ -1051,7 +859,7 @@ export default function DoctorSignUpForm() {
               {/* Consultation Fee */}
               <Field label="Consultation Fee (৳)" required>
                 <div className="fee-input-wrapper">
-                  <Icon.Taka className="fee-icon" />
+                  <DollarSign size={14} className="fee-icon" />
                   <Input
                     name="consultationFee"
                     value={formData.consultationFee}
@@ -1072,7 +880,7 @@ export default function DoctorSignUpForm() {
               {DOCUMENT_FIELDS.map(({ Ic, title, req, hint, btn, documentType }) => (
                 <div key={title} className="doctor-signup__doc-card">
                   <div className="doctor-signup__doc-icon">
-                    <Ic />
+                    <Ic size={28} />
                   </div>
                   <p className="doctor-signup__doc-title">
                     {title}
@@ -1099,7 +907,7 @@ export default function DoctorSignUpForm() {
 
             <div className="doctor-signup__verify-banner">
               <div className="doctor-signup__verify-icon">
-                <Icon.Shield />
+                <Shield size={28} />
               </div>
               <div className="doctor-signup__verify-text">
                 <h4>Your information is safe with us.</h4>
@@ -1133,7 +941,7 @@ export default function DoctorSignUpForm() {
                 className="doctor-signup__btn-submit"
                 disabled={!agreed || loading}
               >
-                <Icon.Submit />
+                <CheckCircle size={18} />
                 {loading ? "Submitting..." : "Submit Registration"}
               </button>
             </div>
@@ -1141,9 +949,7 @@ export default function DoctorSignUpForm() {
 
           {/* Security notice */}
           <div className="doctor-signup__security-notice">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
+            <Shield size={13} />
             <span>Your connection is secure. All data is encrypted end-to-end.</span>
           </div>
         </main>
@@ -1161,7 +967,7 @@ export default function DoctorSignUpForm() {
                     onClick={() => setOpenScheduleModal(false)}
                     className="text-sm text-gray-500 hover:text-black"
                   >
-                    ✕
+                    <X size={18} />
                   </button>
                 </div>
 

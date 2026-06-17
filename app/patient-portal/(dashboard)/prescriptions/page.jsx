@@ -5,6 +5,30 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import "./patient-prescriptions.css";
+import {
+  FileText,
+  Calendar,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Filter,
+  RotateCcw,
+  Search,
+  ChevronDown,
+  Plus,
+  Download,
+  Printer,
+  Eye,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  Pill,
+  Stethoscope,
+  Activity,
+  Thermometer,
+  Droplet,
+  Gauge
+} from "lucide-react";
 
 const prescriptionsData = [
   {
@@ -80,35 +104,12 @@ const prescriptionsData = [
 ];
 
 const stats = [
-  { label: "Total Prescriptions", value: "156", sub: "View all prescriptions", color: "green", icon: "rx" },
-  { label: "Today's Prescriptions", value: "12", sub: "View today's list", color: "blue", icon: "calendar" },
-  { label: "Pending", value: "08", sub: "Not Dispensed", color: "yellow", icon: "clock" },
-  { label: "Dispensed", value: "140", sub: "Completed", color: "teal", icon: "check" },
-  { label: "Cancelled", value: "04", sub: "Cancelled prescriptions", color: "red", icon: "undo" },
+  { label: "Total Prescriptions", value: "156", sub: "View all prescriptions", color: "green", icon: FileText },
+  { label: "Today's Prescriptions", value: "12", sub: "View today's list", color: "blue", icon: Calendar },
+  { label: "Pending", value: "08", sub: "Not Dispensed", color: "yellow", icon: Clock },
+  { label: "Dispensed", value: "140", sub: "Completed", color: "teal", icon: CheckCircle },
+  { label: "Cancelled", value: "04", sub: "Cancelled prescriptions", color: "red", icon: XCircle },
 ];
-
-function Icon({ type, cls = "" }) {
-  const icons = {
-    rx: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>,
-    calendar: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
-    clock: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
-    check: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>,
-    undo: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-4" /></svg>,
-    filter: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>,
-    reset: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-4" /></svg>,
-    search: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>,
-    chevdown: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>,
-    plus: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>,
-    download: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>,
-    print: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>,
-    eye: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>,
-    user: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
-    chev_left: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
-    chev_right: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>,
-    date: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
-  };
-  return <>{icons[type] || null}</>;
-}
 
 const statusLabel = { dispensed: "Dispensed", pending: "Pending", cancelled: "Cancelled" };
 
@@ -133,7 +134,6 @@ export default function PrescriptionsPage() {
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("prescriptions") || "[]");
-    // Filter out any prescriptions without Doctor property and merge with default data
     const validSaved = saved.filter(p => p && p.doctor);
     setAllPrescriptions([...validSaved, ...prescriptionsData]);
   }, []);
@@ -170,26 +170,29 @@ export default function PrescriptionsPage() {
   return (
     <>
       <div className="rx-stats-row">
-        {stats.map((s) => (
-          <motion.div
-            key={s.label}
-            className={`rx-stat-card ${s.color}`}
-            whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
-          >
+        {stats.map((s) => {
+          const IconComponent = s.icon;
+          return (
             <motion.div
-              className={`rx-stat-icon ${s.color}`}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 400 }}
+              key={s.label}
+              className={`rx-stat-card ${s.color}`}
+              whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
             >
-              <Icon type={s.icon} />
+              <motion.div
+                className={`rx-stat-icon ${s.color}`}
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <IconComponent size={20} />
+              </motion.div>
+              <div className="rx-stat-body">
+                <p className="rx-stat-label">{s.label}</p>
+                <p className={`rx-stat-value ${s.color}`}>{s.value}</p>
+                <p className="rx-stat-sub">{s.sub}</p>
+              </div>
             </motion.div>
-            <div className="rx-stat-body">
-              <p className="rx-stat-label">{s.label}</p>
-              <p className={`rx-stat-value ${s.color}`}>{s.value}</p>
-              <p className="rx-stat-sub">{s.sub}</p>
-            </div>
-          </motion.div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="rx-filter-bar">
@@ -197,9 +200,9 @@ export default function PrescriptionsPage() {
           <div className="rx-filter-group-row">
             <div style={{ position: "relative", flex: 1 }}>
               <button className="rx-filter-item" onClick={() => { setShowDatePicker(v => !v); setShowDoctorDropdown(false); setShowStatusDropdown(false); }}>
-                <Icon type="date" />
+                <Calendar size={14} />
                 <span>{dateFrom && dateTo ? `${dateFrom} – ${dateTo}` : dateFrom ? `From ${dateFrom}` : dateTo ? `To ${dateTo}` : "Date Range"}</span>
-                <Icon type="chevdown" cls="rx-filter-chevron" />
+                <ChevronDown size={12} className="rx-filter-chevron" />
               </button>
               {showDatePicker && (
                 <div className="rx-dropdown rx-date-dropdown">
@@ -221,7 +224,7 @@ export default function PrescriptionsPage() {
             <div style={{ position: "relative", flex: 1 }}>
               <button className="rx-filter-item" onClick={() => { setShowDoctorDropdown(v => !v); setShowStatusDropdown(false); setShowDatePicker(false); }}>
                 <span>{selectedDoctor === "all" ? "All Doctors" : selectedDoctor}</span>
-                <Icon type="chevdown" cls="rx-filter-chevron" />
+                <ChevronDown size={12} className="rx-filter-chevron" />
               </button>
               {showDoctorDropdown && (
                 <div className="rx-dropdown">
@@ -237,7 +240,7 @@ export default function PrescriptionsPage() {
             <div style={{ position: "relative", flex: 1 }}>
               <button className="rx-filter-item" onClick={() => { setShowStatusDropdown(v => !v); setShowDoctorDropdown(false); setShowDatePicker(false); }}>
                 <span>{selectedStatus === "all" ? "All Status" : statusLabel[selectedStatus]}</span>
-                <Icon type="chevdown" cls="rx-filter-chevron" />
+                <ChevronDown size={12} className="rx-filter-chevron" />
               </button>
               {showStatusDropdown && (
                 <div className="rx-dropdown">
@@ -252,7 +255,7 @@ export default function PrescriptionsPage() {
           </div>
         </div>
         <div className="rx-search-box">
-          <Icon type="search" />
+          <Search size={16} />
           <input
             type="text"
             placeholder="Search prescriptions..."
@@ -262,10 +265,10 @@ export default function PrescriptionsPage() {
         </div>
         <div className="rx-filter-actions">
           <button className="rx-apply-btn">
-            <Icon type="filter" /> Apply Filter
+            <Filter size={14} /> Apply Filter
           </button>
           <button className="rx-reset-btn" onClick={() => { setSelectedDoctor("all"); setSelectedStatus("all"); setSearch(""); setDateFrom(""); setDateTo(""); setCurrentPage(1); }}>
-            <Icon type="reset" /> Reset
+            <RotateCcw size={14} /> Reset
           </button>
         </div>
       </div>
@@ -305,7 +308,7 @@ export default function PrescriptionsPage() {
                           alt={rx.doctor.name}
                           onError={(e) => {
                             e.target.style.display = 'none';
-                            e.target.parentElement.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#014fa1" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+                            e.target.parentElement.innerHTML = '<User size={18} color="#014fa1" />';
                           }}
                         />
                       </div>
@@ -315,18 +318,18 @@ export default function PrescriptionsPage() {
                       </div>
                     </div>
                     <div className="rx-card-actions">
-                      <Link href="/patient-portal/prescriptions/prescriptions-details" className="rx-act-btn" title="View"><Icon type="eye" /></Link>
-                      <button className="rx-act-btn" title="Download" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "download")}><Icon type="download" /></button>
-                      <button className="rx-act-btn" title="Print" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "print")}><Icon type="print" /></button>
+                      <Link href="/patient-portal/prescriptions/prescriptions-details" className="rx-act-btn" title="View"><Eye size={16} /></Link>
+                      <button className="rx-act-btn" title="Download" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "download")}><Download size={16} /></button>
+                      <button className="rx-act-btn" title="Print" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "print")}><Printer size={16} /></button>
                     </div>
                   </td>
                   <td data-label="Vital Signs" className="rx-vital-td">
                     <div className="rx-vital-cell">
-                      <p className="rx-vital-item">{rx.vitalSigns.bloodPressure}</p>
-                      <p className="rx-vital-item">{rx.vitalSigns.heartRate}</p>
-                      <p className="rx-vital-item">{rx.vitalSigns.temperature}</p>
-                      <p className="rx-vital-item">{rx.vitalSigns.oxygenSaturation}</p>
-                      <p className="rx-vital-item">{rx.vitalSigns.bloodSugar}</p>
+                      <p className="rx-vital-item"><Activity size={12} /> {rx.vitalSigns.bloodPressure}</p>
+                      <p className="rx-vital-item"><Activity size={12} /> {rx.vitalSigns.heartRate}</p>
+                      <p className="rx-vital-item"><Thermometer size={12} /> {rx.vitalSigns.temperature}</p>
+                      <p className="rx-vital-item"><Droplet size={12} /> {rx.vitalSigns.oxygenSaturation}</p>
+                      <p className="rx-vital-item"><Gauge size={12} /> {rx.vitalSigns.bloodSugar}</p>
                     </div>
                   </td>
                   <td data-label="Date">
@@ -335,7 +338,7 @@ export default function PrescriptionsPage() {
                   </td>
                   <td data-label="Medicines">
                     <div className="rx-medicine-icon-wrap">
-                      <div className="rx-med-icon"><Icon type="rx" /></div>
+                      <div className="rx-med-icon"><Pill size={16} /></div>
                       <div>
                         <p className="rx-med-count">{rx.medicines} Medicines</p>
                         <p className="rx-instr-count">{rx.instructions} Instructions</p>
@@ -348,15 +351,15 @@ export default function PrescriptionsPage() {
                   <td data-label="Action">
                     <div className="rx-action-btns">
                       <Link href={`/patient-portal/prescriptions/prescriptions-details`} className="rx-act-btn" title="View">
-                        <Icon type="eye" />
+                        <Eye size={16} />
                       </Link>
                       <button className="rx-act-btn" title="Download"
                         onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "download")}>
-                        <Icon type="download" />
+                        <Download size={16} />
                       </button>
                       <button className="rx-act-btn" title="Print"
                         onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", status: rx.status, doctor: { name: rx.doctor.name, specialization: rx.doctor.specialization }, patient: { name: rx.patient?.name || "N/A", pid: rx.patient?.pid || "N/A", ageGender: rx.patient?.age || "N/A" }, medicines: [], additionalInstructions: [] }, "print")}>
-                        <Icon type="print" />
+                        <Printer size={16} />
                       </button>
                     </div>
                   </td>
@@ -373,7 +376,7 @@ export default function PrescriptionsPage() {
           </span>
           <div className="rx-pagination-btns">
             <button className="rx-page-btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              <Icon type="chev_left" />
+              <ChevronLeft size={16} />
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1)
               .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
@@ -396,7 +399,7 @@ export default function PrescriptionsPage() {
                 )
               )}
             <button className="rx-page-btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0}>
-              <Icon type="chev_right" />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>

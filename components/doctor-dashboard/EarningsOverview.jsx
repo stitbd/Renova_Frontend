@@ -1,3 +1,5 @@
+import { DollarSign, TrendingUp } from "lucide-react";
+
 // components/doctor-dashboard/EarningsOverview.jsx
 export default function EarningsOverview({ data }) {
   const maxValue = Math.max(...data.chartData.map((d) => d.value));

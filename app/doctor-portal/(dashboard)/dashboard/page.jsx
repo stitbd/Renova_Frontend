@@ -1,4 +1,3 @@
-
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,6 +11,7 @@ import RecentConsultations from "@/components/doctor-dashboard/RecentConsultatio
 import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescriptions";
 import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 import { useAppSelector } from "@/redux/hook";
+import { Users, Calendar, Stethoscope, FileText, DollarSign } from "lucide-react";
 
 const messageCount = 3;
 
@@ -78,7 +78,6 @@ export default function DashboardPage() {
   const token = useAppSelector((state) => state.auth.accessToken);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
-  // console.log('appointments', appointments);
 
   const pendingAppointments = appointments?.filter(
     (appointment) => appointment.status === "PENDING"
@@ -100,17 +99,11 @@ export default function DashboardPage() {
 
   const completedAppointments = appointments?.filter((appointment) => appointment?.status === "COMPLETED")
 
-
-  // console.log("completedAppointments", completedAppointments);
-
   const closeSidebar = () => setSidebarOpen(false);
-
 
   useEffect(() => {
     const fetchPendingAppointments = async () => {
       try {
-
-
         const res = await fetch(
           "http://192.168.0.164:5001/api/v1/appointments/my",
           {
@@ -125,8 +118,6 @@ export default function DashboardPage() {
         if (!res.ok) {
           throw new Error(data?.message || "Failed to fetch appointments");
         }
-        // console.log('res ', data?.data);
-
 
         setAppointments(data?.data || []);
       } catch (error) {
@@ -142,11 +133,11 @@ export default function DashboardPage() {
 
       {/* Stats */}
       <div className="stats-grid">
-        <StatCard icon="patients" title="Pending Patients" count={pendingAppointments?.length} label={dashboardData.stats.newPatients.label} variant="primary" linkText="View Queue" />
-        <StatCard icon="calendar" title="Today's Appointments" count={todayAppointments?.length} label={dashboardData.stats.appointments.label} variant="secondary" linkText="View All" />
-        <StatCard icon="consultation" title="Consultations" count={completedAppointments?.length} label={dashboardData.stats.consultations.label} variant="tertiary" linkText="View All" />
-        <StatCard icon="prescription" title="Prescriptions" count={dashboardData.stats.prescriptions.count} label={dashboardData.stats.prescriptions.label} variant="quaternary" linkText="View All" />
-        <StatCard icon="earnings" title="Today's Earnings" count={`${dashboardData.stats.earnings.currency} ${dashboardData.stats.earnings.amount}`} label="" variant="quinary" linkText="View Earnings" />
+        <StatCard icon={Users} title="Pending Patients" count={pendingAppointments?.length} label={dashboardData.stats.newPatients.label} variant="primary" linkText="View Queue" />
+        <StatCard icon={Calendar} title="Today's Appointments" count={todayAppointments?.length} label={dashboardData.stats.appointments.label} variant="secondary" linkText="View All" />
+        <StatCard icon={Stethoscope} title="Consultations" count={completedAppointments?.length} label={dashboardData.stats.consultations.label} variant="tertiary" linkText="View All" />
+        <StatCard icon={FileText} title="Prescriptions" count={dashboardData.stats.prescriptions.count} label={dashboardData.stats.prescriptions.label} variant="quaternary" linkText="View All" />
+        <StatCard icon={DollarSign} title="Today's Earnings" count={`${dashboardData.stats.earnings.currency} ${dashboardData.stats.earnings.amount}`} label="" variant="quinary" linkText="View Earnings" />
       </div>
 
       {/* Middle 3-column grid */}
@@ -178,5 +169,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-

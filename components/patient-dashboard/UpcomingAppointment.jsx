@@ -1,4 +1,6 @@
 // components/patient-dashboard/UpcomingAppointment.jsx
+import { Clock, MapPin } from "lucide-react";
+
 export default function UpcomingAppointment({ appointment }) {
   return (
     <div className="upcoming-appointment-card">
@@ -27,17 +29,11 @@ export default function UpcomingAppointment({ appointment }) {
 
           <div className="appointment-meta">
             <div className="meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
+              <Clock size={16} />
               <span>{appointment.time}</span>
             </div>
             <div className="meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
+              <MapPin size={16} />
               <span>{appointment.location}</span>
             </div>
           </div>

@@ -7,218 +7,38 @@ import "./settings-profile.css";
 import "./settings-account.css";
 import "./settings-schedule.css";
 import "./settings-privacy.css";
-
-// SVG Icons (same as signup form)
-const Icon = {
-  ID: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1" y="3" width="14" height="10" rx="2" stroke="#94a3b8" strokeWidth="1.3" />
-      <circle cx="5.5" cy="8" r="1.5" stroke="#94a3b8" strokeWidth="1.2" />
-      <path d="M9 6.5h4M9 8h3M9 9.5h4" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
-  ),
-  User: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <circle cx="8" cy="5.5" r="2.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M2.5 14c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Phone: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M5.2 2H3a1 1 0 0 0-1 1c0 5.523 4.477 10 10 10a1 1 0 0 0 1-1v-2.2a1 1 0 0 0-.684-.949l-2-.667a1 1 0 0 0-1.052.26l-.624.624A7.965 7.965 0 0 1 5.932 5.36l.624-.624a1 1 0 0 0 .26-1.052L6.15 2.684A1 1 0 0 0 5.2 2z" stroke="#94a3b8" strokeWidth="1.2" />
-    </svg>
-  ),
-  Email: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M1.5 4.5L8 9l6.5-4.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Calendar: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1.5" y="3" width="13" height="11" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M5 1.5v3M11 1.5v3M1.5 7h13" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Blood: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M8 2S4 7 4 10a4 4 0 0 0 8 0C12 7 8 2 8 2z" stroke="#94a3b8" strokeWidth="1.3" strokeLinejoin="round" />
-    </svg>
-  ),
-  Globe: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <circle cx="8" cy="8" r="6" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M8 2c-2 2-2 8 0 12M8 2c2 2 2 8 0 12M2 8h12" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
-  ),
-  BMDC: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M5 5h6M5 7.5h6M5 10h4" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  Stethoscope: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M3 2.5c0 2.5 1.5 4.5 4 4.5s4-2 4-4.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M7 7v3.5a2.5 2.5 0 0 0 5 0V9" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-      <circle cx="12.5" cy="8.5" r="1" fill="#94a3b8" />
-    </svg>
-  ),
-  Degree: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <path d="M8 2L1 6l7 4 7-4-7-4z" stroke="#94a3b8" strokeWidth="1.3" strokeLinejoin="round" />
-      <path d="M4 8v3c0 1.105 1.79 2 4 2s4-.895 4-2V8" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Clock: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <circle cx="8" cy="8" r="6" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M8 4.5V8l2.5 2" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Designation: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
-      <path d="M5 7h6M5 9.5h4" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  Taka: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
-      <text x="3" y="13" fontFamily="serif" fontSize="12" fill="#94a3b8">৳</text>
-    </svg>
-  ),
-  Chevron: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <path d="M4 6l4 4 4-4" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Video: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M11 6.5l4-2v7l-4-2V6.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-    </svg>
-  ),
-  Audio: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <path d="M8 1.5a2.5 2.5 0 0 1 2.5 2.5v4a2.5 2.5 0 0 1-5 0V4A2.5 2.5 0 0 1 8 1.5z" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3 8a5 5 0 0 0 10 0M8 13v2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  Chat: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <path d="M13.5 8.5c0 2.485-2.462 4.5-5.5 4.5a6.28 6.28 0 0 1-2.236-.407L2 13.5l1.1-2.8A4.24 4.24 0 0 1 2.5 8.5C2.5 6.015 4.962 4 8 4s5.5 2.015 5.5 4.5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-    </svg>
-  ),
-  Photo: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <circle cx="16" cy="14" r="6" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  NID: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <rect x="3" y="7" width="26" height="18" rx="2" stroke="#64748b" strokeWidth="1.5" />
-      <circle cx="11" cy="16" r="3" stroke="#64748b" strokeWidth="1.4" />
-      <path d="M17 13h8M17 16h6M17 19h8" stroke="#64748b" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  BMDCID: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <rect x="4" y="3" width="24" height="26" rx="2" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M9 10h14M9 14h14M9 18h10" stroke="#64748b" strokeWidth="1.2" strokeLinecap="round" />
-      <circle cx="22" cy="22" r="4" fill="#fff" stroke="#4caf50" strokeWidth="1.5" />
-      <path d="M20 22l1.5 1.5L24 20" stroke="#4caf50" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  EduCert: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <path d="M16 4L3 11l13 7 13-7-13-7z" stroke="#64748b" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M7 15v6c0 2.209 4.03 4 9 4s9-1.791 9-4v-6" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  ExpCert: () => (
-    <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-      <rect x="3" y="7" width="26" height="20" rx="2" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M10 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="#64748b" strokeWidth="1.5" />
-      <path d="M9 17h14M9 21h10" stroke="#64748b" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  Shield: () => (
-    <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
-      <path d="M14 3L5 7.5v6.5C5 19.7 8.9 23.7 14 25c5.1-1.3 9-5.3 9-11V7.5L14 3z" fill="#4caf50" />
-      <path d="M10 14l3 3.5L18 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Settings: () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="3"></circle>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0A1.65 1.65 0 0 0 20.91 10H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-    </svg>
-  ),
-  // Schedule Management Icons
-  ClockOutline: () => (
-    <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
-      <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M10 5V10L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  CalendarDays: () => (
-    <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
-      <rect x="2.5" y="3.5" width="15" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M5 1.5V5.5M15 1.5V5.5M2.5 7.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  BellOff: () => (
-    <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
-      <path d="M10 16.5C11.5 16.5 12.5 15.5 12.5 14H7.5C7.5 15.5 8.5 16.5 10 16.5Z" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M3.5 14H16.5L14.5 8.5C14.5 5.5 13 3.5 10 3.5C7 3.5 5.5 5.5 5.5 8.5L3.5 14Z" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M3 3L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  Copy: () => (
-    <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
-      <rect x="6.5" y="6.5" width="9" height="10" rx="1" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M4.5 13.5H3.5C2.5 13.5 2 13 2 12V3.5C2 2.5 2.5 2 3.5 2H12C13 2 13.5 2.5 13.5 3.5V4.5" stroke="currentColor" strokeWidth="1.3" />
-    </svg>
-  ),
-  Plus: () => (
-    <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
-      <path d="M7 1V13M1 7H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  Trash: () => (
-    <svg viewBox="0 0 14 14" fill="none" width="14" height="14">
-      <path d="M2 3.5H12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M5 1.5H9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M5 6V10.5M9 6V10.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M10.5 3.5V11.5C10.5 12.5 10 13 9 13H5C4 13 3.5 12.5 3.5 11.5V3.5" stroke="currentColor" strokeWidth="1.3" />
-    </svg>
-  ),
-  Sun: () => (
-    <svg viewBox="0 0 18 18" fill="none" width="14" height="14">
-      <circle cx="9" cy="9" r="3.5" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M9 1V2.5M9 15.5V17M17 9H15.5M2.5 9H1M15 3L14 4M4 14L3 15M15 15L14 14M4 4L3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  Moon: () => (
-    <svg viewBox="0 0 18 18" fill="none" width="14" height="14">
-      <path d="M9 1C5 1 2 4 2 8C2 12 5 15 9 15C10.5 15 12 14.5 13 13.5C10.5 14 8 12 8 9.5C8 7 9.5 4.5 12 3.5C11 2 10 1 9 1Z" stroke="currentColor" strokeWidth="1.2" />
-    </svg>
-  ),
-  Edit: () => (
-    <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
-      <path d="M8 2L12 6L4.5 13.5L1 13L1.5 9.5L8 2Z" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M6.5 3.5L10.5 7.5" stroke="currentColor" strokeWidth="1.2" />
-    </svg>
-  ),
-  Timer: () => (
-    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-      <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M8 4V8L10 10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-      <path d="M5 1H11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  )
-};
+import {
+  User,
+  Phone,
+  Mail,
+  Calendar,
+  Droplet,
+  Globe,
+  Stethoscope,
+  GraduationCap,
+  Clock,
+  Briefcase,
+  DollarSign,
+  ChevronDown,
+  Video,
+  Mic,
+  MessageCircle,
+  Camera,
+  CreditCard,
+  Shield,
+  Settings,
+  Bell,
+  Sun,
+  Moon,
+  Edit,
+  Trash2,
+  Plus,
+  Copy,
+  Timer,
+  X,
+  Check,
+  AlertCircle
+} from "lucide-react";
 
 // Reusable form components
 function Field({ label, required, children, hint }) {
@@ -239,7 +59,7 @@ function SettingsInput({ icon: IconComp, ...props }) {
     <div className="settings-input-wrap">
       {IconComp && (
         <span className="settings-input-icon">
-          <IconComp />
+          <IconComp size={15} />
         </span>
       )}
       <input
@@ -255,14 +75,14 @@ function SettingsSelect({ icon: IconComp, children, ...props }) {
     <div className="settings-input-wrap">
       {IconComp && (
         <span className="settings-input-icon">
-          <IconComp />
+          <IconComp size={15} />
         </span>
       )}
       <select className="settings-select" {...props}>
         {children}
       </select>
       <span className="settings-select-chevron">
-        <Icon.Chevron />
+        <ChevronDown size={14} />
       </span>
     </div>
   );
@@ -297,7 +117,6 @@ const BREAK_PRESETS = [
 function TimeSlot({ slot, index, onUpdate, onDelete, isEditing, slotDuration, onDurationChange }) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Calculate slot end time based on start time and duration
   const getCalculatedEndTime = (startTime, durationMinutes) => {
     const [hours, minutes] = startTime.split(':').map(Number);
     const date = new Date();
@@ -307,7 +126,6 @@ function TimeSlot({ slot, index, onUpdate, onDelete, isEditing, slotDuration, on
   };
 
   const calculatedEnd = getCalculatedEndTime(slot.start, slotDuration);
-
 
   return (
     <div
@@ -339,14 +157,14 @@ function TimeSlot({ slot, index, onUpdate, onDelete, isEditing, slotDuration, on
             onClick={() => onDelete(index)}
             aria-label="Delete time slot"
           >
-            <Icon.Trash />
+            <Trash2 size={14} />
           </button>
         </>
       )}
       {isEditing && isHovered && (
         <div className="time-slot-edit-overlay">
           <button className="edit-slot-btn" onClick={() => onUpdate(index)}>
-            <Icon.Edit /> Edit Time
+            <Edit size={12} /> Edit Time
           </button>
         </div>
       )}
@@ -434,7 +252,7 @@ function DaySchedule({ day, schedule, onUpdate, isEditing }) {
                     <span className="break-time">{b.start} — {b.end}</span>
                     {isEditing && (
                       <button className="break-delete-btn" onClick={() => handleDeleteBreak(idx)}>
-                        <Icon.Trash />
+                        <Trash2 size={12} />
                       </button>
                     )}
                   </div>
@@ -484,7 +302,7 @@ function DaySchedule({ day, schedule, onUpdate, isEditing }) {
 
             {isEditing && (
               <div className="duration-row">
-                <Icon.Timer />
+                <Timer size={14} />
                 <span>Per patient:</span>
                 <select
                   value={slotDuration}
@@ -500,7 +318,7 @@ function DaySchedule({ day, schedule, onUpdate, isEditing }) {
 
             {!isEditing && schedule?.start && schedule?.end && (
               <div className="duration-row">
-                <Icon.Timer />
+                <Timer size={14} />
                 <span>{slotDuration} min/patient · {patientCount()} slots</span>
               </div>
             )}
@@ -535,7 +353,6 @@ function AddTimeSlotModal({ dayName, onClose, onSave, existingSlots, currentSlot
 
     const endTime = getCalculatedEndTime(startTime, currentSlotDuration);
 
-    // Check for overlapping slots
     const isOverlapping = existingSlots.some(slot =>
       (startTime >= slot.start && startTime < (slot.end || getCalculatedEndTime(slot.start, currentSlotDuration))) ||
       (endTime > slot.start && endTime <= (slot.end || getCalculatedEndTime(slot.start, currentSlotDuration))) ||
@@ -560,7 +377,7 @@ function AddTimeSlotModal({ dayName, onClose, onSave, existingSlots, currentSlot
         </div>
         <div className="modal-body">
           <div className="info-banner">
-            <Icon.Timer />
+            <Timer size={14} />
             <span>Slot duration: {currentSlotDuration} minutes per patient</span>
           </div>
           <div className="time-input-group">
@@ -616,7 +433,6 @@ function EditTimeSlotModal({ dayName, slot, index, onClose, onSave, existingSlot
 
     const endTime = getCalculatedEndTime(startTime, currentSlotDuration);
 
-    // Check for overlapping with other slots (excluding current)
     const isOverlapping = existingSlots.some((s, idx) =>
       idx !== index && (
         (startTime >= s.start && startTime < (s.end || getCalculatedEndTime(s.start, currentSlotDuration))) ||
@@ -643,7 +459,7 @@ function EditTimeSlotModal({ dayName, slot, index, onClose, onSave, existingSlot
         </div>
         <div className="modal-body">
           <div className="info-banner">
-            <Icon.Timer />
+            <Timer size={14} />
             <span>Slot duration: {currentSlotDuration} minutes per patient</span>
           </div>
           <div className="time-input-group">
@@ -849,7 +665,7 @@ function ChangePasswordModal({ onClose }) {
         <div className="modal-body">
           {success ? (
             <div className="password-success">
-              <span className="success-icon">✓</span>
+              <span className="success-icon"><Check size={20} /></span>
               <p>Password changed successfully!</p>
             </div>
           ) : (
@@ -864,7 +680,7 @@ function ChangePasswordModal({ onClose }) {
                     placeholder="Enter current password"
                   />
                   <button className="eye-btn" onClick={() => setShowCurrent(p => !p)}>
-                    {showCurrent ? "🙈" : "👁"}
+                    {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
               </div>
@@ -878,7 +694,7 @@ function ChangePasswordModal({ onClose }) {
                     placeholder="Min. 8 characters"
                   />
                   <button className="eye-btn" onClick={() => setShowNew(p => !p)}>
-                    {showNew ? "🙈" : "👁"}
+                    {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
                 {newPass && (
@@ -898,7 +714,7 @@ function ChangePasswordModal({ onClose }) {
                     placeholder="Re-enter new password"
                   />
                   <button className="eye-btn" onClick={() => setShowConfirm(p => !p)}>
-                    {showConfirm ? "🙈" : "👁"}
+                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
               </div>
@@ -1064,19 +880,19 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
           className={`subtab-btn ${activeSubTab === 'weekly' ? 'active' : ''}`}
           onClick={() => setActiveSubTab('weekly')}
         >
-          <Icon.CalendarDays /> Weekly Schedule
+          <Calendar size={14} /> Weekly Schedule
         </button>
         <button
           className={`subtab-btn ${activeSubTab === 'leaves' ? 'active' : ''}`}
           onClick={() => setActiveSubTab('leaves')}
         >
-          <Icon.BellOff /> Leave Management
+          <Bell size={14} /> Leave Management
         </button>
         <button
           className={`subtab-btn ${activeSubTab === 'holidays' ? 'active' : ''}`}
           onClick={() => setActiveSubTab('holidays')}
         >
-          <Icon.Sun /> Holidays
+          <Sun size={14} /> Holidays
         </button>
       </div>
 
@@ -1093,7 +909,7 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
             </div>
             {isEditing && (
               <button className="copy-schedule-btn" onClick={() => setCopyModalOpen(true)}>
-                <Icon.Copy /> Copy from day
+                <Copy size={14} /> Copy from day
               </button>
             )}
           </div>
@@ -1123,14 +939,14 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
             <h3 className="section-subtitle">Leave Requests</h3>
             {isEditing && (
               <button className="btn-primary-small" onClick={() => setLeaveModalOpen(true)}>
-                <Icon.Plus /> Request Leave
+                <Plus size={12} /> Request Leave
               </button>
             )}
           </div>
           <div className="leaves-list">
             {leaves.length === 0 ? (
               <div className="empty-state">
-                <Icon.BellOff />
+                <Bell size={32} />
                 <p>No leave requests</p>
               </div>
             ) : (
@@ -1146,7 +962,7 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
                   </div>
                   {isEditing && (
                     <button className="delete-leave-btn" onClick={() => handleDeleteLeave(leave.id)}>
-                      <Icon.Trash />
+                      <Trash2 size={14} />
                     </button>
                   )}
                 </div>
@@ -1162,14 +978,14 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
             <h3 className="section-subtitle">Public Holidays</h3>
             {isEditing && (
               <button className="btn-primary-small" onClick={() => setHolidayModalOpen(true)}>
-                <Icon.Plus /> Add Holiday
+                <Plus size={12} /> Add Holiday
               </button>
             )}
           </div>
           <div className="holidays-list">
             {holidays.length === 0 ? (
               <div className="empty-state">
-                <Icon.Sun />
+                <Sun size={32} />
                 <p>No holidays added</p>
               </div>
             ) : (
@@ -1185,7 +1001,7 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
                   </div>
                   {isEditing && (
                     <button className="delete-holiday-btn" onClick={() => handleDeleteHoliday(holiday.id)}>
-                      <Icon.Trash />
+                      <Trash2 size={14} />
                     </button>
                   )}
                 </div>
@@ -1195,7 +1011,7 @@ function ScheduleManagement({ isEditing, onSave, onCancel }) {
         </div>
       )}
 
-      {/* Modals */}
+      {/* Modals - keep existing modal code but replace icons with Lucide */}
       {slotModal.open && (
         slotModal.slotIndex === null ? (
           <AddTimeSlotModal
@@ -1291,10 +1107,8 @@ export default function SettingsPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
-
-  // Profile state - ALL fields from signup form
+  // Profile state
   const [profile, setProfile] = useState({
-    // Personal Information
     doctorId: "DR-2025-000123",
     fullName: "Dr. Tasnim Farin",
     fatherHusbandName: "Md. Abdul Farin",
@@ -1304,34 +1118,26 @@ export default function SettingsPage() {
     gender: "Female",
     bloodGroup: "O+",
     nationality: "BD",
-
-    // Professional Information
     bmdcNumber: "BMDC-12345",
     specialization: "Cardiology",
     subSpecialization: "Interventional Cardiology",
     qualification: "MBBS, FCPS (Cardiology)",
     experience: "12",
     currentDesignation: "Senior Cardiologist",
-
-    // Work & Availability
     consultationType: "video",
     workSchedule: "Evening (2pm – 8pm)",
     consultationFee: "500",
     currency: "৳",
-
-    // Documents (file names/URLs)
     profilePhoto: { url: "", name: "" },
     nidPassport: { url: "", name: "" },
     bmdcCertificate: { url: "", name: "" },
     educationalCertificate: { url: "", name: "" },
     experienceCertificate: { url: "", name: "" },
-
-    // Account
     bio: "Board-certified cardiologist with 12+ years of experience in cardiovascular care.",
     avatar: "/images/doctors/doctor-2.jpg"
   });
 
-  // Account settings (separate from profile)
+  // Account settings
   const [account, setAccount] = useState({
     email: "tasnim.farin@renovalife.com",
     phone: "+880 1712-345678",
@@ -1398,10 +1204,10 @@ export default function SettingsPage() {
   };
 
   const tabs = [
-    { id: "profile", label: "Profile", icon: <Icon.User /> },
-    { id: "account", label: "Account", icon: <Icon.Settings /> },
-    { id: "schedule", label: "Schedule", icon: <Icon.Calendar /> },
-    { id: "privacy", label: "Privacy", icon: <Icon.Shield /> },
+    { id: "profile", label: "Profile", icon: User },
+    { id: "account", label: "Account", icon: Settings },
+    { id: "schedule", label: "Schedule", icon: Calendar },
+    { id: "privacy", label: "Privacy", icon: Shield },
   ];
 
   const specializationOptions = [
@@ -1425,16 +1231,19 @@ export default function SettingsPage() {
       <div className="settings-layout">
         <aside className="settings-sidebar">
           <nav className="settings-nav">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                className={`settings-nav-item ${activeTab === tab.id ? "active" : ""}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                <span className="settings-nav-icon">{tab.icon}</span>
-                <span className="settings-nav-label">{tab.label}</span>
-              </button>
-            ))}
+            {tabs.map((tab) => {
+              const IconComponent = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  className={`settings-nav-item ${activeTab === tab.id ? "active" : ""}`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <span className="settings-nav-icon"><IconComponent size={16} /></span>
+                  <span className="settings-nav-label">{tab.label}</span>
+                </button>
+              );
+            })}
           </nav>
         </aside>
 
@@ -1461,11 +1270,7 @@ export default function SettingsPage() {
                   ))}
                   {isEditing && (
                     <label className="avatar-change-btn">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="17 8 12 3 7 8" />
-                        <line x1="12" y1="3" x2="12" y2="15" />
-                      </svg>
+                      <Camera size={16} />
                       <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
                     </label>
                   )}
@@ -1480,13 +1285,13 @@ export default function SettingsPage() {
 
               <div className="settings-form-grid">
                 <Field label="Doctor ID">
-                  <SettingsInput icon={Icon.ID} value={profile.doctorId} disabled readOnly />
+                  <SettingsInput icon={User} value={profile.doctorId} disabled readOnly />
                 </Field>
 
                 <Field label="Full Name" required>
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.User}
+                      icon={User}
                       type="text"
                       value={profile.fullName}
                       onChange={(e) => handleProfileChange("fullName", e.target.value)}
@@ -1500,7 +1305,7 @@ export default function SettingsPage() {
                 <Field label="Father's / Husband's Name">
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.User}
+                      icon={User}
                       type="text"
                       value={profile.fatherHusbandName}
                       onChange={(e) => handleProfileChange("fatherHusbandName", e.target.value)}
@@ -1515,7 +1320,7 @@ export default function SettingsPage() {
                   <div className="settings-input-with-btn">
                     {isEditing ? (
                       <SettingsInput
-                        icon={Icon.Phone}
+                        icon={Phone}
                         type="tel"
                         value={profile.mobile}
                         onChange={(e) => handleProfileChange("mobile", e.target.value)}
@@ -1533,7 +1338,7 @@ export default function SettingsPage() {
                 <Field label="Email Address" required>
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.Email}
+                      icon={Mail}
                       type="email"
                       value={profile.email}
                       onChange={(e) => handleProfileChange("email", e.target.value)}
@@ -1547,7 +1352,7 @@ export default function SettingsPage() {
                 <Field label="Date of Birth" required>
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.Calendar}
+                      icon={Calendar}
                       type="date"
                       value={profile.dateOfBirth}
                       onChange={(e) => handleProfileChange("dateOfBirth", e.target.value)}
@@ -1560,7 +1365,7 @@ export default function SettingsPage() {
                 <Field label="Gender" required>
                   {isEditing ? (
                     <SettingsSelect
-                      icon={Icon.User}
+                      icon={User}
                       value={profile.gender}
                       onChange={(e) => handleProfileChange("gender", e.target.value)}
                     >
@@ -1577,7 +1382,7 @@ export default function SettingsPage() {
                 <Field label="Blood Group">
                   {isEditing ? (
                     <SettingsSelect
-                      icon={Icon.Blood}
+                      icon={Droplet}
                       value={profile.bloodGroup}
                       onChange={(e) => handleProfileChange("bloodGroup", e.target.value)}
                     >
@@ -1594,7 +1399,7 @@ export default function SettingsPage() {
                 <Field label="Nationality">
                   {isEditing ? (
                     <SettingsSelect
-                      icon={Icon.Globe}
+                      icon={Globe}
                       value={profile.nationality}
                       onChange={(e) => handleProfileChange("nationality", e.target.value)}
                     >
@@ -1614,7 +1419,7 @@ export default function SettingsPage() {
                 <Field label="BMDC / Registration Number" required>
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.BMDC}
+                      icon={Stethoscope}
                       type="text"
                       value={profile.bmdcNumber}
                       onChange={(e) => handleProfileChange("bmdcNumber", e.target.value)}
@@ -1628,7 +1433,7 @@ export default function SettingsPage() {
                 <Field label="Specialization" required>
                   {isEditing ? (
                     <SettingsSelect
-                      icon={Icon.Stethoscope}
+                      icon={Stethoscope}
                       value={profile.specialization}
                       onChange={(e) => handleProfileChange("specialization", e.target.value)}
                     >
@@ -1645,7 +1450,7 @@ export default function SettingsPage() {
                 <Field label="Sub Specialization">
                   {isEditing ? (
                     <SettingsSelect
-                      icon={Icon.Stethoscope}
+                      icon={Stethoscope}
                       value={profile.subSpecialization}
                       onChange={(e) => handleProfileChange("subSpecialization", e.target.value)}
                     >
@@ -1662,7 +1467,7 @@ export default function SettingsPage() {
                 <Field label="Qualification" required>
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.Degree}
+                      icon={GraduationCap}
                       type="text"
                       value={profile.qualification}
                       onChange={(e) => handleProfileChange("qualification", e.target.value)}
@@ -1677,7 +1482,7 @@ export default function SettingsPage() {
                   {isEditing ? (
                     <div className="settings-input-with-suffix">
                       <SettingsInput
-                        icon={Icon.Clock}
+                        icon={Clock}
                         type="number"
                         min="0"
                         value={profile.experience}
@@ -1694,7 +1499,7 @@ export default function SettingsPage() {
                 <Field label="Current Designation">
                   {isEditing ? (
                     <SettingsInput
-                      icon={Icon.Designation}
+                      icon={Briefcase}
                       type="text"
                       value={profile.currentDesignation}
                       onChange={(e) => handleProfileChange("currentDesignation", e.target.value)}
@@ -1713,10 +1518,10 @@ export default function SettingsPage() {
                   {isEditing ? (
                     <div className="consult-type-selector">
                       {[
-                        { id: "video", label: "Video Call", Ic: Icon.Video },
-                        { id: "audio", label: "Audio Call", Ic: Icon.Audio },
-                        { id: "chat", label: "Chat Only", Ic: Icon.Chat },
-                      ].map(({ id, label, Ic }) => {
+                        { id: "video", label: "Video Call", Icon: Video },
+                        { id: "audio", label: "Audio Call", Icon: Mic },
+                        { id: "chat", label: "Chat Only", Icon: MessageCircle },
+                      ].map(({ id, label, Icon: IconComp }) => {
                         const selected = Array.isArray(profile.consultationType)
                           ? profile.consultationType.includes(id)
                           : profile.consultationType === id;
@@ -1727,7 +1532,7 @@ export default function SettingsPage() {
                             className={`consult-type-btn${selected ? " active" : ""}`}
                             onClick={() => handleConsultationTypeToggle(id)}
                           >
-                            <Ic /> {label}
+                            <IconComp size={14} /> {label}
                           </button>
                         );
                       })}
@@ -1743,7 +1548,7 @@ export default function SettingsPage() {
                 <Field label="Work Schedule" required>
                   {isEditing ? (
                     <SettingsSelect
-                      icon={Icon.Calendar}
+                      icon={Calendar}
                       value={profile.workSchedule}
                       onChange={(e) => handleProfileChange("workSchedule", e.target.value)}
                     >
@@ -1783,11 +1588,11 @@ export default function SettingsPage() {
 
               <div className="documents-grid">
                 {[
-                  { Ic: Icon.NID, title: "NID / Passport", required: true, hint: "JPG, PNG (Max 2MB)", field: "nidPassport", btn: "Upload Document", accept: "image/*" },
-                  { Ic: Icon.BMDCID, title: "BMDC Certificate", required: true, hint: "JPG, PNG, PDF (Max 2MB)", field: "bmdcCertificate", btn: "Upload Document", accept: "image/*,application/pdf" },
-                  { Ic: Icon.EduCert, title: "Educational Certificate", required: false, hint: "JPG, PNG, PDF (Max 2MB)", field: "educationalCertificate", btn: "Upload Document", accept: "image/*,application/pdf" },
-                  { Ic: Icon.ExpCert, title: "Experience Certificate", required: false, hint: "JPG, PNG, PDF (Max 2MB)", field: "experienceCertificate", btn: "Upload Document", accept: "image/*,application/pdf" },
-                ].map(({ Ic, title, required, hint, field, btn, accept }) => {
+                  { Icon: CreditCard, title: "NID / Passport", required: true, hint: "JPG, PNG (Max 2MB)", field: "nidPassport", btn: "Upload Document", accept: "image/*" },
+                  { Icon: Stethoscope, title: "BMDC Certificate", required: true, hint: "JPG, PNG, PDF (Max 2MB)", field: "bmdcCertificate", btn: "Upload Document", accept: "image/*,application/pdf" },
+                  { Icon: GraduationCap, title: "Educational Certificate", required: false, hint: "JPG, PNG, PDF (Max 2MB)", field: "educationalCertificate", btn: "Upload Document", accept: "image/*,application/pdf" },
+                  { Icon: Briefcase, title: "Experience Certificate", required: false, hint: "JPG, PNG, PDF (Max 2MB)", field: "experienceCertificate", btn: "Upload Document", accept: "image/*,application/pdf" },
+                ].map(({ Icon: IconComp, title, required, hint, field, btn, accept }) => {
                   const fileData = profile[field];
                   const hasFile = fileData?.url || (typeof fileData === "string" && fileData);
                   return (
@@ -1796,7 +1601,7 @@ export default function SettingsPage() {
                         {hasFile && fileData?.url?.startsWith("blob:") && accept.includes("image") ? (
                           <img src={fileData.url} alt={title} className="doc-preview-img" />
                         ) : (
-                          <Ic />
+                          <IconComp size={20} />
                         )}
                       </div>
                       <div className="document-info">
@@ -1830,7 +1635,7 @@ export default function SettingsPage() {
 
               <div className="verification-banner">
                 <div className="verification-icon">
-                  <Icon.Shield />
+                  <Shield size={20} />
                 </div>
                 <div className="verification-text">
                   <h4>Your information is secure</h4>
