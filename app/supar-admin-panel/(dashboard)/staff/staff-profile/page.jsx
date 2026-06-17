@@ -47,7 +47,13 @@ export default function StaffProfilePage() {
     const permKeys = ["dashboard", "patient", "reports", "inventory", "financial", "settings"];
 
     const InfoRow = ({ label, value, icon }) => (
-        <div className="info-row"><Icon n={icon} s={15} c="#94a3b8" /><span className="info-label">{label}</span><span className="info-value">{value}</span></div>
+        <div className="info-row">
+            <Icon n={icon} s={15} c="#94a3b8" />
+            <div className="info-inner">
+                <div className="info-label">{label}</div>
+                <div className="info-value">{value}</div>
+            </div>
+        </div>
     );
 
     return (
@@ -70,10 +76,18 @@ export default function StaffProfilePage() {
             <div className="details-grid">
                 <div className="details-left">
                     <div className="identity-card">
-                        <div className="identity-header" style={{ background: `linear-gradient(135deg, #014fa1 0%, #05417d 100%)` }}>
-                            <div className="identity-avatar"><img src={s.avatar} alt={s.name} /></div>
-                            <div className="identity-info"><div className="identity-name">{s.name}</div><div className="identity-id">{s.id}</div></div>
-                            <StatusBadge status={s.status} />
+                        <div className="identity-header">
+                            <div className="identity-header-top">
+                                <div />
+                                <StatusBadge status={s.status} />
+                            </div>
+                            <div className="identity-avatar-wrap">
+                                <div className="identity-avatar"><img src={s.avatar} alt={s.name} /></div>
+                                <div className="identity-name-block">
+                                    <div className="identity-name">{s.name}</div>
+                                    <div className="identity-id">{s.id}</div>
+                                </div>
+                            </div>
                         </div>
                         <div className="identity-body">
                             <div className="identity-tags"><span className="role-badge">{s.role}</span><span className="outlet-badge">{s.outlet}</span><span className="verified-badge">BMDC Verified</span></div>
