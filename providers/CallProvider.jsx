@@ -300,17 +300,17 @@ export default function CallProvider({ children }) {
         console.table(microphones);
 
 
-        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
 
-        const selectedMic = microphones.find((mic) =>
-          mic.label.toLowerCase().includes("headset")
-        ) || microphones[0];
+        // const selectedMic = microphones.find((mic) =>
+        //   mic.label.toLowerCase().includes("headset")
+        // ) || microphones[0];
 
-        console.log("SELECTED MIC:", selectedMic);
+        // console.log("SELECTED MIC:", selectedMic);
 
-        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-          microphoneId: selectedMic.deviceId,
-        });
+        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+        //   microphoneId: selectedMic.deviceId,
+        // });
 
 
         console.log(
