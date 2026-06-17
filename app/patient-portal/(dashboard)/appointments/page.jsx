@@ -7,8 +7,8 @@ import { useAppSelector } from "@/redux/hook";
 import "./patient-appointments.css";
 import { CalendarView } from "@/components/patient-dashboard/patient-appointment-calenderView";
 
-const API_URL = "https://d55e-2401-f40-1587-0-ed4f-4bed-3dd2-b569.ngrok-free.app/api/v1/appointments/my";
-const CANCEL_API_URL = "https://d55e-2401-f40-1587-0-ed4f-4bed-3dd2-b569.ngrok-free.app/api/v1/appointments/cancel";
+const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
+const CANCEL_API_URL = "http://192.168.0.164:5001/api/v1/appointments/cancel";
 const TZ = "Asia/Dhaka";
 
 const filters = [

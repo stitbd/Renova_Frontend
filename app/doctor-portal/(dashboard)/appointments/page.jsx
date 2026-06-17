@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import "./appointments.css";
 
-const API_URL = "https://d55e-2401-f40-1587-0-ed4f-4bed-3dd2-b569.ngrok-free.app/api/v1/appointments/my";
+const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
 const TZ = "Asia/Dhaka";
 
 const STATUS_FILTERS = [

@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://d55e-2401-f40-1587-0-ed4f-4bed-3dd2-b569.ngrok-free.app/api/v1";
+const API_BASE_URL = "http://192.168.0.164:5001/api/v1";
 
 async function request(endpoint, token, options = {}) {
   const isFormData = options.body instanceof FormData;
