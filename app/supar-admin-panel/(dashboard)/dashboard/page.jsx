@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion"; // ✅ Added
-import "@/styles/pages/super-admin-dashboard.css";
+import { motion } from "framer-motion";
+import "./dashboard.css";
 import StatsGrid from "@/components/supar-admin-dashboard/StatsGrid";
 import RevenueOverview from "@/components/supar-admin-dashboard/RevenueOverview";
 import ConsultationsOverview from "@/components/supar-admin-dashboard/ConsultationsOverview";
@@ -135,18 +135,6 @@ export default function AdminDashboardPage() {
           <SystemSummary data={dashboardData.systemSummary} />
         </motion.div>
       </motion.div>
-
-      {/* Footer */}
-      <motion.footer
-        className="admin-footer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.3 }}
-      >
-        <span>© 2026 Renova Life Care Ltd. All rights reserved.</span>
-        <span>Developed by <span className="highlight">STITBD</span></span>
-        <span>Version 1.0.0</span>
-      </motion.footer>
     </motion.div>
   );
 }
