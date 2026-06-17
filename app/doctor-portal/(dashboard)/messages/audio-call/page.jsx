@@ -310,7 +310,11 @@ export default function AudioCallPage() {
                                 </span>
                             </button>
 
-                            <button className="video-ctrl-btn" type="button">
+                            <button
+                                className="video-ctrl-btn"
+                                type="button"
+                                onClick={() => call?.restartRemoteAudio?.()}
+                            >
                                 <div className="video-ctrl-icon">
                                     <Icon type="speaker" />
                                 </div>

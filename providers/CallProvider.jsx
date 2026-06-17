@@ -647,6 +647,24 @@ export default function CallProvider({ children }) {
     setIncomingCall(null);
   };
 
+  const restartRemoteAudio = async () => {
+    try {
+      const track = remoteAudioTrackRef.current;
+      if (!track) return;
+
+      await playRemoteAudioTrack(track);
+
+      if (remoteAudioElementRef.current) {
+        remoteAudioElementRef.current.volume = 1;
+        remoteAudioElementRef.current.muted = false;
+        await remoteAudioElementRef.current.play();
+      }
+
+      console.log("REMOTE AUDIO RESTARTED");
+    } catch (err) {
+      console.warn("Failed to restart remote audio:", err);
+    }
+  };
 
   return (
     <CallContext.Provider
@@ -671,6 +689,7 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
+        restartRemoteAudio
 
       }}
     >
