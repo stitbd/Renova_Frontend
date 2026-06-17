@@ -297,7 +297,34 @@ export default function CallProvider({ children }) {
 
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
 
+
         localAudioTrackRef.current = audioTrack;
+
+        console.log("MIC TRACK CREATED");
+
+
+        console.log(
+          "MIC ENABLED:",
+          audioTrack.enabled
+        );
+
+        console.log(
+          "MIC MUTED:",
+          audioTrack.muted
+        );
+
+        console.log(
+          "TRACK READY:",
+          audioTrack
+        );
+
+
+        setInterval(() => {
+          console.log(
+            "LIVE MIC LEVEL:",
+            audioTrack.getVolumeLevel()
+          );
+        }, 1000);
 
         startAudioLevelDebug(audioTrack, "LOCAL MIC");
 
