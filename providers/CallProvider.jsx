@@ -294,8 +294,31 @@ export default function CallProvider({ children }) {
         //   AGC: true,
         // });
 
+        const microphones = await AgoraRTC.getMicrophones();
 
-        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        console.log("AVAILABLE MICROPHONES:");
+        console.table(microphones);
+
+
+        // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+
+        const selectedMic = microphones.find((mic) =>
+          mic.label.toLowerCase().includes("headset")
+        ) || microphones[0];
+
+        console.log("SELECTED MIC:", selectedMic);
+
+        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+          microphoneId: selectedMic.deviceId,
+        });
+
+
+        console.log(
+          "MIC LABEL:",
+          audioTrack._deviceName ||
+          audioTrack.trackMediaStreamTrack?.label ||
+          "unknown"
+        );
 
 
         localAudioTrackRef.current = audioTrack;

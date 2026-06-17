@@ -13,65 +13,154 @@
 /* Identity Card */
 .identity-card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
+    border: 0.5px solid #e2e8f0;
+    border-radius: 16px;
     overflow: hidden;
     margin-bottom: 18px;
 }
 
 .identity-header {
-    height: 90px;
+    background: linear-gradient(135deg, #014fa1 0%, #05417d 100%);
+    padding: 20px 20px 10px;
     position: relative;
-    padding: 0 16px;
 }
 
-.identity-avatar {
+.identity-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.identity-avatar-wrap {
     position: absolute;
-    bottom: -36px;
+    bottom: -40px;
     left: 24px;
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
 }
 
 .identity-avatar img {
-    width: 72px;
-    height: 72px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    display: block;
 }
 
-.identity-info {
-    position: absolute;
-    bottom: 14px;
-    left: 110px;
+.identity-name-block {
+    padding-bottom: 20px;
 }
 
 .identity-name {
     color: #fff;
-    font-weight: 800;
-    font-size: 17px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.2;
 }
 
 .identity-id {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 11px;
-}
-
-.identity-header .status-badge {
-    position: absolute;
-    bottom: 14px;
-    right: 16px;
+    color: var(--color-primary-dark);
+    font-size: 11.5px;
+    margin-top: 3px;
 }
 
 .identity-body {
-    padding: 48px 24px 20px;
+    padding: 54px 22px 20px;
 }
 
 .identity-tags {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+}
+
+.status-active {
+    color: #16a34a;
+    background: #dcfce7;
+}
+
+.status-badge {
+    border-radius: 20px;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+}
+
+.outlet-badge {
+    padding: 4px 12px;
+    background: #f1f5f9;
+    color: #475569;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.verified-badge {
+    padding: 4px 12px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+/* Info Section Grid */
+.info-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 0.5px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 0.5px solid #f1f5f9;
+}
+
+.info-row:nth-child(odd) {
+    border-right: 0.5px solid #f1f5f9;
+}
+
+.info-row:nth-last-child(-n+2) {
+    border-bottom: none;
+}
+
+.info-row--full {
+    grid-column: 1 / -1;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+
+.info-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.info-label {
+    font-size: 10.5px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+}
+
+.info-value {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1a202c;
 }
 
 .outlet-badge {
@@ -90,28 +179,6 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-}
-
-/* Info Row */
-.info-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.info-label {
-    font-size: 12px;
-    color: #94a3b8;
-    min-width: 130px;
-    flex-shrink: 0;
-}
-
-.info-value {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a202c;
 }
 
 /* Permissions Card */
@@ -134,41 +201,54 @@
 }
 
 .permissions-details-grid {
-    padding: 18px 20px;
+    padding: 14px 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
+    gap: 8px;
 }
 
 .perm-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 10px 14px;
     border-radius: 8px;
-    font-size: 11.5px;
-    font-weight: 600;
-}
-
-.perm-item.enabled {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    color: #16a34a;
-}
-
-.perm-item.disabled {
+    font-size: 12.5px;
+    font-weight: 500;
     background: #f8fafc;
-    border: 1px solid #f1f5f9;
-    color: #94a3b8;
+    border: 0.5px solid #f1f5f9;
+    color: #374151;
+    min-width: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.perm-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.perm-item-left span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: clamp(11px, 2.8vw, 12.5px);
 }
 
 .perm-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .perm-item.enabled .perm-icon {
@@ -177,6 +257,51 @@
 
 .perm-item.disabled .perm-icon {
     background: #e2e8f0;
+}
+
+/* Toggle */
+.perm-toggle {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.perm-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.perm-toggle-track {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: #e2e8f0;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.perm-toggle-track::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.perm-toggle input:checked+.perm-toggle-track {
+    background: #16a34a;
+}
+
+.perm-toggle input:checked+.perm-toggle-track::after {
+    transform: translateX(16px);
 }
 
 /* Right Column Cards */
@@ -298,61 +423,38 @@
 
 @media (max-width: 768px) {
     .identity-header {
-        height: auto;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        padding: 16px 16px 10px;
     }
 
-    .identity-avatar {
-        position: static;
-        margin-bottom: 10px;
-    }
-
-    .identity-info {
-        position: static;
-        margin-bottom: 10px;
-    }
-
-    .identity-header .status-badge {
-        position: static;
-        margin-top: 10px;
-        display: inline-flex;
-        width: fit-content;
+    .identity-avatar img {
+        width: 72px;
+        height: 72px;
     }
 
     .identity-body {
-        padding: 24px 16px;
+        padding: 48px 16px 16px;
     }
 
-    .info-row {
-        flex-direction: column;
-        gap: 4px;
+    .info-section {
+        grid-template-columns: 1fr;
     }
 
-    .info-label {
-        min-width: auto;
+    .info-row:nth-child(odd) {
+        border-right: none;
     }
 
-    .permissions-details-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .info-row:nth-last-child(-n+2) {
+        border-bottom: 0.5px solid #f1f5f9;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
     }
 
     .identity-tags {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;
     }
 }
-
-@media (max-width: 640px) {
-    .permissions-details-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
 
 /* ── Sub Header ─────────────────────────────────────────────────── */
 .rxd-sub-header {
@@ -456,6 +558,7 @@
 
 /* ── Responsive Sub Header ──────────────────────────────────────── */
 @media (max-width: 768px) {
+
     .rxd-sub-header {
         flex-direction: column;
         align-items: flex-start;
@@ -474,6 +577,13 @@
 }
 
 @media (max-width: 640px) {
+    .permissions-details-grid {
+        padding: 14px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
     .rxd-header-actions {
         display: grid;
         grid-template-columns: 1fr 1fr;

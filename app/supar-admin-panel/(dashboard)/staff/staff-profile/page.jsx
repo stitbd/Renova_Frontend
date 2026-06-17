@@ -91,13 +91,21 @@ export default function StaffProfilePage() {
                         </div>
                         <div className="identity-body">
                             <div className="identity-tags"><span className="role-badge">{s.role}</span><span className="outlet-badge">{s.outlet}</span><span className="verified-badge">BMDC Verified</span></div>
-                            <InfoRow label="Staff ID" value={s.id} icon="badge" />
-                            <InfoRow label="Mobile" value={s.phone} icon="phone" />
-                            <InfoRow label="Email" value={s.email} icon="mail" />
-                            <InfoRow label="Date of Birth" value="15 Jun 1998" icon="calendar" />
-                            <InfoRow label="Gender" value="Female" icon="user" />
-                            <InfoRow label="Joined" value={s.joined} icon="calendar" />
-                            <InfoRow label="Address" value="House 12, Road 5, Dhanmondi, Dhaka" icon="map" />
+                            <div className="info-section">
+                                <InfoRow label="Staff ID" value={s.id} icon="badge" />
+                                <InfoRow label="Mobile" value={s.phone} icon="phone" />
+                                <InfoRow label="Email" value={s.email} icon="mail" />
+                                <InfoRow label="Date of Birth" value="15 Jun 1998" icon="calendar" />
+                                <InfoRow label="Gender" value="Female" icon="user" />
+                                <InfoRow label="Joined" value={s.joined} icon="calendar" />
+                                <div className="info-row info-row--full">
+                                    <Icon n="map" s={15} c="#94a3b8" />
+                                    <div className="info-inner">
+                                        <div className="info-label">Address</div>
+                                        <div className="info-value">House 12, Road 5, Dhanmondi, Dhaka</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -106,8 +114,16 @@ export default function StaffProfilePage() {
                         <div className="permissions-details-grid">
                             {permKeys.map((k, i) => (
                                 <div key={k} className={`perm-item ${perms[k] ? "enabled" : "disabled"}`}>
-                                    <div className="perm-icon">{perms[k] ? <Icon n="check" s={12} c="#16a34a" /> : <Icon n="lock" s={12} c="#94a3b8" />}</div>
-                                    <span>{permLabels[i]}</span>
+                                    <div className="perm-item-left">
+                                        <div className="perm-icon">
+                                            {perms[k] ? <Icon n="check" s={13} c="#16a34a" /> : <Icon n="lock" s={13} c="#94a3b8" />}
+                                        </div>
+                                        <span>{permLabels[i]}</span>
+                                    </div>
+                                    <label className="perm-toggle">
+                                        <input type="checkbox" defaultChecked={perms[k]} readOnly />
+                                        <span className="perm-toggle-track" />
+                                    </label>
                                 </div>
                             ))}
                         </div>
