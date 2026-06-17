@@ -306,7 +306,7 @@ export default function CallProvider({ children }) {
         setError(err.message || "Failed to join call");
       }
     },
-    []
+    [playRemoteAudioTrack]
   );
 
   const createCallSession = useCallback(
@@ -571,7 +571,7 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
-        
+
       }}
     >
       {children}
