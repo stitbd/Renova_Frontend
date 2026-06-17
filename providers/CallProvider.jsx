@@ -211,11 +211,14 @@ export default function CallProvider({ children }) {
 
 
           if (mediaType === "audio" && user.audioTrack) {
-            console.log("AUDIO SUBSCRIBED");
+            console.log("AUDIO SUBSCRIBED FROM:", user.uid);
 
             await playRemoteAudioTrack(user.audioTrack);
 
-            console.log("REMOTE AUDIO PLAYING");
+            setTimeout(() => {
+              console.log("RETRY REMOTE AUDIO PLAY");
+              user.audioTrack.play();
+            }, 1000);
           }
 
           if (mediaType === "video" && user.videoTrack) {
