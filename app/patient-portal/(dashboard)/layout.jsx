@@ -1,7 +1,9 @@
 // app/patient/layout.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/auth/authSlice";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useRoutePrefetch from "@/components/common/useRoutePrefetch";
@@ -93,11 +95,6 @@ const navItems = [
     label: "Help & Support",
     icon: HelpCircle,
   },
-  {
-    href: "/patient-portal/logout",
-    label: "Logout",
-    icon: LogOut,
-  },
 ];
 
 function isActivePath(pathname, href) {
@@ -105,6 +102,25 @@ function isActivePath(pathname, href) {
 }
 
 export default function PatientPortalLayout({ children }) {
+  const dispatch = useDispatch();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleLogout() {
+    setDropdownOpen(false);
+    dispatch(logout());
+    window.location.href = "/";
+  }
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
   const prefetchRoute = useRoutePrefetch(navItems.map((item) => item.href));
@@ -176,6 +192,11 @@ export default function PatientPortalLayout({ children }) {
             </div>
 
             <div className="header-right">
+              <div className="status-toggle">
+                <span className="status-indicator online" />
+                <span>Online</span>
+              </div>
+
               <button className="notification-btn" aria-label="Notifications">
                 <Bell size={20} />
                 <span className="notification-badge">3</span>
@@ -189,23 +210,72 @@ export default function PatientPortalLayout({ children }) {
                 onFocus={() => prefetchRoute("/patient-portal/messages")}
               >
                 <MessageSquare size={20} />
-                <span
-                  className="notification-badge"
-                  style={{ background: "#014fa1" }}
-                >
+                <span className="notification-badge" style={{ background: "#014fa1" }}>
                   {messageCount}
                 </span>
               </Link>
 
-              <div className="user-profile">
-                <div className="user-avatar">
-                  <User size={18} />
+              <div
+                className="user-profile"
+                ref={dropdownRef}
+                style={{ position: "relative" }}
+              >
+                <div
+                  className="user-profile-trigger"
+                  onClick={() => setDropdownOpen((prev) => !prev)}
+                  style={{ display: "flex", gap: 10 }}
+                >
+                  <div className="user-avatar">
+                    <img
+                      src="/images/patients/01.jpg"
+                      alt="Rakib Hasan"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.nextSibling.style.display = "flex";
+                      }}
+                    />
+                    <User size={18} style={{ display: "none" }} />
+                  </div>
+                  <div className="user-info">
+                    <span className="user-name">Rakib Hasan</span>
+                    <span className="user-id">PT-2025-000123</span>
+                  </div>
+                  <ChevronDown
+                    size={14}
+                    className="dropdown-arrow"
+                    style={{
+                      transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 0.2s ease",
+                    }}
+                  />
                 </div>
-                <div className="user-info">
-                  <span className="user-name">Rakib Hasan</span>
-                  <span className="user-id">PT-2025-000123</span>
-                </div>
-                <ChevronDown size={14} className="dropdown-arrow" />
+
+                {dropdownOpen && (
+                  <div className="user-dropdown">
+                    <div className="user-dropdown-header">
+                      <div className="user-avatar" style={{ width: 42, height: 42 }}>
+                        <img
+                          src="/images/patients/01.jpg"
+                          alt="Rakib Hasan"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                            e.currentTarget.nextSibling.style.display = "flex";
+                          }}
+                        />
+                        <User size={20} style={{ display: "none" }} />
+                      </div>
+                      <div>
+                        <p className="user-dropdown-name">Rakib Hasan</p>
+                        <p className="user-dropdown-id">PT-2025-000123</p>
+                      </div>
+                    </div>
+                    <div className="user-dropdown-divider" />
+                    <button className="user-dropdown-item" onClick={handleLogout}>
+                      <LogOut size={15} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </header>
