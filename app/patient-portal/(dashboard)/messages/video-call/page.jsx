@@ -384,83 +384,10 @@ export default function VideoCallPage() {
                 </div>
 
                 {/* ── Right Panel ────────────────────────────────── */}
-                <div className="call-right-panel">
-                    <div className="call-right-tabs">
-                        {["Chat", "Files", "Reports"].map((tab) => (
-                            <button
-                                key={tab}
-                                className={`call-right-tab${activeTab === tab ? " active" : ""}`}
-                                onClick={() => setActiveTab(tab)}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
-
-                    {activeTab === "Chat" && (
-                        <>
-                            <div className="call-chat-body">
-                                <div className="call-chat-date">Today</div>
-                                {messages.map((msg) => {
-                                    const isDoctor = msg.from === "doctor";
-                                    return (
-                                        <div key={msg.id} className={`call-chat-bubble-wrap${isDoctor ? " sent" : ""}`}>
-                                            <div className="call-chat-avatar"><img
-                                                src="/images/patients/01.jpg"
-                                                alt="Masud Rana"
-                                                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                                            />
-                                            </div>
-                                            <div className="call-chat-bubble-inner">
-                                                <div className={`call-chat-bubble${isDoctor ? " sent" : ""}`}>{msg.text}</div>
-                                                <div className="call-chat-time">{msg.time} {isDoctor && <Icon type="tick" />}</div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="call-chat-input-wrap">
-                                {pendingFiles.length > 0 && (
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: "6px 4px 8px" }}>
-                                        {pendingFiles.map((f, i) => (
-                                            <div key={i} style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 4, background: "#f1f5f9", borderRadius: 6, padding: "3px 8px", fontSize: 11, color: "#475569" }}>
-                                                {f.type.startsWith("image/") ? (
-                                                    <img src={URL.createObjectURL(f)} alt={f.name} style={{ width: 28, height: 28, objectFit: "cover", borderRadius: 4 }} />
-                                                ) : (
-                                                    <Icon type="doc" />
-                                                )}
-                                                <span style={{ maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.name}</span>
-                                                <button onClick={() => setPendingFiles(prev => prev.filter((_, j) => j !== i))} style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                                <div className="call-chat-input-row">
-                                    <input
-                                        type="text"
-                                        placeholder="Type a message..."
-                                        value={inputText}
-                                        onChange={e => setInputText(e.target.value)}
-                                        onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                                    />
-                                    <span className="call-chat-attach-icon" onClick={handleAttach} style={{ cursor: "pointer" }}>
-                                        <Icon type="attach" />
-                                    </span>
-                                    <div className="call-chat-input-icon" onClick={handleSend} style={{ cursor: "pointer" }}>
-                                        <Icon type="send" />
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    )}
-
-                    {activeTab !== "Chat" && (
-                        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8", fontSize: 13 }}>
-                            No {activeTab.toLowerCase()} available yet.
-                        </div>
-                    )}
-                </div>
+                <CallRightPanel
+                    receiverId={callSession?.receiverId || callSession?.callerId}
+                    appointmentId={callSession?.appointmentId}
+                />
             </div>
         </div>
     );
