@@ -1,0 +1,185 @@
+/* ======================================================
+   CSS FILE: outlet-devices.css
+   ====================================================== */
+
+/* Tabs Bar */
+.tabs-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: #014fa1;
+    color: #fff;
+    border-color: #014fa1;
+}
+
+/* Devices Grid */
+.devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.device-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.device-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.device-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #014fa1;
+}
+
+.device-status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.device-status.online {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.device-status.offline {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.device-status.maintenance {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.device-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 4px;
+}
+
+.device-id {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0 0 12px;
+}
+
+.device-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.device-stats .stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.stat-label {
+    color: #64748b;
+}
+
+.stat-value {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.device-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Reports Table */
+.reports-table-container {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.report-id {
+    font-family: monospace;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.table-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.btn-icon.view {
+    color: #014fa1;
+}
+
+.btn-icon.download {
+    color: #7c3aed;
+}
+
+.btn-icon:hover {
+    background: currentColor;
+    color: #fff !important;
+    border-color: currentColor;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .devices-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs-bar {
+        flex-wrap: wrap;
+    }
+}

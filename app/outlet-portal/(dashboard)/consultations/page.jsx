@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-consultations.css";
 import { FileText, User, Calendar, Clock, Stethoscope, Eye, FileCheck, FileSpreadsheet } from "lucide-react";
 
 export default function ConsultationsPage() {

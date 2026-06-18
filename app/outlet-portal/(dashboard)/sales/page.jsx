@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-sales.css";
 import { Download, TrendingUp, ShoppingCart, DollarSign, Clock, Eye } from "lucide-react";
 
 export default function SalesPage() {

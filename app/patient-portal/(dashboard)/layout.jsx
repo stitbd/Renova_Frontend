@@ -10,6 +10,22 @@ import CallProvider from "@/providers/CallProvider";
 import FloatingCallWidget from "@/components/FloatingCallWidget";
 import IncomingCallPopup from "@/components/IncomingCallPopup";
 import PermissionErrorModal from "@/components/PermissionErrorModal";
+import {
+  LayoutDashboard,
+  FileText,
+  Pill,
+  Clock,
+  Calendar,
+  Activity,
+  MessageSquare,
+  User,
+  Lock,
+  HelpCircle,
+  LogOut,
+  Menu,
+  Bell,
+  ChevronDown,
+} from "lucide-react";
 
 const messageCount = 3;
 

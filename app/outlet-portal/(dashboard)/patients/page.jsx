@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-patients.css";
 import { Plus, Search, User, Eye, Edit, Users, Calendar, TrendingUp } from "lucide-react";
 
 const container = {

@@ -2,6 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import "./outlet-earnings.css";
 import { Download, TrendingUp, DollarSign, CreditCard, Clock } from "lucide-react";
 
 export default function EarningsPage() {

@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-devices.css";
 import { Plus, Monitor, Activity, Settings, Download, Eye } from "lucide-react";
 
 export default function DevicesPage() {

@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-pharmacy.css";
 import { Search, ShoppingCart, Plus, Minus, X, AlertTriangle } from "lucide-react";
 
 export default function PharmacyPage() {

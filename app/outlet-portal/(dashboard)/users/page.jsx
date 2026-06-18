@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-users.css";
 import { Plus, User, Mail, Shield, CheckCircle, XCircle, Edit, Trash2, Users, Key } from "lucide-react";
 
 export default function UsersPage() {

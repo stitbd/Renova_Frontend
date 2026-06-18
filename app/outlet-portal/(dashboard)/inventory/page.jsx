@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-inventory.css";
 import { Plus, Package, AlertTriangle, DollarSign, Edit, RefreshCw, Search } from "lucide-react";
 
 export default function InventoryPage() {

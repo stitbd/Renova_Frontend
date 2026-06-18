@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-appointments.css";
 import { Plus, List, Calendar, Clock, User, Stethoscope, CheckCircle, Play, RefreshCw, Eye } from "lucide-react";
 
 export default function AppointmentsPage() {

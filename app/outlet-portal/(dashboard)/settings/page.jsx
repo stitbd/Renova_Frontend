@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-settings.css";
 import {
   Building2, Bell, Lock, CreditCard, Link,
   Edit, Save, AlertTriangle, Shield, Key,

@@ -2,6 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import "./outlet-performance.css";
 import { Download, Users, Stethoscope, ShoppingCart, DollarSign, TrendingUp, Package, Clock } from "lucide-react";
 
 export default function PerformancePage() {
