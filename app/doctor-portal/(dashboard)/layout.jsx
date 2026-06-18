@@ -9,6 +9,7 @@ import "@/styles/pages/doctor-dashboard.css";
 import FloatingCallWidget from "@/components/FloatingCallWidget";
 import CallProvider from "@/providers/CallProvider";
 import IncomingCallPopup from "@/components/IncomingCallPopup";
+<<<<<<< HEAD
 import {
   LayoutDashboard,
   Users,
@@ -29,6 +30,9 @@ import {
   CheckCircle,
   AlertCircle
 } from "lucide-react";
+=======
+import PermissionErrorModal from "@/components/PermissionErrorModal";
+>>>>>>> e886749d865c83b7ceb4eba8a946579aafffa36b
 
 const messageCount = 3;
 
@@ -222,6 +226,7 @@ export default function DoctorPortalDashboardLayout({ children }) {
 
         <FloatingCallWidget />
         <IncomingCallPopup />
+        <PermissionErrorModal />
       </div>
     </CallProvider>
   );

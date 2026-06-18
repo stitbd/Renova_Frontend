@@ -9,6 +9,7 @@ import "@/styles/pages/patient-dashboard.css";
 import CallProvider from "@/providers/CallProvider";
 import FloatingCallWidget from "@/components/FloatingCallWidget";
 import IncomingCallPopup from "@/components/IncomingCallPopup";
+<<<<<<< HEAD
 import {
   LayoutDashboard,
   FileText,
@@ -25,6 +26,9 @@ import {
   Bell,
   ChevronDown
 } from "lucide-react";
+=======
+import PermissionErrorModal from "@/components/PermissionErrorModal";
+>>>>>>> e886749d865c83b7ceb4eba8a946579aafffa36b
 
 const messageCount = 3;
 
@@ -221,8 +225,15 @@ export default function PatientPortalLayout({ children }) {
         </main>
 
         <FloatingCallWidget />
+<<<<<<< HEAD
         <IncomingCallPopup />
       </div>
     </CallProvider>
+=======
+          <IncomingCallPopup />
+          <PermissionErrorModal />
+    </div>
+     </CallProvider>
+>>>>>>> e886749d865c83b7ceb4eba8a946579aafffa36b
   );
 }
