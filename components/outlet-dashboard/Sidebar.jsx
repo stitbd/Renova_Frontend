@@ -27,6 +27,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/outlet-portal/dashboard", badge: null },
     { icon: Users, label: "Patients", href: "/outlet-portal/patients", badge: null },
+    { icon: Users, label: "Staff", href: "/outlet-portal/staff", badge: null },
     { icon: Calendar, label: "Appointments", href: "/outlet-portal/appointments", badge: 12 },
     { icon: Stethoscope, label: "Consultations", href: "/outlet-portal/consultations", badge: 8 },
     { icon: Monitor, label: "Devices & Reports", href: "/outlet-portal/devices", badge: null },
