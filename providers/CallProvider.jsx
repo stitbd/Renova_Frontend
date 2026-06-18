@@ -81,6 +81,7 @@ export default function CallProvider({ children }) {
   const leavingRef = useRef(false);
 
 
+  const [permissionError, setPermissionError] = useState(null);
   const [activeCall, setActiveCall] = useState(null);
   const [isJoined, setIsJoined] = useState(false);
   const [isCallAccepted, setIsCallAccepted] = useState(false);
@@ -119,6 +120,7 @@ export default function CallProvider({ children }) {
   const cleanupCall = useCallback(async () => {
     leavingRef.current = true;
     clearCallSession();  // ← MOVE THIS TO THE TOP
+    setPermissionError(null);
 
     try {
       if (remoteAudioElementRef.current) {
@@ -632,8 +634,53 @@ export default function CallProvider({ children }) {
     return `${m}:${s}`;
   };
 
+  const checkMediaPermission = async (callType) => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: callType === "VIDEO",
+      });
+
+      stream.getTracks().forEach((track) => track.stop());
+
+      return {
+        allowed: true,
+        error: null,
+      };
+    } catch (err) {
+      return {
+        allowed: false,
+        error: err,
+      };
+    }
+  };
+
+
   const acceptIncomingCall = async () => {
     if (!incomingCall?.callId || !accessToken) return;
+
+
+    const permission = await checkMediaPermission(incomingCall.callType);
+    
+    if (!permission.allowed) {
+      setPermissionError(
+        incomingCall.callType === "VIDEO"
+          ? {
+            callType: "VIDEO",
+            title: "Unable to Join Video Call",
+            message:
+              "Camera and microphone access are required for video consultations. Please allow the required permissions and try again.",
+          }
+          : {
+            callType: "AUDIO",
+            title: "Unable to Join Call",
+            message:
+              "Microphone access is required for audio calls. Please allow microphone access in your browser settings and try again.",
+          }
+      );
+
+      return;
+    }
 
     const result = await videoCallApi.accept(accessToken, incomingCall.callId);
 
@@ -699,7 +746,9 @@ export default function CallProvider({ children }) {
         endCall,
         openFullCallPage,
         formatDuration,
-        restartRemoteAudio
+        restartRemoteAudio,
+        permissionError,
+        setPermissionError,
 
       }}
     >
