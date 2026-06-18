@@ -17,7 +17,7 @@ export default function PatientPortalForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
 
   const user = useAppSelector((state) => state.auth.accessToken);
@@ -89,7 +89,11 @@ export default function PatientPortalForm() {
         </div>
 
         <div className="patient-portal__header">
-          <h1 className="patient-portal__title">Patient Portal</h1>
+          <div className="patient-portal__badge">
+            <Shield size={12} />
+            <span>Patient Portal</span>
+          </div>
+          <h1 className="patient-portal__title">Welcome back</h1>
           <p className="patient-portal__subtitle">Sign in to access your health records</p>
         </div>
 
@@ -100,64 +104,81 @@ export default function PatientPortalForm() {
         )}
 
         <form onSubmit={handleSignIn} className="patient-portal__form" noValidate>
-          <div className="patient-portal__input-group">
-            <input
-              type="text"
-              id="uhid"
-              name="uhid"
-              value={uhid}
-              onChange={(e) => setUhid(e.target.value)}
-              placeholder="Enter your UHID/Registration No."
-              className="patient-portal__input"
-              required
-              autoComplete="username"
-              aria-label="UHID or Registration Number"
-            />
-            <User className="patient-portal__icon" size={18} />
+          <div className="patient-portal__field">
+            <label htmlFor="uhid" className="patient-portal__label">
+              UHID / Registration No.
+            </label>
+            <div className="patient-portal__input-group">
+              <input
+                type="text"
+                id="uhid"
+                name="uhid"
+                value={uhid}
+                onChange={(e) => setUhid(e.target.value)}
+                placeholder="e.g. RLC-PAT-00123"
+                className="patient-portal__input"
+                required
+                autoComplete="username"
+                aria-label="UHID or Registration Number"
+              />
+              <User className="patient-portal__icon" size={16} />
+            </div>
           </div>
 
-          <div className="patient-portal__input-group">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your registered Mobile No/Password"
-              className="patient-portal__input"
-              required
-              autoComplete="current-password"
-              aria-label="Password"
-            />
-            <Lock className="patient-portal__icon" size={18} />
+          <div className="patient-portal__field">
+            <label htmlFor="password" className="patient-portal__label">
+              Password / Mobile No.
+            </label>
+            <div className="patient-portal__input-group">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="patient-portal__input"
+                required
+                autoComplete="current-password"
+                aria-label="Password"
+              />
+              <Lock className="patient-portal__icon" size={16} />
+            </div>
           </div>
 
           <div className="patient-portal__buttons">
-            <button type="submit" className="btn-patient-portal btn-signin">
-              <LogIn size={16} /> Sign In
+            <button
+              type="submit"
+              className="btn-patient-portal btn-signin"
+              disabled={isLoading}
+            >
+              <LogIn size={15} />
+              {isLoading ? "Signing in…" : "Sign in"}
             </button>
             <button
               type="button"
               onClick={handleReset}
               className="btn-patient-portal btn-reset"
             >
-              <RefreshCw size={16} /> Reset
+              <RefreshCw size={14} /> Reset
             </button>
             <button type="button" className="btn-patient-portal btn-forgot">
-              <KeyRound size={16} /> Forgot Password
+              <KeyRound size={14} /> Forgot
             </button>
           </div>
 
-          <div className="patient-portal__help">
+          <div className="patient-portal__divider" />
+
+          <div className="patient-portal__links">
             <a href="/portal-help" className="patient-portal__help-link">
               How to use patient portal
             </a>
-          </div>
-
-          <div className="patient-portal__help">
-            New Patient? <a href="/patient-portal/patient-signup" className="patient-portal__help-link">
-              Create your account
-            </a>
+            <span className="patient-portal__links-new">
+              New patient?{" "}
+              <a href="/patient-portal/patient-signup" className="patient-portal__help-link">
+                Create account
+              </a>
+            </span>
           </div>
         </form>
 
