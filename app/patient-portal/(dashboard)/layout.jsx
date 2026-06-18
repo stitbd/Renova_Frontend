@@ -9,6 +9,7 @@ import "@/styles/pages/patient-dashboard.css";
 import CallProvider from "@/providers/CallProvider";
 import FloatingCallWidget from "@/components/FloatingCallWidget";
 import IncomingCallPopup from "@/components/IncomingCallPopup";
+import PermissionErrorModal from "@/components/PermissionErrorModal";
 
 const messageCount = 3;
 
@@ -277,6 +278,7 @@ export default function PatientPortalLayout({ children }) {
 
         <FloatingCallWidget />
           <IncomingCallPopup />
+          <PermissionErrorModal />
     </div>
      </CallProvider>
   );

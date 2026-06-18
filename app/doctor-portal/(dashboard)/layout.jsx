@@ -8,6 +8,7 @@ import "@/styles/pages/doctor-dashboard.css";
 import FloatingCallWidget from "@/components/FloatingCallWidget";
 import CallProvider from "@/providers/CallProvider";
 import IncomingCallPopup from "@/components/IncomingCallPopup";
+import PermissionErrorModal from "@/components/PermissionErrorModal";
 
 const messageCount = 3;
 
@@ -289,6 +290,7 @@ export default function DoctorPortalDashboardLayout({ children }) {
         
         <FloatingCallWidget />
         <IncomingCallPopup />
+        <PermissionErrorModal />
       </div>
     </CallProvider>
   );
