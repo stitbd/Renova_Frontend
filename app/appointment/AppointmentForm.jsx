@@ -9,6 +9,25 @@ import {
 import "@/styles/pages/appointment.css";
 import { useAppSelector } from "@/redux/hook";
 import { API_URL } from "@/config";
+import {
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  MapPin,
+  Check,
+  ArrowRight,
+  ArrowLeft,
+  Lock,
+  Info,
+  Download,
+  Search,
+  X,
+  Shield,
+  AlertCircle,
+  Clock,
+  Stethoscope
+} from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════════
    UTILITY: Convert time format to 24-hour HH:MM format
@@ -27,25 +46,6 @@ const convertTo24HourFormat = (timeStr) => {
   }
   return timeStr;
 };
-
-/* ═══════════════════════════════════════════════════════════════
-   INLINE SVG ICONS
-   ═══════════════════════════════════════════════════════════════ */
-const SVG_PROPS = { fill: "none", stroke: "currentColor", strokeWidth: "1.8" };
-
-const IconUser = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
-const IconMail = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>;
-const IconPhone = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.08 4.18 2 2 0 0 1 6.06 2h3a2 2 0 0 1 2 1.72c.127.946.36 1.874.69 2.76a2 2 0 0 1-.45 2.11L10.09 9.91a16 16 0 0 0 6.29 6.29l1.13-1.14a2 2 0 0 1 2.11-.45c.886.33 1.814.563 2.76.69A2 2 0 0 1 22 16.92z" /></svg>;
-const IconCalendar = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
-const IconPin = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>;
-const IconCheck = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>;
-const IconArrowR = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>;
-const IconArrowL = ({ size = 18 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>;
-const IconLock = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>;
-const IconInfo = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS}><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
-const IconDownload = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>;
-const IconSearch = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
-const IconX = ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" {...SVG_PROPS} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
 
 /* ═══════════════════════════════════════════════════════════════
    FIELD WRAPPER
@@ -78,7 +78,7 @@ function Modal({ open, onClose, title, children }) {
       <div className="appt-modal" onClick={e => e.stopPropagation()}>
         <div className="appt-modal__head">
           <h3 className="appt-modal__title">{title}</h3>
-          <button className="appt-modal__close" onClick={onClose} aria-label="Close"><IconX size={18} /></button>
+          <button className="appt-modal__close" onClick={onClose} aria-label="Close"><X size={18} /></button>
         </div>
         <div className="appt-modal__body">{children}</div>
         <div className="appt-modal__foot">
@@ -140,7 +140,6 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
   };
 
   const getDoctorTitle = (doctor) => {
-    // console.log('doctor object in getDoctorTitle:', doctor);
     const title =
       doctor?.title ||
       doctor?.specialization?.name ||
@@ -248,7 +247,7 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
       {open && !locked && (
         <div className="appt-doc-dd__panel" role="listbox">
           <div className="appt-doc-dd__search-wrap">
-            <IconSearch size={14} />
+            <Search size={14} />
 
             <input
               className="appt-doc-dd__search"
@@ -265,7 +264,7 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
                 className="appt-doc-dd__clear"
                 onClick={() => setQuery("")}
               >
-                <IconX size={12} />
+                <X size={12} />
               </button>
             )}
           </div>
@@ -305,7 +304,6 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
                   </div>
 
                   <div className="appt-doc-meta">
-                    {/* {getDoctorTitle(doctor)} */}
                     {getDoctorExp(doctor)
                       ? `  ${getDoctorExp(doctor)} experience`
                       : ""}
@@ -320,7 +318,7 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
                       fontWeight: 700,
                     }}
                   >
-                    ✓
+                    <Check size={16} />
                   </span>
                 )}
               </div>
@@ -348,7 +346,7 @@ function Step1({ data, errors, upd, onNext }) {
 
       <div className="appt-card__body appt-stack">
         <div className="appt-grid-2">
-          <Field label="Full Name *" icon={IconUser} error={errors.fullName}>
+          <Field label="Full Name *" icon={User} error={errors.fullName}>
             <input
               className={`appt-inp${errors.fullName ? " err" : ""}`}
               type="text"
@@ -360,7 +358,7 @@ function Step1({ data, errors, upd, onNext }) {
             />
           </Field>
 
-          <Field label="Email Address" icon={IconMail} error={errors.email}>
+          <Field label="Email Address" icon={Mail} error={errors.email}>
             <input
               className={`appt-inp${errors.email ? " err" : ""}`}
               type="email"
@@ -372,7 +370,7 @@ function Step1({ data, errors, upd, onNext }) {
             />
           </Field>
 
-          <Field label="Phone Number *" icon={IconPhone} error={errors.phone}>
+          <Field label="Phone Number *" icon={Phone} error={errors.phone}>
             <input
               className={`appt-inp${errors.phone ? " err" : ""}`}
               type="tel"
@@ -384,7 +382,7 @@ function Step1({ data, errors, upd, onNext }) {
             />
           </Field>
 
-          <Field label="Date of Birth *" icon={IconCalendar} error={errors.dob}>
+          <Field label="Date of Birth *" icon={Calendar} error={errors.dob}>
             <input
               className={`appt-inp${errors.dob ? " err" : ""}`}
               type="date"
@@ -420,7 +418,7 @@ function Step1({ data, errors, upd, onNext }) {
       <div className="appt-card__foot">
         <span className="appt-step-counter">Step 1 of 3</span>
         <button className="btn btn-primary" onClick={onNext} type="button">
-          Continue <IconArrowR size={16} />
+          Continue <ArrowRight size={16} />
         </button>
       </div>
     </div>
@@ -433,8 +431,6 @@ function Step1({ data, errors, upd, onNext }) {
 function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments, doctorsByDept, loadingDepts, loadingDoctors, availableSlots, loadingSlots }) {
   const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
-
-  // console.log('selected doctor object:', doctor);
 
   /* Doctors for the chosen department (from API) */
   const doctors = useMemo(() => {
@@ -605,7 +601,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
 
         {/* ── 3. Branch — OFFLINE only ─────────────────────────── */}
         {isOffline && data.dept && (
-          <Field label="3. Branch Location *" icon={IconPin} error={errors.branch}>
+          <Field label="3. Branch Location *" icon={MapPin} error={errors.branch}>
             <select
               className={`appt-sel${errors.branch ? " err" : ""}`}
               value={data.branch}
@@ -661,7 +657,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
         {data.dept && (isOnline || (isOffline && data.branch)) && (
           <Field
             label={`${isOnline ? "4" : "5"}. Preferred Date *`}
-            icon={IconCalendar}
+            icon={Calendar}
             error={errors.date}
           >
             <input
@@ -708,7 +704,7 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
                       aria-pressed={data.slot === time}
                       aria-disabled={booked}
                     >
-                      {time}
+                      <Clock size={12} /> {time}
                       {booked && <span className="appt-slot-badge">Booked</span>}
                     </button>
                   );
@@ -726,10 +722,10 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
 
       <div className="appt-card__foot">
         <button className="btn btn-secondary" onClick={onBack} type="button">
-          <IconArrowL size={16} /> Back
+          <ArrowLeft size={16} /> Back
         </button>
         <button className="btn btn-primary" onClick={onNext} type="button">
-          Continue <IconArrowR size={16} />
+          Continue <ArrowRight size={16} />
         </button>
       </div>
     </div>
@@ -860,7 +856,7 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
 
       <div className="appt-card__foot">
         <button type="button" className="btn btn-secondary" onClick={onBack}>
-          <IconArrowL size={16} /> Edit Details
+          <ArrowLeft size={16} /> Edit Details
         </button>
         <button
           type="button"
@@ -871,7 +867,7 @@ function Step3({ data, errors, upd, onBack, onSubmit, busy }) {
           {busy ? (
             <><span className="appt-spinner" />Creating Appointment...</>
           ) : (
-            <><IconLock size={15} />Confirm Appointment</>
+            <><Lock size={15} />Confirm Appointment</>
           )}
         </button>
       </div>
@@ -897,7 +893,7 @@ function Sidebar({ phone, email }) {
             "24/7 support available",
           ].map(b => (
             <li key={b}>
-              <span className="appt-benefit-dot">✓</span>
+              <span className="appt-benefit-dot"><Check size={12} /></span>
               {b}
             </li>
           ))}
@@ -908,15 +904,15 @@ function Sidebar({ phone, email }) {
         <h4>Need help?</h4>
         <p>Our support team is available 24/7</p>
         <a href={`tel:${phone}`} className="appt-contact-link">
-          <span className="c-ico">📞</span> {phone}
+          <span className="c-ico"><Phone size={14} /></span> {phone}
         </a>
         <a href={`mailto:${email}`} className="appt-contact-link">
-          <span className="c-ico">✉️</span> {email}
+          <span className="c-ico"><Mail size={14} /></span> {email}
         </a>
       </div>
 
       <div className="appt-trust-badge">
-        <span style={{ fontSize: 20 }}>🛡️</span>
+        <Shield size={20} />
         <span>Your personal data is never sold or shared with third parties.</span>
       </div>
     </aside>
@@ -956,7 +952,6 @@ export default function AppointmentForm({
 }) {
   const searchParams = useSearchParams();
   const doctorIdFromQuery = searchParams?.get?.("doctor") ?? null;
-
 
   const token = useAppSelector((state) => state.auth.accessToken);
 
@@ -1014,8 +1009,6 @@ export default function AppointmentForm({
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [loadingDoctor, setLoadingDoctor] = useState(false);
 
-
-
   //fetch single doctor if doctorIdFromQuery exists and set selectedDoctor state
   useEffect(() => {
     if (!doctorIdFromQuery) return;
@@ -1060,8 +1053,6 @@ export default function AppointmentForm({
 
     fetchDoctor();
   }, [doctorIdFromQuery]);
-
-
 
   /* ── Fetch all specializations on mount ── */
   useEffect(() => {
@@ -1119,9 +1110,6 @@ export default function AppointmentForm({
     };
     fetchDepts();
   }, []);
-
-
-
 
   /* ── Fetch doctors whenever department changes ── */
   useEffect(() => {
@@ -1361,7 +1349,7 @@ export default function AppointmentForm({
               ].join(" ").trim();
               return (
                 <div key={n} className={cls}>
-                  <div className="appt-progress__num">{step > n ? "✓" : n}</div>
+                  <div className="appt-progress__num">{step > n ? <Check size={14} /> : n}</div>
                   <div>
                     <div className="appt-progress__label">{s.label}</div>
                     <div className="appt-progress__sublabel">{s.sub}</div>

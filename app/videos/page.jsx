@@ -180,7 +180,7 @@ export default function VideoGalleryPage() {
             Watch & Learn: <span className="page-hero__highlight">Medical Videos</span>
           </h1>
           <p className="page-hero__subtitle">
-            Expert insights, patient stories, and health education — all in one place. 
+            Expert insights, patient stories, and health education — all in one place.
             Empowering you with knowledge for better health decisions.
           </p>
           <nav aria-label="Breadcrumb" className="page-hero__breadcrumb">

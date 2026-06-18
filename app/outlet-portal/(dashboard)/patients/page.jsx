@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Plus, Search, User, Eye, Edit, Users, Calendar, TrendingUp } from "lucide-react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -40,15 +41,12 @@ export default function PatientsPage() {
       {/* Page Header */}
       <motion.div className="page-header" variants={item}>
         <h1 className="page-title">Patients Management</h1>
-        <motion.button 
+        <motion.button
           className="btn btn-primary"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
+          <Plus size={18} />
           Add Patient
         </motion.button>
       </motion.div>
@@ -56,10 +54,7 @@ export default function PatientsPage() {
       {/* Filters */}
       <motion.div className="filters-bar" variants={item}>
         <div className="search-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
+          <Search size={18} />
           <input
             type="text"
             placeholder="Search by name or ID..."
@@ -85,22 +80,30 @@ export default function PatientsPage() {
       {/* Stats Cards */}
       <motion.div className="stats-row" variants={item}>
         {[
-          { label: "Total Patients", value: "1,245", change: "+12%", color: "#014fa1" },
-          { label: "Active Today", value: "32", change: "+8", color: "#428a26" },
-          { label: "New This Week", value: "18", change: "+3", color: "#7c3aed" },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            className="stat-card-small"
-            variants={item}
-            whileHover={{ y: -2 }}
-            style={{ borderLeftColor: stat.color }}
-          >
-            <span className="stat-label">{stat.label}</span>
-            <span className="stat-value">{stat.value}</span>
-            <span className="stat-change" style={{ color: stat.color }}>{stat.change}</span>
-          </motion.div>
-        ))}
+          { label: "Total Patients", value: "1,245", change: "+12%", color: "#014fa1", icon: Users },
+          { label: "Active Today", value: "32", change: "+8", color: "#428a26", icon: User },
+          { label: "New This Week", value: "18", change: "+3", color: "#7c3aed", icon: Calendar },
+        ].map((stat, i) => {
+          const IconComponent = stat.icon;
+          return (
+            <motion.div
+              key={stat.label}
+              className="stat-card-small"
+              variants={item}
+              whileHover={{ y: -2 }}
+              style={{ borderLeftColor: stat.color }}
+            >
+              <div className="stat-icon" style={{ color: stat.color }}>
+                <IconComponent size={20} />
+              </div>
+              <div className="stat-content">
+                <span className="stat-label">{stat.label}</span>
+                <span className="stat-value">{stat.value}</span>
+                <span className="stat-change" style={{ color: stat.color }}>{stat.change}</span>
+              </div>
+            </motion.div>
+          );
+        })}
       </motion.div>
 
       {/* Patients Table */}
@@ -136,16 +139,10 @@ export default function PatientsPage() {
                 <td>
                   <div className="table-actions">
                     <motion.button className="btn-icon view" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
+                      <Eye size={16} />
                     </motion.button>
                     <motion.button className="btn-icon edit" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                      </svg>
+                      <Edit size={16} />
                     </motion.button>
                   </div>
                 </td>
@@ -159,8 +156,8 @@ export default function PatientsPage() {
       <motion.div className="pagination" variants={item}>
         <button className="page-btn">Previous</button>
         {[1, 2, 3].map(num => (
-          <motion.button 
-            key={num} 
+          <motion.button
+            key={num}
             className={`page-num ${num === 1 ? "active" : ""}`}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

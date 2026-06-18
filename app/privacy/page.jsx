@@ -2,6 +2,32 @@
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/privacy-policy.css";
 import "@/styles/components/HeroSection.css";
+import {
+  Shield,
+  Lock,
+  Mail,
+  Phone,
+  MapPin,
+  Award,
+  CheckCircle,
+  Globe,
+  Eye,
+  Edit,
+  Trash2,
+  Ban,
+  Download,
+  X,
+  Heart,
+  Calendar,
+  Stethoscope,
+  Activity,
+  FileText,
+  Users,
+  Server,
+  Database,
+  Link2,
+  ExternalLink
+} from "lucide-react";
 
 export const metadata = {
   title: `Privacy Policy | ${siteConfig.name}`,
@@ -23,17 +49,17 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            Welcome to <strong>{siteConfig.name}</strong> ("we", "our", or "us"). 
-            We are committed to protecting your privacy and ensuring you have a positive 
+            Welcome to <strong>{siteConfig.name}</strong> ("we", "our", or "us").
+            We are committed to protecting your privacy and ensuring you have a positive
             experience on our website and when using our healthcare services.
           </p>
           <p>
-            This Privacy Policy explains how we collect, use, disclose, and safeguard 
-            your information when you visit our website, use our services, or interact 
+            This Privacy Policy explains how we collect, use, disclose, and safeguard
+            your information when you visit our website, use our services, or interact
             with us in any way. Please read this policy carefully.
           </p>
           <p className="policy-note">
-            <strong>Note:</strong> By accessing or using our services, you consent to 
+            <strong>Note:</strong> By accessing or using our services, you consent to
             the practices described in this Privacy Policy.
           </p>
         </>
@@ -88,42 +114,42 @@ export default function PrivacyPolicyPage() {
           <p>We use your information for the following purposes:</p>
           <div className="policy-grid">
             <div className="policy-use-item">
-              <span className="policy-use-icon">🩺</span>
+              <span className="policy-use-icon"><Stethoscope size={24} /></span>
               <div>
                 <h5>Provide Healthcare Services</h5>
                 <p>Deliver medical consultations, diagnostics, treatment, and follow-up care.</p>
               </div>
             </div>
             <div className="policy-use-item">
-              <span className="policy-use-icon">🔐</span>
+              <span className="policy-use-icon"><Lock size={24} /></span>
               <div>
                 <h5>Ensure Security & Compliance</h5>
                 <p>Verify identity, prevent fraud, and comply with healthcare regulations.</p>
               </div>
             </div>
             <div className="policy-use-item">
-              <span className="policy-use-icon">📧</span>
+              <span className="policy-use-icon"><Mail size={24} /></span>
               <div>
                 <h5>Communicate With You</h5>
                 <p>Send appointment reminders, health updates, and respond to inquiries.</p>
               </div>
             </div>
             <div className="policy-use-item">
-              <span className="policy-use-icon">📊</span>
+              <span className="policy-use-icon"><Activity size={24} /></span>
               <div>
                 <h5>Improve Our Services</h5>
                 <p>Analyze usage patterns to enhance user experience and medical outcomes.</p>
               </div>
             </div>
             <div className="policy-use-item">
-              <span className="policy-use-icon">⚖️</span>
+              <span className="policy-use-icon"><Shield size={24} /></span>
               <div>
                 <h5>Legal Obligations</h5>
                 <p>Fulfill reporting requirements to health authorities and regulatory bodies.</p>
               </div>
             </div>
             <div className="policy-use-item">
-              <span className="policy-use-icon">💡</span>
+              <span className="policy-use-icon"><FileText size={24} /></span>
               <div>
                 <h5>Research & Development</h5>
                 <p>Conduct anonymized research to advance medical knowledge (with consent).</p>
@@ -139,13 +165,13 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            We do not sell your personal information. We may share your data only in 
+            We do not sell your personal information. We may share your data only in
             the following circumstances:
           </p>
-          
+
           <h4>4.1 With Your Consent</h4>
           <p>
-            We share information when you explicitly authorize us to do so, such as 
+            We share information when you explicitly authorize us to do so, such as
             referring you to a specialist or sharing records with your chosen provider.
           </p>
 
@@ -160,13 +186,13 @@ export default function PrivacyPolicyPage() {
             <li>Communication and notification services</li>
           </ul>
           <p className="policy-note">
-            All service providers are bound by confidentiality agreements and 
+            All service providers are bound by confidentiality agreements and
             data protection standards equivalent to ours.
           </p>
 
           <h4>4.3 Legal Requirements</h4>
           <p>
-            We may disclose information if required by law, court order, or 
+            We may disclose information if required by law, court order, or
             government regulation, including:
           </p>
           <ul className="policy-list">
@@ -178,8 +204,8 @@ export default function PrivacyPolicyPage() {
 
           <h4>4.4 Business Transfers</h4>
           <p>
-            In the event of a merger, acquisition, or sale of assets, patient 
-            information may be transferred as part of the business assets, subject 
+            In the event of a merger, acquisition, or sale of assets, patient
+            information may be transferred as part of the business assets, subject
             to continued protection under this Privacy Policy.
           </p>
         </>
@@ -192,7 +218,7 @@ export default function PrivacyPolicyPage() {
         <>
           <h4>5.1 Security Measures</h4>
           <p>
-            We implement industry-standard technical and organizational measures 
+            We implement industry-standard technical and organizational measures
             to protect your information:
           </p>
           <ul className="policy-list">
@@ -241,7 +267,7 @@ export default function PrivacyPolicyPage() {
             </table>
           </div>
           <p className="policy-note">
-            You may request deletion of your data at any time, subject to legal 
+            You may request deletion of your data at any time, subject to legal
             retention requirements for medical records.
           </p>
         </>
@@ -253,49 +279,52 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            Under applicable data protection laws, you have the following rights 
+            Under applicable data protection laws, you have the following rights
             regarding your personal information:
           </p>
 
           <div className="policy-rights-grid">
             {[
               {
-                icon: "👁️",
+                icon: Eye,
                 title: "Right to Access",
                 desc: "Request a copy of the personal data we hold about you."
               },
               {
-                icon: "✏️",
+                icon: Edit,
                 title: "Right to Rectification",
                 desc: "Request correction of inaccurate or incomplete information."
               },
               {
-                icon: "🗑️",
+                icon: Trash2,
                 title: "Right to Erasure",
                 desc: "Request deletion of your data (subject to legal obligations)."
               },
               {
-                icon: "🚫",
+                icon: Ban,
                 title: "Right to Restrict Processing",
                 desc: "Limit how we use your information in certain circumstances."
               },
               {
-                icon: "📤",
+                icon: Download,
                 title: "Right to Data Portability",
                 desc: "Receive your data in a structured, machine-readable format."
               },
               {
-                icon: "❌",
+                icon: X,
                 title: "Right to Object",
                 desc: "Object to processing based on legitimate interests or direct marketing."
               },
-            ].map((right) => (
-              <div key={right.title} className="policy-right-card">
-                <span className="policy-right-icon">{right.icon}</span>
-                <h5>{right.title}</h5>
-                <p>{right.desc}</p>
-              </div>
-            ))}
+            ].map((right) => {
+              const IconComponent = right.icon;
+              return (
+                <div key={right.title} className="policy-right-card">
+                  <span className="policy-right-icon"><IconComponent size={24} /></span>
+                  <h5>{right.title}</h5>
+                  <p>{right.desc}</p>
+                </div>
+              );
+            })}
           </div>
 
           <h4>How to Exercise Your Rights</h4>
@@ -311,7 +340,7 @@ export default function PrivacyPolicyPage() {
             </p>
           </div>
           <p className="policy-note">
-            We will respond to your request within 30 days. For verification purposes, 
+            We will respond to your request within 30 days. For verification purposes,
             we may ask for additional information to confirm your identity.
           </p>
         </>
@@ -324,7 +353,7 @@ export default function PrivacyPolicyPage() {
         <>
           <h4>7.1 What Are Cookies?</h4>
           <p>
-            Cookies are small text files stored on your device that help websites 
+            Cookies are small text files stored on your device that help websites
             remember your preferences and improve functionality.
           </p>
 
@@ -378,7 +407,7 @@ export default function PrivacyPolicyPage() {
             <li><strong>Opt-Out Tools:</strong> Visit <a href="https://optout.aboutads.info" target="_blank" rel="noopener">aboutads.info</a> or <a href="https://www.youronlinechoices.com" target="_blank" rel="noopener">youronlinechoices.com</a></li>
           </ul>
           <p className="policy-note">
-            Disabling essential cookies may limit your ability to use certain features 
+            Disabling essential cookies may limit your ability to use certain features
             of our website or services.
           </p>
         </>
@@ -390,18 +419,18 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            Our services are not directed to individuals under the age of 16. 
-            We do not knowingly collect personal information from children without 
+            Our services are not directed to individuals under the age of 16.
+            We do not knowingly collect personal information from children without
             parental consent.
           </p>
           <p>
-            If you are a parent or guardian and believe your child has provided 
-            us with personal information, please contact us immediately. We will 
+            If you are a parent or guardian and believe your child has provided
+            us with personal information, please contact us immediately. We will
             take steps to delete such information from our systems.
           </p>
           <p>
-            For pediatric care, we require consent from a parent or legal guardian 
-            before collecting or processing any health information about a minor, 
+            For pediatric care, we require consent from a parent or legal guardian
+            before collecting or processing any health information about a minor,
             in accordance with Bangladesh's child protection laws.
           </p>
         </>
@@ -413,11 +442,11 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            {siteConfig.name} is based in Bangladesh. However, some of our service 
+            {siteConfig.name} is based in Bangladesh. However, some of our service
             providers may process data in other countries.
           </p>
           <p>
-            When we transfer your personal information internationally, we ensure 
+            When we transfer your personal information internationally, we ensure
             appropriate safeguards are in place, such as:
           </p>
           <ul className="policy-list">
@@ -426,8 +455,8 @@ export default function PrivacyPolicyPage() {
             <li>Encryption and access controls for cross-border transfers</li>
           </ul>
           <p>
-            By using our services, you consent to the transfer of your information 
-            to countries outside Bangladesh, including those that may have different 
+            By using our services, you consent to the transfer of your information
+            to countries outside Bangladesh, including those that may have different
             data protection rules.
           </p>
         </>
@@ -439,7 +468,7 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            We may update this Privacy Policy periodically to reflect changes in 
+            We may update this Privacy Policy periodically to reflect changes in
             our practices, services, or legal requirements.
           </p>
           <p>
@@ -451,12 +480,12 @@ export default function PrivacyPolicyPage() {
             <li>Provide a summary of key changes for transparency</li>
           </ul>
           <p>
-            Your continued use of our services after changes take effect constitutes 
-            acceptance of the updated Privacy Policy. We encourage you to review this 
+            Your continued use of our services after changes take effect constitutes
+            acceptance of the updated Privacy Policy. We encourage you to review this
             page regularly.
           </p>
           <div className="policy-updated-badge">
-            <span className="policy-updated-icon">📅</span>
+            <span className="policy-updated-icon"><Calendar size={20} /></span>
             <span>Last Updated: <strong>{lastUpdated}</strong></span>
           </div>
         </>
@@ -468,18 +497,18 @@ export default function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            If you have questions, concerns, or requests regarding this Privacy 
+            If you have questions, concerns, or requests regarding this Privacy
             Policy or our data practices, please contact us:
           </p>
 
           <div className="policy-contact-grid">
             <div className="policy-contact-card">
-              <h5>📧 Data Protection Officer</h5>
+              <h5><Mail size={18} /> Data Protection Officer</h5>
               <p><a href="mailto:privacy@renovalifecare.com">privacy@renovalifecare.com</a></p>
               <p><a href="tel:+8801234567890">+880 1234-567890</a> (Mon-Fri, 9AM-5PM)</p>
             </div>
             <div className="policy-contact-card">
-              <h5>🏢 Registered Office</h5>
+              <h5><MapPin size={18} /> Registered Office</h5>
               <p>
                 {siteConfig.address.street}, {siteConfig.address.area}
                 <br />
@@ -487,7 +516,7 @@ export default function PrivacyPolicyPage() {
               </p>
             </div>
             <div className="policy-contact-card">
-              <h5>⚖️ Regulatory Complaints</h5>
+              <h5><Award size={18} /> Regulatory Complaints</h5>
               <p>You may also contact:</p>
               <p><strong>Bangladesh Medical & Dental Council (BMDC)</strong></p>
               <p><a href="https://bmdc.org.bd" target="_blank" rel="noopener">bmdc.org.bd</a></p>
@@ -554,19 +583,19 @@ export default function PrivacyPolicyPage() {
         <div className="page-section__container">
           <div className="policy-trust-grid">
             <div className="policy-trust-item">
-              <span className="policy-trust-icon">🔐</span>
+              <span className="policy-trust-icon"><Lock size={28} /></span>
               <p><strong>End-to-End Encryption</strong><br />Your data is protected in transit and at rest</p>
             </div>
             <div className="policy-trust-item">
-              <span className="policy-trust-icon">✅</span>
+              <span className="policy-trust-icon"><CheckCircle size={28} /></span>
               <p><strong>BMDC Compliant</strong><br />Meets Bangladesh healthcare data standards</p>
             </div>
             <div className="policy-trust-item">
-              <span className="policy-trust-icon">🌍</span>
+              <span className="policy-trust-icon"><Globe size={28} /></span>
               <p><strong>GDPR-Aligned</strong><br />Built with global privacy best practices</p>
             </div>
             <div className="policy-trust-item">
-              <span className="policy-trust-icon">🛡️</span>
+              <span className="policy-trust-icon"><Shield size={28} /></span>
               <p><strong>Regular Audits</strong><br />Independent security assessments annually</p>
             </div>
           </div>

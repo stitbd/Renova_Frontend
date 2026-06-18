@@ -1,6 +1,15 @@
 "use client";
 import { useState } from "react";
 import { siteConfig } from "@/constants/siteData";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  CheckCircle,
+  AlertCircle
+} from "lucide-react";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -29,66 +38,52 @@ export default function ContactForm() {
           <div className="page-contact-info-grid">
             {[
               {
-                icon: (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                ),
+                icon: MapPin,
                 label: "Our Address",
                 value: `${siteConfig.address.street}, ${siteConfig.address.area}`,
                 sub: `${siteConfig.address.city}, ${siteConfig.address.country}`,
                 href: null,
               },
               {
-                icon: (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 10a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.44 0h3a2 2 0 0 1 2 1.72A12.84 12.84 0 0 0 9.1 5.07a2 2 0 0 1-.45 2.11L7.5 8.28a16 16 0 0 0 6.29 6.29l1.1-1.1a2 2 0 0 1 2.11-.45A12.84 12.84 0 0 0 20.28 14a2 2 0 0 1 1.72 2z" />
-                  </svg>
-                ),
+                icon: Phone,
                 label: "Phone",
                 value: siteConfig.phone,
                 sub: "24/7 Emergency Available",
                 href: `tel:${siteConfig.phone}`,
               },
               {
-                icon: (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                  </svg>
-                ),
+                icon: Mail,
                 label: "Email",
                 value: siteConfig.email,
                 sub: "We reply within 24 hours",
                 href: `mailto:${siteConfig.email}`,
               },
               {
-                icon: (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                ),
+                icon: Clock,
                 label: "Working Hours",
                 value: "Sat – Thu: 8am – 8pm",
                 sub: "Fri: 2pm – 8pm",
                 href: null,
               },
-            ].map((item) => (
-              <div key={item.label} className="page-contact-info-card">
-                <div className="page-contact-info-icon">{item.icon}</div>
-                <p className="page-contact-info-label">{item.label}</p>
-                {item.href ? (
-                  <a href={item.href} className="page-contact-info-value page-contact-info-value--link">
-                    {item.value}
-                  </a>
-                ) : (
-                  <p className="page-contact-info-value">{item.value}</p>
-                )}
-                <p className="page-contact-info-sub">{item.sub}</p>
-              </div>
-            ))}
+            ].map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <div key={item.label} className="page-contact-info-card">
+                  <div className="page-contact-info-icon">
+                    <IconComponent size={24} />
+                  </div>
+                  <p className="page-contact-info-label">{item.label}</p>
+                  {item.href ? (
+                    <a href={item.href} className="page-contact-info-value page-contact-info-value--link">
+                      {item.value}
+                    </a>
+                  ) : (
+                    <p className="page-contact-info-value">{item.value}</p>
+                  )}
+                  <p className="page-contact-info-sub">{item.sub}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -107,7 +102,9 @@ export default function ContactForm() {
 
               {submitted ? (
                 <div className="page-contact-success">
-                  <div className="page-contact-success-icon">✅</div>
+                  <div className="page-contact-success-icon">
+                    <CheckCircle size={32} />
+                  </div>
                   <h3 className="page-contact-success-title">Message Sent!</h3>
                   <p className="page-contact-success-text">
                     Thank you for contacting us. We will respond within 24 hours.
@@ -201,10 +198,7 @@ export default function ContactForm() {
                   </div>
 
                   <button type="submit" className="btn btn-primary page-form-submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <line x1="22" y1="2" x2="11" y2="13" />
-                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                    </svg>
+                    <Send size={16} />
                     Send Message
                   </button>
                 </form>

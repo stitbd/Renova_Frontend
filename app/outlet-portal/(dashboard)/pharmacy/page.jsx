@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Search, ShoppingCart, Plus, Minus, X, AlertTriangle } from "lucide-react";
 
 export default function PharmacyPage() {
   const [cart, setCart] = useState([]);
@@ -40,10 +41,7 @@ export default function PharmacyPage() {
         <div className="section-header">
           <h2 className="section-title">Products</h2>
           <div className="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
+            <Search size={18} />
             <input
               type="text"
               placeholder="Search products..."
@@ -65,7 +63,7 @@ export default function PharmacyPage() {
             >
               <div className="product-image">
                 <img src={product.image} alt={product.name} />
-                {product.stock < 10 && <span className="stock-warning">Low Stock</span>}
+                {product.stock < 10 && <span className="stock-warning"><AlertTriangle size={12} /> Low Stock</span>}
               </div>
               <div className="product-info">
                 <h4 className="product-name">{product.name}</h4>
@@ -80,7 +78,7 @@ export default function PharmacyPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Add to Cart
+                  <ShoppingCart size={14} /> Add to Cart
                 </motion.button>
               </div>
             </motion.div>
@@ -90,8 +88,8 @@ export default function PharmacyPage() {
 
       {/* Cart Sidebar */}
       <motion.div className="cart-sidebar" initial={{ x: 400 }} animate={{ x: 0 }}>
-        <h3 className="cart-title">Current Order</h3>
-        
+        <h3 className="cart-title"><ShoppingCart size={18} /> Current Order</h3>
+
         {cart.length === 0 ? (
           <p className="cart-empty">Cart is empty</p>
         ) : (
@@ -110,13 +108,13 @@ export default function PharmacyPage() {
                       onClick={() => removeFromCart(item.id)}
                       whileHover={{ scale: 1.1 }}
                     >
-                      ×
+                      <X size={14} />
                     </motion.button>
                   </div>
                 </motion.div>
               ))}
             </div>
-            
+
             <div className="cart-summary">
               <div className="summary-row">
                 <span>Subtotal:</span>
@@ -131,7 +129,7 @@ export default function PharmacyPage() {
                 <span>৳{(cartTotal * 1.05).toFixed(0)}</span>
               </div>
             </div>
-            
+
             <motion.button
               className="btn-checkout"
               whileHover={{ scale: 1.02 }}

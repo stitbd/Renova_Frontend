@@ -2,6 +2,26 @@
 import { siteConfig } from "@/constants/siteData";
 import "@/styles/pages/terms.css";
 import "@/styles/components/HeroSection.css";
+import {
+  Shield,
+  Lock,
+  Mail,
+  Phone,
+  MapPin,
+  Award,
+  CheckCircle,
+  Globe,
+  Scale,
+  Stethoscope,
+  FileText,
+  AlertTriangle,
+  Users,
+  CreditCard,
+  Calendar,
+  ExternalLink,
+  Building2,
+  Gavel
+} from "lucide-react";
 
 export const metadata = {
   title: `Terms of Service | ${siteConfig.name}`,
@@ -23,19 +43,19 @@ export default function TermsPage() {
       content: (
         <>
           <p>
-            Welcome to <strong>{siteConfig.name}</strong>. These Terms of Service 
-            ("Terms", "Agreement") constitute a legally binding agreement between 
-            you ("User", "you", or "your") and {siteConfig.name} ("we", "us", or "our") 
-            governing your access to and use of our website, mobile applications, 
+            Welcome to <strong>{siteConfig.name}</strong>. These Terms of Service
+            ("Terms", "Agreement") constitute a legally binding agreement between
+            you ("User", "you", or "your") and {siteConfig.name} ("we", "us", or "our")
+            governing your access to and use of our website, mobile applications,
             and healthcare services (collectively, the "Services").
           </p>
           <p className="terms-highlight">
-            <strong>By accessing or using our Services, you acknowledge that you have 
-            read, understood, and agree to be bound by these Terms.</strong> If you do 
+            <strong>By accessing or using our Services, you acknowledge that you have
+              read, understood, and agree to be bound by these Terms.</strong> If you do
             not agree, please do not use our Services.
           </p>
           <p>
-            These Terms apply to all visitors, users, and others who access or use 
+            These Terms apply to all visitors, users, and others who access or use
             the Services. Please read them carefully.
           </p>
         </>
@@ -47,7 +67,7 @@ export default function TermsPage() {
       content: (
         <>
           <p>
-            {siteConfig.name} provides a digital healthcare platform that connects 
+            {siteConfig.name} provides a digital healthcare platform that connects
             patients with qualified healthcare professionals in Bangladesh. Our Services include:
           </p>
           <ul className="terms-list">
@@ -59,9 +79,9 @@ export default function TermsPage() {
             <li><strong>Emergency Support:</strong> Guidance for urgent health situations (not a replacement for emergency services)</li>
           </ul>
           <p className="terms-note">
-            <strong>Important:</strong> Our Services are intended for informational and 
-            facilitation purposes only. They do not replace professional medical advice, 
-            diagnosis, or treatment. Always seek the advice of your physician or other 
+            <strong>Important:</strong> Our Services are intended for informational and
+            facilitation purposes only. They do not replace professional medical advice,
+            diagnosis, or treatment. Always seek the advice of your physician or other
             qualified health provider with any questions you may have regarding a medical condition.
           </p>
         </>
@@ -74,15 +94,15 @@ export default function TermsPage() {
         <>
           <h4>3.1 Age Requirement</h4>
           <p>
-            You must be at least <strong>16 years old</strong> to use our Services. 
-            If you are under 18, you represent that you have obtained consent from 
-            a parent or legal guardian to use the Services and that they have agreed 
+            You must be at least <strong>16 years old</strong> to use our Services.
+            If you are under 18, you represent that you have obtained consent from
+            a parent or legal guardian to use the Services and that they have agreed
             to these Terms on your behalf.
           </p>
 
           <h4>3.2 Account Registration</h4>
           <p>
-            To access certain features, you must create an account by providing accurate 
+            To access certain features, you must create an account by providing accurate
             and complete information, including:
           </p>
           <ul className="terms-list">
@@ -92,16 +112,16 @@ export default function TermsPage() {
             <li>Emergency contact information</li>
           </ul>
           <p>
-            You are responsible for maintaining the confidentiality of your account 
-            credentials and for all activities that occur under your account. Notify 
-            us immediately at <a href="mailto:support@renovalifecare.com">support@renovalifecare.com</a> 
+            You are responsible for maintaining the confidentiality of your account
+            credentials and for all activities that occur under your account. Notify
+            us immediately at <a href="mailto:support@renovalifecare.com">support@renovalifecare.com</a>
             of any unauthorized use.
           </p>
 
           <h4>3.3 User Verification</h4>
           <p>
-            We may require identity verification through government-issued ID, 
-            biometric authentication, or other methods to comply with Bangladesh 
+            We may require identity verification through government-issued ID,
+            biometric authentication, or other methods to comply with Bangladesh
             healthcare regulations and prevent fraud.
           </p>
         </>
@@ -117,28 +137,28 @@ export default function TermsPage() {
           </p>
           <div className="terms-grid">
             <div className="terms-obligation-item">
-              <span className="terms-obligation-icon">✅</span>
+              <span className="terms-obligation-icon"><CheckCircle size={24} /></span>
               <div>
                 <h5>Provide Accurate Information</h5>
                 <p>Submit truthful medical history, symptoms, and personal details.</p>
               </div>
             </div>
             <div className="terms-obligation-item">
-              <span className="terms-obligation-icon">🔒</span>
+              <span className="terms-obligation-icon"><Lock size={24} /></span>
               <div>
                 <h5>Protect Your Account</h5>
                 <p>Keep login credentials secure; do not share your account.</p>
               </div>
             </div>
             <div className="terms-obligation-item">
-              <span className="terms-obligation-icon">🩺</span>
+              <span className="terms-obligation-icon"><Stethoscope size={24} /></span>
               <div>
                 <h5>Use Services Appropriately</h5>
                 <p>Do not misuse teleconsultations for non-medical purposes.</p>
               </div>
             </div>
             <div className="terms-obligation-item">
-              <span className="terms-obligation-icon">⚖️</span>
+              <span className="terms-obligation-icon"><Gavel size={24} /></span>
               <div>
                 <h5>Comply with Laws</h5>
                 <p>Follow all applicable Bangladesh laws and healthcare regulations.</p>
@@ -166,13 +186,13 @@ export default function TermsPage() {
       content: (
         <>
           <p className="terms-disclaimer-banner">
-            ⚠️ <strong>Medical Advice Disclaimer</strong>
+            <AlertTriangle size={18} /> <strong>Medical Advice Disclaimer</strong>
           </p>
-          
+
           <h4>5.1 Not a Substitute for Emergency Care</h4>
           <p>
-            Our Services are <strong>not intended for medical emergencies</strong>. 
-            If you are experiencing a life-threatening condition, chest pain, 
+            Our Services are <strong>not intended for medical emergencies</strong>.
+            If you are experiencing a life-threatening condition, chest pain,
             difficulty breathing, severe bleeding, or other emergency, immediately:
           </p>
           <ul className="terms-list">
@@ -183,7 +203,7 @@ export default function TermsPage() {
 
           <h4>5.2 Limitations of Teleconsultation</h4>
           <p>
-            Virtual consultations have inherent limitations. Our healthcare 
+            Virtual consultations have inherent limitations. Our healthcare
             providers may:
           </p>
           <ul className="terms-list">
@@ -212,7 +232,7 @@ export default function TermsPage() {
         <>
           <h4>6.1 Service Fees</h4>
           <p>
-            Certain Services require payment. Fees are displayed before confirmation 
+            Certain Services require payment. Fees are displayed before confirmation
             and may include:
           </p>
           <ul className="terms-list">
@@ -267,7 +287,7 @@ export default function TermsPage() {
             </table>
           </div>
           <p className="terms-note">
-            Refund requests must be submitted within 7 days via 
+            Refund requests must be submitted within 7 days via
             <a href="mailto:billing@renovalifecare.com"> billing@renovalifecare.com</a>.
           </p>
         </>
@@ -279,26 +299,26 @@ export default function TermsPage() {
       content: (
         <>
           <p>
-            Your privacy is fundamental to our mission. By using our Services, 
-            you consent to the collection, use, and disclosure of your information 
-            as described in our <a href="/privacy-policy">Privacy Policy</a>, 
+            Your privacy is fundamental to our mission. By using our Services,
+            you consent to the collection, use, and disclosure of your information
+            as described in our <a href="/privacy-policy">Privacy Policy</a>,
             which is incorporated into these Terms by reference.
           </p>
-          
+
           <h4>Key Principles:</h4>
           <ul className="terms-list">
-            <li><strong>Health Data Sensitivity:</strong> Medical information receives 
-            enhanced protection under Bangladesh law and our internal policies</li>
-            <li><strong>Minimal Collection:</strong> We collect only data necessary 
-            to provide and improve our Services</li>
-            <li><strong>User Control:</strong> You may access, correct, or request 
-            deletion of your data (subject to legal retention requirements)</li>
-            <li><strong>Security First:</strong> Industry-standard encryption, 
-            access controls, and regular audits protect your information</li>
+            <li><strong>Health Data Sensitivity:</strong> Medical information receives
+              enhanced protection under Bangladesh law and our internal policies</li>
+            <li><strong>Minimal Collection:</strong> We collect only data necessary
+              to provide and improve our Services</li>
+            <li><strong>User Control:</strong> You may access, correct, or request
+              deletion of your data (subject to legal retention requirements)</li>
+            <li><strong>Security First:</strong> Industry-standard encryption,
+              access controls, and regular audits protect your information</li>
           </ul>
 
           <p className="terms-note">
-            For detailed information about our data practices, please review our 
+            For detailed information about our data practices, please review our
             <a href="/privacy-policy"> full Privacy Policy</a>.
           </p>
         </>
@@ -311,16 +331,16 @@ export default function TermsPage() {
         <>
           <h4>8.1 Our Property</h4>
           <p>
-            All content, features, and functionality of the Services—including but 
-            not limited to text, graphics, logos, software, and design—are owned by 
-            {siteConfig.name} or our licensors and are protected by Bangladesh and 
+            All content, features, and functionality of the Services—including but
+            not limited to text, graphics, logos, software, and design—are owned by
+            {siteConfig.name} or our licensors and are protected by Bangladesh and
             international copyright, trademark, and other intellectual property laws.
           </p>
 
           <h4>8.2 Limited License</h4>
           <p>
-            We grant you a limited, non-exclusive, non-transferable, revocable 
-            license to access and use the Services for personal, non-commercial 
+            We grant you a limited, non-exclusive, non-transferable, revocable
+            license to access and use the Services for personal, non-commercial
             purposes, subject to these Terms.
           </p>
 
@@ -330,12 +350,12 @@ export default function TermsPage() {
           </p>
           <ul className="terms-list">
             <li>Retain ownership of your original content</li>
-            <li>Grant us a worldwide, royalty-free license to use, reproduce, and 
-            display such content solely to provide and improve the Services</li>
+            <li>Grant us a worldwide, royalty-free license to use, reproduce, and
+              display such content solely to provide and improve the Services</li>
             <li>Represent that you have the right to submit such content</li>
           </ul>
           <p>
-            We do not claim ownership of your health data. Your medical records 
+            We do not claim ownership of your health data. Your medical records
             remain your property, accessible to you per our Privacy Policy.
           </p>
         </>
@@ -352,9 +372,9 @@ export default function TermsPage() {
 
           <h4>9.1 Exclusion of Consequential Damages</h4>
           <p>
-            In no event shall {siteConfig.name}, our directors, employees, partners, 
-            or agents be liable for any indirect, incidental, special, consequential, 
-            or punitive damages, including but not limited to loss of profits, data, 
+            In no event shall {siteConfig.name}, our directors, employees, partners,
+            or agents be liable for any indirect, incidental, special, consequential,
+            or punitive damages, including but not limited to loss of profits, data,
             use, goodwill, or other intangible losses, resulting from:
           </p>
           <ul className="terms-list">
@@ -366,15 +386,15 @@ export default function TermsPage() {
 
           <h4>9.2 Cap on Liability</h4>
           <p>
-            Our total aggregate liability to you for any claim arising out of or 
-            relating to these Terms or the Services shall not exceed the amount 
+            Our total aggregate liability to you for any claim arising out of or
+            relating to these Terms or the Services shall not exceed the amount
             you paid to us, if any, in the 12 months preceding the claim.
           </p>
 
           <h4>9.3 Essential Basis of Bargain</h4>
           <p>
-            The limitations in this section are an essential basis of the bargain 
-            between you and {siteConfig.name} and reflect the allocation of risk 
+            The limitations in this section are an essential basis of the bargain
+            between you and {siteConfig.name} and reflect the allocation of risk
             between the parties.
           </p>
         </>
@@ -387,15 +407,15 @@ export default function TermsPage() {
         <>
           <h4>10.1 By You</h4>
           <p>
-            You may stop using the Services at any time. To delete your account, 
-            contact us at <a href="mailto:support@renovalifecare.com">support@renovalifecare.com</a>. 
-            Note: Medical records may be retained per legal requirements even after 
+            You may stop using the Services at any time. To delete your account,
+            contact us at <a href="mailto:support@renovalifecare.com">support@renovalifecare.com</a>.
+            Note: Medical records may be retained per legal requirements even after
             account deletion.
           </p>
 
           <h4>10.2 By Us</h4>
           <p>
-            We may suspend or terminate your access to the Services immediately, 
+            We may suspend or terminate your access to the Services immediately,
             without prior notice or liability, for any reason, including if you:
           </p>
           <ul className="terms-list">
@@ -412,8 +432,8 @@ export default function TermsPage() {
           <ul className="terms-list">
             <li>Your right to use the Services ceases immediately</li>
             <li>Accrued rights and obligations survive (including payment obligations)</li>
-            <li>Sections on Disclaimer, Limitation of Liability, Governing Law, 
-            and any other provisions that by nature should survive, remain in effect</li>
+            <li>Sections on Disclaimer, Limitation of Liability, Governing Law,
+              and any other provisions that by nature should survive, remain in effect</li>
           </ul>
         </>
       ),
@@ -424,7 +444,7 @@ export default function TermsPage() {
       content: (
         <>
           <p>
-            We reserve the right to modify these Terms at any time. When we do, 
+            We reserve the right to modify these Terms at any time. When we do,
             we will:
           </p>
           <ul className="terms-list">
@@ -433,12 +453,12 @@ export default function TermsPage() {
             <li>Provide a reasonable opportunity to review changes before they take effect</li>
           </ul>
           <p>
-            Your continued use of the Services after changes become effective 
-            constitutes acceptance of the new Terms. If you do not agree, you 
+            Your continued use of the Services after changes become effective
+            constitutes acceptance of the new Terms. If you do not agree, you
             must stop using the Services and may request account deletion.
           </p>
           <div className="terms-updated-badge">
-            <span className="terms-updated-icon">📅</span>
+            <span className="terms-updated-icon"><Calendar size={20} /></span>
             <span>Last Updated: <strong>{lastUpdated}</strong></span>
           </div>
         </>
@@ -451,9 +471,9 @@ export default function TermsPage() {
         <>
           <h4>12.1 Governing Law</h4>
           <p>
-            These Terms and your use of the Services shall be governed by and 
-            construed in accordance with the laws of the <strong>People's Republic 
-            of Bangladesh</strong>, without regard to its conflict of law principles.
+            These Terms and your use of the Services shall be governed by and
+            construed in accordance with the laws of the <strong>People's Republic
+              of Bangladesh</strong>, without regard to its conflict of law principles.
           </p>
 
           <h4>12.2 Dispute Resolution</h4>
@@ -461,26 +481,26 @@ export default function TermsPage() {
             Any dispute arising from these Terms shall be resolved as follows:
           </p>
           <ol className="terms-ordered-list">
-            <li><strong>Informal Resolution:</strong> Contact our support team to 
-            attempt good-faith resolution.</li>
-            <li><strong>Mediation:</strong> If unresolved within 30 days, parties 
-            agree to non-binding mediation through the Bangladesh Medical & Dental 
-            Council (BMDC) or agreed-upon mediator.</li>
-            <li><strong>Arbitration:</strong> If mediation fails, disputes shall be 
-            settled by binding arbitration in Dhaka, Bangladesh, under the 
-            Arbitration Act, 2001. Judgment on the award may be entered in any 
-            court of competent jurisdiction.</li>
+            <li><strong>Informal Resolution:</strong> Contact our support team to
+              attempt good-faith resolution.</li>
+            <li><strong>Mediation:</strong> If unresolved within 30 days, parties
+              agree to non-binding mediation through the Bangladesh Medical & Dental
+              Council (BMDC) or agreed-upon mediator.</li>
+            <li><strong>Arbitration:</strong> If mediation fails, disputes shall be
+              settled by binding arbitration in Dhaka, Bangladesh, under the
+              Arbitration Act, 2001. Judgment on the award may be entered in any
+              court of competent jurisdiction.</li>
           </ol>
           <p className="terms-note">
-            <strong>Exception:</strong> Either party may seek injunctive or other 
-            equitable relief in court to prevent actual or threatened infringement 
+            <strong>Exception:</strong> Either party may seek injunctive or other
+            equitable relief in court to prevent actual or threatened infringement
             of intellectual property rights or breach of confidentiality obligations.
           </p>
 
           <h4>12.3 Class Action Waiver</h4>
           <p>
-            You agree to resolve disputes on an individual basis and waive any right 
-            to participate in class, consolidated, or representative actions against 
+            You agree to resolve disputes on an individual basis and waive any right
+            to participate in class, consolidated, or representative actions against
             {siteConfig.name}.
           </p>
         </>
@@ -493,38 +513,38 @@ export default function TermsPage() {
         <>
           <h4>13.1 Entire Agreement</h4>
           <p>
-            These Terms, together with our Privacy Policy and any additional terms 
-            posted on the Services, constitute the entire agreement between you and 
+            These Terms, together with our Privacy Policy and any additional terms
+            posted on the Services, constitute the entire agreement between you and
             {siteConfig.name} regarding the subject matter herein.
           </p>
 
           <h4>13.2 Severability</h4>
           <p>
-            If any provision of these Terms is held invalid or unenforceable, the 
-            remaining provisions shall remain in full force and effect, and the 
-            invalid provision shall be replaced by a valid provision that most 
+            If any provision of these Terms is held invalid or unenforceable, the
+            remaining provisions shall remain in full force and effect, and the
+            invalid provision shall be replaced by a valid provision that most
             closely reflects the original intent.
           </p>
 
           <h4>13.3 Waiver</h4>
           <p>
-            Our failure to enforce any right or provision of these Terms shall not 
-            be deemed a waiver of such right or provision unless expressly acknowledged 
+            Our failure to enforce any right or provision of these Terms shall not
+            be deemed a waiver of such right or provision unless expressly acknowledged
             in writing.
           </p>
 
           <h4>13.4 Assignment</h4>
           <p>
-            You may not assign or transfer these Terms without our prior written 
-            consent. We may assign these Terms in connection with a merger, 
+            You may not assign or transfer these Terms without our prior written
+            consent. We may assign these Terms in connection with a merger,
             acquisition, or sale of assets.
           </p>
 
           <h4>13.5 Force Majeure</h4>
           <p>
-            We shall not be liable for delays or failures in performance resulting 
-            from causes beyond our reasonable control, including acts of God, 
-            government actions, war, terrorism, pandemics, or internet/telecom 
+            We shall not be liable for delays or failures in performance resulting
+            from causes beyond our reasonable control, including acts of God,
+            government actions, war, terrorism, pandemics, or internet/telecom
             infrastructure failures.
           </p>
 
@@ -534,12 +554,12 @@ export default function TermsPage() {
           </p>
           <div className="terms-contact-grid">
             <div className="terms-contact-card">
-              <h5>📧 Legal Department</h5>
+              <h5><Mail size={18} /> Legal Department</h5>
               <p><a href="mailto:legal@renovalifecare.com">legal@renovalifecare.com</a></p>
               <p><a href="tel:+8801234567890">+880 1234-567890</a></p>
             </div>
             <div className="terms-contact-card">
-              <h5>🏢 Registered Office</h5>
+              <h5><MapPin size={18} /> Registered Office</h5>
               <p>
                 {siteConfig.address?.street}, {siteConfig.address?.area}
                 <br />
@@ -547,7 +567,7 @@ export default function TermsPage() {
               </p>
             </div>
             <div className="terms-contact-card">
-              <h5>⚖️ Regulatory Reference</h5>
+              <h5><Award size={18} /> Regulatory Reference</h5>
               <p><strong>Bangladesh Medical & Dental Council (BMDC)</strong></p>
               <p><a href="https://bmdc.org.bd" target="_blank" rel="noopener">bmdc.org.bd</a></p>
             </div>
@@ -607,19 +627,19 @@ export default function TermsPage() {
         <div className="page-section__container">
           <div className="terms-compliance-grid">
             <div className="terms-compliance-item">
-              <span className="terms-compliance-icon">⚖️</span>
+              <span className="terms-compliance-icon"><Scale size={28} /></span>
               <p><strong>Bangladesh Law Compliant</strong><br />Aligned with Digital Security Act, 2018 & BMDC guidelines</p>
             </div>
             <div className="terms-compliance-item">
-              <span className="terms-compliance-icon">🩺</span>
+              <span className="terms-compliance-icon"><Stethoscope size={28} /></span>
               <p><strong>Healthcare Regulated</strong><br />Services delivered by BMDC-verified medical professionals</p>
             </div>
             <div className="terms-compliance-item">
-              <span className="terms-compliance-icon">🔐</span>
+              <span className="terms-compliance-icon"><Lock size={28} /></span>
               <p><strong>Data Protected</strong><br />End-to-end encryption and strict access controls</p>
             </div>
             <div className="terms-compliance-item">
-              <span className="terms-compliance-icon">🌐</span>
+              <span className="terms-compliance-icon"><Globe size={28} /></span>
               <p><strong>Transparent Practices</strong><br />Clear terms, no hidden fees, easy cancellation</p>
             </div>
           </div>

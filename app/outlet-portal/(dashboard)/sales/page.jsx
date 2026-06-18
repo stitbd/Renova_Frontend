@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Download, TrendingUp, ShoppingCart, DollarSign, Clock, Eye } from "lucide-react";
 
 export default function SalesPage() {
   const [period, setPeriod] = useState("week");
@@ -40,11 +41,7 @@ export default function SalesPage() {
       <motion.div className="page-header">
         <h1 className="page-title">Sales Overview</h1>
         <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
+          <Download size={18} />
           Export Report
         </motion.button>
       </motion.div>
@@ -52,24 +49,32 @@ export default function SalesPage() {
       {/* Stats Cards */}
       <motion.div className="stats-row">
         {[
-          { label: "Total Sales", value: currentData.total, change: "+15%", color: "#428a26" },
-          { label: "Total Orders", value: currentData.orders.toString(), change: "+12", color: "#014fa1" },
-          { label: "Avg Order Value", value: currentData.avgOrder, change: "+3%", color: "#7c3aed" },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            className="stat-card-small"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            whileHover={{ y: -2 }}
-            style={{ borderLeftColor: stat.color }}
-          >
-            <span className="stat-label">{stat.label}</span>
-            <span className="stat-value">{stat.value}</span>
-            <span className="stat-change" style={{ color: stat.color }}>{stat.change}</span>
-          </motion.div>
-        ))}
+          { label: "Total Sales", value: currentData.total, change: "+15%", color: "#428a26", icon: DollarSign },
+          { label: "Total Orders", value: currentData.orders.toString(), change: "+12", color: "#014fa1", icon: ShoppingCart },
+          { label: "Avg Order Value", value: currentData.avgOrder, change: "+3%", color: "#7c3aed", icon: TrendingUp },
+        ].map((stat, i) => {
+          const IconComponent = stat.icon;
+          return (
+            <motion.div
+              key={stat.label}
+              className="stat-card-small"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -2 }}
+              style={{ borderLeftColor: stat.color }}
+            >
+              <div className="stat-icon" style={{ color: stat.color }}>
+                <IconComponent size={20} />
+              </div>
+              <div className="stat-content">
+                <span className="stat-label">{stat.label}</span>
+                <span className="stat-value">{stat.value}</span>
+                <span className="stat-change" style={{ color: stat.color }}>{stat.change}</span>
+              </div>
+            </motion.div>
+          );
+        })}
       </motion.div>
 
       {/* Chart */}
@@ -111,7 +116,7 @@ export default function SalesPage() {
                   animate={{ height: `${(val / maxValue) * 100}%` }}
                   transition={{ duration: 0.5, delay: 0.4 + i * 0.05 }}
                 >
-                  <span className="bar-value">৳{(val/1000).toFixed(0)}K</span>
+                  <span className="bar-value">৳{(val / 1000).toFixed(0)}K</span>
                 </motion.div>
                 <span className="bar-label">{currentData.labels[i]}</span>
               </motion.div>
@@ -152,7 +157,7 @@ export default function SalesPage() {
                   <td>{sale.time}</td>
                   <td><span className={`status-badge ${sale.status.toLowerCase()}`}>{sale.status}</span></td>
                   <td>
-                    <motion.button className="btn-icon view" whileHover={{ scale: 1.1 }}>View</motion.button>
+                    <motion.button className="btn-icon view" whileHover={{ scale: 1.1 }}><Eye size={16} /></motion.button>
                   </td>
                 </motion.tr>
               ))}

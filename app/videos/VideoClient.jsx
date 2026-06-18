@@ -270,7 +270,7 @@ export default function VideoClient({ initialData, categories }) {
                       className="video-item__image"
                       loading="lazy"
                     />
-                    
+
                     {/* Play Button Overlay */}
                     <div className="video-item__play-overlay">
                       <div className="play-button">
@@ -293,7 +293,7 @@ export default function VideoClient({ initialData, categories }) {
                   <div className="video-item__info">
                     <h3 className="video-item__title">{video.title}</h3>
                     <p className="video-item__desc">{video.description}</p>
-                    
+
                     <div className="video-item__meta">
                       {(video.doctor || video.patient) && (
                         <span className="video-item__author">
@@ -387,7 +387,7 @@ export default function VideoClient({ initialData, categories }) {
                 allowFullScreen
                 className="video-lightbox__iframe"
               />
-              
+
               {/* Custom Controls Overlay */}
               <div className="video-lightbox__controls">
                 <div className="video-progress">

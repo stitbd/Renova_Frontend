@@ -5,10 +5,25 @@ import Image from "next/image";
 import BlogShareButtons from "@/components/common/BlogShareButtons";
 import "@/styles/pages/blog-detail.css";
 import "@/styles/components/HeroSection.css";
+import {
+  Calendar,
+  Clock,
+  Stethoscope,
+  ArrowLeft,
+  ArrowRight,
+  Phone,
+  User,
+  Mail,
+  Share2,
+  BookOpen,
+  CheckCircle,
+  AlertCircle,
+  HelpCircle
+} from "lucide-react";
 
 export async function generateMetadata({ params }) {
   const post = blogs.find((b) => b.slug === params.slug) || blogs[0];
-  
+
   return {
     title: `${post.title} | Health Blog | ${siteConfig.name}`,
     description: post.excerpt,
@@ -32,7 +47,7 @@ export async function generateMetadata({ params }) {
 
 export default function BlogDetailPage({ params }) {
   const post = blogs.find((b) => b.slug === params.slug) || blogs[0];
-  
+
   // Get related posts (same category, excluding current)
   const relatedPosts = blogs
     .filter((b) => b.category === post.category && b.id !== post.id)
@@ -52,7 +67,7 @@ export default function BlogDetailPage({ params }) {
           <p className="page-hero__subtitle page-hero__subtitle--blog">
             {post.excerpt}
           </p>
-          
+
           {/* Article Meta */}
           <div className="blog-meta-bar">
             <div className="blog-meta-left">
@@ -60,11 +75,11 @@ export default function BlogDetailPage({ params }) {
                 {post.category}
               </span>
               <time dateTime={post.date} className="blog-meta-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <Calendar size={16} />
                 {post.date}
               </time>
               <span className="blog-meta-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <Clock size={16} />
                 {post.readTime}
               </span>
             </div>
@@ -74,7 +89,7 @@ export default function BlogDetailPage({ params }) {
               <BlogShareButtons title={post.title} url={shareUrl} />
             </div>
           </div>
-          
+
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="page-hero__breadcrumb">
             <Link href="/">Home</Link>
@@ -99,7 +114,7 @@ export default function BlogDetailPage({ params }) {
           />
           {/* Fallback */}
           <div className="blog-featured-image__fallback" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#428a26" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <Stethoscope size={80} color="#428a26" strokeWidth={1.5} />
           </div>
         </div>
       </section>
@@ -109,11 +124,11 @@ export default function BlogDetailPage({ params }) {
         <div className="page-section__container blog-content-wrapper">
           {/* Main Article */}
           <div className="blog-article">
-            <div 
-              className="blog-article__content" 
-              dangerouslySetInnerHTML={{ __html: post.content || "<p>Content not available.</p>" }} 
+            <div
+              className="blog-article__content"
+              dangerouslySetInnerHTML={{ __html: post.content || "<p>Content not available.</p>" }}
             />
-            
+
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="blog-tags">
@@ -147,7 +162,7 @@ export default function BlogDetailPage({ params }) {
                 </p>
                 <Link href={`/team/${post.authorSlug || "specialist"}`} className="blog-author-link">
                   View Profile
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  <ArrowRight size={14} />
                 </Link>
               </div>
             </div>
@@ -155,7 +170,7 @@ export default function BlogDetailPage({ params }) {
             {/* Navigation */}
             <div className="blog-navigation">
               <Link href="/blog" className="blog-nav-btn blog-nav-btn--back">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <ArrowLeft size={16} />
                 Back to All Articles
               </Link>
             </div>
@@ -181,7 +196,7 @@ export default function BlogDetailPage({ params }) {
             {/* Quick Contact CTA */}
             <div className="blog-cta-card">
               <div className="blog-cta-card__icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <Phone size={32} strokeWidth={1.5} />
               </div>
               <h4 className="blog-cta-card__title">Need Expert Advice?</h4>
               <p className="blog-cta-card__text">

@@ -16,18 +16,18 @@ import "../../styles/components/Button.css";
  * <Button variant="primary" href="/contact">Contact Us</Button>
  * <Button variant="secondary" onClick={handleClick}>Learn More</Button>
  */
-export default function Button({ 
-  children, 
-  href, 
-  variant = "primary", 
-  className, 
-  ...props 
+export default function Button({
+  children,
+  href,
+  variant = "primary",
+  className,
+  ...props
 }) {
   const baseClass = "btn";
   const variantClass = `btn-${variant}`;
-  
+
   const combinedClassName = cn(baseClass, variantClass, className);
-  
+
   if (href) {
     return (
       <Link href={href} className={combinedClassName} {...props}>
@@ -35,7 +35,7 @@ export default function Button({
       </Link>
     );
   }
-  
+
   return (
     <button className={combinedClassName} {...props}>
       {children}

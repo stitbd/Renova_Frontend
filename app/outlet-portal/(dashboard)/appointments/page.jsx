@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Plus, List, Calendar, Clock, User, Stethoscope, CheckCircle, Play, RefreshCw, Eye } from "lucide-react";
 
 export default function AppointmentsPage() {
   const [viewMode, setViewMode] = useState("list");
@@ -23,10 +24,7 @@ export default function AppointmentsPage() {
       <motion.div className="page-header">
         <h1 className="page-title">Appointments</h1>
         <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
+          <Plus size={18} />
           Book Appointment
         </motion.button>
       </motion.div>
@@ -52,11 +50,7 @@ export default function AppointmentsPage() {
             onClick={() => setViewMode("list")}
             whileHover={{ scale: 1.05 }}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="8" y1="6" x2="21" y2="6" />
-              <line x1="8" y1="12" x2="21" y2="12" />
-              <line x1="8" y1="18" x2="21" y2="18" />
-            </svg>
+            <List size={16} />
             List
           </motion.button>
           <motion.button
@@ -64,11 +58,7 @@ export default function AppointmentsPage() {
             onClick={() => setViewMode("calendar")}
             whileHover={{ scale: 1.05 }}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-            </svg>
+            <Calendar size={16} />
             Calendar
           </motion.button>
         </div>
@@ -105,15 +95,15 @@ export default function AppointmentsPage() {
                 <div className="action-buttons">
                   {apt.status === "Upcoming" && (
                     <>
-                      <motion.button className="btn-small start" whileHover={{ scale: 1.05 }}>Start</motion.button>
-                      <motion.button className="btn-small reschedule" whileHover={{ scale: 1.05 }}>Reschedule</motion.button>
+                      <motion.button className="btn-small start" whileHover={{ scale: 1.05 }}><Play size={14} /> Start</motion.button>
+                      <motion.button className="btn-small reschedule" whileHover={{ scale: 1.05 }}><RefreshCw size={14} /> Reschedule</motion.button>
                     </>
                   )}
                   {apt.status === "Ongoing" && (
-                    <motion.button className="btn-small complete" whileHover={{ scale: 1.05 }}>Complete</motion.button>
+                    <motion.button className="btn-small complete" whileHover={{ scale: 1.05 }}><CheckCircle size={14} /> Complete</motion.button>
                   )}
                   {apt.status === "Completed" && (
-                    <motion.button className="btn-small view" whileHover={{ scale: 1.05 }}>View</motion.button>
+                    <motion.button className="btn-small view" whileHover={{ scale: 1.05 }}><Eye size={14} /> View</motion.button>
                   )}
                 </div>
               </div>

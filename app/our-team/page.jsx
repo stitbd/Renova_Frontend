@@ -201,7 +201,7 @@ export default function TeamsPage() {
             Office <span className="page-hero__highlight">Management Team</span>
           </h1>
           <p className="page-hero__subtitle">
-            The dedicated administrative professionals who ensure {siteConfig.name} 
+            The dedicated administrative professionals who ensure {siteConfig.name}
             delivers seamless, efficient, and patient-centered diagnostic services.
           </p>
           <nav aria-label="Breadcrumb" className="page-hero__breadcrumb">
@@ -351,7 +351,7 @@ export default function TeamsPage() {
           <div className="teams-cta-card">
             <h2>Join Our Management Team</h2>
             <p>
-              Are you an experienced administrator, operations professional, or support specialist? 
+              Are you an experienced administrator, operations professional, or support specialist?
               {siteConfig.name} is growing — explore career opportunities with Bangladesh's trusted diagnostic center.
             </p>
             <div className="teams-cta-buttons">

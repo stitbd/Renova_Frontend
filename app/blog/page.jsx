@@ -3,6 +3,7 @@ import { siteConfig, blogs } from "@/constants/siteData";
 import Image from "next/image";
 import "@/styles/pages/blog.css";
 import "@/styles/components/HeroSection.css";
+import { Stethoscope, ArrowRight } from "lucide-react";
 
 export const metadata = {
   title: `Health Blog | ${siteConfig.name}`,
@@ -78,19 +79,7 @@ export default function BlogPage() {
                   />
                   {/* Fallback Icon */}
                   <div className="blog-fallback" aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="48"
-                      height="48"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#428a26"
-                      strokeWidth="1"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                    </svg>
+                    <Stethoscope size={48} color="#428a26" strokeWidth={1} />
                   </div>
                   <div className="blog-category-badge">
                     <span className="blog-category">
@@ -98,7 +87,7 @@ export default function BlogPage() {
                     </span>
                   </div>
                 </div>
-                
+
                 {/* Content */}
                 <div className="blog-content">
                   <div className="blog-meta">
@@ -114,20 +103,7 @@ export default function BlogPage() {
                   </p>
                   <div className="blog-read-more">
                     Read More
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="blog-read-more-icon"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                    <ArrowRight size={14} className="blog-read-more-icon" />
                   </div>
                 </div>
               </Link>

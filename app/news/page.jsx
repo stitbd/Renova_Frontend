@@ -1,6 +1,7 @@
 import { siteConfig } from "@/constants/siteData";
 import Link from "next/link";
 import "@/styles/components/HeroSection.css";
+import { ArrowRight, Download, Mail, Phone, User, FileText, Image, BookOpen, File } from "lucide-react";
 
 export const metadata = {
   title: `News | ${siteConfig.name}`,
@@ -134,9 +135,7 @@ export default function MediaPage() {
                 <p className="page-press-excerpt">{item.excerpt}</p>
                 <a href="#" className="page-press-link">
                   Read Full Release
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
+                  <ArrowRight size={14} />
                 </a>
               </article>
             ))}
@@ -156,24 +155,23 @@ export default function MediaPage() {
               </p>
               <div className="page-press-downloads">
                 {[
-                  { icon: "🖼️", label: "Brand Logo Pack", size: "2.4 MB" },
-                  { icon: "📘", label: "Brand Guidelines PDF", size: "1.8 MB" },
-                  { icon: "📸", label: "Press Photo Gallery", size: "15 MB" },
-                  { icon: "📄", label: "Company Profile", size: "3.2 MB" },
-                ].map((dl) => (
-                  <a key={dl.label} href="#" className="page-press-download-item">
-                    <span className="page-press-dl-icon">{dl.icon}</span>
-                    <div>
-                      <p className="page-press-dl-label">{dl.label}</p>
-                      <p className="page-press-dl-size">{dl.size}</p>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="page-press-dl-arrow" aria-hidden="true">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="7 10 12 15 17 10" />
-                      <line x1="12" y1="15" x2="12" y2="3" />
-                    </svg>
-                  </a>
-                ))}
+                  { icon: Image, label: "Brand Logo Pack", size: "2.4 MB" },
+                  { icon: BookOpen, label: "Brand Guidelines PDF", size: "1.8 MB" },
+                  { icon: FileText, label: "Press Photo Gallery", size: "15 MB" },
+                  { icon: File, label: "Company Profile", size: "3.2 MB" },
+                ].map((dl) => {
+                  const IconComponent = dl.icon;
+                  return (
+                    <a key={dl.label} href="#" className="page-press-download-item">
+                      <span className="page-press-dl-icon"><IconComponent size={20} /></span>
+                      <div>
+                        <p className="page-press-dl-label">{dl.label}</p>
+                        <p className="page-press-dl-size">{dl.size}</p>
+                      </div>
+                      <Download size={16} className="page-press-dl-arrow" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
@@ -184,13 +182,13 @@ export default function MediaPage() {
                 {mediaContacts.map((contact) => (
                   <div key={contact.name} className="page-media-contact-card">
                     <div className="page-media-contact-avatar">
-                      {contact.name.charAt(0)}
+                      <User size={18} />
                     </div>
                     <div className="page-media-contact-info">
                       <p className="page-media-contact-name">{contact.name}</p>
                       <p className="page-media-contact-role">{contact.role}</p>
                       <a href={`mailto:${contact.email}`} className="page-media-contact-email">
-                        {contact.email}
+                        <Mail size={14} /> {contact.email}
                       </a>
                     </div>
                   </div>

@@ -2,66 +2,23 @@
 /* ═══════════════════════════════════════════════════════════════
    File: /app/cart/page.jsx  (REPLACE existing file)
    ═══════════════════════════════════════════════════════════════ */
-import { useState } from "react";   
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import "@/styles/pages/cart.css";
 import "@/styles/components/HeroSection.css";
-
-/* ── Icons ── */
-const TrashIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="3 6 5 6 21 6" />
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-    <line x1="10" y1="11" x2="10" y2="17" />
-    <line x1="14" y1="11" x2="14" y2="17" />
-  </svg>
-);
-const MinusIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
-);
-const PlusIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
-);
-const ShieldIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    <polyline points="9 12 11 14 15 10" />
-  </svg>
-);
-const TruckIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="1" y="3" width="15" height="13" rx="2" />
-    <path d="M16 8h4l3 3v5h-7" />
-    <circle cx="5.5" cy="18.5" r="2.5" />
-    <circle cx="18.5" cy="18.5" r="2.5" />
-  </svg>
-);
-const RefreshIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="23 4 23 10 17 10" />
-    <polyline points="1 20 1 14 7 14" />
-    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-  </svg>
-);
-const CheckIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
+import {
+  Trash2,
+  Minus,
+  Plus,
+  Shield,
+  Truck,
+  RefreshCw,
+  Check,
+  ShoppingCart,
+  ArrowLeft
+} from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════════
    PACKAGE FEATURES MAP
@@ -120,8 +77,8 @@ const packageFeaturesMap = {
 };
 
 /* Reuse features for package-4 to package-9 (cycle through 1-2-3) */
-["4","5","6","7","8","9"].forEach((n) => {
-  const base = ["1","2","3"][(parseInt(n) - 1) % 3];
+["4", "5", "6", "7", "8", "9"].forEach((n) => {
+  const base = ["1", "2", "3"][(parseInt(n) - 1) % 3];
   packageFeaturesMap[`package-${n}`] = packageFeaturesMap[`package-${base}`];
 });
 
@@ -133,9 +90,9 @@ const isPackage = (item) => item.category === "Health Package";
    ═══════════════════════════════════════════════════════════════ */
 function PackageDetail({ item }) {
   const [expanded, setExpanded] = useState(false);
-  const features  = packageFeaturesMap[item.id] || [];
+  const features = packageFeaturesMap[item.id] || [];
   const showCount = 4;
-  const visible   = expanded ? features : features.slice(0, showCount);
+  const visible = expanded ? features : features.slice(0, showCount);
   const remaining = features.length - showCount;
 
   return (
@@ -143,19 +100,19 @@ function PackageDetail({ item }) {
       <ul className="cart-pkg-features">
         {visible.map((f, i) => (
           <li key={i} className="cart-pkg-feature-item">
-            <span className="cart-pkg-check">✓</span>
+            <span className="cart-pkg-check"><Check size={12} /></span>
             <span>{f}</span>
           </li>
         ))}
         {!expanded && remaining > 0 && (
           <li className="cart-pkg-more" onClick={() => setExpanded(true)}>
-            <span className="cart-pkg-check">✓</span>
+            <span className="cart-pkg-check"><Check size={12} /></span>
             <span>+{remaining} more tests</span>
           </li>
         )}
         {expanded && (
           <li className="cart-pkg-more" onClick={() => setExpanded(false)}>
-            <span className="cart-pkg-check">✓</span>
+            <span className="cart-pkg-check"><Check size={12} /></span>
             <span>Show less</span>
           </li>
         )}
@@ -170,7 +127,7 @@ function PackageDetail({ item }) {
 export default function CartPage() {
   const { cartItems, removeFromCart, updateQty, totalPrice } = useCart();
 
-  const tax   = Math.round(totalPrice * 0.05);
+  const tax = Math.round(totalPrice * 0.05);
   const total = totalPrice + tax;
 
   return (
@@ -198,7 +155,7 @@ export default function CartPage() {
         <div className="page-section__container">
           {cartItems.length === 0 ? (
             <div className="cart-empty">
-              <div className="cart-empty__icon">🛒</div>
+              <div className="cart-empty__icon"><ShoppingCart size={48} /></div>
               <h3>Your cart is empty</h3>
               <p>Browse our health products and packages to get started.</p>
               <Link href="/shop" className="btn btn-primary cart-empty__btn">
@@ -211,7 +168,7 @@ export default function CartPage() {
               {/* ── Cart Items ── */}
               <div className="cart-items">
                 {cartItems.map((item) => {
-                  const pkg     = isPackage(item);
+                  const pkg = isPackage(item);
                   const savings = item.oldPrice
                     ? (item.oldPrice - item.price) * item.quantity
                     : 0;
@@ -231,7 +188,7 @@ export default function CartPage() {
                           onClick={() => removeFromCart(item.id)}
                           aria-label={`Remove ${item.name}`}
                         >
-                          <TrashIcon />
+                          <Trash2 size={16} />
                           <span>Remove</span>
                         </button>
                       </div>
@@ -257,13 +214,13 @@ export default function CartPage() {
                               <button className="qty-btn"
                                 onClick={() => updateQty(item.id, item.quantity - 1)}
                                 aria-label="Decrease quantity">
-                                <MinusIcon />
+                                <Minus size={14} />
                               </button>
                               <span className="qty-value">{item.quantity}</span>
                               <button className="qty-btn"
                                 onClick={() => updateQty(item.id, item.quantity + 1)}
                                 aria-label="Increase quantity">
-                                <PlusIcon />
+                                <Plus size={14} />
                               </button>
                             </div>
                             <div className="cart-item__price">
@@ -308,13 +265,13 @@ export default function CartPage() {
                               <button className="qty-btn"
                                 onClick={() => updateQty(item.id, item.quantity - 1)}
                                 aria-label="Decrease quantity">
-                                <MinusIcon />
+                                <Minus size={14} />
                               </button>
                               <span className="qty-value">{item.quantity}</span>
                               <button className="qty-btn"
                                 onClick={() => updateQty(item.id, item.quantity + 1)}
                                 aria-label="Increase quantity">
-                                <PlusIcon />
+                                <Plus size={14} />
                               </button>
                             </div>
                             <div className="cart-item__price">
@@ -362,15 +319,15 @@ export default function CartPage() {
                   </span>
                 </div>
                 <div className="cart-summary__trust">
-                  <div className="trust-item"><ShieldIcon /><span>Secure Payment</span></div>
-                  <div className="trust-item"><TruckIcon /><span>Home Delivery Available</span></div>
-                  <div className="trust-item"><RefreshIcon /><span>Easy Returns</span></div>
+                  <div className="trust-item"><Shield size={18} /><span>Secure Payment</span></div>
+                  <div className="trust-item"><Truck size={18} /><span>Home Delivery Available</span></div>
+                  <div className="trust-item"><RefreshCw size={18} /><span>Easy Returns</span></div>
                 </div>
                 <Link href="/checkout" className="btn btn-primary cart-summary__checkout">
                   Proceed to Checkout
                 </Link>
                 <Link href="/shop" className="cart-summary__continue">
-                  ← Continue Shopping
+                  <ArrowLeft size={14} /> Continue Shopping
                 </Link>
               </aside>
 

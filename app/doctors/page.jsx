@@ -35,7 +35,7 @@ export default function DoctorsPage() {
       </section>
 
       {/* Doctors Grid (Client Component) */}
-      
+
 
       {/* Doctor */}
       <section className="page-section">

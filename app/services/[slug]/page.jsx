@@ -8,6 +8,21 @@ import DoctorsGrid from "./DoctorsGrid";
 import "@/styles/pages/service-details.css";
 import "@/styles/components/HeroSection.css";
 import "./doctor.css";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Calendar,
+  ArrowRight,
+  Shield,
+  Check,
+  ChevronDown,
+  AlertCircle,
+  User,
+  Clock,
+  Building2,
+  Stethoscope
+} from "lucide-react";
 
 // Generate static params for SSG/ISR
 export async function generateStaticParams() {
@@ -20,7 +35,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const service = services.find((s) => s.href === `/services/${slug}`);
-  
+
   if (!service) {
     return {
       title: "Service Not Found",
@@ -58,7 +73,7 @@ export async function generateMetadata({ params }) {
 export default async function ServiceDetailPage({ params }) {
   const { slug } = await params;
   const service = services.find((s) => s.href === `/services/${slug}`);
-  
+
   if (!service) {
     notFound();
   }
@@ -69,7 +84,7 @@ export default async function ServiceDetailPage({ params }) {
   const serviceContent = {
     overview: service.description,
     detailedDescription: `Our ${service.title} service provides comprehensive care using evidence-based practices and the latest medical technology. Our team of BMDC-certified specialists works collaboratively to ensure you receive personalized, compassionate care tailored to your unique health needs.`,
-    
+
     benefits: [
       "Personalized treatment plans designed for your specific health profile",
       "Board-certified specialists with extensive clinical experience",
@@ -78,34 +93,34 @@ export default async function ServiceDetailPage({ params }) {
       "Patient education resources to empower your health decisions",
       "Flexible scheduling including evening and weekend appointments",
     ],
-    
+
     process: [
-      { 
-        step: 1, 
-        title: "Initial Consultation", 
+      {
+        step: 1,
+        title: "Initial Consultation",
         desc: "Meet with our specialist to discuss your symptoms, medical history, and health goals. We take time to listen and understand your concerns.",
         icon: "user-check"
       },
-      { 
-        step: 2, 
-        title: "Comprehensive Assessment", 
+      {
+        step: 2,
+        title: "Comprehensive Assessment",
         desc: "Undergo thorough evaluation using state-of-the-art diagnostic tools and laboratory testing as needed.",
         icon: "scan-search"
       },
-      { 
-        step: 3, 
-        title: "Personalized Treatment Plan", 
+      {
+        step: 3,
+        title: "Personalized Treatment Plan",
         desc: "Receive a clear, customized care plan with explained options, expected outcomes, and timeline.",
         icon: "file-check"
       },
-      { 
-        step: 4, 
-        title: "Ongoing Support & Follow-up", 
+      {
+        step: 4,
+        title: "Ongoing Support & Follow-up",
         desc: "Regular check-ins, progress monitoring, and plan adjustments to ensure optimal health outcomes.",
         icon: "heart-pulse"
       },
     ],
-    
+
     faqs: [
       {
         q: "How do I prepare for my first appointment?",
@@ -128,7 +143,7 @@ export default async function ServiceDetailPage({ params }) {
         a: "Initial consultations typically last 30-45 minutes. Follow-up appointments are usually 15-20 minutes. Diagnostic procedures vary in duration; our staff will inform you of expected timeframes when scheduling."
       }
     ],
-    
+
     relatedServices: services
       .filter(s => s.id !== service.id && s.category === service.category)
       .slice(0, 4),
@@ -153,10 +168,10 @@ export default async function ServiceDetailPage({ params }) {
 
       {/* Main Content Grid */}
       <div className="container-custom service-detail-grid">
-        
+
         {/* Left Column - Primary Content */}
         <main className="service-detail-main" id="main-content">
-          
+
           {/* What to Expect Section */}
           <section className="service-section" aria-labelledby="process-heading">
             <h2 id="process-heading" className="section-title">What to Expect</h2>
@@ -181,9 +196,7 @@ export default async function ServiceDetailPage({ params }) {
             <ul className="benefits-list">
               {serviceContent.benefits.map((benefit, index) => (
                 <li key={index} className="benefit-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-status-success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="benefit-icon">
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
+                  <Check size={20} color="var(--color-status-success)" strokeWidth={2.5} className="benefit-icon" />
                   <span>{benefit}</span>
                 </li>
               ))}
@@ -213,9 +226,7 @@ export default async function ServiceDetailPage({ params }) {
                 <details key={index} className="faq-item" role="listitem">
                   <summary className="faq-question">
                     <span>{faq.q}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="faq-toggle-icon" aria-hidden="true">
-                      <path d="m6 9 6 6 6-6"/>
-                    </svg>
+                    <ChevronDown size={16} className="faq-toggle-icon" />
                   </summary>
                   <div className="faq-answer">
                     <p>{faq.a}</p>
@@ -229,7 +240,7 @@ export default async function ServiceDetailPage({ params }) {
 
         {/* Right Column - Sticky Sidebar */}
         <aside className="service-detail-sidebar" aria-label="Service actions and information">
-          
+
           {/* Quick Actions Card */}
           <div className="sidebar-card sidebar-card--primary">
             <h3 className="sidebar-card__title">Get Started Today</h3>
@@ -249,44 +260,31 @@ export default async function ServiceDetailPage({ params }) {
             <h3 className="sidebar-card__title">Contact Information</h3>
             <div className="contact-info">
               <div className="contact-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                </svg>
+                <Phone size={18} color="var(--color-primary)" />
                 <div>
                   <strong>Phone</strong>
                   <p><a href="tel:+8801234567890">+880 1700-000000</a></p>
                 </div>
               </div>
               <div className="contact-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
+                <Mail size={18} color="var(--color-primary)" />
                 <div>
                   <strong>Email</strong>
                   <p><a href="mailto:info@renovalifecare.com">info@renovalifecare.com</a></p>
                 </div>
               </div>
               <div className="contact-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
+                <MapPin size={18} color="var(--color-primary)" />
                 <div>
                   <strong>Location</strong>
                   <p>123 Health Avenue, Dhaka, Bangladesh</p>
                 </div>
               </div>
               <div className="contact-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                  <line x1="16" y1="2" x2="16" y2="6"/>
-                  <line x1="8" y1="2" x2="8" y2="6"/>
-                  <line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
+                <Calendar size={18} color="var(--color-primary)" />
                 <div>
                   <strong>Hours</strong>
-                  <p>Sun-Thu: 8AM-8PM<br/>Fri-Sat: 9AM-5PM</p>
+                  <p>Sun-Thu: 8AM-8PM<br />Fri-Sat: 9AM-5PM</p>
                 </div>
               </div>
             </div>
@@ -302,18 +300,14 @@ export default async function ServiceDetailPage({ params }) {
                     <Link href={related.href} className="related-service-link">
                       <ServiceIcon type={related.icon} color="var(--color-primary)" />
                       <span>{related.title}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                      </svg>
+                      <ArrowRight size={14} />
                     </Link>
                   </li>
                 ))}
               </ul>
               <Link href="/services" className="view-all-link">
                 View All Services
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
+                <ArrowRight size={14} />
               </Link>
             </div>
           )}
@@ -321,10 +315,7 @@ export default async function ServiceDetailPage({ params }) {
           {/* Emergency Banner */}
           <div className="sidebar-card sidebar-card--emergency" role="complementary" aria-label="Emergency contact">
             <div className="emergency-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="m9 12 2 2 4-4"/>
-              </svg>
+              <Shield size={24} />
             </div>
             <h4>Need Emergency Care?</h4>
             <p>Our emergency department is open 24/7 for urgent medical needs.</p>

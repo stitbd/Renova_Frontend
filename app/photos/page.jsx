@@ -63,7 +63,7 @@ export default function GalleryPage() {
             Explore Our <span className="page-hero__highlight">Medical Facilities</span>
           </h1>
           <p className="page-hero__subtitle">
-            A visual journey through our state-of-the-art healthcare center, 
+            A visual journey through our state-of-the-art healthcare center,
             expert medical team, and commitment to patient care.
           </p>
           <nav aria-label="Breadcrumb" className="page-hero__breadcrumb">

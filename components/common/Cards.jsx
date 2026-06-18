@@ -20,12 +20,12 @@ export function Card({ children, className, hover = true, ...props }) {
 }
 
 
-export function ServiceCard({ 
-  title, 
-  description, 
-  icon: Icon, 
-  color = "#428a26", 
-  href 
+export function ServiceCard({
+  title,
+  description,
+  icon: Icon,
+  color = "#428a26",
+  href
 }) {
   const iconBg = `${color}15`; // 15 = ~9% opacity in hex
 
@@ -77,39 +77,39 @@ export function ServiceCard({
 /**
  * DoctorCard — Card for displaying a doctor profile.
  */
-export function DoctorCard({ 
-  name, 
-  specialty, 
-  qualification, 
-  experience, 
-  available, 
-  rating, 
-  patients, 
-  image 
+export function DoctorCard({
+  name,
+  specialty,
+  qualification,
+  experience,
+  available,
+  rating,
+  patients,
+  image
 }) {
   return (
     <div className="doctor-card group">
       {/* Image Section */}
       <div className="doctor-card__image">
         <div className="doctor-card__image-placeholder">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="48" 
-            height="48" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#428a26" 
-            strokeWidth="1.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#428a26"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
             className="doctor-card__avatar-icon"
           >
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
           </svg>
         </div>
-        
+
         {/* Availability Badge */}
         {available && (
           <div className="doctor-card__badge">
@@ -124,16 +124,16 @@ export function DoctorCard({
         <div className="doctor-card__header">
           <h3 className="doctor-card__name">{name}</h3>
           <div className="doctor-card__rating">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="14" 
-              height="14" 
-              viewBox="0 0 24 24" 
-              fill="currentColor" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
               aria-hidden="true"
               className="doctor-card__star"
             >
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
             <span className="doctor-card__rating-value">{rating}</span>
           </div>
@@ -164,13 +164,13 @@ export function DoctorCard({
 /**
  * TestimonialCard — Card for patient reviews.
  */
-export function TestimonialCard({ 
-  name, 
-  location, 
-  rating, 
-  review, 
-  service, 
-  index = 0 
+export function TestimonialCard({
+  name,
+  location,
+  rating,
+  review,
+  service,
+  index = 0
 }) {
   const stars = Array.from({ length: 5 }, (_, i) => i < rating);
 
@@ -191,7 +191,7 @@ export function TestimonialCard({
             aria-hidden="true"
             className={cn("testimonial-card__star", !filled && "testimonial-card__star--empty")}
           >
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         ))}
       </div>
@@ -222,14 +222,14 @@ export function TestimonialCard({
 /**
  * BlogCard — Card for blog/news posts.
  */
-export function BlogCard({ 
-  title, 
-  excerpt, 
-  category, 
-  date, 
-  readTime, 
-  author, 
-  href 
+export function BlogCard({
+  title,
+  excerpt,
+  category,
+  date,
+  readTime,
+  author,
+  href
 }) {
   return (
     <a
@@ -239,20 +239,20 @@ export function BlogCard({
     >
       {/* Image Placeholder */}
       <div className="blog-card__image">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="48" 
-          height="48" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="#428a26" 
-          strokeWidth="1" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#428a26"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
           className="blog-card__image-icon"
         >
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
         </svg>
         <span className="blog-card__category">{category}</span>
       </div>
@@ -264,26 +264,26 @@ export function BlogCard({
           <span className="blog-card__meta-separator">·</span>
           <span>{readTime}</span>
         </div>
-        
+
         <h3 className="blog-card__title">{title}</h3>
         <p className="blog-card__excerpt">{excerpt}</p>
 
         <div className="blog-card__cta">
           <span>Read More</span>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="14" 
-            height="14" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="blog-card__arrow"
             aria-hidden="true"
           >
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </div>
       </div>

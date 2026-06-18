@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const doctorId = Number(id);
   const doctor = doctors.find((d) => d.id === doctorId);
-  
+
   if (!doctor) {
     return {
       title: "Doctor Not Found | Renova Life Care Ltd.",
@@ -37,7 +37,7 @@ export default async function DoctorProfilePage({ params }) {
   const { id } = await params;
   // Convert string param to number for proper ID matching
   const doctorId = Number(id);
-  
+
   // Find the doctor from our data
   const doctor = doctors.find((d) => d.id === doctorId);
 

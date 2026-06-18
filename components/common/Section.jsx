@@ -4,12 +4,12 @@ import "../../styles/components/Section.css";
 /**
  * Section — Wrapper component for page sections with consistent padding and layout.
  */
-export function Section({ 
-  id, 
-  children, 
-  className, 
-  bg = "white", 
-  variant 
+export function Section({
+  id,
+  children,
+  className,
+  bg = "white",
+  variant
 }) {
   return (
     <section
@@ -33,12 +33,12 @@ export function Section({
 /**
  * SectionHeader — Header component for sections with label, title, and subtitle.
  */
-export function SectionHeader({ 
-  label, 
-  title, 
-  subtitle, 
-  align = "center", 
-  titleClassName 
+export function SectionHeader({
+  label,
+  title,
+  subtitle,
+  align = "center",
+  titleClassName
 }) {
   return (
     <div className={cn(
@@ -52,7 +52,7 @@ export function SectionHeader({
           {label}
         </span>
       )}
-      <h2 
+      <h2
         className={cn(
           "section-header__title",
           titleClassName

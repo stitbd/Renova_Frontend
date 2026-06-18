@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Plus, User, Mail, Shield, CheckCircle, XCircle, Edit, Trash2, Users, Key } from "lucide-react";
 
 export default function UsersPage() {
   const [activeTab, setActiveTab] = useState("users");
@@ -27,10 +28,7 @@ export default function UsersPage() {
       <motion.div className="page-header">
         <h1 className="page-title">Users & Roles</h1>
         <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
+          <Plus size={18} />
           Add User
         </motion.button>
       </motion.div>
@@ -76,10 +74,7 @@ export default function UsersPage() {
                   <td>
                     <div className="table-user">
                       <div className="user-avatar-small">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                          <circle cx="12" cy="7" r="4" />
-                        </svg>
+                        <User size={18} />
                       </div>
                       <div>
                         <span className="user-name">{user.name}</span>
@@ -88,13 +83,19 @@ export default function UsersPage() {
                     </div>
                   </td>
                   <td>{user.role}</td>
-                  <td>{user.email}</td>
+                  <td><Mail size={14} /> {user.email}</td>
                   <td>{user.lastLogin}</td>
-                  <td><span className={`status-badge ${user.status.toLowerCase()}`}>{user.status}</span></td>
+                  <td>
+                    {user.status === "Active" ? (
+                      <span className="status-badge active"><CheckCircle size={12} /> Active</span>
+                    ) : (
+                      <span className="status-badge inactive"><XCircle size={12} /> Inactive</span>
+                    )}
+                  </td>
                   <td>
                     <div className="table-actions">
-                      <motion.button className="btn-icon edit" whileHover={{ scale: 1.1 }}>Edit</motion.button>
-                      <motion.button className="btn-icon delete" whileHover={{ scale: 1.1 }}>Deactivate</motion.button>
+                      <motion.button className="btn-icon edit" whileHover={{ scale: 1.1 }}><Edit size={16} /></motion.button>
+                      <motion.button className="btn-icon delete" whileHover={{ scale: 1.1 }}><Trash2 size={16} /></motion.button>
                     </div>
                   </td>
                 </motion.tr>
@@ -115,25 +116,23 @@ export default function UsersPage() {
               whileHover={{ y: -4 }}
             >
               <div className="role-header">
-                <h4 className="role-name">{role.name}</h4>
-                <span className="role-users">{role.users} user{role.users > 1 ? "s" : ""}</span>
+                <h4 className="role-name"><Shield size={16} /> {role.name}</h4>
+                <span className="role-users"><Users size={14} /> {role.users} user{role.users > 1 ? "s" : ""}</span>
               </div>
               <div className="role-permissions">
                 <h5>Permissions:</h5>
                 <ul>
                   {role.permissions.map((perm, j) => (
                     <li key={j}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
+                      <CheckCircle size={14} />
                       {perm}
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="role-actions">
-                <motion.button className="btn-small" whileHover={{ scale: 1.05 }}>Edit Role</motion.button>
-                <motion.button className="btn-small outline" whileHover={{ scale: 1.05 }}>View Users</motion.button>
+                <motion.button className="btn-small" whileHover={{ scale: 1.05 }}><Edit size={14} /> Edit Role</motion.button>
+                <motion.button className="btn-small outline" whileHover={{ scale: 1.05 }}><Users size={14} /> View Users</motion.button>
               </div>
             </motion.div>
           ))}

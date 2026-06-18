@@ -8,37 +8,21 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import "@/styles/pages/shop.css";
 import "@/styles/components/HeroSection.css";
-
-/* ── Icons ──────────────────────────────────────────────────── */
-const CartIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-  </svg>
-);
-
-const BuyIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
-
-const CheckIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
-
-const StarIcon = ({ filled }) => (
-  <svg width="11" height="11" viewBox="0 0 24 24"
-    fill={filled ? "#f59e0b" : "none"} stroke="#f59e0b" strokeWidth="2">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-  </svg>
-);
+import {
+  ShoppingCart,
+  ArrowRight,
+  Check,
+  Star,
+  Truck,
+  Shield,
+  RotateCcw,
+  Award,
+  Package,
+  Heart,
+  Plus,
+  Minus,
+  Eye
+} from "lucide-react";
 
 /* ── Badge color map ── */
 const badgeClass = {
@@ -51,10 +35,7 @@ function Toast({ message }) {
   return (
     <div className="toast toast--visible" role="status" aria-live="polite">
       <span className="toast__icon" aria-hidden="true">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-          stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+        <Check size={11} color="#fff" strokeWidth={3} />
       </span>
       <span className="toast__message">{message}</span>
     </div>
@@ -62,6 +43,23 @@ function Toast({ message }) {
 }
 
 let toastIdCounter = 0;
+
+/* ── Star Rating Component ── */
+function StarRating({ rating }) {
+  return (
+    <div className="spc-stars" aria-label={`${rating} stars`}>
+      {[1, 2, 3, 4, 5].map((s) => (
+        <Star
+          key={s}
+          size={11}
+          fill={s <= Math.floor(rating) ? "#f59e0b" : "none"}
+          stroke="#f59e0b"
+          strokeWidth={2}
+        />
+      ))}
+    </div>
+  );
+}
 
 /* ════════════════════════════════════════════════════════════════
    PRODUCT CARD
@@ -127,7 +125,7 @@ function ProductCard({ product }) {
             onClick={handleAddToCart}
             tabIndex={-1}
           >
-            <CartIcon />
+            <ShoppingCart size={14} />
             Quick Add
           </button>
         </div>
@@ -138,10 +136,8 @@ function ProductCard({ product }) {
         {/* Category + rating row */}
         <div className="spc-meta">
           <span className="spc-category">{product.category}</span>
-          <div className="spc-stars" aria-label={`${product.rating} stars`}>
-            {[1, 2, 3, 4, 5].map((s) => (
-              <StarIcon key={s} filled={s <= Math.floor(product.rating)} />
-            ))}
+          <div className="spc-stars-wrap">
+            <StarRating rating={product.rating} />
             <span className="spc-reviews">({product.reviews})</span>
           </div>
         </div>
@@ -164,12 +160,11 @@ function ProductCard({ product }) {
           <button
             type="button"
             onClick={handleAddToCart}
-            className={`btn btn-secondary spc-btn-cart ${
-              added ? "spc-btn-cart--added" : ""
-            }`}
+            className={`btn btn-secondary spc-btn-cart ${added ? "spc-btn-cart--added" : ""
+              }`}
             aria-label={added ? "Added to cart" : `Add ${product.name} to cart`}
           >
-            {added ? <CheckIcon /> : <CartIcon />}
+            {added ? <Check size={14} /> : <ShoppingCart size={14} />}
             <span>{added ? "Added!" : "Add to Cart"}</span>
           </button>
 
@@ -179,7 +174,7 @@ function ProductCard({ product }) {
             className="btn btn-primary spc-btn-buy"
             aria-label={`Buy ${product.name} now`}
           >
-            <BuyIcon />
+            <ArrowRight size={14} />
             <span>Buy Now</span>
           </button>
         </div>
@@ -229,19 +224,22 @@ export default function ShopContent() {
         <div className="page-section__container">
           <div className="page-shop-perks">
             {[
-              { icon: "✅", title: "Certified Products", desc: "All products are certified and approved by health authorities." },
-              { icon: "🚚", title: "Fast Delivery", desc: "Dhaka delivery within 24 hours. Nationwide within 3 days." },
-              { icon: "↩️", title: "Easy Returns", desc: "Hassle-free 7-day return policy on all products." },
-              { icon: "🔒", title: "Secure Payments", desc: "SSL-secured checkout with bKash, Nagad, and card support." },
-            ].map((perk) => (
-              <div key={perk.title} className="page-perk-card">
-                <span className="page-perk-icon">{perk.icon}</span>
-                <div>
-                  <h3 className="page-perk-title">{perk.title}</h3>
-                  <p className="page-perk-desc">{perk.desc}</p>
+              { icon: Award, title: "Certified Products", desc: "All products are certified and approved by health authorities." },
+              { icon: Truck, title: "Fast Delivery", desc: "Dhaka delivery within 24 hours. Nationwide within 3 days." },
+              { icon: RotateCcw, title: "Easy Returns", desc: "Hassle-free 7-day return policy on all products." },
+              { icon: Shield, title: "Secure Payments", desc: "SSL-secured checkout with bKash, Nagad, and card support." },
+            ].map((perk) => {
+              const IconComponent = perk.icon;
+              return (
+                <div key={perk.title} className="page-perk-card">
+                  <span className="page-perk-icon"><IconComponent size={24} /></span>
+                  <div>
+                    <h3 className="page-perk-title">{perk.title}</h3>
+                    <p className="page-perk-desc">{perk.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -249,11 +247,11 @@ export default function ShopContent() {
       {/* Product Grid */}
       <section className="page-section page-section--slate">
         <div className="page-section__container page-cta-center">
-      <div className="shop-grid">
-        {shopProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+          <div className="shop-grid">
+            {shopProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
       </section>
 

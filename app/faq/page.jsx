@@ -3,9 +3,23 @@
 import { useState, useMemo } from "react";
 import "@/styles/pages/faq.css";
 import "@/styles/components/HeroSection.css";
-
-// Note: Since this is a Client Component ("use client"), `metadata` cannot be exported here.
-// Please move the `metadata` export to a `layout.js` file or a separate Server Component wrapper.
+import {
+  Search,
+  X,
+  ChevronDown,
+  MessageCircle,
+  Mail,
+  Phone,
+  HelpCircle,
+  Bookmark,
+  ThumbsUp,
+  ThumbsDown,
+  Clock,
+  Star,
+  ExternalLink,
+  Send,
+  Headphones
+} from "lucide-react";
 
 // =============================================
 // FAQ DATA
@@ -289,10 +303,7 @@ export default function FAQPage() {
         <div className="page-section__container">
           <div className="faq-search-wrapper">
             <form className="faq-search-form" role="search" onSubmit={(e) => e.preventDefault()}>
-              <svg className="faq-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
+              <Search size={20} className="faq-search-icon" />
               <input
                 type="search"
                 className="faq-search-input"
@@ -303,7 +314,7 @@ export default function FAQPage() {
               />
               {searchQuery && (
                 <button type="button" className="faq-search-clear" onClick={() => setSearchQuery("")}>
-                  ✕
+                  <X size={18} />
                 </button>
               )}
             </form>
@@ -347,7 +358,9 @@ export default function FAQPage() {
         <section className="page-section">
           <div className="page-section__container">
             <div className="faq-secondary-section">
-              <h3 className="faq-secondary-title">🕒 Recently Viewed</h3>
+              <h3 className="faq-secondary-title">
+                <Clock size={18} /> Recently Viewed
+              </h3>
               <div className="faq-secondary-list">
                 {recentFaqs.map(faq => (
                   <div key={faq.id} className="faq-secondary-item" onClick={() => scrollToFaq(faq.id)}>
@@ -368,7 +381,9 @@ export default function FAQPage() {
         <section className="page-section">
           <div className="page-section__container">
             <div className="faq-secondary-section">
-              <h3 className="faq-secondary-title">⭐ Saved FAQs</h3>
+              <h3 className="faq-secondary-title">
+                <Star size={18} /> Saved FAQs
+              </h3>
               <div className="faq-secondary-list">
                 {savedFaqsList.map(faq => (
                   <div key={faq.id} className="faq-secondary-item" onClick={() => scrollToFaq(faq.id)}>
@@ -416,12 +431,10 @@ export default function FAQPage() {
                               onClick={(e) => toggleSave(faq.id, e)}
                               title={savedFaqs.includes(faq.id) ? "Remove from saved" : "Save FAQ"}
                             >
-                              {savedFaqs.includes(faq.id) ? "⭐" : "☆"}
+                              {savedFaqs.includes(faq.id) ? <Star size={16} fill="currentColor" /> : <Star size={16} />}
                             </button>
                             <span className="faq-toggle-icon" aria-hidden="true">
-                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <polyline points="6 9 12 15 18 9" />
-                              </svg>
+                              <ChevronDown size={18} />
                             </span>
                           </div>
                         </summary>
@@ -443,13 +456,13 @@ export default function FAQPage() {
                               className={`faq-feedback-btn ${feedback[faq.id] === 'yes' ? 'active' : ''}`}
                               onClick={() => handleFeedback(faq.id, 'yes')}
                             >
-                              👍 Yes
+                              <ThumbsUp size={14} /> Yes
                             </button>
                             <button
                               className={`faq-feedback-btn ${feedback[faq.id] === 'no' ? 'active' : ''}`}
                               onClick={() => handleFeedback(faq.id, 'no')}
                             >
-                              👎 No
+                              <ThumbsDown size={14} /> No
                             </button>
                           </div>
 
@@ -457,8 +470,12 @@ export default function FAQPage() {
                             <div className="faq-feedback-negative">
                               <p>Still need help?</p>
                               <div className="faq-feedback-actions">
-                                <a href="/support/chat" className="btn btn-sm btn-primary">Start Chat</a>
-                                <a href="/contact" className="btn btn-sm btn-secondary">Contact Support</a>
+                                <a href="/support/chat" className="btn btn-sm btn-primary">
+                                  <MessageCircle size={14} /> Start Chat
+                                </a>
+                                <a href="/contact" className="btn btn-sm btn-secondary">
+                                  <HelpCircle size={14} /> Contact Support
+                                </a>
                               </div>
                             </div>
                           )}
@@ -476,14 +493,22 @@ export default function FAQPage() {
           ══════════════════════════════════════ */}
           <div className="faq-cta-section">
             <div className="faq-cta-card">
-              <span className="faq-cta-icon">💬</span>
+              <span className="faq-cta-icon"><Headphones size={32} /></span>
               <h3>Didn't find your answer?</h3>
               <p>Our support team is here to help. Get personalized assistance via chat, email, or phone.</p>
               <div className="faq-cta-buttons">
-                <a href="/support/chat" className="btn btn-primary">Start Live Chat</a>
-                <a href="/support/ticket" className="btn btn-secondary">Create Ticket</a>
-                <a href="mailto:support@renovalifecare.com" className="btn btn-secondary">Email Support</a>
-                <a href="tel:+8801234567890" className="btn btn-secondary">Call: +880 1234-567890</a>
+                <a href="/support/chat" className="btn btn-primary">
+                  <MessageCircle size={16} /> Start Live Chat
+                </a>
+                <a href="/support/ticket" className="btn btn-secondary">
+                  <HelpCircle size={16} /> Create Ticket
+                </a>
+                <a href="mailto:support@renovalifecare.com" className="btn btn-secondary">
+                  <Mail size={16} /> Email Support
+                </a>
+                <a href="tel:+8801234567890" className="btn btn-secondary">
+                  <Phone size={16} /> Call: +880 1234-567890
+                </a>
               </div>
             </div>
           </div>
