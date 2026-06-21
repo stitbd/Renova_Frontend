@@ -4,8 +4,9 @@ import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Button from "@/components/common/Button";
+import { API_URL } from "@/config";
 
-const API_URL = "http://192.168.0.164:5001/api/v1";
+const API_URL = `${API_URL}`;
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
