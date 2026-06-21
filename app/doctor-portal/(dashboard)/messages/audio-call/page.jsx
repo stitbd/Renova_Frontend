@@ -89,43 +89,7 @@ export default function AudioCallPage() {
     const formatDuration = call?.formatDuration;
 
 
-    const [activeTab, setActiveTab] = useState("Chat");
-    const [lowBandwidth, setLowBandwidth] = useState(false);
-    const [audioFirst, setAudioFirst] = useState(false);
-    const [recording, setRecording] = useState(true);
-    const [messageText, setMessageText] = useState("");
-    const [charCount, setCharCount] = useState(0);
-    const [attachedFiles, setAttachedFiles] = useState([]);
-    const [messages, setMessages] = useState(chatMessages);
-    const [inputText, setInputText] = useState("");
-    const [pendingFiles, setPendingFiles] = useState([]);
     const router = useRouter();
-
-
-    const handleSend = () => {
-        if (!inputText.trim() && pendingFiles.length === 0) return;
-        const newMsgs = [];
-        if (inputText.trim()) {
-            newMsgs.push({ id: Date.now(), from: "doctor", text: inputText.trim(), time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
-        }
-        pendingFiles.forEach((f, i) => {
-            newMsgs.push({ id: Date.now() + i + 1, from: "doctor", file: f, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
-        });
-        setMessages(prev => [...prev, ...newMsgs]);
-        setInputText("");
-        setPendingFiles([]);
-    };
-
-    const handleAttach = () => {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*,application/pdf";
-        input.multiple = true;
-        input.onchange = (e) => {
-            setPendingFiles(prev => [...prev, ...Array.from(e.target.files)]);
-        };
-        input.click();
-    };
 
 
     const localVideoRef = useRef(null);
