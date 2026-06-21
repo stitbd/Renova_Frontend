@@ -25,14 +25,6 @@ export default function DevicesPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header */}
-      <motion.div className="page-header">
-        <h1 className="page-title">Devices & Reports</h1>
-        <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }}>
-          <Plus size={18} />
-          Add Device
-        </motion.button>
-      </motion.div>
 
       {/* Tabs */}
       <motion.div className="tabs-bar">

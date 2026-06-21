@@ -26,14 +26,6 @@ export default function InventoryPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header */}
-      <motion.div className="page-header">
-        <h1 className="page-title">Inventory Management</h1>
-        <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }}>
-          <Plus size={18} />
-          Add Product
-        </motion.button>
-      </motion.div>
 
       {/* Filters */}
       <motion.div className="filters-bar">

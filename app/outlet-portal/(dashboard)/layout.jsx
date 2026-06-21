@@ -32,7 +32,6 @@ import {
 const navItems = [
   { href: "/outlet-portal/dashboard", label: "Dashboard", icon: LayoutDashboard, badge: null },
   { href: "/outlet-portal/patients", label: "Patients", icon: Users, badge: null },
-  { href: "/outlet-portal/staff", label: "Staff", icon: Users, badge: null },
   { href: "/outlet-portal/appointments", label: "Appointments", icon: Calendar, badge: 12 },
   { href: "/outlet-portal/consultations", label: "Consultations", icon: Stethoscope, badge: 8 },
   { href: "/outlet-portal/devices", label: "Devices & Reports", icon: Monitor, badge: null },
@@ -41,7 +40,7 @@ const navItems = [
   { href: "/outlet-portal/sales", label: "Sales", icon: BarChart3, badge: null },
   { href: "/outlet-portal/earnings", label: "Earnings & Commission", icon: DollarSign, badge: null },
   { href: "/outlet-portal/performance", label: "Outlet Performance", icon: TrendingUp, badge: null },
-  { href: "/outlet-portal/users", label: "Users & Roles", icon: Users2, badge: null },
+  { href: "/outlet-portal/staff", label: "Users & Roles", icon: Users, badge: null },
   { href: "/outlet-portal/settings", label: "Settings", icon: Settings, badge: null },
 ];
 

@@ -21,14 +21,6 @@ export default function AppointmentsPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header */}
-      <motion.div className="page-header">
-        <h1 className="page-title">Appointments</h1>
-        <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Plus size={18} />
-          Book Appointment
-        </motion.button>
-      </motion.div>
 
       {/* Controls */}
       <motion.div className="appointments-controls">
