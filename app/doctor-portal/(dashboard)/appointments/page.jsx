@@ -240,8 +240,6 @@ export default function AppointmentsPage() {
   }, [normalizedAppointments]);
 
 
-  // console.log('visibleList', visibleList)
-
 
   return (
     <div className="dashboard-content">

@@ -246,7 +246,6 @@ export default function DoctorsGrid() {
     setPage(1);
   };
 
-  // console.log("Doctors data:", doctors);
   return (
     <div id="doctors" className="doctors-section-wrapper">
       <div className="dfilter-card">

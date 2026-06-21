@@ -232,7 +232,7 @@ export default function CallProvider({ children }) {
       audioTrack.setVolume?.(100);
       audioTrack.play();
 
-      console.log("REMOTE AUDIO PLAYING BY AGORA");
+      // console.log("REMOTE AUDIO PLAYING BY AGORA");
     } catch (err) {
       console.warn("Remote audio play failed:", err);
     }
@@ -243,9 +243,6 @@ export default function CallProvider({ children }) {
   const joinAgora = useCallback(
 
     async (session) => {
-
-      console.log("JOIN AGORA");
-      console.log("CLIENT EXISTS:", !!clientRef.current);
 
       if (clientRef.current) return;
 
@@ -264,7 +261,7 @@ export default function CallProvider({ children }) {
 
 
           if (mediaType === "audio" && user.audioTrack) {
-            console.log("AUDIO SUBSCRIBED FROM:", user.uid);
+            // console.log("AUDIO SUBSCRIBED FROM:", user.uid);
 
             await playRemoteAudioTrack(user.audioTrack);
           }
@@ -283,7 +280,7 @@ export default function CallProvider({ children }) {
         client.on("user-unpublished", (user, mediaType) => {
 
           if (mediaType === "audio") {
-            console.log("REMOTE AUDIO UNPUBLISHED");
+            // console.log("REMOTE AUDIO UNPUBLISHED");
             user.audioTrack?.stop();
 
             if (remoteAudioTrackRef.current === user.audioTrack) {
@@ -332,7 +329,7 @@ export default function CallProvider({ children }) {
 
         const selectedMic = await getPreferredMicrophone();
 
-        console.log("SELECTED MIC:", selectedMic);
+        // console.log("SELECTED MIC:", selectedMic);
 
         const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
           microphoneId: selectedMic.deviceId,
@@ -349,33 +346,33 @@ export default function CallProvider({ children }) {
         // });
 
 
-        console.log(
-          "MIC LABEL:",
-          audioTrack._deviceName ||
-          audioTrack.trackMediaStreamTrack?.label ||
-          "unknown"
-        );
+        // console.log(
+        //   "MIC LABEL:",
+        //   audioTrack._deviceName ||
+        //   audioTrack.trackMediaStreamTrack?.label ||
+        //   "unknown"
+        // );
 
 
         localAudioTrackRef.current = audioTrack;
 
-        console.log("MIC TRACK CREATED");
+        // console.log("MIC TRACK CREATED");
 
 
-        console.log(
-          "MIC ENABLED:",
-          audioTrack.enabled
-        );
+        // console.log(
+        //   "MIC ENABLED:",
+        //   audioTrack.enabled
+        // );
 
-        console.log(
-          "MIC MUTED:",
-          audioTrack.muted
-        );
+        // console.log(
+        //   "MIC MUTED:",
+        //   audioTrack.muted
+        // );
 
-        console.log(
-          "TRACK READY:",
-          audioTrack
-        );
+        // console.log(
+        //   "TRACK READY:",
+        //   audioTrack
+        // );
 
 
         setInterval(() => {
@@ -719,7 +716,7 @@ export default function CallProvider({ children }) {
     track.setVolume?.(100);
     track.play();
 
-    console.log("REMOTE AUDIO RESTARTED");
+    // console.log("REMOTE AUDIO RESTARTED");
   };
 
 
