@@ -220,6 +220,30 @@
   pointer-events: none;
 }
 
+.patient-portal__input--password {
+  padding-right: 40px;
+}
+
+.patient-portal__toggle-password {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: var(--transition-fast);
+}
+
+.patient-portal__toggle-password:hover {
+  color: var(--color-primary);
+}
+
 /* ─── 🔘 Button Styles ───────────────────────────────────────── */
 .patient-portal__buttons {
   display: grid;
@@ -355,6 +379,10 @@
     right: var(--space-3);
   }
 
+  .patient-portal__toggle-password {
+    right: var(--space-2);
+  }
+
   .patient-portal__buttons {
     flex-direction: column;
     gap: var(--space-2);
@@ -387,6 +415,7 @@
     font-size: 0.78rem;
     margin-bottom: var(--space-2);
   }
+
 }
 
 /* ─── ♿ Accessibility ───────────────────────────────────────── */

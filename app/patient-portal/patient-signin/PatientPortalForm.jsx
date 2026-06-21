@@ -8,7 +8,7 @@ import "./patient-signin.css";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setToken, setUser } from "@/redux/features/auth/authSlice";
-import { User, Lock, Shield, LogIn, RefreshCw, KeyRound } from "lucide-react";
+import { User, Lock, Shield, LogIn, RefreshCw, KeyRound, Eye, EyeOff } from "lucide-react";
 
 
 export default function PatientPortalForm() {
@@ -16,6 +16,7 @@ export default function PatientPortalForm() {
   const [uhid, setUhid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
@@ -131,18 +132,26 @@ export default function PatientPortalForm() {
             </label>
             <div className="patient-portal__input-group">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="patient-portal__input"
+                className="patient-portal__input patient-portal__input--password"
                 required
                 autoComplete="current-password"
                 aria-label="Password"
               />
-              <Lock className="patient-portal__icon" size={16} />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="patient-portal__toggle-password"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
 

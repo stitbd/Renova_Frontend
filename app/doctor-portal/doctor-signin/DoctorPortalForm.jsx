@@ -7,7 +7,7 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import "./doctor-signin.css";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setToken, setUser } from "@/redux/features/auth/authSlice";
-import { User, Lock, Shield, LogIn, RefreshCw, KeyRound } from "lucide-react";
+import { User, Lock, Shield, LogIn, RefreshCw, KeyRound, Eye, EyeOff } from "lucide-react";
 
 export default function DoctorPortalForm() {
   const dispatch = useAppDispatch();
@@ -16,6 +16,7 @@ export default function DoctorPortalForm() {
   const [uhid, setUhid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -124,15 +125,23 @@ export default function DoctorPortalForm() {
             <div className="doctor-portal__input-group">
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="doctor-portal__input"
+                className="doctor-portal__input doctor-portal__input--password"
                 autoComplete="current-password"
                 aria-label="Password"
               />
-              <Lock className="doctor-portal__icon" size={16} />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="doctor-portal__toggle-password"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
 

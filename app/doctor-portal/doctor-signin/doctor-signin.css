@@ -220,6 +220,30 @@
   pointer-events: none;
 }
 
+.doctor-portal__input--password {
+  padding-right: 40px;
+}
+
+.doctor-portal__toggle-password {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: var(--transition-fast);
+}
+
+.doctor-portal__toggle-password:hover {
+  color: var(--color-primary);
+}
+
 /* ─── 🔘 Button Styles ───────────────────────────────────────── */
 .doctor-portal__buttons {
   display: grid;
@@ -354,6 +378,10 @@
     width: 16px;
     height: 16px;
     right: var(--space-3);
+  }
+
+  .doctor-portal__toggle-password {
+    right: var(--space-2);
   }
 
   .doctor-portal__buttons {
