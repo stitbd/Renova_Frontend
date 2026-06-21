@@ -1,7 +1,7 @@
 "use client";
 // OutletStaffPage.jsx
 import { useState } from "react";
-import "./outlet-staff.css";
+import "./super-admin-panel-staff.css";
 import { motion } from "framer-motion";
 import { StatusBadge } from "./StaffFormComponents";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,7 +27,7 @@ export const staffData = [
     { id: "STF-2025-000119", name: "Momin Hossain", role: "Receptionist", outlet: "Renova Mirpur", phone: "+880 1412-345678", email: "momin@renova.com", status: "suspended", joined: "10 Aug 2024", avatar: "https://i.pravatar.cc/80?img=14" },
 ];
 
-export default function OutletStaffPage() {
+export default function SuperAdminPanelStaffPage() {
     const [search, setSearch] = useState("");
     const [roleFilter, setRoleFilter] = useState("all");
     const [outletFilter, setOutletFilter] = useState("all");
