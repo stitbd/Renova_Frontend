@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "../patient-massages.css";
 import { useCall } from "@/providers/CallProvider";
+import CallUserInfoPanel from "@/components/CallUserInfoPanel";
 
 const recentReports = [
     { name: "Full Body Check-up", date: "12 May 2025" },
@@ -162,122 +163,12 @@ export default function VideoCallPage() {
         <div className="call-page-shell">
             <div className="call-page-layout">
                 {/* ── Left: Patient Panel ────────────────────────── */}
-                <div className="call-patient-panel">
-                    <Link href="/patient-portal/messages" className="call-back-link">
-                        <Icon type="back" /> Back to Messages
-                    </Link>
-
-                    <div className="call-patient-info-card">
-                        <div className="call-patient-avatar">
-                            <img
-                                src="/images/patients/01.jpg"
-                                alt="Masud Rana"
-                                onError={(e) => {
-                                    e.currentTarget.style.display = "none";
-                                    e.currentTarget.nextSibling.style.display = "flex";
-                                }}
-                            />
-
-                            <span
-                                style={{
-                                    display: "none",
-                                    width: "100%",
-                                    height: "100%",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Icon type="user" />
-                            </span>
-                        </div>
-                        <div className="call-patient-meta">
-                            <h3>Masud Rana</h3>
-                            <p>32 Years, Male</p>
-                            <p>Patient ID: PT-2025-00123</p>
-                            <span className="call-patient-online">
-                                <span className="call-patient-online-dot" /> Online
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="call-patient-actions">
-                        <Link
-                            href="/patient-portal/profile?id=PT-2025-00123&from=/patient-portal/messages/video-call"
-                            className="call-patient-btn"
-                            style={{ flex: 2, display: "flex", alignItems: "center", gap: 6, textDecoration: "none", justifyContent: "center" }}
-                        >
-                            <Icon type="profile" /> View Full Profile
-                        </Link>
-                    </div>
-
-                    {/* Consultation Reason */}
-                    <div>
-                        <p className="call-section-label">Consultation Reason</p>
-                        <p className="call-reason-text">Chest pain, Breathing problem</p>
-                        <p className="call-started-text">Started at 10:30 AM</p>
-                    </div>
-
-                    {/* Patient Summary */}
-                    <div>
-                        <div className="call-panel-list-header">
-                            <p className="call-section-label" style={{ margin: 0 }}>Patient Summary</p>
-                        </div>
-                        {summaryRows.map((r) => (
-                            <div key={r.key} className="call-summary-row">
-                                <span className="call-summary-key">{r.key}</span>
-                                <span className="call-summary-val">{r.val}</span>
-                            </div>
-                        ))}
-                        <a href="#" className="call-view-history">
-                            View Medical History <Icon type="arrowright" />
-                        </a>
-                    </div>
-
-                    {/* Recent Reports */}
-                    <div>
-                        <div className="call-panel-list-header">
-                            <p className="call-section-label" style={{ margin: 0 }}>Recent Reports</p>
-                            <button className="call-view-all">View All</button>
-                        </div>
-                        <div className="call-panel-list">
-                            {recentReports.map((r) => (
-                                <div key={r.name} className="call-panel-item">
-                                    <div className="call-panel-item-icon green">
-                                        <Icon type="doc" />
-                                    </div>
-                                    <div className="call-panel-item-info">
-                                        <p className="call-panel-item-name">{r.name}</p>
-                                        <p className="call-panel-item-date">{r.date}</p>
-                                    </div>
-                                    <button className="call-panel-view-btn">View</button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Previous Prescriptions */}
-                    <div>
-                        <div className="call-panel-list-header">
-                            <p className="call-section-label" style={{ margin: 0 }}>Previous Prescriptions</p>
-                            <button className="call-view-all">View All</button>
-                        </div>
-                        <div className="call-panel-list">
-                            {prevPrescriptions.map((p) => (
-                                <div key={p.label} className="call-panel-item">
-                                    <div className="call-panel-item-icon purple">
-                                        <Icon type="rx" />
-                                    </div>
-                                    <div className="call-panel-item-info">
-                                        <p className="call-panel-item-name">{p.label}</p>
-                                        <p className="call-panel-item-date">{p.date}</p>
-                                        <p className="call-panel-item-date">{p.sub}</p>
-                                    </div>
-                                    <button className="call-panel-view-btn">View</button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <CallUserInfoPanel
+                    userType="DOCTOR"
+                    userId={callSession?.receiverId || callSession?.callerId}
+                    backHref="/patient-portal/messages"
+                    profileHref={`/patient-portal/doctors/doctor-profile?id=${callSession?.receiverId || callSession?.callerId}&from=/patient-portal/messages`}
+                />
 
                 {/* ── Middle: Video ─────────── */}
                 <div className="call-center-col">
