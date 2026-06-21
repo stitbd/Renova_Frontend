@@ -1,0 +1,128 @@
+/* components/doctor-dashboard/AppointmentsList.css */
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.appointment-item {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px 14px 4px;
+  border-bottom: 1px solid #eef2f7;
+  transition: all 0.2s ease;
+}
+
+.appointment-item:hover {
+  background: #f8fbff;
+  border-radius: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.appointment-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.appointment-info {
+  min-width: 0;
+}
+
+.appointment-name {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+
+.appointment-type {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  text-transform: capitalize;
+}
+
+.appointment-item span {
+  min-width: 92px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Better status UI if Tailwind classes are not applied */
+.appointment-item span.bg-yellow-100 {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.appointment-item span.bg-green-100 {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.appointment-item span.bg-red-100 {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.appointment-item span.bg-gray-100 {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.view-full-schedule-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px 18px;
+  border: 1px solid #dbe5f1;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #0057b8;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-full-schedule-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+}
+
+.view-full-schedule-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .appointment-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 14px 0;
+  }
+
+  .appointment-time {
+    font-size: 12px;
+  }
+
+  .appointment-item span {
+    width: fit-content;
+    min-width: auto;
+  }
+}

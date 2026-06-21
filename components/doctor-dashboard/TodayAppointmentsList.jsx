@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
+import "../../styles/pages/TodayAppointmentList.css"
 
 // components/doctor-dashboard/AppointmentsList.jsx
-export default function AppointmentsList({ appointments }) {
+export default function TodayAppointmentsList({ appointments }) {
   const router = useRouter()
   return (
     <div>
