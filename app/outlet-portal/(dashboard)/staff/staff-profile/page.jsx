@@ -88,18 +88,18 @@ export default function StaffProfilePage() {
                 <div className="rxd-breadcrumb">
                     <span>Home</span>
                     <span className="rxd-breadcrumb-sep">›</span>
-                    <span onClick={() => router.push("/supar-admin-panel/staff")} className="rxd-breadcrumb-link">Outlet Staff</span>
+                    <span onClick={() => router.push("/outlet-portal/staff")} className="rxd-breadcrumb-link">Outlet Staff</span>
                     <span className="rxd-breadcrumb-sep">›</span>
                     <span className="rxd-breadcrumb-current">Staff Details</span>
                 </div>
                 <div className="rxd-header-actions">
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="rxd-header-btn rxd-btn-back">
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="rxd-header-btn rxd-btn-back">
                         <ArrowLeft size={14} color="#475569" /> Back
                     </button>
-                    <button onClick={() => router.push(`/supar-admin-panel/staff/update-staff?id=${s.id}`)} className="rxd-header-btn rxd-btn-primary">
+                    <button onClick={() => router.push(`/outlet-portal/staff/update-staff?id=${s.id}`)} className="rxd-header-btn rxd-btn-primary">
                         <Edit size={14} color="#fff" /> Edit Staff
                     </button>
-                    <button onClick={() => { if (confirm(`Delete ${s.name}?`)) { router.push("/supar-admin-panel/staff"); } }} className="rxd-header-btn rxd-btn-danger">
+                    <button onClick={() => { if (confirm(`Delete ${s.name}?`)) { router.push("/outlet-portal/staff"); } }} className="rxd-header-btn rxd-btn-danger">
                         <Trash2 size={14} color="#ef4444" /> Delete
                     </button>
                 </div>

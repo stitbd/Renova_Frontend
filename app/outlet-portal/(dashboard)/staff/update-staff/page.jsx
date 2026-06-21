@@ -50,10 +50,10 @@ export default function UpdateStaffPage() {
                     <div className="page-breadcrumb">Home · Outlet Staff · <span className="breadcrumb-active">Edit Staff</span></div>
                 </div>
                 <div className="page-actions">
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-secondary-outline">
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-secondary-outline">
                         <ArrowLeft size={14} color="#475569" /> Back
                     </button>
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-primary-green">
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-primary-green">
                         <Check size={14} color="#fff" /> Update Staff
                     </button>
                 </div>
@@ -144,8 +144,8 @@ export default function UpdateStaffPage() {
 
             <div className="form-footer right">
                 <div className="footer-buttons">
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-secondary-outline">Cancel</button>
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-primary">
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-secondary-outline">Cancel</button>
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-primary">
                         <Check size={15} color="#fff" /> Update Staff
                     </button>
                 </div>

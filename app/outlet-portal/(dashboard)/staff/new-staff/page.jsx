@@ -52,8 +52,8 @@ export default function NewStaffPage() {
                     <div className="page-breadcrumb">Home · Outlet Staff · <span className="breadcrumb-active">Add New Staff</span></div>
                 </div>
                 <div className="page-actions">
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-secondary-outline">Cancel</button>
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-primary-green">
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-secondary-outline">Cancel</button>
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-primary-green">
                         <Icon n="user" s={14} c="#fff" /> Create Staff Account
                     </button>
                 </div>
@@ -186,8 +186,8 @@ export default function NewStaffPage() {
                     I confirm all information is correct
                 </label>
                 <div className="footer-buttons">
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-secondary-outline">Cancel</button>
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="btn-primary">
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-secondary-outline">Cancel</button>
+                    <button onClick={() => router.push("/outlet-portal/staff")} className="btn-primary">
                         <Icon n="user" s={15} c="#fff" /> Create Staff Account
                     </button>
                 </div>

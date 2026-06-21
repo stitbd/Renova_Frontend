@@ -214,7 +214,7 @@ export default function OutletStaffPage() {
             <div className="table-container">
                 <div className="table-header">
                     <span>Staff List ({filtered.length})</span>
-                    <button onClick={() => router.push("/supar-admin-panel/staff/new-staff")} className="btn-primary-green">
+                    <button onClick={() => router.push("/outlet-portal/staff/new-staff")} className="btn-primary-green">
                         <Plus size={15} color="#fff" /> Add New Staff
                     </button>
                 </div>
