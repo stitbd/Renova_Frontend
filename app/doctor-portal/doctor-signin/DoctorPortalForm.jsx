@@ -162,7 +162,7 @@ export default function DoctorPortalForm() {
               <RefreshCw size={14} /> Reset
             </button>
             <button type="button" className="btn-doctor-portal btn-forgot">
-              <KeyRound size={14} /> Forgot
+              <KeyRound size={14} /> Forgot Password
             </button>
           </div>
 

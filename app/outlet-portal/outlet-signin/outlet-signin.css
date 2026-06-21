@@ -74,9 +74,9 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg,
-    rgba(5, 65, 125, 0.85) 0%,
-    rgba(30, 111, 175, 0.75) 40%,
-    rgba(76, 175, 80, 0.65) 100%);
+      rgba(5, 65, 125, 0.85) 0%,
+      rgba(30, 111, 175, 0.75) 40%,
+      rgba(76, 175, 80, 0.65) 100%);
   z-index: 1;
   backdrop-filter: blur(2px);
 }
@@ -98,6 +98,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -122,6 +123,21 @@
   height: 32px;
   width: auto;
   object-fit: contain;
+}
+
+/* 🔽 ADDED: Badge Styling (Matches Doctor Portal) */
+.outlet-portal__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, rgba(5, 65, 125, 0.08), rgba(15, 110, 86, 0.08));
+  border: 1px solid rgba(5, 65, 125, 0.18);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
 }
 
 /* ───  Header & Typography ─────────────────────────────────── */
@@ -152,24 +168,43 @@
   gap: var(--space-3);
 }
 
+/* 🔽 ADDED: Field & Label Styling (Matches Doctor Portal) */
+.outlet-portal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.outlet-portal__label {
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .outlet-portal__input-group {
   position: relative;
 }
 
+/* 🔽 UPDATED: Input Styling (Matches Doctor Portal height & padding) */
 .outlet-portal__input {
   width: 100%;
-  padding: var(--space-3) var(--space-12);
-  border: var(--border-default);
+  height: 44px;
+  padding: 0 40px 0 var(--space-3);
+  border: 1px solid var(--color-border-default);
   border-radius: var(--radius-md);
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
-  background: var(--color-white);
+  background: var(--color-bg-input, #f9fafb);
   transition: var(--transition-fast);
 }
+
 .outlet-portal__input:focus {
   outline: none;
   border-color: var(--color-primary);
+  background: var(--color-white);
   box-shadow: 0 0 0 3px var(--color-border-focus);
 }
 
@@ -188,11 +223,37 @@
   pointer-events: none;
 }
 
-/* ─── 🔘 Button Styles ───────────────────────────────────────── */
-.outlet-portal__buttons {
+/* 🔽 ADDED: Password Input & Toggle Button Styling */
+.outlet-portal__input--password {
+  padding-right: 40px;
+}
+
+.outlet-portal__toggle-password {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
   display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: var(--transition-fast);
+}
+
+.outlet-portal__toggle-password:hover {
+  color: var(--color-primary);
+}
+
+/* ─── 🔘 Button Styles ───────────────────────────────────────── */
+/* 🔽 UPDATED: Buttons Layout (Changed from flex to grid) */
+.outlet-portal__buttons {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-2);
 }
 
 .btn-outlet-portal {
@@ -207,6 +268,10 @@
   cursor: pointer;
   transition: var(--transition-fast);
   white-space: nowrap;
+  /* 🔽 ADDED: Flex alignment for icons inside buttons */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .btn-signin {
@@ -220,34 +285,50 @@
   box-shadow: var(--shadow-md);
 }
 
+/* 🔽 UPDATED: Reset & Forgot Buttons (Changed to transparent with borders) */
 .btn-reset {
-  background: #dc2626;
-  color: var(--color-white);
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
 }
 
 .btn-reset:hover {
-  background: #b91c1c;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: #fef2f2;
+  transform: translateY(-1px);
 }
 
 .btn-forgot {
-  background: #f59e0b;
-  color: var(--color-white);
+  background: transparent;
+  color: #d97706;
+  border: 1px solid #fcd34d;
 }
 
 .btn-forgot:hover {
-  background: #d97706;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: #fffbeb;
+  transform: translateY(-1px);
 }
 
 /* ─── 🔗 Help Link ───────────────────────────────────────────── */
-.outlet-portal__help {
-  text-align: center;
-  margin-top: var(--space-1);
-  padding-top: var(--space-1);
-  border-top: 1px solid var(--color-border-muted);
+/* 🔽 ADDED: Divider & Links Layout (Matches Doctor Portal) */
+.outlet-portal__divider {
+  height: 1px;
+  background: var(--color-border-muted);
+  margin: var(--space-1) 0;
+}
+
+.outlet-portal__links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.outlet-portal__links-new {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
 }
 
 .outlet-portal__help-link {
@@ -318,24 +399,30 @@
     right: var(--space-3);
   }
 
+  .outlet-portal__toggle-password {
+    right: var(--space-2);
+  }
+
+  /* 🔽 UPDATED: Responsive Buttons (Grid to 1 column) */
   .outlet-portal__buttons {
-    flex-direction: column;
-    gap: var(--space-2);
+    grid-template-columns: 1fr;
   }
 
   .btn-outlet-portal {
     width: 100%;
-    padding: var(--space-2) var(--space-3);
+    height: 44px;
     font-size: 0.82rem;
   }
 
-  .outlet-portal__help {
-    margin-top: var(--space-1);
-    padding-top: var(--space-1);
+  /* 🔽 UPDATED: Responsive Links (Stacked vertically) */
+  .outlet-portal__links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
-  .outlet-portal__help-link {
-    font-size: 0.78rem;
+  .outlet-portal__label {
+    font-size: 10px;
   }
 
   .outlet-portal__security-notice {
@@ -351,6 +438,7 @@
     margin-bottom: var(--space-2);
   }
 }
+
 /* ─── ♿ Accessibility ───────────────────────────────────────── */
 .outlet-portal__input:focus-visible {
   outline: 2px solid var(--color-primary);

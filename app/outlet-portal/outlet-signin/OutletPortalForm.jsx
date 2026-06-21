@@ -4,45 +4,29 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import "./outlet-signin.css";
-import { User, Lock, Shield, LogIn, RefreshCw, KeyRound } from "lucide-react";
+// 🔽 UPDATED: Added Eye and EyeOff icons for password toggle
+import { User, Lock, Shield, LogIn, RefreshCw, KeyRound, Eye, EyeOff } from "lucide-react";
 
 export default function OutletPortalForm() {
   const router = useRouter();
   const [outletId, setOutletId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  // 🔽 ADDED: State for password visibility toggle
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!outletId.trim() || !password.trim()) {
       setError("Please enter both Outlet ID and password");
       return;
     }
 
     try {
-      // Example API Login Logic
-      // const response = await fetch("/api/outlet-login", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ uhid, password }),
-      // });
-
-      // const data = await response.json();
-
-      // if (!response.ok) {
-      //   throw new Error(data.message || "Login failed");
-      // }
-
       console.log("Outlet signing in with:", { outletId, password });
-
-      // SUCCESS LOGIN → REDIRECT
       router.push("/outlet-portal/dashboard");
-
     } catch (err) {
       setError(err.message || "Something went wrong");
     }
@@ -84,7 +68,13 @@ export default function OutletPortalForm() {
         </div>
 
         <div className="outlet-portal__header">
-          <h1 className="outlet-portal__title">Outlet Portal</h1>
+          {/* 🔽 ADDED: Badge component matching Doctor Portal */}
+          <div className="outlet-portal__badge">
+            <Shield size={12} />
+            <span>Outlet Portal</span>
+          </div>
+          {/* 🔽 UPDATED: Title text to match Doctor Portal structure */}
+          <h1 className="outlet-portal__title">Welcome back</h1>
           <p className="outlet-portal__subtitle">Sign in to access your outlet dashboard</p>
         </div>
 
@@ -95,70 +85,93 @@ export default function OutletPortalForm() {
         )}
 
         <form onSubmit={handleSignIn} className="outlet-portal__form" noValidate>
-          <div className="outlet-portal__input-group">
-            <input
-              type="text"
-              id="outletId"
-              name="outletId"
-              value={outletId}
-              onChange={(e) => setOutletId(e.target.value)}
-              placeholder="Enter your Outlet ID"
-              className="outlet-portal__input"
-              required
-              autoComplete="username"
-              aria-label="Outlet ID"
-            />
-            <User className="outlet-portal__icon" size={18} />
+          {/* 🔽 UPDATED: Wrapped input in .outlet-portal__field with a label */}
+          <div className="outlet-portal__field">
+            <label htmlFor="outletId" className="outlet-portal__label">
+              Outlet ID
+            </label>
+            <div className="outlet-portal__input-group">
+              <input
+                type="text"
+                id="outletId"
+                name="outletId"
+                value={outletId}
+                onChange={(e) => setOutletId(e.target.value)}
+                placeholder="Enter your Outlet ID"
+                className="outlet-portal__input"
+                required
+                autoComplete="username"
+                aria-label="Outlet ID"
+              />
+              <User className="outlet-portal__icon" size={16} />
+            </div>
           </div>
 
-          <div className="outlet-portal__input-group">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="outlet-portal__input"
-              required
-              autoComplete="current-password"
-              aria-label="Password"
-            />
-            <Lock className="outlet-portal__icon" size={18} />
+          {/* 🔽 UPDATED: Wrapped input in .outlet-portal__field, added password toggle button */}
+          <div className="outlet-portal__field">
+            <label htmlFor="password" className="outlet-portal__label">
+              Password
+            </label>
+            <div className="outlet-portal__input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="outlet-portal__input outlet-portal__input--password"
+                required
+                autoComplete="current-password"
+                aria-label="Password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="outlet-portal__toggle-password"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
 
           <div className="outlet-portal__buttons">
             <button type="submit" className="btn-outlet-portal btn-signin">
-              <LogIn size={16} /> Sign In
+              {/* 🔽 UPDATED: Icon sizes to match Doctor Portal */}
+              <LogIn size={15} /> Sign In
             </button>
             <button
               type="button"
               onClick={handleReset}
               className="btn-outlet-portal btn-reset"
             >
-              <RefreshCw size={16} /> Reset
+              <RefreshCw size={14} /> Reset
             </button>
             <button type="button" className="btn-outlet-portal btn-forgot">
-              <KeyRound size={16} /> Forgot Password
+              <KeyRound size={14} /> Forgot Password
             </button>
           </div>
 
-          <div className="outlet-portal__help">
+          {/* 🔽 UPDATED: Replaced old help divs with Divider and Links layout */}
+          <div className="outlet-portal__divider" />
+          <div className="outlet-portal__links">
             <a href="/portal-help" className="outlet-portal__help-link">
               How to use outlet portal
             </a>
-          </div>
-
-          <div className="outlet-portal__help">
-            New Outlet? <a href="/outlet-portal/outlet-signup" className="outlet-portal__help-link">
-              Create your account
-            </a>
+            <span className="outlet-portal__links-new">
+              New outlet?{" "}
+              <a href="/outlet-portal/outlet-signup" className="outlet-portal__help-link">
+                Create account
+              </a>
+            </span>
           </div>
         </form>
 
         {/* Security Notice */}
         <div className="outlet-portal__security-notice">
-          <Shield size={14} />
+          <Shield size={13} />
           <span>Your connection is secure. Never share your credentials.</span>
         </div>
       </div>

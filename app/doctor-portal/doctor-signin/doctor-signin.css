@@ -324,6 +324,18 @@
   color: var(--color-text-secondary);
 }
 
+.doctor-portal__help-link {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-fast);
+}
+
+.doctor-portal__help-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
 /* ───  Responsive Styles ───────────────────────────────────── */
 @media (max-width: 640px) {
   .doctor-portal-container {
