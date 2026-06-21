@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    PATIENT PROFILE PAGE — Responsive CSS
-   File: patient-profile.css
+   File: outlet-patient-profile.css
    ═══════════════════════════════════════════════════════════════ */
 
 .pp-page {
@@ -360,10 +360,9 @@
    LAYOUT — Main grid
    ══════════════════════════════════════════════════════════════ */
 .pp-content-grid {
-    display: grid;
-    grid-template-columns: 1fr 320px;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
-    align-items: start;
 }
 
 .pp-main-col {
@@ -371,12 +370,6 @@
     flex-direction: column;
     gap: 16px;
     min-width: 0;
-}
-
-.pp-side-col {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
 }
 
 .pp-two-col {
@@ -1044,161 +1037,11 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
-   QUICK ACTIONS
-   ══════════════════════════════════════════════════════════════ */
-.pp-quick-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-
-.pp-quick-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 16px 8px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    color: #014fa1;
-    font-size: 11.5px;
-    font-weight: 700;
-    text-align: center;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.pp-quick-btn:hover {
-    background: #014fa1;
-    border-color: #014fa1;
-    color: #fff;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   ACCOUNT SETTINGS
-   ══════════════════════════════════════════════════════════════ */
-.pp-settings-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.pp-settings-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 11px 0;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.pp-settings-row:last-child {
-    border-bottom: none;
-}
-
-.pp-settings-text {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-}
-
-.pp-settings-text svg {
-    color: #014fa1;
-    flex-shrink: 0;
-}
-
-.pp-settings-text div {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.pp-settings-text span {
-    font-size: 12.5px;
-    font-weight: 700;
-    color: #1a202c;
-}
-
-.pp-settings-text small {
-    font-size: 10.5px;
-    color: #94a3b8;
-}
-
-.pp-settings-select {
-    padding: 6px 8px;
-    border: 1px solid #e2e8f0;
-    border-radius: 7px;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #1a202c;
-    background: #fff;
-    flex-shrink: 0;
-}
-
-.pp-settings-select:focus {
-    outline: none;
-    border-color: #014fa1;
-}
-
-/* Toggle switch */
-.pp-toggle {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 22px;
-    flex-shrink: 0;
-}
-
-.pp-toggle input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.pp-toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: #e2e8f0;
-    border-radius: 22px;
-    transition: 0.2s;
-}
-
-.pp-toggle-slider::before {
-    content: "";
-    position: absolute;
-    height: 16px;
-    width: 16px;
-    left: 3px;
-    bottom: 3px;
-    background: #fff;
-    border-radius: 50%;
-    transition: 0.2s;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-.pp-toggle input:checked+.pp-toggle-slider {
-    background: #014fa1;
-}
-
-.pp-toggle input:checked+.pp-toggle-slider::before {
-    transform: translateX(18px);
-}
-
-/* ══════════════════════════════════════════════════════════════
    RESPONSIVE
    ══════════════════════════════════════════════════════════════ */
 @media (max-width: 1280px) {
     .pp-summary-grid {
         grid-template-columns: repeat(3, 1fr);
-    }
-
-    .pp-content-grid {
-        grid-template-columns: 1fr 280px;
     }
 
     .pp-check-grid {
@@ -1207,16 +1050,6 @@
 }
 
 @media (max-width: 1024px) {
-    .pp-content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .pp-side-col {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-
     .pp-two-col {
         grid-template-columns: 1fr;
     }
@@ -1255,10 +1088,6 @@
         font-size: 19px;
     }
 
-    .pp-side-col {
-        grid-template-columns: 1fr;
-    }
-
     .pp-card {
         padding: 14px;
     }
@@ -1282,10 +1111,6 @@
     }
 
     .pp-check-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .pp-quick-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -1372,10 +1197,6 @@
         flex-direction: row;
         width: 100%;
         justify-content: flex-end;
-    }
-
-    .pp-quick-grid {
-        grid-template-columns: 1fr 1fr;
     }
 
     .pp-name-input {

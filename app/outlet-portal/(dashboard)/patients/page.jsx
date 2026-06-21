@@ -1,9 +1,9 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import "./outlet-patients.css";
-import { Plus, Search, Eye, Edit, Users, Calendar, CheckCircle, ChevronDown, Filter } from "lucide-react";
+import { Plus, Search, Eye, Edit, Users, Calendar, CheckCircle, ChevronDown, Filter, Trash2 } from "lucide-react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -19,6 +19,7 @@ const item = {
 };
 
 export default function PatientsPage() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [genderFilter, setGenderFilter] = useState("all");
@@ -60,7 +61,6 @@ export default function PatientsPage() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-
       {/* Stats Grid */}
       <motion.div className="stats-grid" variants={item}>
         {stats.map(stat => {
@@ -227,48 +227,130 @@ export default function PatientsPage() {
             <Plus size={15} color="#fff" /> Add Patient
           </button>
         </div>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>ID</th>
-              <th>Age/Gender</th>
-              <th>Phone</th>
-              <th>Last Visit</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPatients.map((patient) => (
-              <motion.tr key={patient.id} variants={item} whileHover={{ backgroundColor: "#f8fafc" }}>
-                <td>
-                  <div className="table-patient">
-                    <div className="patient-avatar-small">
-                      <img src={patient.avatar} alt={patient.name} />
+
+        <div className="table-wrapper">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>ID</th>
+                <th>Age/Gender</th>
+                <th>Phone</th>
+                <th>Last Visit</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredPatients.map((patient) => (
+                <motion.tr key={patient.id} variants={item} whileHover={{ backgroundColor: "#f8fafc" }}>
+                  <td>
+                    <div className="table-patient">
+                      <div className="patient-avatar-small">
+                        <img src={patient.avatar} alt={patient.name} />
+                      </div>
+                      <span className="patient-name">{patient.name}</span>
                     </div>
-                    <span className="patient-name">{patient.name}</span>
+                  </td>
+                  <td className="patient-id">{patient.id}</td>
+                  <td>{patient.age} / {patient.gender}</td>
+                  <td>{patient.phone}</td>
+                  <td>{patient.lastVisit}</td>
+                  <td><span className={`status-badge ${patient.status.toLowerCase()}`}>{patient.status}</span></td>
+                  <td>
+                    <div className="action-buttons">
+                      <button
+                        onClick={() => router.push(`/outlet-portal/patients/patient-profile?id=${patient.id}`)}
+                        className="action-btn"
+                      >
+                        <Eye size={14} color="#64748b" />
+                      </button>
+                      <button
+                        onClick={() => router.push(`/outlet-portal/patients/patient-profile?id=${patient.id}&edit=true`)}
+                        className="action-btn"
+                      >
+                        <Edit size={14} color="#64748b" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (confirm(`Delete ${patient.name}? This action cannot be undone.`)) {
+                            // setPatientList(prev => prev.filter(p => p.id !== patient.id));
+                          }
+                        }}
+                        className="action-btn"
+                      >
+                        <Trash2 size={14} color="#64748b" />
+                      </button>
+                    </div>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Cards List */}
+        <div className="staff-mobile-list">
+          {filteredPatients.map((patient) => (
+            <div key={patient.id} className="staff-card">
+              <div className="staff-card-top">
+                <div className="staff-card-profile">
+                  <img src={patient.avatar} alt={patient.name} />
+                  <div>
+                    <div className="staff-name">{patient.name}</div>
+                    <div className="staff-id">{patient.id}</div>
                   </div>
-                </td>
-                <td className="patient-id">{patient.id}</td>
-                <td>{patient.age} / {patient.gender}</td>
-                <td>{patient.phone}</td>
-                <td>{patient.lastVisit}</td>
-                <td><span className={`status-badge ${patient.status.toLowerCase()}`}>{patient.status}</span></td>
-                <td>
-                  <div className="table-actions">
-                    <motion.button className="btn-icon view" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                      <Eye size={16} />
-                    </motion.button>
-                    <motion.button className="btn-icon edit" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                      <Edit size={16} />
-                    </motion.button>
-                  </div>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+                <span className={`status-badge ${patient.status.toLowerCase()}`}>{patient.status}</span>
+              </div>
+
+              <div className="staff-card-info-grid">
+                <div>
+                  <div className="staff-card-field-label">Age/Gender</div>
+                  <div className="staff-card-field-value">{patient.age} / {patient.gender}</div>
+                </div>
+                <div>
+                  <div className="staff-card-field-label">Phone</div>
+                  <div className="staff-card-field-value">{patient.phone}</div>
+                </div>
+                <div>
+                  <div className="staff-card-field-label">Last Visit</div>
+                  <div className="staff-card-field-value muted">{patient.lastVisit}</div>
+                </div>
+              </div>
+
+              <div className="staff-card-actions">
+                <button onClick={() => router.push(`/outlet-portal/patients/patient-profile?id=${patient.id}`)} className="action-btn">
+                  <Eye size={14} color="#64748b" />
+                  <span>View</span>
+                </button>
+                <button onClick={() => router.push(`/outlet-portal/patients/patient-profile?id=${patient.id}&edit=true`)} className="action-btn">
+                  <Edit size={14} color="#64748b" />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm(`Delete ${patient.name}? This action cannot be undone.`)) {
+                      // setPatientList(prev => prev.filter(p => p.id !== patient.id));
+                    }
+                  }}
+                  className="action-btn"
+                >
+                  <Trash2 size={14} color="#64748b" />
+                  <span>Delete</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredPatients.length === 0 && (
+          <div className="empty-state">
+            <Search size={32} color="#cbd5e1" />
+            <div>No patients found</div>
+            <div>Try adjusting your filters</div>
+          </div>
+        )}
       </motion.div>
 
       {/* Pagination */}

@@ -271,6 +271,10 @@
     margin-bottom: 20px;
 }
 
+.table-wrapper {
+    overflow-x: auto;
+}
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -365,6 +369,30 @@
     border-color: currentColor;
 }
 
+/* Action Buttons (Mobile) */
+.action-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background: #014fa1;
+    border-color: #014fa1;
+    color: #fff;
+}
+
+.action-btn:hover svg {
+    stroke: #fff;
+}
+
 /* Status Badge */
 .status-badge {
     display: inline-block;
@@ -382,6 +410,36 @@
 .status-badge.inactive {
     background: #f1f5f9;
     color: #64748b;
+}
+
+/* Staff Name & ID (for mobile cards) */
+.staff-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a202c;
+}
+
+.staff-id {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+.empty-state>div:first-of-type {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.empty-state>div:last-of-type {
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 /* Pagination */
@@ -410,6 +468,11 @@
     background: #014fa1;
     color: #fff;
     border-color: #014fa1;
+}
+
+/* ============ Mobile Patient Cards ============ */
+.staff-mobile-list {
+    display: none;
 }
 
 /* Responsive */
@@ -443,6 +506,93 @@
     .staff-dropdown {
         min-width: 0;
         width: 100%;
+    }
+
+    .table-wrapper {
+        display: none;
+    }
+
+    .staff-mobile-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .staff-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 14px;
+    }
+
+    .staff-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .staff-card-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .staff-card-profile img {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e2e8f0;
+        flex-shrink: 0;
+    }
+
+    .staff-card-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 12px 0;
+        border-top: 1px solid #f1f5f9;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 12px;
+    }
+
+    .staff-card-field-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 3px;
+    }
+
+    .staff-card-field-value {
+        font-size: 12.5px;
+        color: #1a202c;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .staff-card-field-value.muted {
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .staff-card-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .staff-card-actions .action-btn {
+        flex: 1;
+        width: auto;
+        height: 36px;
+        gap: 6px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #64748b;
     }
 
     .data-table {
@@ -481,6 +631,10 @@
 
 @media (max-width: 480px) {
     .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .staff-card-info-grid {
         grid-template-columns: 1fr;
     }
 }

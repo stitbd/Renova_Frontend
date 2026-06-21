@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Camera, BadgeCheck, Pencil, Check, X, User, Calendar, Droplet,
   Phone, Mail, MapPin, Briefcase, Heart, Ruler, Scale, AlertCircle,
   Pill, Scissors, Users, Cigarette, Wine, Dumbbell, FileText, TestTube,
   Syringe, Award, Eye, Download, Share2, Video, MessageSquare, Stethoscope,
-  Bell, Lock, ShieldCheck, Globe, ChevronRight, CalendarCheck, CalendarClock,
-  Activity, Scan, Flag, Upload,
+  Globe, ChevronRight, CalendarCheck, CalendarClock,
+  Scan, Flag, Activity,
 } from "lucide-react";
 import "./outlet-patient-profile.css";
 
@@ -164,13 +163,6 @@ const consultationHistory = [
   { id: 6, doctor: "Dr. Rafiq Ahmed", specialty: "Orthopedic", date: "28 May 2025", time: "02:30 PM", type: "Audio", status: "Missed" },
 ];
 
-const quickActions = [
-  { label: "Book Appointment", icon: CalendarCheck, href: "/patient-portal/appointments" },
-  { label: "Message Doctor", icon: MessageSquare, href: "/patient-portal/messages" },
-  { label: "Download Summary", icon: Download },
-  { label: "Upload Document", icon: Upload },
-];
-
 const typeIcons = { Video, Audio: Phone, Chat: MessageSquare };
 
 /* ───────────────────────── Small Components ───────────────────────── */
@@ -197,15 +189,6 @@ function FieldRow({ field, value, editing, onChange }) {
   );
 }
 
-function Toggle({ checked, onChange }) {
-  return (
-    <label className="pp-toggle">
-      <input type="checkbox" checked={checked} onChange={onChange} />
-      <span className="pp-toggle-slider" />
-    </label>
-  );
-}
-
 /* ───────────────────────── Main Page ───────────────────────── */
 
 export default function PatientProfilePage() {
@@ -214,12 +197,6 @@ export default function PatientProfilePage() {
   const [draft, setDraft] = useState(initialProfile);
   const [saved, setSaved] = useState(false);
   const [recordFilter, setRecordFilter] = useState("All");
-  const [settings, setSettings] = useState({
-    emailNotifications: true,
-    smsAlerts: false,
-    twoFactor: false,
-    profileVisibility: "doctors",
-  });
 
   const handleEdit = () => {
     setDraft({ ...profile, chronicDiseases: { ...profile.chronicDiseases } });
@@ -594,98 +571,6 @@ export default function PatientProfilePage() {
                 );
               })}
             </div>
-          </motion.div>
-        </div>
-
-        {/* ── Sidebar: Quick Actions & Account Settings ── */}
-        <div className="pp-side-col">
-          <motion.div className="pp-card" variants={item} initial="hidden" animate="show">
-            <h3 className="pp-card-title"><Activity size={16} /> Quick Actions</h3>
-            <div className="pp-quick-grid">
-              {quickActions.map((a, i) =>
-                a.href ? (
-                  <Link key={i} href={a.href} className="pp-quick-btn">
-                    <a.icon size={20} />
-                    <span>{a.label}</span>
-                  </Link>
-                ) : (
-                  <button key={i} className="pp-quick-btn" type="button">
-                    <a.icon size={20} />
-                    <span>{a.label}</span>
-                  </button>
-                )
-              )}
-            </div>
-          </motion.div>
-
-          <motion.div className="pp-card" variants={item} initial="hidden" animate="show">
-            <h3 className="pp-card-title"><Lock size={16} /> Account Settings</h3>
-            <div className="pp-settings-list">
-              <div className="pp-settings-row">
-                <div className="pp-settings-text">
-                  <Bell size={15} />
-                  <div>
-                    <span>Email Notifications</span>
-                    <small>Appointment reminders &amp; updates</small>
-                  </div>
-                </div>
-                <Toggle
-                  checked={settings.emailNotifications}
-                  onChange={() => setSettings((s) => ({ ...s, emailNotifications: !s.emailNotifications }))}
-                />
-              </div>
-
-              <div className="pp-settings-row">
-                <div className="pp-settings-text">
-                  <MessageSquare size={15} />
-                  <div>
-                    <span>SMS Alerts</span>
-                    <small>Critical health alerts via SMS</small>
-                  </div>
-                </div>
-                <Toggle
-                  checked={settings.smsAlerts}
-                  onChange={() => setSettings((s) => ({ ...s, smsAlerts: !s.smsAlerts }))}
-                />
-              </div>
-
-              <div className="pp-settings-row">
-                <div className="pp-settings-text">
-                  <ShieldCheck size={15} />
-                  <div>
-                    <span>Two-Factor Authentication</span>
-                    <small>Extra layer of login security</small>
-                  </div>
-                </div>
-                <Toggle
-                  checked={settings.twoFactor}
-                  onChange={() => setSettings((s) => ({ ...s, twoFactor: !s.twoFactor }))}
-                />
-              </div>
-
-              <div className="pp-settings-row">
-                <div className="pp-settings-text">
-                  <Eye size={15} />
-                  <div>
-                    <span>Profile Visibility</span>
-                    <small>Who can view your medical profile</small>
-                  </div>
-                </div>
-                <select
-                  className="pp-settings-select"
-                  value={settings.profileVisibility}
-                  onChange={(e) => setSettings((s) => ({ ...s, profileVisibility: e.target.value }))}
-                >
-                  <option value="doctors">Doctors Only</option>
-                  <option value="outlet">Outlet Staff</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-            </div>
-
-            <Link href="/patient-portal/change-password?from=profile" className="pp-btn pp-btn-outline pp-full-btn">
-              <Lock size={14} /> Change Password
-            </Link>
           </motion.div>
         </div>
       </div>

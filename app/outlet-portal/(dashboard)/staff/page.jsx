@@ -254,13 +254,13 @@ export default function OutletStaffPage() {
                                     <td>
                                         <div className="action-buttons">
                                             <button
-                                                onClick={() => router.push(`/supar-admin-panel/staff/staff-profile?id=${staff.id}`)}
+                                                onClick={() => router.push(`/outlet-portal/staff/staff-profile?id=${staff.id}`)}
                                                 className="action-btn"
                                             >
                                                 <Eye size={14} color="#64748b" />
                                             </button>
                                             <button
-                                                onClick={() => router.push(`/supar-admin-panel/staff/update-staff?id=${staff.id}`)}
+                                                onClick={() => router.push(`/outlet-portal/staff/update-staff?id=${staff.id}`)}
                                                 className="action-btn"
                                             >
                                                 <Edit size={14} color="#64748b" />
@@ -324,14 +324,14 @@ export default function OutletStaffPage() {
 
                             <div className="staff-card-actions">
                                 <button
-                                    onClick={() => router.push(`/supar-admin-panel/staff/staff-profile?id=${staff.id}`)}
+                                    onClick={() => router.push(`/outlet-portal/staff/staff-profile?id=${staff.id}`)}
                                     className="action-btn"
                                 >
                                     <Eye size={14} color="#64748b" />
                                     <span>View</span>
                                 </button>
                                 <button
-                                    onClick={() => router.push(`/supar-admin-panel/staff/update-staff?id=${staff.id}`)}
+                                    onClick={() => router.push(`/outlet-portal/staff/update-staff?id=${staff.id}`)}
                                     className="action-btn"
                                 >
                                     <Edit size={14} color="#64748b" />
