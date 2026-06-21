@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
+import { API_URL } from "@/config";
 
-const CONFIRM_API_URL = "http://192.168.0.164:5001/api/v1/appointments/confirm";
-const CANCEL_API_URL = "http://192.168.0.164:5001/api/v1/appointments/cancel";
+const CONFIRM_API_URL = `${API_URL}/appointments/confirm`;
+const CANCEL_API_URL = `${API_URL}/appointments/cancel`;
 
 // components/doctor-dashboard/PatientQueueList.jsx
 export default function PatientQueueList({ appointments = [], refetchAppointments, }) {

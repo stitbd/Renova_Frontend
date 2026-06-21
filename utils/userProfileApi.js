@@ -1,4 +1,6 @@
-const API_BASE_URL = "http://192.168.0.164:5001/api/v1";
+import { API_URL } from "@/config";
+
+const API_BASE_URL = API_URL;
 
 async function request(endpoint, token) {
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {

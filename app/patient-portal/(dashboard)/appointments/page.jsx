@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import "./patient-appointments.css";
 import { CalendarView } from "@/components/patient-dashboard/patient-appointment-calenderView";
+import { API_URL } from "@/config";
 
-const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
-const CANCEL_API_URL = "http://192.168.0.164:5001/api/v1/appointments/cancel";
+const API_URL1 = `${API_URL}/appointments/my`;
+const CANCEL_API_URL = `${API_URL}/appointments/cancel`;
 const TZ = "Asia/Dhaka";
 
 const filters = [
@@ -216,7 +217,7 @@ export default function AppointmentsPage() {
         setIsLoading(true);
         setError("");
 
-        const res = await fetch(API_URL, {
+        const res = await fetch(API_URL1, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -13,6 +13,7 @@ import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescript
 import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 import { useAppSelector } from "@/redux/hook";
 import TodayAppointmentsList from "@/components/doctor-dashboard/TodayAppointmentsList";
+import { API_URL } from "@/config";
 
 const messageCount = 3;
 
@@ -112,7 +113,7 @@ export default function DashboardPage() {
   const fetchAppointments = async () => {
     try {
       const res = await fetch(
-        "http://192.168.0.164:5001/api/v1/appointments/my",
+        `${API_URL}/appointments/my`,
         {
           method: "GET",
           headers: {

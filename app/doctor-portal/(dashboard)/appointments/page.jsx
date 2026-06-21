@@ -5,8 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import "./appointments.css";
+import { API_URL } from "@/config";
 
-const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
+const API_URL1 = `${API_URL}/appointments/my`;
 const TZ = "Asia/Dhaka";
 
 const STATUS_FILTERS = [
@@ -154,7 +155,7 @@ export default function AppointmentsPage() {
         setIsLoading(true);
         setError("");
 
-        const res = await fetch(API_URL, {
+        const res = await fetch(API_URL1, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

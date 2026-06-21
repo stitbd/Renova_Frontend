@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import "./patient-signup.css";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/config";
 
 // ── inline SVG icons ──────────────────────────────────────────
 const Icon = {
@@ -164,7 +165,7 @@ function Select({ icon: IconComp, children, className = "", ...props }) {
 }
 
 // ── main component ────────────────────────────────────────────
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.0.164:5001/api/v1";
+const API_BASE_URL = API_URL;
 
 export default function PatientSignUpForm() {
   const router = useRouter();

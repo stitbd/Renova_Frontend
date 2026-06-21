@@ -4,10 +4,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/redux/hook";
 import "./patient-queue.css";
+import { API_URL } from "@/config";
 
-const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
-const CONFIRM_API_URL = "http://192.168.0.164:5001/api/v1/appointments/confirm";
-const CANCEL_API_URL = "http://192.168.0.164:5001/api/v1/appointments/cancel";
+const API_URL1 = `${API_URL}/appointments/my`;
+const CONFIRM_API_URL = `${API_URL}/appointments/confirm`;
+const CANCEL_API_URL = `${API_URL}/appointments/cancel`;
 const TZ = "Asia/Dhaka";
 
 function formatTime(date) {
@@ -102,7 +103,7 @@ export default function PatientQueuePage() {
         setIsLoading(true);
         setError("");
 
-        const res = await fetch(API_URL, {
+        const res = await fetch(API_URL1, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
