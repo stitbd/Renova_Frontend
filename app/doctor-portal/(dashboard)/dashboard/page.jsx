@@ -79,7 +79,6 @@ export default function DashboardPage() {
   const token = useAppSelector((state) => state.auth.accessToken);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
-  // console.log('appointments', appointments);
 
   const pendingAppointments = appointments?.filter(
     (appointment) => appointment.status === "PENDING"
@@ -101,8 +100,6 @@ export default function DashboardPage() {
 
   const completedAppointments = appointments?.filter((appointment) => appointment?.status === "COMPLETED")
 
-
-  // console.log("completedAppointments", completedAppointments);
 
   const closeSidebar = () => setSidebarOpen(false);
 

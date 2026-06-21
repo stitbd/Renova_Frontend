@@ -114,7 +114,6 @@ export default function ConsultationsPage() {
           ))}
         </div>
       </div>
-      
 
       {/* ── Consultation Cards ───────────────────────────── */}
       <div className="con-list">

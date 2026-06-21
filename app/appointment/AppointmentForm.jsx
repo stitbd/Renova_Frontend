@@ -140,7 +140,6 @@ function DoctorDropdown({ doctors, value, onChange, locked = false }) {
   };
 
   const getDoctorTitle = (doctor) => {
-    // console.log('doctor object in getDoctorTitle:', doctor);
     const title =
       doctor?.title ||
       doctor?.specialization?.name ||
@@ -434,7 +433,6 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
   const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
-  // console.log('selected doctor object:', doctor);
 
   /* Doctors for the chosen department (from API) */
   const doctors = useMemo(() => {

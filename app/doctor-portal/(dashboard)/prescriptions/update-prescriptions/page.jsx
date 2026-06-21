@@ -409,7 +409,7 @@ export default function UpdatePrescriptionPage() {
     };
 
     const handleSaveAsDraft = () => {
-        console.log("Saving as draft");
+     
         alert("Prescription saved as draft");
     };
 
