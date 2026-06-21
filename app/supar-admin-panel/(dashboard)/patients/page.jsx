@@ -223,7 +223,7 @@ export default function PatientsPage() {
       <motion.div className="data-table-container" variants={item}>
         <div className="table-header">
           <span>Patient List ({filteredPatients.length})</span>
-          <button className="btn-primary-green">
+          <button onClick={() => router.push("/supar-admin-panel/patients/new-patient")} className="btn-primary-green">
             <Plus size={15} color="#fff" /> Add Patient
           </button>
         </div>
