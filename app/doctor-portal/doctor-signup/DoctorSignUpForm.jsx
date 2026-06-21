@@ -771,7 +771,7 @@ export default function DoctorSignUpForm() {
                 <Icon.Grow />
               </div>
               <div className="doctor-signup__benefit-content">
-                <h4>Grow Your Practice</h4>
+                <h4>Grow Your  Practice</h4>
                 <p>Connect with more patients</p>
               </div>
             </div>
