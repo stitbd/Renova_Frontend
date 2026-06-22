@@ -153,9 +153,9 @@ const navItems = [
     icon: Globe,
   },
   {
-    type: "section",
-    label: "SYSTEM SETTINGS",
-  },
+  //   type: "section",
+  //   label: "SYSTEM SETTINGS",
+  // },
   // {
   //   href: "/supar-admin-panel/settings/pricing",
   //   label: "Pricing Rules",
