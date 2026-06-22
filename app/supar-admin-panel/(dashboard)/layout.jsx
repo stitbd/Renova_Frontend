@@ -125,7 +125,7 @@ const navItems = [
     icon: LineChart,
   },
   {
-    href: "/supar-admin-panel/analytics/trends",
+    href: "/supar-admin-panel/analytics/patients",
     label: "Patient Trends",
     icon: TrendingUp,
   },
