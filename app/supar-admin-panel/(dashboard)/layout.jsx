@@ -96,17 +96,17 @@ const navItems = [
     label: "FINANCE",
   },
   {
-    href: "/supar-admin-panel/revenue",
+    href: "/supar-admin-panel/finance/revenue",
     label: "Revenue",
     icon: DollarSign,
   },
   {
-    href: "/supar-admin-panel/commissions",
+    href: "/supar-admin-panel/finance/commissions",
     label: "Commissions",
     icon: HandCoins,
   },
   {
-    href: "/supar-admin-panel/settlements",
+    href: "/supar-admin-panel/finance/settlements",
     label: "Settlements",
     icon: FileText,
   },
