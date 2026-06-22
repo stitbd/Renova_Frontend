@@ -308,23 +308,43 @@ const SectionTitle = ({ icon: Icon, iconBg, iconColor, title, subtitle, action }
 );
 
 const KPICard = ({ label, value, change, trend, sub, icon: Icon, color, bg }) => (
-    <motion.div className="sa-kpi-card" variants={itemVariants} whileHover={{ y: -3, boxShadow: "0 10px 32px rgba(4,65,125,0.13)" }}>
-        <div className="sa-kpi-top">
-            <div className="sa-kpi-icon" style={{ background: bg }}>
-                <Icon size={17} color={color} />
+    <motion.div className="sa-kpi-card" variants={itemVariants} whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(4,65,125,0.12)" }}>
+        <div className="sa-kpi-accent" style={{ background: color }} />
+        <div className="sa-kpi-body">
+            <div className="sa-kpi-top">
+                <div className="sa-kpi-icon" style={{ background: bg }}>
+                    <Icon size={16} color={color} />
+                </div>
+                <div className={`sa-kpi-badge ${trend === "up" ? "sa-kpi-badge--up" : "sa-kpi-badge--down"}`}>
+                    {trend === "up" ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                    {change}
+                </div>
             </div>
-            <div className={`sa-kpi-badge ${trend === "up" ? "sa-kpi-badge--up" : "sa-kpi-badge--down"}`}>
-                {trend === "up" ? <ArrowUpRight size={11} /> : <ArrowDownRight size={11} />}
-                {change}
+            <div className="sa-kpi-value">{value}</div>
+            <div className="sa-kpi-label">{label}</div>
+            <div className="sa-kpi-footer">
+                <span className="sa-kpi-trend-label">{sub}</span>
+                <div className="sa-kpi-spark">
+                    <MiniSparkline color={color} />
+                </div>
             </div>
-        </div>
-        <div className="sa-kpi-value">{value}</div>
-        <div className="sa-kpi-label">{label}</div>
-        <div className="sa-kpi-sub">{sub}</div>
-        <div className="sa-kpi-spark">
-            <MiniSparkline color={color} />
         </div>
     </motion.div>
+);
+
+const SkeletonKPI = () => (
+    <div className="sa-kpi-card sa-skeleton-card">
+        <div className="sa-sk" style={{ height: 3, borderRadius: 0, width: "100%" }} />
+        <div className="sa-kpi-body" style={{ gap: 8 }}>
+            <div className="sa-kpi-top">
+                <div className="sa-sk sa-sk--icon" />
+                <div className="sa-sk" style={{ height: 20, width: 52, borderRadius: 20 }} />
+            </div>
+            <div className="sa-sk sa-sk--val" />
+            <div className="sa-sk sa-sk--lbl" />
+            <div className="sa-sk sa-sk--spark" style={{ marginTop: 6 }} />
+        </div>
+    </div>
 );
 
 const MiniSparkline = ({ color }) => {
@@ -382,14 +402,6 @@ const GaugeChart = ({ value, color, size = 100 }) => {
     );
 };
 
-const SkeletonKPI = () => (
-    <div className="sa-kpi-card sa-skeleton-card">
-        <div className="sa-sk sa-sk--icon" />
-        <div className="sa-sk sa-sk--val" />
-        <div className="sa-sk sa-sk--lbl" />
-        <div className="sa-sk sa-sk--spark" />
-    </div>
-);
 
 // ─── Main Page ───────────────────────────────────────────────────
 export default function SettlementAnalyticsPage() {

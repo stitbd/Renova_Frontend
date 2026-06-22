@@ -129,20 +129,20 @@ const navItems = [
     label: "Patient Trends",
     icon: TrendingUp,
   },
-  {
-    type: "section",
-    label: "ACCESS CONTROL",
-  },
-  {
-    href: "/supar-admin-panel/roles",
-    label: "Roles & Permissions",
-    icon: Shield,
-  },
-  {
-    href: "/supar-admin-panel/audit-logs",
-    label: "Audit Logs",
-    icon: FileCheck,
-  },
+  // {
+  //   type: "section",
+  //   label: "ACCESS CONTROL",
+  // },
+  // {
+  //   href: "/supar-admin-panel/roles",
+  //   label: "Roles & Permissions",
+  //   icon: Shield,
+  // },
+  // {
+  //   href: "/supar-admin-panel/audit-logs",
+  //   label: "Audit Logs",
+  //   icon: FileCheck,
+  // },
   {
     type: "section",
     label: "WEBSITE CONTENT",
@@ -156,26 +156,26 @@ const navItems = [
     type: "section",
     label: "SYSTEM SETTINGS",
   },
-  {
-    href: "/supar-admin-panel/settings/pricing",
-    label: "Pricing Rules",
-    icon: Receipt,
-  },
-  {
-    href: "/supar-admin-panel/settings/notifications",
-    label: "Notification Templates",
-    icon: Bell,
-  },
-  {
-    href: "/supar-admin-panel/settings/features",
-    label: "Feature Toggles",
-    icon: ToggleLeft,
-  },
-  {
-    href: "/supar-admin-panel/settings/config",
-    label: "System Configuration",
-    icon: Wrench,
-  },
+  // {
+  //   href: "/supar-admin-panel/settings/pricing",
+  //   label: "Pricing Rules",
+  //   icon: Receipt,
+  // },
+  // {
+  //   href: "/supar-admin-panel/settings/notifications",
+  //   label: "Notification Templates",
+  //   icon: Bell,
+  // },
+  // {
+  //   href: "/supar-admin-panel/settings/features",
+  //   label: "Feature Toggles",
+  //   icon: ToggleLeft,
+  // },
+  // {
+  //   href: "/supar-admin-panel/settings/config",
+  //   label: "System Configuration",
+  //   icon: Wrench,
+  // },
 ];
 
 function isActivePath(pathname, href) {

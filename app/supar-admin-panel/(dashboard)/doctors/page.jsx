@@ -30,11 +30,11 @@ export default function DoctorsPage() {
     const [showExpDropdown, setShowExpDropdown] = useState(false);
 
     const doctors = [
-        { id: "DR-2025-001", name: "Dr. Rafiqul Islam", specialization: "Cardiology", experience: 12, phone: "01712-345678", patientsHandled: 1240, status: "Active", avatar: "/images/doctors/01.jpg" },
-        { id: "DR-2025-002", name: "Dr. Sadita Afrin", specialization: "Neurology", experience: 8, phone: "01812-345678", patientsHandled: 890, status: "Active", avatar: "/images/doctors/02.jpg" },
-        { id: "DR-2025-003", name: "Dr. Rashed Hasan", specialization: "Pediatrics", experience: 5, phone: "01912-345678", patientsHandled: 560, status: "Inactive", avatar: "/images/doctors/03.jpg" },
-        { id: "DR-2025-004", name: "Dr. Mahmudul Islam", specialization: "Orthopedics", experience: 15, phone: "01612-345678", patientsHandled: 2100, status: "Active", avatar: "/images/doctors/04.jpg" },
-        { id: "DR-2025-005", name: "Dr. Farzana Akter", specialization: "Dermatology", experience: 3, phone: "01512-345678", patientsHandled: 320, status: "Active", avatar: "/images/doctors/05.jpg" },
+        { id: "DR-2025-001", name: "Dr. Rafiqul Islam", specialization: "Cardiology", experience: 12, phone: "01712-345678", patientsHandled: 1240, status: "Active", avatar: "/images/doctors/doctor-1.jpg" },
+        { id: "DR-2025-002", name: "Dr. Sadita Afrin", specialization: "Neurology", experience: 8, phone: "01812-345678", patientsHandled: 890, status: "Active", avatar: "/images/doctors/doctor-2.jpg" },
+        { id: "DR-2025-003", name: "Dr. Rashed Hasan", specialization: "Pediatrics", experience: 5, phone: "01912-345678", patientsHandled: 560, status: "Inactive", avatar: "/images/doctors/doctor-3.jpg" },
+        { id: "DR-2025-004", name: "Dr. Mahmudul Islam", specialization: "Orthopedics", experience: 15, phone: "01612-345678", patientsHandled: 2100, status: "Active", avatar: "/images/doctors/doctor-4.jpg" },
+        { id: "DR-2025-005", name: "Dr. Farzana Akter", specialization: "Dermatology", experience: 3, phone: "01512-345678", patientsHandled: 320, status: "Active", avatar: "/images/doctors/doctor-5.jpg" },
     ];
 
     const stats = [

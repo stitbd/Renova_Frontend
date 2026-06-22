@@ -323,34 +323,44 @@ const SectionTitle = ({ icon: Icon, iconBg, iconColor, title, subtitle, action }
 );
 
 const KPICard = ({ label, value, change, trend, sub, icon: Icon, color, bg }) => (
-    <motion.div className="pt-kpi-card" variants={itemVariants} whileHover={{ y: -3, boxShadow: "0 10px 32px rgba(4,65,125,0.13)" }}>
-        <div className="pt-kpi-top">
-            <div className="pt-kpi-icon" style={{ background: bg }}>
-                <Icon size={17} color={color} />
+    <motion.div className="pt-kpi-card" variants={itemVariants} whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(4,65,125,0.11)" }}>
+        <div className="pt-kpi-accent" style={{ background: color }} />
+        <div className="pt-kpi-body">
+            <div className="pt-kpi-top">
+                <div className="pt-kpi-icon" style={{ background: bg }}>
+                    <Icon size={16} color={color} />
+                </div>
+                <div className={`pt-kpi-badge ${trend === "up" ? "pt-kpi-badge--up" : trend === "down" ? "pt-kpi-badge--down" : "pt-kpi-badge--neutral"}`}>
+                    {trend === "up" ? <ArrowUpRight size={10} /> : trend === "down" ? <ArrowDownRight size={10} /> : null}
+                    {change}
+                </div>
             </div>
-            <div className={`pt-kpi-badge ${trend === "up" ? "pt-kpi-badge--up" : trend === "down" ? "pt-kpi-badge--down" : "pt-kpi-badge--neutral"}`}>
-                {trend === "up" ? <ArrowUpRight size={11} /> : trend === "down" ? <ArrowDownRight size={11} /> : null}
-                {change}
+            <div className="pt-kpi-value">{value}</div>
+            <div className="pt-kpi-label">{label}</div>
+            <div className="pt-kpi-footer">
+                <span className="pt-kpi-trend-label">{sub}</span>
+                <div className="pt-kpi-spark">
+                    <MiniSparkline color={color} />
+                </div>
             </div>
-        </div>
-        <div className="pt-kpi-value">{value}</div>
-        <div className="pt-kpi-label">{label}</div>
-        <div className="pt-kpi-sub">{sub}</div>
-        <div className="pt-kpi-spark">
-            <MiniSparkline color={color} />
         </div>
     </motion.div>
 );
 
 const SkeletonKPI = () => (
     <div className="pt-kpi-card pt-skeleton-card">
-        <div className="pt-sk pt-sk--icon" />
-        <div className="pt-sk pt-sk--val" />
-        <div className="pt-sk pt-sk--lbl" />
-        <div className="pt-sk pt-sk--spark" />
+        <div className="pt-sk" style={{ height: 3, borderRadius: 0, width: "100%" }} />
+        <div className="pt-kpi-body" style={{ gap: 8 }}>
+            <div className="pt-kpi-top">
+                <div className="pt-sk pt-sk--icon" />
+                <div className="pt-sk" style={{ height: 20, width: 52, borderRadius: 20 }} />
+            </div>
+            <div className="pt-sk pt-sk--val" />
+            <div className="pt-sk pt-sk--lbl" />
+            <div className="pt-sk pt-sk--spark" style={{ marginTop: 6 }} />
+        </div>
     </div>
 );
-
 // ─── Main Page ───────────────────────────────────────────────────
 export default function PatientTrendsPage() {
     const [loading, setLoading] = useState(true);

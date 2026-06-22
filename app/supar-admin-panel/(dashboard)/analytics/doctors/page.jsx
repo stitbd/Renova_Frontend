@@ -130,37 +130,44 @@ const doctorLeaderboard = [
     {
         id: "DR-001", rank: 1, name: "Dr. Sarah Ahmed", specialty: "Cardiology", outlet: "Renova Dhanmondi",
         revenue: "৳2.8M", consultations: 1240, rating: 4.9, satisfaction: 96, utilization: 92,
-        growth: "+24%", status: "active", badge: "Top Performer", icon: Crown
+        growth: "+24%", status: "active", badge: "Top Performer", icon: Crown,
+        image: "/images/doctors/doctor-1.jpg"
     },
     {
         id: "DR-002", rank: 2, name: "Dr. Farhana Islam", specialty: "Pediatrics", outlet: "Renova Mirpur",
         revenue: "৳2.4M", consultations: 1180, rating: 4.9, satisfaction: 95, utilization: 88,
-        growth: "+21%", status: "active", badge: "Rising Star", icon: Medal
+        growth: "+21%", status: "active", badge: "Rising Star", icon: Medal,
+        image: "/images/doctors/doctor-2.jpg"
     },
     {
         id: "DR-003", rank: 3, name: "Dr. Kamal Hasan", specialty: "Orthopedics", outlet: "Renova Chattogram",
         revenue: "৳2.2M", consultations: 1050, rating: 4.6, satisfaction: 87, utilization: 82,
-        growth: "+15%", status: "active", badge: "Consistent", icon: Award
+        growth: "+15%", status: "active", badge: "Consistent", icon: Award,
+        image: "/images/doctors/doctor-3.jpg"
     },
     {
         id: "DR-004", rank: 4, name: "Dr. Nabila Khan", specialty: "Neurology", outlet: "Renova Sylhet",
         revenue: "৳1.9M", consultations: 920, rating: 4.7, satisfaction: 90, utilization: 78,
-        growth: "+32%", status: "active", badge: "Rising Star", icon: Rocket
+        growth: "+32%", status: "active", badge: "Rising Star", icon: Rocket,
+        image: "/images/doctors/doctor-4.jpg"
     },
     {
         id: "DR-005", rank: 5, name: "Dr. Rifat Chowdhury", specialty: "Dermatology", outlet: "Renova Uttara",
         revenue: "৳1.5M", consultations: 780, rating: 4.2, satisfaction: 76, utilization: 65,
-        growth: "-6%", status: "at-risk", badge: "Needs Support", icon: AlertTriangle
+        growth: "-6%", status: "at-risk", badge: "Needs Support", icon: AlertTriangle,
+        image: "/images/doctors/doctor-5.jpg"
     },
     {
         id: "DR-006", rank: 6, name: "Dr. Mahmud Hasan", specialty: "Psychiatry", outlet: "Renova Dhanmondi",
         revenue: "৳1.3M", consultations: 650, rating: 3.6, satisfaction: 68, utilization: 58,
-        growth: "-12%", status: "at-risk", badge: "Needs Support", icon: AlertCircle
+        growth: "-12%", status: "at-risk", badge: "Needs Support", icon: AlertCircle,
+        image: "/images/doctors/doctor-6.jpg"
     },
     {
         id: "DR-007", rank: 7, name: "Dr. Sajeda Akhter", specialty: "Cardiology", outlet: "Renova Mirpur",
         revenue: "৳1.1M", consultations: 540, rating: 4.1, satisfaction: 72, utilization: 42,
-        growth: "-4%", status: "inactive", badge: "Underutilized", icon: UserMinus
+        growth: "-4%", status: "inactive", badge: "Underutilized", icon: UserMinus,
+        image: "/images/doctors/doctor-7.jpg"
     },
 ];
 
@@ -170,43 +177,50 @@ const doctorTableData = [
         id: "DR-001", name: "Dr. Sarah Ahmed", specialty: "Cardiology", outlet: "Dhanmondi",
         consultations: "1,240", patients: "980", revenue: "৳2.8M", rating: "4.9",
         satisfaction: 96, utilization: 92, cancellation: 6, growth: "+24%",
-        score: 95, status: "active", trend: [22, 28, 25, 35, 32, 42, 38, 48]
+        score: 95, status: "active", trend: [22, 28, 25, 35, 32, 42, 38, 48],
+        image: "/images/doctors/doctor-1.jpg"
     },
     {
         id: "DR-002", name: "Dr. Farhana Islam", specialty: "Pediatrics", outlet: "Mirpur",
         consultations: "1,180", patients: "920", revenue: "৳2.4M", rating: "4.9",
         satisfaction: 95, utilization: 88, cancellation: 5, growth: "+21%",
-        score: 93, status: "active", trend: [18, 22, 20, 28, 25, 34, 30, 40]
+        score: 93, status: "active", trend: [18, 22, 20, 28, 25, 34, 30, 40],
+        image: "/images/doctors/doctor-2.jpg"
     },
     {
         id: "DR-003", name: "Dr. Kamal Hasan", specialty: "Orthopedics", outlet: "Chattogram",
         consultations: "1,050", patients: "820", revenue: "৳2.2M", rating: "4.6",
         satisfaction: 87, utilization: 82, cancellation: 10, growth: "+15%",
-        score: 86, status: "active", trend: [15, 18, 16, 22, 20, 28, 25, 32]
+        score: 86, status: "active", trend: [15, 18, 16, 22, 20, 28, 25, 32],
+        image: "/images/doctors/doctor-3.jpg"
     },
     {
         id: "DR-004", name: "Dr. Nabila Khan", specialty: "Neurology", outlet: "Sylhet",
         consultations: "920", patients: "710", revenue: "৳1.9M", rating: "4.7",
         satisfaction: 90, utilization: 78, cancellation: 8, growth: "+32%",
-        score: 88, status: "active", trend: [12, 15, 14, 18, 16, 24, 20, 28]
+        score: 88, status: "active", trend: [12, 15, 14, 18, 16, 24, 20, 28],
+        image: "/images/doctors/doctor-4.jpg"
     },
     {
         id: "DR-005", name: "Dr. Rifat Chowdhury", specialty: "Dermatology", outlet: "Uttara",
         consultations: "780", patients: "590", revenue: "৳1.5M", rating: "4.2",
         satisfaction: 76, utilization: 65, cancellation: 22, growth: "-6%",
-        score: 65, status: "at-risk", trend: [20, 18, 22, 16, 18, 14, 16, 12]
+        score: 65, status: "at-risk", trend: [20, 18, 22, 16, 18, 14, 16, 12],
+        image: "/images/doctors/doctor-5.jpg"
     },
     {
         id: "DR-006", name: "Dr. Mahmud Hasan", specialty: "Psychiatry", outlet: "Dhanmondi",
         consultations: "650", patients: "480", revenue: "৳1.3M", rating: "3.6",
         satisfaction: 68, utilization: 58, cancellation: 18, growth: "-12%",
-        score: 52, status: "at-risk", trend: [16, 14, 18, 12, 14, 10, 12, 8]
+        score: 52, status: "at-risk", trend: [16, 14, 18, 12, 14, 10, 12, 8],
+        image: "/images/doctors/doctor-6.jpg"
     },
     {
         id: "DR-007", name: "Dr. Sajeda Akhter", specialty: "Cardiology", outlet: "Mirpur",
         consultations: "540", patients: "410", revenue: "৳1.1M", rating: "4.1",
         satisfaction: 72, utilization: 42, cancellation: 15, growth: "-4%",
-        score: 58, status: "inactive", trend: [14, 12, 16, 10, 12, 8, 10, 6]
+        score: 58, status: "inactive", trend: [14, 12, 16, 10, 12, 8, 10, 6],
+        image: "/images/doctors/doctor-7.jpg"
     },
 ];
 
@@ -357,31 +371,42 @@ const SectionTitle = ({ icon: Icon, iconBg, iconColor, title, subtitle, action }
 );
 
 const KPICard = ({ label, value, change, trend, sub, icon: Icon, color, bg }) => (
-    <motion.div className="dp-kpi-card" variants={itemVariants} whileHover={{ y: -3, boxShadow: "0 10px 32px rgba(4,65,125,0.13)" }}>
-        <div className="dp-kpi-top">
-            <div className="dp-kpi-icon" style={{ background: bg }}>
-                <Icon size={17} color={color} />
+    <motion.div className="dp-kpi-card" variants={itemVariants} whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(4,65,125,0.11)" }}>
+        <div className="dp-kpi-accent" style={{ background: color }} />
+        <div className="dp-kpi-body">
+            <div className="dp-kpi-top">
+                <div className="dp-kpi-icon" style={{ background: bg }}>
+                    <Icon size={16} color={color} />
+                </div>
+                <div className={`dp-kpi-badge ${trend === "up" ? "dp-kpi-badge--up" : "dp-kpi-badge--down"}`}>
+                    {trend === "up" ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                    {change}
+                </div>
             </div>
-            <div className={`dp-kpi-badge ${trend === "up" ? "dp-kpi-badge--up" : "dp-kpi-badge--down"}`}>
-                {trend === "up" ? <ArrowUpRight size={11} /> : <ArrowDownRight size={11} />}
-                {change}
+            <div className="dp-kpi-value">{value}</div>
+            <div className="dp-kpi-label">{label}</div>
+            <div className="dp-kpi-footer">
+                <span className="dp-kpi-trend-label">{sub}</span>
+                <div className="dp-kpi-spark">
+                    <MiniSparkline color={color} />
+                </div>
             </div>
-        </div>
-        <div className="dp-kpi-value">{value}</div>
-        <div className="dp-kpi-label">{label}</div>
-        <div className="dp-kpi-sub">{sub}</div>
-        <div className="dp-kpi-spark">
-            <MiniSparkline color={color} />
         </div>
     </motion.div>
 );
 
 const SkeletonKPI = () => (
     <div className="dp-kpi-card dp-skeleton-card">
-        <div className="dp-sk dp-sk--icon" />
-        <div className="dp-sk dp-sk--val" />
-        <div className="dp-sk dp-sk--lbl" />
-        <div className="dp-sk dp-sk--spark" />
+        <div className="dp-sk" style={{ height: 3, borderRadius: 0, width: "100%" }} />
+        <div className="dp-kpi-body" style={{ gap: 8 }}>
+            <div className="dp-kpi-top">
+                <div className="dp-sk dp-sk--icon" />
+                <div className="dp-sk" style={{ height: 20, width: 52, borderRadius: 20 }} />
+            </div>
+            <div className="dp-sk dp-sk--val" />
+            <div className="dp-sk dp-sk--lbl" />
+            <div className="dp-sk dp-sk--spark" style={{ marginTop: 6 }} />
+        </div>
     </div>
 );
 
@@ -389,6 +414,7 @@ const SkeletonKPI = () => (
 const LeaderboardCard = ({ doctor, rank }) => {
     const BadgeIcon = doctor.icon || Award;
     const isTop = rank <= 3;
+    const [imageError, setImageError] = useState(false);
 
     return (
         <motion.div className={`dp-leaderboard-card ${isTop ? "dp-leaderboard-card--top" : ""}`} variants={itemVariants}>
@@ -399,7 +425,16 @@ const LeaderboardCard = ({ doctor, rank }) => {
                 {rank}
             </div>
             <div className="dp-leaderboard-avatar">
-                <User size={20} color="#014fa1" />
+                {!imageError ? (
+                    <img
+                        src={doctor.image}
+                        alt={doctor.name}
+                        className="dp-leaderboard-img"
+                        onError={() => setImageError(true)}
+                    />
+                ) : (
+                    <User size={20} color="#014fa1" />
+                )}
             </div>
             <div className="dp-leaderboard-info">
                 <div className="dp-leaderboard-name">{doctor.name}</div>
@@ -902,7 +937,15 @@ export default function DoctorPerformancePage() {
                                         <td>
                                             <div className="dp-doctor-cell">
                                                 <div className="dp-doctor-avatar">
-                                                    <User size={16} color="#014fa1" />
+                                                    <img
+                                                        src={d.image}
+                                                        alt={d.name}
+                                                        className="dp-doctor-img"
+                                                        onError={(e) => {
+                                                            e.target.style.display = 'none';
+                                                            e.target.parentElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#014fa1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+                                                        }}
+                                                    />
                                                 </div>
                                                 <div>
                                                     <div className="dp-doctor-name">{d.name}</div>

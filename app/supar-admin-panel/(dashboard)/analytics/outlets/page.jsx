@@ -249,31 +249,42 @@ const SectionTitle = ({ icon: Icon, iconBg, iconColor, title, subtitle, action }
 );
 
 const KPICard = ({ label, value, change, trend, sub, icon: Icon, color, bg }) => (
-    <motion.div className="op-kpi-card" variants={itemVariants} whileHover={{ y: -3, boxShadow: "0 10px 32px rgba(4,65,125,0.13)" }}>
-        <div className="op-kpi-top">
-            <div className="op-kpi-icon" style={{ background: bg }}>
-                <Icon size={17} color={color} />
+    <motion.div className="op-kpi-card" variants={itemVariants} whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(4,65,125,0.11)" }}>
+        <div className="op-kpi-accent" style={{ background: color }} />
+        <div className="op-kpi-body">
+            <div className="op-kpi-top">
+                <div className="op-kpi-icon" style={{ background: bg }}>
+                    <Icon size={16} color={color} />
+                </div>
+                <div className={`op-kpi-badge ${trend === "up" ? "op-kpi-badge--up" : "op-kpi-badge--down"}`}>
+                    {trend === "up" ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                    {change}
+                </div>
             </div>
-            <div className={`op-kpi-badge ${trend === "up" ? "op-kpi-badge--up" : "op-kpi-badge--down"}`}>
-                {trend === "up" ? <ArrowUpRight size={11} /> : <ArrowDownRight size={11} />}
-                {change}
+            <div className="op-kpi-value">{value}</div>
+            <div className="op-kpi-label">{label}</div>
+            <div className="op-kpi-footer">
+                <span className="op-kpi-trend-label">{sub}</span>
+                <div className="op-kpi-spark">
+                    <MiniSparkline color={color} />
+                </div>
             </div>
-        </div>
-        <div className="op-kpi-value">{value}</div>
-        <div className="op-kpi-label">{label}</div>
-        <div className="op-kpi-sub">{sub}</div>
-        <div className="op-kpi-spark">
-            <MiniSparkline color={color} />
         </div>
     </motion.div>
 );
 
 const SkeletonKPI = () => (
     <div className="op-kpi-card op-skeleton-card">
-        <div className="op-sk op-sk--icon" />
-        <div className="op-sk op-sk--val" />
-        <div className="op-sk op-sk--lbl" />
-        <div className="op-sk op-sk--spark" />
+        <div className="op-sk" style={{ height: 3, borderRadius: 0, width: "100%" }} />
+        <div className="op-kpi-body" style={{ gap: 8 }}>
+            <div className="op-kpi-top">
+                <div className="op-sk op-sk--icon" />
+                <div className="op-sk" style={{ height: 20, width: 52, borderRadius: 20 }} />
+            </div>
+            <div className="op-sk op-sk--val" />
+            <div className="op-sk op-sk--lbl" />
+            <div className="op-sk op-sk--spark" style={{ marginTop: 6 }} />
+        </div>
     </div>
 );
 

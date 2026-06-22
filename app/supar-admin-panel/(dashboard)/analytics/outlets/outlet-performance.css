@@ -299,35 +299,50 @@
 .op-kpi-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 12px;
 }
 
 /* ─── KPI Card ───────────────────────────────────────────────── */
 .op-kpi-card {
     background: #fff;
     border: 1px solid var(--color-border-default);
-    border-radius: 14px;
-    padding: 16px;
+    border-radius: 16px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: default;
+    position: relative;
+}
+
+.op-kpi-accent {
+    height: 3px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.op-kpi-body {
+    padding: 14px 15px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
 }
 
 .op-kpi-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 4px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .op-kpi-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 9px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -337,36 +352,44 @@
 .op-kpi-badge {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
-    font-size: 10.5px;
+    gap: 2px;
+    font-size: 10px;
     font-weight: 700;
     padding: 3px 7px;
     border-radius: 20px;
     white-space: nowrap;
+    letter-spacing: 0.01em;
 }
 
 .op-kpi-badge--up {
     background: #dcfce7;
-    color: #16a34a;
+    color: #15803d;
 }
 
 .op-kpi-badge--down {
     background: #fee2e2;
-    color: #ef4444;
+    color: #dc2626;
 }
 
 .op-kpi-value {
     font-family: var(--font-heading);
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--color-text-heading);
     line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 3px;
+    text-align: center;
 }
 
 .op-kpi-label {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    text-align: center;
 }
 
 .op-kpi-sub {
@@ -374,8 +397,27 @@
     color: #94a3b8;
 }
 
+.op-kpi-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid var(--color-border-muted);
+    gap: 6px;
+}
+
 .op-kpi-spark {
-    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.op-kpi-trend-label {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ─── Skeleton ───────────────────────────────────────────────── */
@@ -1421,9 +1463,8 @@
         gap: 8px;
     }
 
-    .op-kpi-card {
-        padding: 12px;
-        gap: 4px;
+    .op-kpi-body {
+        padding: 11px 12px 10px;
     }
 
     .op-kpi-value {
@@ -1431,7 +1472,7 @@
     }
 
     .op-kpi-label {
-        font-size: 11px;
+        font-size: 10.5px;
     }
 
     .op-kpi-sub {
@@ -1628,10 +1669,8 @@
         gap: 7px;
     }
 
-    .op-kpi-card {
-        padding: 10px;
-        gap: 3px;
-        border-radius: 10px;
+    .op-kpi-body {
+        padding: 10px 11px 9px;
     }
 
     .op-kpi-value {
@@ -1639,11 +1678,11 @@
     }
 
     .op-kpi-label {
-        font-size: 10.5px;
+        font-size: 10px;
     }
 
     .op-kpi-sub,
-    .op-kpi-spark {
+    .op-kpi-footer {
         display: none;
     }
 

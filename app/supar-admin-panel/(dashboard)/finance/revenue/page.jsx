@@ -282,20 +282,25 @@ const SectionTitle = ({ icon: Icon, iconBg, iconColor, title, subtitle, action }
 // ── KPI Card ──
 const KPICard = ({ label, value, change, trend, sub, icon: Icon, color, bg }) => (
     <motion.div className="rv-kpi-card" variants={itemVariants} whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(4,65,125,0.12)" }}>
-        <div className="rv-kpi-top">
-            <div className="rv-kpi-icon" style={{ background: bg }}>
-                <Icon size={17} color={color} />
+        <div className="rv-kpi-accent" style={{ background: color }} />
+        <div className="rv-kpi-body">
+            <div className="rv-kpi-top">
+                <div className="rv-kpi-icon" style={{ background: bg }}>
+                    <Icon size={16} color={color} />
+                </div>
+                <div className={`rv-kpi-badge ${trend === "up" ? "rv-kpi-badge--up" : "rv-kpi-badge--down"}`}>
+                    {trend === "up" ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                    {change}
+                </div>
             </div>
-            <div className={`rv-kpi-badge ${trend === "up" ? "rv-kpi-badge--up" : "rv-kpi-badge--down"}`}>
-                {trend === "up" ? <ArrowUpRight size={11} /> : <ArrowDownRight size={11} />}
-                {change}
+            <div className="rv-kpi-value">{value}</div>
+            <div className="rv-kpi-label">{label}</div>
+            <div className="rv-kpi-footer">
+                <span className="rv-kpi-trend-label">{sub}</span>
+                <div className="rv-kpi-spark">
+                    <MiniSparkline color={color} />
+                </div>
             </div>
-        </div>
-        <div className="rv-kpi-value">{value}</div>
-        <div className="rv-kpi-label">{label}</div>
-        <div className="rv-kpi-sub">{sub}</div>
-        <div className="rv-kpi-spark">
-            <MiniSparkline color={color} />
         </div>
     </motion.div>
 );
@@ -303,10 +308,16 @@ const KPICard = ({ label, value, change, trend, sub, icon: Icon, color, bg }) =>
 // ── Skeleton KPI ──
 const SkeletonKPI = () => (
     <div className="rv-kpi-card rv-skeleton-card">
-        <div className="rv-sk rv-sk--icon" />
-        <div className="rv-sk rv-sk--val" />
-        <div className="rv-sk rv-sk--lbl" />
-        <div className="rv-sk rv-sk--spark" />
+        <div className="rv-sk" style={{ height: 3, borderRadius: 0, width: "100%" }} />
+        <div className="rv-kpi-body" style={{ gap: 8 }}>
+            <div className="rv-kpi-top">
+                <div className="rv-sk rv-sk--icon" />
+                <div className="rv-sk" style={{ height: 20, width: 52, borderRadius: 20 }} />
+            </div>
+            <div className="rv-sk rv-sk--val" />
+            <div className="rv-sk rv-sk--lbl" />
+            <div className="rv-sk rv-sk--spark" style={{ marginTop: 6 }} />
+        </div>
     </div>
 );
 

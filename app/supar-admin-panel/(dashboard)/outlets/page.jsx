@@ -20,11 +20,11 @@ import {
 } from "lucide-react";
 
 export const outletData = [
-    { id: "OUT-2025-000014", name: "Renova Dhanmondi", type: "Main Branch", address: "House 12, Road 5, Dhanmondi, Dhaka", phone: "+880 1812-345678", email: "dhanmondi@renova.com", manager: "Nadia Islam", status: "active", opened: "01 Jan 2023", image: "https://i.pravatar.cc/80?img=31" },
-    { id: "OUT-2025-000013", name: "Renova Mirpur", type: "Sub Branch", address: "Sec 6, Mirpur, Dhaka", phone: "+880 1712-345678", email: "mirpur@renova.com", manager: "Karim Ahmed", status: "active", opened: "15 Mar 2023", image: "https://i.pravatar.cc/80?img=32" },
-    { id: "OUT-2025-000012", name: "Renova Chattogram", type: "Sub Branch", address: "GEC Circle, Chattogram", phone: "+880 1912-345678", email: "ctg@renova.com", manager: "Sumaiya Begum", status: "inactive", opened: "20 Jun 2023", image: "https://i.pravatar.cc/80?img=33" },
-    { id: "OUT-2025-000011", name: "Renova Sylhet", type: "Sub Branch", address: "Zindabazar, Sylhet", phone: "+880 1612-345678", email: "sylhet@renova.com", manager: "Rafiqul Islam", status: "active", opened: "05 Sep 2023", image: "https://i.pravatar.cc/80?img=34" },
-    { id: "OUT-2025-000010", name: "Renova Uttara", type: "Sub Branch", address: "Sector 7, Uttara, Dhaka", phone: "+880 1512-345678", email: "uttara@renova.com", manager: "Tania Khanam", status: "closed", opened: "22 Nov 2023", image: "https://i.pravatar.cc/80?img=35" },
+    { id: "OUT-2025-000014", name: "Renova Dhanmondi", type: "Main Branch", address: "House 12, Road 5, Dhanmondi, Dhaka", phone: "+880 1812-345678", email: "dhanmondi@renova.com", manager: "Nadia Islam", status: "active", opened: "01 Jan 2023", image: "/images/logo.png" },
+    { id: "OUT-2025-000013", name: "Renova Mirpur", type: "Sub Branch", address: "Sec 6, Mirpur, Dhaka", phone: "+880 1712-345678", email: "mirpur@renova.com", manager: "Karim Ahmed", status: "active", opened: "15 Mar 2023", image: "/images/logo.png" },
+    { id: "OUT-2025-000012", name: "Renova Chattogram", type: "Sub Branch", address: "GEC Circle, Chattogram", phone: "+880 1912-345678", email: "ctg@renova.com", manager: "Sumaiya Begum", status: "inactive", opened: "20 Jun 2023", image: "/images/logo.png" },
+    { id: "OUT-2025-000011", name: "Renova Sylhet", type: "Sub Branch", address: "Zindabazar, Sylhet", phone: "+880 1612-345678", email: "sylhet@renova.com", manager: "Rafiqul Islam", status: "active", opened: "05 Sep 2023", image: "/images/logo.png" },
+    { id: "OUT-2025-000010", name: "Renova Uttara", type: "Sub Branch", address: "Sector 7, Uttara, Dhaka", phone: "+880 1512-345678", email: "uttara@renova.com", manager: "Tania Khanam", status: "closed", opened: "22 Nov 2023", image: "/images/logo.png" },
 ];
 
 export default function OutletPage() {
