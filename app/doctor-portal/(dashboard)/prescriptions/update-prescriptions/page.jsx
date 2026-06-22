@@ -222,6 +222,14 @@ export default function UpdatePrescriptionPage() {
         window.location.href = "/doctor-portal/prescriptions";
     };
 
+<<<<<<< HEAD
+=======
+    const handleSaveAsDraft = () => {
+     
+        alert("Prescription saved as draft");
+    };
+
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
     const handlePreview = async () => {
         setIsGenerating(true);
         const formData = buildPrescriptionDataFromForm({

@@ -5,9 +5,13 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import "./change-password.css";
+<<<<<<< HEAD
 import { Eye, EyeOff, Check, X, ArrowLeft } from "lucide-react";
+=======
+import { API_URL } from "@/config";
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
-const API_URL = "http://192.168.0.164:5001/api/v1/auth/change-password";
+const API_URL1 = `${API_URL}/auth/change-password`;
 
 const PASSWORD_REQUIREMENTS = [
   { id: "length", label: "Minimum 6 characters", test: (v) => v.length >= 6 },
@@ -149,7 +153,7 @@ export default function ChangePasswordPage() {
       setErrors({});
       setSuccess(false);
 
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URL1, {
         method: "POST", // change to PATCH if your backend uses PATCH
         headers: {
           "Content-Type": "application/json",

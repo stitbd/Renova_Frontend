@@ -4,9 +4,13 @@ import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Button from "@/components/common/Button";
+<<<<<<< HEAD
 import { Search, X, ChevronDown, User, Calendar, Star, Phone, Mail, MapPin, Stethoscope, Award, Users, Globe } from "lucide-react";
+=======
+import { API_URL } from "@/config";
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
-const API_URL = "http://192.168.0.164:5001/api/v1";
+const API_URL1 = `${API_URL}`;
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -106,7 +110,7 @@ export default function DoctorsGrid() {
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
-        const res = await fetch(`${API_URL}/doctor-specializations/getAll`);
+        const res = await fetch(`${API_URL1}/doctor-specializations/getAll`);
         const result = await res.json();
         if (result.success) setSpecializations(result.data || []);
       } catch (err) {
@@ -120,7 +124,7 @@ export default function DoctorsGrid() {
   useEffect(() => {
     const fetchOutlets = async () => {
       try {
-        const res = await fetch(`${API_URL}/outlets/getAll`);
+        const res = await fetch(`${API_URL1}/outlets/getAll`);
         const result = await res.json();
         if (result.success) setOutlets(result.data || []);
       } catch (err) {
@@ -145,7 +149,7 @@ export default function DoctorsGrid() {
       params.append("page", page.toString());
       params.append("limit", limit.toString());
 
-      const res = await fetch(`${API_URL}/doctors/getAll?${params}`, {
+      const res = await fetch(`${API_URL1}/doctors/getAll?${params}`, {
         method: "GET",
         credentials: "include",
       });

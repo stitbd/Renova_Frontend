@@ -1,8 +1,12 @@
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD:components/doctor-dashboard/AppointmentsList.jsx
 import { ArrowRight, Clock, Calendar, User } from "lucide-react";
+=======
+import "../../styles/pages/TodayAppointmentList.css"
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44:components/doctor-dashboard/TodayAppointmentsList.jsx
 
 // components/doctor-dashboard/AppointmentsList.jsx
-export default function AppointmentsList({ appointments }) {
+export default function TodayAppointmentsList({ appointments }) {
   const router = useRouter()
   return (
     <div>

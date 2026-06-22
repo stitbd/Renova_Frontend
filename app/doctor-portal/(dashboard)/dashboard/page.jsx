@@ -5,13 +5,18 @@ import { motion } from "framer-motion";
 import "./dashboard.css";
 import StatCard from "@/components/doctor-dashboard/StatCard";
 import PatientQueueList from "@/components/doctor-dashboard/PatientQueueList";
-import AppointmentsList from "@/components/doctor-dashboard/AppointmentsList";
+import AppointmentsList from "@/components/doctor-dashboard/TodayAppointmentsList";
 import ScheduleTimeline from "@/components/doctor-dashboard/ScheduleTimeline";
 import RecentConsultations from "@/components/doctor-dashboard/RecentConsultations";
 import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescriptions";
 import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 import { useAppSelector } from "@/redux/hook";
+<<<<<<< HEAD
 import { Users, Calendar, Stethoscope, FileText, DollarSign } from "lucide-react";
+=======
+import TodayAppointmentsList from "@/components/doctor-dashboard/TodayAppointmentsList";
+import { API_URL } from "@/config";
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 const messageCount = 3;
 
@@ -99,6 +104,7 @@ export default function DashboardPage() {
 
   const completedAppointments = appointments?.filter((appointment) => appointment?.status === "COMPLETED")
 
+<<<<<<< HEAD
   const closeSidebar = () => setSidebarOpen(false);
 
   useEffect(() => {
@@ -118,15 +124,42 @@ export default function DashboardPage() {
         if (!res.ok) {
           throw new Error(data?.message || "Failed to fetch appointments");
         }
+=======
 
-        setAppointments(data?.data || []);
-      } catch (error) {
-        console.error("Pending appointments fetch error:", error);
+  const closeSidebar = () => setSidebarOpen(false);
+
+  useEffect(() => {
+    if (!token) return;
+
+    fetchAppointments();
+  }, [token]);
+
+  const fetchAppointments = async () => {
+    try {
+      const res = await fetch(
+        `${API_URL}/appointments/my`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: "no-store",
+        }
+      );
+
+      const data = await res.json();
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Failed to fetch appointments");
       }
-    };
 
-    fetchPendingAppointments();
-  }, []);
+      setAppointments(data?.data || []);
+    } catch (error) {
+      console.error("Appointments fetch error:", error);
+    }
+  };
+
 
   return (
     <div className="dashboard-content">
@@ -143,10 +176,13 @@ export default function DashboardPage() {
       {/* Middle 3-column grid */}
       <div className="dashboard-grid">
         <div className="dashboard-column">
-          <PatientQueueList appointments={pendingAppointments} />
+          <PatientQueueList
+            appointments={pendingAppointments}
+            refetchAppointments={fetchAppointments}
+          />
         </div>
         <div className="dashboard-column">
-          <AppointmentsList appointments={todayAppointments} />
+          <TodayAppointmentsList appointments={todayAppointments} />
         </div>
         <div className="dashboard-column">
           <ScheduleTimeline schedule={dashboardData.schedule} />

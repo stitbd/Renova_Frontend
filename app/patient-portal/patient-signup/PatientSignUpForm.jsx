@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import "./patient-signup.css";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import {
   User,
   Mail,
@@ -23,6 +24,121 @@ import {
   Plus,
   X
 } from "lucide-react";
+=======
+import { API_URL } from "@/config";
+
+// ── inline SVG icons ──────────────────────────────────────────
+const Icon = {
+  ID: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <rect x="1" y="3" width="14" height="10" rx="2" stroke="#94a3b8" strokeWidth="1.3" />
+      <circle cx="5.5" cy="8" r="1.5" stroke="#94a3b8" strokeWidth="1.2" />
+      <path d="M9 6.5h4M9 8h3M9 9.5h4" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
+    </svg>
+  ),
+  User: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <circle cx="8" cy="5.5" r="2.5" stroke="#94a3b8" strokeWidth="1.3" />
+      <path d="M2.5 14c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+  Reference: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <circle cx="6" cy="5" r="2.5" stroke="#94a3b8" strokeWidth="1.3" />
+      <path d="M1.5 13c0-2.761 2.015-5 4.5-5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
+      <circle cx="12" cy="9" r="2" stroke="#94a3b8" strokeWidth="1.2" />
+      <path d="M9 13c0-1.657 1.343-3 3-3" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  ),
+  Phone: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <path d="M13 10.2c0 .2-.05.4-.14.6-.1.2-.22.38-.38.54-.28.3-.58.45-.9.45-.23 0-.48-.06-.74-.17-.26-.11-.52-.27-.78-.47-.27-.2-.52-.42-.77-.66-.25-.24-.47-.49-.67-.75-.2-.26-.36-.52-.47-.77-.11-.25-.17-.49-.17-.72 0-.22.05-.44.15-.64.1-.2.25-.39.44-.55.23-.18.49-.27.76-.27.1 0 .21.02.31.06.1.04.19.1.26.2l.94 1.33c.07.1.12.18.15.27.03.08.05.16.05.23 0 .09-.03.18-.07.27-.05.09-.11.18-.19.25l-.27.27c-.04.04-.06.08-.06.13 0 .03.01.05.02.08.01.03.03.05.04.07.07.12.18.28.35.47.17.2.34.4.54.59.19.19.38.37.58.54.19.17.35.29.48.35.02.01.04.02.08.03.04.01.07.02.11.02.06 0 .1-.02.14-.07l.27-.27c.09-.09.18-.16.26-.19.08-.04.16-.06.26-.06.07 0 .14.01.22.05.08.03.16.08.25.15l1.36.96c.1.07.17.15.2.25.04.1.05.2.05.31z" stroke="#94a3b8" strokeWidth="1.2" />
+    </svg>
+  ),
+  Email: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
+      <path d="M1.5 4.5L8 9l6.5-4.5" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+  Calendar: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <rect x="1.5" y="3" width="13" height="11" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
+      <path d="M5 1.5v3M11 1.5v3M1.5 7h13" stroke="#94a3b8" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+  Blood: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <path d="M8 2S4 7 4 10a4 4 0 0 0 8 0C12 7 8 2 8 2z" stroke="#94a3b8" strokeWidth="1.3" strokeLinejoin="round" />
+    </svg>
+  ),
+  Location: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <path d="M8 1.5a5 5 0 0 1 5 5c0 4-5 8-5 8s-5-4-5-8a5 5 0 0 1 5-5z" stroke="#94a3b8" strokeWidth="1.3" />
+      <circle cx="8" cy="6.5" r="1.5" stroke="#94a3b8" strokeWidth="1.2" />
+    </svg>
+  ),
+  Globe: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+      <circle cx="8" cy="8" r="6" stroke="#94a3b8" strokeWidth="1.3" />
+      <path d="M8 2c-2 2-2 8 0 12M8 2c2 2 2 8 0 12M2 8h12" stroke="#94a3b8" strokeWidth="1.1" strokeLinecap="round" />
+    </svg>
+  ),
+  Outlet: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="15" height="15">
+      <rect x="1.5" y="4" width="13" height="10" rx="1.5" stroke="#94a3b8" strokeWidth="1.3" />
+      <path d="M5.5 4V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M1.5 9h13" stroke="#94a3b8" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  ),
+  ChevronDown: () => (
+    <svg viewBox="0 0 16 16" fill="none" width="13" height="13">
+      <path d="M4 6l4 4 4-4" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Patient: () => (
+    <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  ),
+  Shield: () => (
+    <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
+      <path d="M14 3L5 7.5v6.5C5 19.7 8.9 23.7 14 25c5.1-1.3 9-5.3 9-11V7.5L14 3z" fill="#4caf50" />
+      <path d="M10 14l3 3.5L18 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Submit: () => (
+    <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+      <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7 10l2 2.5L13 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Secure: () => (
+    <svg viewBox="0 0 24 24" fill="none" width="26" height="26">
+      <path d="M12 3L4 7v5c0 4.418 3.582 8 8 9 4.418-1 8-4.582 8-9V7l-8-4z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <rect x="10" y="11" width="4" height="5" rx="1" fill="currentColor" opacity="0.85" />
+      <circle cx="12" cy="10" r="1.5" fill="currentColor" opacity="0.7" />
+      <path d="M10 11V9.5a2 2 0 0 1 4 0V11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  ),
+  Care: () => (
+    <svg viewBox="0 0 24 24" fill="none" width="26" height="26">
+      <path d="M7 17 C5 15 3 12 5 10 C7 8 9 10 9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M17 17 C19 15 21 12 19 10 C17 8 15 10 15 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M9 12 Q12 18 15 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M10 9.5 C10 7.5 12 6.5 12 6.5 C12 6.5 14 7.5 14 9.5 C14 11 12 12.5 12 12.5 C12 12.5 10 11 10 9.5Z" fill="currentColor" />
+    </svg>
+  ),
+  Support: () => (
+    <svg viewBox="0 0 24 24" fill="none" width="26" height="26">
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.6" />
+      <text x="12" y="14.5" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700" fill="currentColor">24/7</text>
+      <path d="M17 7 C16 5 14 5 14 7 C14 9 17 9 17 7Z" fill="currentColor" />
+    </svg>
+  ),
+};
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 // ── reusable field wrapper ────────────────────────────────────
 function Field({ label, required, children, className = "" }) {
@@ -72,7 +188,7 @@ function Select({ icon: IconComp, children, className = "", ...props }) {
 }
 
 // ── main component ────────────────────────────────────────────
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.0.164:5001/api/v1";
+const API_BASE_URL = API_URL;
 
 export default function PatientSignUpForm() {
   const router = useRouter();

@@ -5,9 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import "./appointments.css";
+<<<<<<< HEAD
 import { Calendar, Clock, User, Phone, Mail, AlertCircle, Video, FileText, Eye, MessageSquare, ChevronRight } from "lucide-react";
+=======
+import { API_URL } from "@/config";
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
-const API_URL = "http://192.168.0.164:5001/api/v1/appointments/my";
+const API_URL1 = `${API_URL}/appointments/my`;
 const TZ = "Asia/Dhaka";
 
 const STATUS_FILTERS = [
@@ -155,7 +159,7 @@ export default function AppointmentsPage() {
         setIsLoading(true);
         setError("");
 
-        const res = await fetch(API_URL, {
+        const res = await fetch(API_URL1, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -240,6 +244,11 @@ export default function AppointmentsPage() {
     };
   }, [normalizedAppointments]);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
   return (
     <div className="dashboard-content">
       <div className="apt-summary-bar">

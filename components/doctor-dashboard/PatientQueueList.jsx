@@ -1,18 +1,84 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { User, ArrowRight, Check, X } from "lucide-react";
+=======
+import { useAppSelector } from "@/redux/hook";
+import { API_URL } from "@/config";
+
+const CONFIRM_API_URL = `${API_URL}/appointments/confirm`;
+const CANCEL_API_URL = `${API_URL}/appointments/cancel`;
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 // components/doctor-dashboard/PatientQueueList.jsx
-export default function PatientQueueList({ appointments }) {
+export default function PatientQueueList({ appointments = [], refetchAppointments, }) {
   const router = useRouter();
+  const token = useAppSelector((state) => state.auth.accessToken);
+
+  const [actionLoadingId, setActionLoadingId] = useState(null);
+
+  const handleAccept = async (appointmentId) => {
+    try {
+      setActionLoadingId(appointmentId);
+
+      const res = await fetch(`${CONFIRM_API_URL}/${appointmentId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to accept appointment");
+      }
+
+      await refetchAppointments?.();
+    } catch (error) {
+      alert(error.message || "Something went wrong");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  const handleReject = async (appointmentId) => {
+    try {
+      setActionLoadingId(appointmentId);
+
+      const res = await fetch(`${CANCEL_API_URL}/${appointmentId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          cancellationReason: "Rejected by doctor",
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to reject appointment");
+      }
+
+      await refetchAppointments?.();
+    } catch (error) {
+      alert(error.message || "Something went wrong");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
 
   return (
     <div>
       <div className="section-header-dashboard">
         <h2 className="section-title">
-          Pending Patients
-          <span className="section-count-badge">6</span>
+          Pending Patients : {appointments.length}
         </h2>
         <a
           href="/doctor-portal/patient-queue"
@@ -50,8 +116,26 @@ export default function PatientQueueList({ appointments }) {
             </div>
 
             <div className="queue-actions">
+<<<<<<< HEAD
               <button className="btn-queue-action btn-accept"><Check size={14} /> Accept</button>
               <button className="btn-queue-action btn-reject"><X size={14} /> Reject</button>
+=======
+              <button
+                className="btn-queue-action btn-accept"
+                onClick={() => handleAccept(patient.id)}
+                disabled={actionLoadingId === patient.id}
+              >
+                {actionLoadingId === patient.id ? "Accepting..." : "Accept"}
+              </button>
+
+              <button
+                className="btn-queue-action btn-reject"
+                onClick={() => handleReject(patient.id)}
+                disabled={actionLoadingId === patient.id}
+              >
+                {actionLoadingId === patient.id ? "Rejecting..." : "Reject"}
+              </button>
+>>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
             </div>
           </div>
         ))}
