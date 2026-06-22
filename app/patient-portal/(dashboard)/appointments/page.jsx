@@ -6,11 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import "./patient-appointments.css";
 import { CalendarView } from "@/components/patient-dashboard/patient-appointment-calenderView";
-<<<<<<< HEAD
 import { Calendar, Clock, User, Phone, Mail, MapPin, Video, CheckCircle, XCircle, AlertCircle, ArrowRight, Plus, Search, Filter } from "lucide-react";
-=======
-import { API_URL } from "@/config";
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 const API_URL1 = `${API_URL}/appointments/my`;
 const CANCEL_API_URL = `${API_URL}/appointments/cancel`;

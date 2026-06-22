@@ -5,11 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import "./change-password.css";
-<<<<<<< HEAD
 import { Eye, EyeOff, Check, X, ArrowLeft } from "lucide-react";
-=======
-import { API_URL } from "@/config";
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 const API_URL1 = `${API_URL}/auth/change-password`;
 

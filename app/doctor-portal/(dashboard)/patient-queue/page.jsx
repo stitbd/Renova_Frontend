@@ -4,11 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/redux/hook";
 import "./patient-queue.css";
-<<<<<<< HEAD
 import { Search, User, Calendar, Clock, Phone, Mail, Check, X, AlertCircle } from "lucide-react";
-=======
-import { API_URL } from "@/config";
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 const API_URL1 = `${API_URL}/appointments/my`;
 const CONFIRM_API_URL = `${API_URL}/appointments/confirm`;

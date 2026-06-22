@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-<<<<<<< HEAD
 import { User, ArrowRight, Check, X } from "lucide-react";
-=======
-import { useAppSelector } from "@/redux/hook";
-import { API_URL } from "@/config";
-
-const CONFIRM_API_URL = `${API_URL}/appointments/confirm`;
-const CANCEL_API_URL = `${API_URL}/appointments/cancel`;
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 // components/doctor-dashboard/PatientQueueList.jsx
 export default function PatientQueueList({ appointments = [], refetchAppointments, }) {
@@ -116,26 +108,8 @@ export default function PatientQueueList({ appointments = [], refetchAppointment
             </div>
 
             <div className="queue-actions">
-<<<<<<< HEAD
               <button className="btn-queue-action btn-accept"><Check size={14} /> Accept</button>
               <button className="btn-queue-action btn-reject"><X size={14} /> Reject</button>
-=======
-              <button
-                className="btn-queue-action btn-accept"
-                onClick={() => handleAccept(patient.id)}
-                disabled={actionLoadingId === patient.id}
-              >
-                {actionLoadingId === patient.id ? "Accepting..." : "Accept"}
-              </button>
-
-              <button
-                className="btn-queue-action btn-reject"
-                onClick={() => handleReject(patient.id)}
-                disabled={actionLoadingId === patient.id}
-              >
-                {actionLoadingId === patient.id ? "Rejecting..." : "Reject"}
-              </button>
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
             </div>
           </div>
         ))}

@@ -4,11 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Button from "@/components/common/Button";
-<<<<<<< HEAD
 import { Search, X, ChevronDown, User, Calendar, Star, Phone, Mail, MapPin, Stethoscope, Award, Users, Globe } from "lucide-react";
-=======
-import { API_URL } from "@/config";
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 const API_URL1 = `${API_URL}`;
 

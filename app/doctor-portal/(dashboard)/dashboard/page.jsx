@@ -11,16 +11,12 @@ import RecentConsultations from "@/components/doctor-dashboard/RecentConsultatio
 import PendingPrescriptions from "@/components/doctor-dashboard/PendingPrescriptions";
 import EarningsOverview from "@/components/doctor-dashboard/EarningsOverview";
 import { useAppSelector } from "@/redux/hook";
-<<<<<<< HEAD
 import { Users, Calendar, Stethoscope, FileText, DollarSign } from "lucide-react";
-=======
 import TodayAppointmentsList from "@/components/doctor-dashboard/TodayAppointmentsList";
 import { API_URL } from "@/config";
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
 
 const messageCount = 3;
 
-// Mock data - Replace with actual API calls
 const dashboardData = {
   stats: {
     newPatients: { count: "05", label: "In Queue" },
@@ -89,26 +85,23 @@ export default function DashboardPage() {
   );
 
   const todayAppointments = appointments?.filter((appointment) => {
-    const appointmentDate = new Date(
-      appointment.startTime
-    ).toLocaleDateString("en-CA", {
+    const appointmentDate = new Date(appointment.startTime).toLocaleDateString("en-CA", {
       timeZone: "Asia/Dhaka",
     });
-
     const todayDate = new Date().toLocaleDateString("en-CA", {
       timeZone: "Asia/Dhaka",
     });
-
     return appointmentDate === todayDate;
   });
 
-  const completedAppointments = appointments?.filter((appointment) => appointment?.status === "COMPLETED")
+  const completedAppointments = appointments?.filter(
+    (appointment) => appointment?.status === "COMPLETED"
+  );
 
-<<<<<<< HEAD
   const closeSidebar = () => setSidebarOpen(false);
 
   useEffect(() => {
-    const fetchPendingAppointments = async () => {
+    const fetchAppointments = async () => {
       try {
         const res = await fetch(
           "http://192.168.0.164:5001/api/v1/appointments/my",
@@ -124,42 +117,15 @@ export default function DashboardPage() {
         if (!res.ok) {
           throw new Error(data?.message || "Failed to fetch appointments");
         }
-=======
 
-  const closeSidebar = () => setSidebarOpen(false);
-
-  useEffect(() => {
-    if (!token) return;
+        setAppointments(data?.data || []);
+      } catch (error) {
+        console.error("Appointments fetch error:", error);
+      }
+    };
 
     fetchAppointments();
   }, [token]);
-
-  const fetchAppointments = async () => {
-    try {
-      const res = await fetch(
-        `${API_URL}/appointments/my`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          cache: "no-store",
-        }
-      );
-
-      const data = await res.json();
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Failed to fetch appointments");
-      }
-
-      setAppointments(data?.data || []);
-    } catch (error) {
-      console.error("Appointments fetch error:", error);
-    }
-  };
-
 
   return (
     <div className="dashboard-content">

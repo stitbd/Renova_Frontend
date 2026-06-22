@@ -432,10 +432,6 @@ function Step2({ data, errors, upd, onNext, onBack, minDate, doctor, departments
   const isOnline = data.mode === "online";
   const isOffline = data.mode === "offline";
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a6e516a82a33d49d7708a2eb578dcda2ef8e9d44
   /* Doctors for the chosen department (from API) */
   const doctors = useMemo(() => {
     if (doctor) {
