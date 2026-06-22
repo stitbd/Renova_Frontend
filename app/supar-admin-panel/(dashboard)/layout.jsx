@@ -152,7 +152,7 @@ const navItems = [
     label: "Website Content",
     icon: Globe,
   },
-  {
+  // {
   //   type: "section",
   //   label: "SYSTEM SETTINGS",
   // },
