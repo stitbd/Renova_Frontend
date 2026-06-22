@@ -73,21 +73,16 @@ const navItems = [
     icon: Building2,
   },
   {
-    href: "/supar-admin-panel/outlets/create",
+    href: "/supar-admin-panel/outlets/new-outlet",
     label: "Create Outlet",
     icon: PlusCircle,
-  },
-  {
-    href: "/supar-admin-panel/outlets/settings",
-    label: "Outlet Settings",
-    icon: Settings,
   },
   {
     type: "section",
     label: "DOCTOR MANAGEMENT",
   },
   {
-    href: "/supar-admin-panel/doctors/approvals",
+    href: "/supar-admin-panel/doctor-approval",
     label: "Doctor Approval",
     icon: UserCheck,
   },

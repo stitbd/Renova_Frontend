@@ -263,7 +263,7 @@ export default function DoctorsPage() {
                                     <td>
                                         <div className="table-actions">
                                             <button
-                                                onClick={() => router.push(`/supar-admin-panel/doctors/doctor-profile?id=${doctor.id}`)}
+                                                onClick={() => router.push(`/supar-admin-panel/doctors/doctor-profile?id=${doctor.id}&from=doctors`)}
                                                 className="action-btn"
                                             >
                                                 <Eye size={14} color="#64748b" />
@@ -327,7 +327,7 @@ export default function DoctorsPage() {
                             </div>
 
                             <div className="staff-card-actions">
-                                <button onClick={() => router.push(`/supar-admin-panel/doctors/doctor-profile?id=${doctor.id}`)} className="action-btn">
+                                <button onClick={() => router.push(`/supar-admin-panel/doctors/doctor-profile?id=${doctor.id}&from=doctors`)} className="action-btn">
                                     <Eye size={14} color="#64748b" />
                                     <span>View</span>
                                 </button>

@@ -1,0 +1,47 @@
+/* ======================================================
+   CSS FILE: new-outlet.css
+   Add New Outlet Page Styles — imports staff form base
+   ====================================================== */
+
+@import "../../staff/new-staff/new-staff.css";
+
+/* ── Outlet-specific overrides ──────────────────────────── */
+.permissions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.permission-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 0.5px solid #f1f5f9;
+    min-width: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.permission-label {
+    font-size: clamp(11px, 2.8vw, 12.5px);
+    font-weight: 500;
+    color: #374151;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .permissions-grid {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}

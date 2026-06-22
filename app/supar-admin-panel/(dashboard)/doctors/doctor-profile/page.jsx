@@ -440,12 +440,12 @@ export default function DoctorProfileAdminPage() {
                 <div className="rxd-breadcrumb">
                     <span>Home</span>
                     <span className="rxd-breadcrumb-sep">›</span>
-                    <span onClick={() => router.push("/supar-admin-panel/staff")} className="rxd-breadcrumb-link">Doctors</span>
+                    <span onClick={() => router.push("/supar-admin-panel/doctors")} className="rxd-breadcrumb-link">Doctors</span>
                     <span className="rxd-breadcrumb-sep">›</span>
                     <span className="rxd-breadcrumb-current">Doctor Profile</span>
                 </div>
                 <div className="rxd-header-actions">
-                    <button onClick={() => router.push("/supar-admin-panel/staff")} className="rxd-header-btn rxd-btn-back">
+                    <button onClick={() => router.push(searchParams.get("from") === "approval" ? "/supar-admin-panel/doctor-approval" : "/supar-admin-panel/doctors")} className="rxd-header-btn rxd-btn-back">
                         <ArrowLeft size={14} /> Back
                     </button>
                     {isEditing ? (
@@ -458,13 +458,17 @@ export default function DoctorProfileAdminPage() {
                             </button>
                         </>
                     ) : (
-                        <button onClick={handleEdit} className="rxd-header-btn rxd-btn-primary">
-                            <Edit size={14} color="#fff" /> Edit Profile
+                        searchParams.get("from") !== "approval" && (
+                            <button onClick={handleEdit} className="rxd-header-btn rxd-btn-primary">
+                                <Edit size={14} color="#fff" /> Edit Profile
+                            </button>
+                        )
+                    )}
+                    {searchParams.get("from") !== "approval" && (
+                        <button onClick={handleDelete} className="rxd-header-btn rxd-btn-danger">
+                            <Trash2 size={14} color="#ef4444" /> Delete
                         </button>
                     )}
-                    <button onClick={handleDelete} className="rxd-header-btn rxd-btn-danger">
-                        <Trash2 size={14} color="#ef4444" /> Delete
-                    </button>
                 </div>
             </div>
 
