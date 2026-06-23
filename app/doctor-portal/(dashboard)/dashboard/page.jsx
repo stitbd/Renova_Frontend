@@ -110,6 +110,7 @@ export default function DashboardPage() {
     fetchAppointments();
   }, [token]);
 
+
   const fetchAppointments = async () => {
     try {
       const res = await fetch(
@@ -136,6 +137,7 @@ export default function DashboardPage() {
   };
 
 
+  
   return (
     <div className="dashboard-content">
 
