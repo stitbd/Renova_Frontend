@@ -1,0 +1,119 @@
+/* About Page Specific Styles */
+.wc-about-page {
+  height: 100%;
+  background: var(--color-bg-light, #f0f4f8);
+}
+
+.wc-about-editor .wc-editor-card {
+  margin-bottom: 20px;
+}
+
+/* Features grid - 3 columns */
+.wc-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.wc-feature-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--color-bg-light, #f8fafc);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 10px;
+}
+
+.wc-feature-item .wc-input {
+  font-weight: 600;
+}
+
+/* Stats bar specific */
+.wc-about-editor .wc-stat-inputs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.wc-about-editor .wc-stat-input-item {
+  background: var(--color-bg-light, #f8fafc);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.wc-about-editor .wc-stat-input-item label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--color-text-muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.wc-about-editor .wc-stat-input-item input {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-primary, #1a202c);
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+/* Team member card */
+.wc-team-member-card {
+  background: var(--color-white, #fff);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wc-team-member-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: var(--color-bg-light, #f8fafc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted, #94a3b8);
+  border: 1px dashed var(--color-border-default, #e2e8f0);
+}
+
+.wc-team-member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wc-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wc-about-editor .wc-stat-inputs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wc-features-grid {
+    grid-template-columns: 1fr;
+  }
+  .wc-about-editor .wc-stat-inputs {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .wc-about-editor .wc-stat-inputs {
+    grid-template-columns: 1fr;
+  }
+}
