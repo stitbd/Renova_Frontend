@@ -3,6 +3,8 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-devices.css";
+import { Plus, Monitor, Activity, Settings, Download, Eye } from "lucide-react";
 
 export default function DevicesPage() {
   const [activeTab, setActiveTab] = useState("devices");
@@ -23,17 +25,6 @@ export default function DevicesPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header */}
-      <motion.div className="page-header">
-        <h1 className="page-title">Devices & Reports</h1>
-        <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Add Device
-        </motion.button>
-      </motion.div>
 
       {/* Tabs */}
       <motion.div className="tabs-bar">
@@ -64,11 +55,7 @@ export default function DevicesPage() {
             >
               <div className="device-header">
                 <div className="device-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="2" y="3" width="20" height="14" rx="2" />
-                    <line x1="8" y1="21" x2="16" y2="21" />
-                    <line x1="12" y1="17" x2="12" y2="21" />
-                  </svg>
+                  <Monitor size={24} />
                 </div>
                 <span className={`device-status ${device.status.toLowerCase()}`}>{device.status}</span>
               </div>
@@ -86,7 +73,7 @@ export default function DevicesPage() {
               </div>
               <div className="device-actions">
                 <motion.button className="btn-small" whileHover={{ scale: 1.05 }}>View Reports</motion.button>
-                <motion.button className="btn-small outline" whileHover={{ scale: 1.05 }}>Settings</motion.button>
+                <motion.button className="btn-small outline" whileHover={{ scale: 1.05 }}><Settings size={14} /> Settings</motion.button>
               </div>
             </motion.div>
           ))}
@@ -115,13 +102,9 @@ export default function DevicesPage() {
                   <td><span className={`status-badge ${report.status.toLowerCase()}`}>{report.status}</span></td>
                   <td>
                     <div className="table-actions">
-                      <motion.button className="btn-icon view" whileHover={{ scale: 1.1 }}>View</motion.button>
+                      <motion.button className="btn-icon view" whileHover={{ scale: 1.1 }}><Eye size={16} /></motion.button>
                       <motion.button className="btn-icon download" whileHover={{ scale: 1.1 }}>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                          <polyline points="7 10 12 15 17 10" />
-                          <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
+                        <Download size={16} />
                       </motion.button>
                     </div>
                   </td>

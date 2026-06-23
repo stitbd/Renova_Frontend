@@ -97,6 +97,13 @@ const PAGE_TREE = [
     icon: "contact",
     sections: ["hero", "contact-info", "map", "form-settings", "seo"],
   },
+  {
+    id: "General Settings",
+    label: "General Settings",
+    href: "/General Settings",
+    icon: "General Settings",
+    sections: ["General Setting", "Social Media", "Payment Gateway", "SMS Gateway", "Analytics & Tag Manager"],
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════

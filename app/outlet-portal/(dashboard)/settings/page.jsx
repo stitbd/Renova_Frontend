@@ -3,6 +3,12 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-settings.css";
+import {
+  Building2, Bell, Lock, CreditCard, Link,
+  Edit, Save, AlertTriangle, Shield, Key,
+  Mail, Phone, MapPin, Globe, Clock as ClockIcon
+} from "lucide-react";
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState("outlet");
@@ -33,23 +39,26 @@ export default function SettingsPage() {
       <motion.aside className="settings-sidebar">
         <nav className="settings-nav">
           {[
-            { id: "outlet", label: "Outlet Info", icon: "🏥" },
-            { id: "notifications", label: "Notifications", icon: "🔔" },
-            { id: "security", label: "Security", icon: "🔒" },
-            { id: "billing", label: "Billing", icon: "💳" },
-            { id: "integrations", label: "Integrations", icon: "🔗" },
-          ].map(section => (
-            <motion.button
-              key={section.id}
-              className={`settings-nav-item ${activeSection === section.id ? "active" : ""}`}
-              onClick={() => setActiveSection(section.id)}
-              whileHover={{ x: 4 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="nav-icon">{section.icon}</span>
-              <span className="nav-label">{section.label}</span>
-            </motion.button>
-          ))}
+            { id: "outlet", label: "Outlet Info", icon: Building2 },
+            { id: "notifications", label: "Notifications", icon: Bell },
+            { id: "security", label: "Security", icon: Shield },
+            { id: "billing", label: "Billing", icon: CreditCard },
+            { id: "integrations", label: "Integrations", icon: Link },
+          ].map(section => {
+            const IconComponent = section.icon;
+            return (
+              <motion.button
+                key={section.id}
+                className={`settings-nav-item ${activeSection === section.id ? "active" : ""}`}
+                onClick={() => setActiveSection(section.id)}
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="nav-icon"><IconComponent size={18} /></span>
+                <span className="nav-label">{section.label}</span>
+              </motion.button>
+            );
+          })}
         </nav>
       </motion.aside>
 
@@ -64,41 +73,47 @@ export default function SettingsPage() {
                 onClick={() => setIsEditing(!isEditing)}
                 whileHover={{ scale: 1.02 }}
               >
+                {isEditing ? <Save size={16} /> : <Edit size={16} />}
                 {isEditing ? "Save Changes" : "Edit"}
               </motion.button>
             </div>
 
             <div className="settings-form">
               {[
-                { label: "Outlet Name", key: "name", type: "text" },
-                { label: "Outlet ID", key: "outletId", type: "text", disabled: true },
-                { label: "Address", key: "address", type: "textarea" },
-                { label: "Phone", key: "phone", type: "tel" },
-                { label: "Email", key: "email", type: "email" },
-                { label: "Subdomain", key: "subdomain", type: "text", disabled: true },
-                { label: "Working Hours", key: "workingHours", type: "text" },
-              ].map(field => (
-                <motion.div key={field.key} className="form-row" whileHover={{ backgroundColor: "#f8fafc" }}>
-                  <label className="form-label">{field.label}</label>
-                  {isEditing && !field.disabled ? (
-                    field.type === "textarea" ? (
-                      <textarea
-                        className="form-input"
-                        defaultValue={outletSettings[field.key]}
-                        rows={3}
-                      />
+                { label: "Outlet Name", key: "name", type: "text", icon: Building2 },
+                { label: "Outlet ID", key: "outletId", type: "text", icon: CreditCard, disabled: true },
+                { label: "Address", key: "address", type: "textarea", icon: MapPin },
+                { label: "Phone", key: "phone", type: "tel", icon: Phone },
+                { label: "Email", key: "email", type: "email", icon: Mail },
+                { label: "Subdomain", key: "subdomain", type: "text", icon: Globe, disabled: true },
+                { label: "Working Hours", key: "workingHours", type: "text", icon: ClockIcon },
+              ].map(field => {
+                const IconComponent = field.icon;
+                return (
+                  <motion.div key={field.key} className="form-row" whileHover={{ backgroundColor: "#f8fafc" }}>
+                    <label className="form-label">
+                      <IconComponent size={14} /> {field.label}
+                    </label>
+                    {isEditing && !field.disabled ? (
+                      field.type === "textarea" ? (
+                        <textarea
+                          className="form-input"
+                          defaultValue={outletSettings[field.key]}
+                          rows={3}
+                        />
+                      ) : (
+                        <input
+                          type={field.type}
+                          className="form-input"
+                          defaultValue={outletSettings[field.key]}
+                        />
+                      )
                     ) : (
-                      <input
-                        type={field.type}
-                        className="form-input"
-                        defaultValue={outletSettings[field.key]}
-                      />
-                    )
-                  ) : (
-                    <p className="form-value">{outletSettings[field.key]}</p>
-                  )}
-                </motion.div>
-              ))}
+                      <p className="form-value">{outletSettings[field.key]}</p>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
@@ -149,7 +164,7 @@ export default function SettingsPage() {
 
             <div className="security-settings">
               <div className="security-card">
-                <h4>Change Password</h4>
+                <h4><Key size={16} /> Change Password</h4>
                 <p className="security-desc">Update your account password regularly</p>
                 <motion.button className="btn-secondary" whileHover={{ scale: 1.02 }}>
                   Change Password
@@ -157,7 +172,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="security-card">
-                <h4>Two-Factor Authentication</h4>
+                <h4><Shield size={16} /> Two-Factor Authentication</h4>
                 <p className="security-desc">Add an extra layer of security to your account</p>
                 <label className="toggle-switch large">
                   <input type="checkbox" defaultChecked />
@@ -166,7 +181,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="security-card danger">
-                <h4>Danger Zone</h4>
+                <h4><AlertTriangle size={16} /> Danger Zone</h4>
                 <p className="security-desc">Once you delete your outlet, there is no going back.</p>
                 <motion.button className="btn-danger" whileHover={{ scale: 1.02 }}>
                   Delete Outlet

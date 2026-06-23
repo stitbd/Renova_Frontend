@@ -1,0 +1,111 @@
+/* ======================================================
+   CSS FILE: outlet-inventory.css
+   ====================================================== */
+
+/* Inventory Summary */
+.inventory-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.summary-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 4px solid;
+}
+
+.summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.summary-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.summary-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a202c;
+}
+
+/* Stock Bar */
+.stock-bar {
+    position: relative;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stock-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 3px;
+}
+
+.stock-value {
+    position: relative;
+    z-index: 1;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+/* Product Name */
+.product-name {
+    font-weight: 600;
+    color: #1a202c;
+}
+
+/* Status Badges for Inventory */
+.status-badge.low-stock {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.status-badge.critical {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.status-badge.in-stock {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+/* Button Icons */
+.btn-icon.restock {
+    color: #f59e0b;
+}
+
+.btn-icon.edit {
+    color: #428a26;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .inventory-summary {
+        grid-template-columns: 1fr;
+    }
+}
