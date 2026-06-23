@@ -187,7 +187,7 @@ export default function HeroSection() {
                 className="hero-description"
                 variants={fadeInUp}
               >
-                {siteConfig.description} Certified specialists, advanced diagnostics, and telemedicine — all under one roof.
+                {siteConfig.description} Experience compassionate, world-class medicine with a personal touch.
               </motion.p>
             </motion.div>
 
