@@ -34,24 +34,73 @@
 }
 
 .earnings-overview-card {
-    background: var(--color-white);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
-    padding: 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 12px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
-    transition: var(--transition-fast);
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .earnings-overview-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.earnings-overview-card.c-blue {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    border-left-color: #1d4ed8;
+}
+
+.earnings-overview-card.c-green {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    border-left-color: #16a34a;
+}
+
+.earnings-overview-card.c-purple {
+    background: #faf5ff;
+    border-color: #ddd6fe;
+    border-left-color: #7c3aed;
+}
+
+.earnings-overview-card.c-orange {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    border-left-color: #ea580c;
+}
+
+.earnings-overview-card.c-amber {
+    background: #fefce8;
+    border-color: #fef08a;
+    border-left-color: #d97706;
+}
+
+.earnings-overview-card.c-teal {
+    background: #f0fdfa;
+    border-color: #99f6e4;
+    border-left-color: #0d9488;
+}
+
+.earnings-overview-card.c-cyan {
+    background: #ecfeff;
+    border-color: #a5f3fc;
+    border-left-color: #0891b2;
+}
+
+.earnings-overview-card.c-pink {
+    background: #fdf4ff;
+    border-color: #e9d5ff;
+    border-left-color: #9333ea;
 }
 
 .earnings-overview-icon {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -491,7 +540,16 @@
 .earnings-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 640px;
+}
+
+.withdrawal-history-table {
+    min-width: unset;
+}
+
+.withdrawal-history-table th,
+.withdrawal-history-table td {
+    padding: 10px 12px;
+    font-size: 12px;
 }
 
 .earnings-table th {
@@ -524,40 +582,41 @@
     color: var(--color-primary);
 }
 
-.earnings-table .status-cell {
+.status-cell {
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 600;
     display: inline-block;
+    white-space: nowrap;
 }
 
-.earnings-table .status-cell.completed {
+.status-cell.completed {
     background: #dcfce7;
     color: #16a34a;
 }
 
-.earnings-table .status-cell.pending {
+.status-cell.pending {
     background: #fef3c7;
     color: #d97706;
 }
 
-.earnings-table .status-cell.refunded {
+.status-cell.refunded {
     background: #dbeafe;
     color: #1d4ed8;
 }
 
-.earnings-table .status-cell.cancelled {
+.status-cell.cancelled {
     background: #fee2e2;
     color: #dc2626;
 }
 
-.earnings-table .status-cell.processing {
+.status-cell.processing {
     background: #fef3c7;
     color: #d97706;
 }
 
-.earnings-table .status-cell.failed {
+.status-cell.failed {
     background: #fee2e2;
     color: #dc2626;
 }
@@ -865,13 +924,11 @@
     }
 }
 
-
-
 /* ===== Page Layout ===== */
 .earnings-page {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
 }
 
 .earnings-page-header {
@@ -895,108 +952,6 @@
     margin: 0;
 }
 
-/* ===== Summary Overview Cards ===== */
-.earnings-overview-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-}
-
-.earnings-overview-card {
-    background: var(--color-white);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    transition: var(--transition-fast);
-}
-
-.earnings-overview-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-}
-
-.earnings-overview-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.earnings-overview-icon svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.earnings-overview-info {
-    min-width: 0;
-}
-
-.earnings-overview-label {
-    font-size: 11.5px;
-    color: var(--color-text-muted);
-    margin: 0 0 4px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.earnings-overview-value {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--color-text-heading);
-    margin: 0;
-}
-
-.earnings-overview-card.c-blue .earnings-overview-icon {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.earnings-overview-card.c-green .earnings-overview-icon {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.earnings-overview-card.c-purple .earnings-overview-icon {
-    background: #ede9fe;
-    color: #7c3aed;
-}
-
-.earnings-overview-card.c-orange .earnings-overview-icon {
-    background: #ffedd5;
-    color: #ea580c;
-}
-
-.earnings-overview-card.c-amber .earnings-overview-icon {
-    background: #fef3c7;
-    color: #d97706;
-}
-
-.earnings-overview-card.c-teal .earnings-overview-icon {
-    background: #d1fae5;
-    color: #0d9488;
-}
-
-.earnings-overview-card.c-cyan .earnings-overview-icon {
-    background: #cffafe;
-    color: #0891b2;
-}
-
-.earnings-overview-card.c-pink .earnings-overview-icon {
-    background: #fde8ff;
-    color: #9333ea;
-}
-
 /* ===== Main Grid (content + sidebar) ===== */
 .earnings-main-grid {
     display: grid;
@@ -1360,7 +1315,6 @@
 .earnings-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 640px;
 }
 
 .earnings-table th {
@@ -1460,6 +1414,157 @@
 .pagination-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+.transaction-cards {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transaction-card {
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border-default);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transaction-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.transaction-card-id {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.transaction-card-patient {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin: 2px 0 0;
+}
+
+.transaction-card-type {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin: 2px 0 0;
+}
+
+.transaction-card-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.transaction-card-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.transaction-card-field-label {
+    font-size: 10px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.transaction-card-field-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.transaction-card-field-value.net {
+    color: var(--color-primary);
+}
+
+.transaction-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border-muted);
+}
+
+.transaction-card-apt {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.transaction-card-date {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+/* ===== Refund Cards (Mobile) ===== */
+.refund-cards {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.refund-card {
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border-default);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.refund-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.refund-card-patient {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-heading);
+}
+
+.refund-card-apt {
+    font-size: 11px;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.refund-card-amount {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.refund-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border-muted);
+}
+
+.refund-card-reason {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.refund-card-date {
+    font-size: 11px;
+    color: var(--color-text-muted);
 }
 
 /* ===== Withdrawal Section ===== */
@@ -1710,6 +1815,10 @@
         grid-template-columns: 1fr;
     }
 
+    .breakdown-card {
+        padding: 5px;
+    }
+
     .withdrawal-methods-grid {
         grid-template-columns: 1fr;
     }
@@ -1731,5 +1840,50 @@
     .settlement-card {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .transaction-filters {
+        gap: 8px;
+    }
+
+    .filter-pills {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-pills::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-pill {
+        flex-shrink: 0;
+    }
+
+    .transaction-table-wrapper {
+        display: none;
+    }
+
+    .transaction-cards {
+        display: flex;
+    }
+
+    .transaction-card-body {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .refund-table-wrapper {
+        display: none;
+    }
+
+    .refund-cards {
+        display: flex;
+    }
+
+    .withdrawal-history-table th,
+    .withdrawal-history-table td {
+        padding: 8px 10px;
+        font-size: 11px;
     }
 }

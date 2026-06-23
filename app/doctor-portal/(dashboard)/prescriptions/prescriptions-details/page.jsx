@@ -5,6 +5,28 @@ import { useState } from "react";
 import { generatePrescriptionPDF, buildPrescriptionDataFromDetails } from "@/utils/prescriptionPDF";
 import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 import "./prescriptions-details.css";
+import {
+    ArrowLeft,
+    Printer,
+    Download,
+    Edit,
+    FileText,
+    Pill,
+    Info,
+    Paperclip,
+    Eye,
+    User,
+    Phone,
+    Calendar,
+    MapPin,
+    MessageCircle,
+    Mail,
+    Share2,
+    X,
+    Clock,
+    Stethoscope,
+    Clipboard
+} from "lucide-react";
 
 const prescription = {
     id: "RX-2025-000156",
@@ -56,30 +78,6 @@ const doctor = {
     email: "dr.noman@hospital.com",
     phone: "+880 1XXX XXXXXX",
 };
-
-function Icon({ type }) {
-    const icons = {
-        back: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
-        print: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>,
-        download: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>,
-        edit: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>,
-        rx: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>,
-        pill: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z" /><line x1="8.5" y1="8.5" x2="15.5" y2="15.5" /></svg>,
-        info: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>,
-        attach: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>,
-        file: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
-        eye: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>,
-        user: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
-        phone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>,
-        calendar: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
-        pin: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>,
-        whatsapp: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>,
-        mail: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>,
-        share: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>,
-        cancel: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>,
-    };
-    return <>{icons[type] || null}</>;
-}
 
 export default function PrescriptionDetailsPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -150,22 +148,17 @@ export default function PrescriptionDetailsPage() {
                 </div>
                 <div className="rxd-header-actions">
                     <Link href="/doctor-portal/prescriptions" className="rxd-header-btn back">
-                        <Icon type="back" /> Back
+                        <ArrowLeft size={16} /> Back
                     </Link>
                     <button className="rxd-header-btn outline" onClick={handlePrint} disabled={isGenerating}>
-                        <Icon type="print" /> Print
+                        <Printer size={16} /> Print
                     </button>
                     <button className="rxd-header-btn outline" onClick={handleDownload} disabled={isGenerating}>
-                        <Icon type="download" /> {isGenerating ? "Generating…" : "Download"}
+                        <Download size={16} /> {isGenerating ? "Generating…" : "Download"}
                     </button>
-                    <button className="rxd-header-btn primary">
-                        <Link
-                            href="/doctor-portal/prescriptions/update-prescriptions"
-                            className="rxd-header-btn primary"
-                        >
-                            <Icon type="edit" /> Edit Prescription
-                        </Link>
-                    </button>
+                    <Link href="/doctor-portal/prescriptions/update-prescriptions" className="rxd-header-btn primary">
+                        <Edit size={16} /> Edit Prescription
+                    </Link>
                 </div>
             </div>
 
@@ -177,7 +170,7 @@ export default function PrescriptionDetailsPage() {
                     {/* Prescription Information */}
                     <div className="rxd-card">
                         <h3 className="rxd-section-title">
-                            <Icon type="rx" /> Prescription Information
+                            <FileText size={16} /> Prescription Information
                         </h3>
                         <div className="rxd-info-grid">
                             {/* Left column of info */}
@@ -249,7 +242,7 @@ export default function PrescriptionDetailsPage() {
                     {/* Prescribed Medicines */}
                     <div className="rxd-card">
                         <h3 className="rxd-medicines-title">
-                            <Icon type="pill" /> Prescribed Medicines
+                            <Pill size={16} /> Prescribed Medicines
                         </h3>
                         <table className="rxd-med-table">
                             <thead>
@@ -312,7 +305,7 @@ export default function PrescriptionDetailsPage() {
                         {/* Additional Instructions */}
                         <div className="rxd-instructions-card" style={{ marginTop: 16 }}>
                             <p className="rxd-instructions-title">
-                                <Icon type="info" /> Additional Instructions
+                                <Info size={16} /> Additional Instructions
                             </p>
                             <div className="rxd-instructions-grid">
                                 {additionalInstructions.map((inst, i) => (
@@ -328,11 +321,11 @@ export default function PrescriptionDetailsPage() {
                     {/* Attachments */}
                     <div className="rxd-card">
                         <h3 className="rxd-attach-title">
-                            <Icon type="attach" /> Attachments
+                            <Paperclip size={16} /> Attachments
                         </h3>
                         <div className="rxd-attach-item">
                             <div className="rxd-attach-icon">
-                                <Icon type="file" />
+                                <FileText size={16} />
                             </div>
                             <div className="rxd-attach-info">
                                 <p className="rxd-attach-name">ECG Report.pdf</p>
@@ -340,10 +333,10 @@ export default function PrescriptionDetailsPage() {
                             </div>
                             <div className="rxd-attach-actions">
                                 <button className="rxd-attach-btn" title="Download">
-                                    <Icon type="download" />
+                                    <Download size={14} />
                                 </button>
                                 <button className="rxd-attach-btn" title="View">
-                                    <Icon type="eye" />
+                                    <Eye size={14} />
                                 </button>
                             </div>
                         </div>
@@ -372,7 +365,7 @@ export default function PrescriptionDetailsPage() {
                                     alt={patient.name}
                                     onError={(e) => {
                                         e.target.style.display = 'none';
-                                        e.target.parentElement.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#014fa1" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+                                        e.target.parentElement.innerHTML = '<User size={24} color="#014fa1" />';
                                     }}
                                 />
                             </div>
@@ -383,7 +376,7 @@ export default function PrescriptionDetailsPage() {
                         </div>
                         <div className="rxd-patient-detail-rows">
                             <div className="rxd-patient-detail-row">
-                                <Icon type="pin" /> {patient.address}
+                                <MapPin size={14} /> {patient.address}
                             </div>
                         </div>
                     </div>
@@ -431,10 +424,10 @@ export default function PrescriptionDetailsPage() {
                         <h4 className="rxd-actions-title">Actions</h4>
                         <div className="rxd-actions-grid">
                             <button className="rxd-action-btn whatsapp" onClick={handleWhatsApp} disabled={isGenerating}>
-                                <Icon type="whatsapp" /> WhatsApp
+                                <MessageCircle size={16} /> WhatsApp
                             </button>
                             <button className="rxd-action-btn share" onClick={handleShare} disabled={isGenerating}>
-                                <Icon type="share" /> Share
+                                <Share2 size={16} /> Share
                             </button>
                         </div>
                     </div>
