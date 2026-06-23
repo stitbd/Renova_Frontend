@@ -344,28 +344,39 @@ export default function Navbar() {
                 <div className="topbar-account-dropdown">
                   {user ? (
                     <>
+                      <div className="topbar-dropdown-divider" />
                       <Link
-                        href={`${user.userType === "PATIENT" ? "/patient-portal/dashboard" : user.userType === "DOCTOR" ? "/doctor-portal/dashboard" : user.userType === "OUTLET_USER" ? "/outlet-portal/dashboard" : "/supar-admin-panel/dashboard"}`}
+                        href={
+                          user.userType === "PATIENT"
+                            ? "/patient-portal/dashboard"
+                            : user.userType === "DOCTOR"
+                              ? "/doctor-portal/dashboard"
+                              : user.userType === "OUTLET_USER"
+                                ? "/outlet-portal/dashboard"
+                                : "/supar-admin-panel/dashboard"
+                        }
                         className="topbar-dropdown-item"
                       >
-                        Dashboard
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
+                        <span>Dashboard</span>
                       </Link>
-
+                      <div className="topbar-dropdown-divider" />
                       <button
                         type="button"
-                        className="topbar-dropdown-item"
+                        className="topbar-dropdown-item topbar-dropdown-logout"
                         onClick={handleLogout}
                       >
-                        Logout
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                        <span>Logout</span>
                       </button>
                     </>
                   ) : (
                     <>
+                      <div className="topbar-dropdown-divider" />
                       <Link href="/signup" className="topbar-dropdown-item">
                         <SignUpIcon />
                         <span>Sign Up</span>
                       </Link>
-
                       <Link href="/signin" className="topbar-dropdown-item">
                         <SignInIcon />
                         <span>Sign In</span>

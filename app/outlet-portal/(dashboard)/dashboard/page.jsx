@@ -9,6 +9,7 @@ import TodayAppointments from "@/components/outlet-dashboard/TodayAppointments";
 import PharmacySales from "@/components/outlet-dashboard/PharmacySales";
 import RecentActivities from "@/components/outlet-dashboard/RecentActivities";
 import OutletPerformance from "@/components/outlet-dashboard/OutletPerformance";
+import "./outlet-dashboard.css";
 
 // Mock data
 const dashboardData = {

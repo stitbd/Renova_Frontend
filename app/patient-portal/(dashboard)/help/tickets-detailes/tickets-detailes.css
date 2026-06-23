@@ -1,0 +1,478 @@
+/* ======================================================
+   CSS FILE: tickets-detailes.css
+   ====================================================== */
+
+.td-page {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Header */
+.td-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.td-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    color: #475569;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.td-btn-back:hover {
+    background: #e2e8f0;
+}
+
+.td-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.td-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1.2;
+}
+
+.td-ticket-id {
+    font-size: 12px;
+    color: #014fa1;
+    font-weight: 700;
+}
+
+/* Status Badge */
+.td-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.td-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.td-status-open {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.td-status-open .td-status-dot {
+    background: #014fa1;
+}
+
+.td-status-pending {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.td-status-pending .td-status-dot {
+    background: #d97706;
+}
+
+.td-status-closed {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.td-status-closed .td-status-dot {
+    background: #64748b;
+}
+
+/* Info Grid */
+.td-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.td-info-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    border-left: 4px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.td-info-card:nth-child(1) {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    border-left-color: #014fa1;
+}
+
+.td-info-card:nth-child(2) {
+    background: #fefce8;
+    border-color: #fef08a;
+    border-left-color: #f59e0b;
+}
+
+.td-info-card:nth-child(3) {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    border-left-color: #64748b;
+}
+
+.td-info-card:nth-child(4) {
+    background: #faf5ff;
+    border-color: #ddd6fe;
+    border-left-color: #7c3aed;
+}
+
+.td-info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.td-icon-blue {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.td-icon-amber {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.td-icon-slate {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.td-icon-purple {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.td-info-label {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+}
+
+.td-info-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0;
+}
+
+.td-priority {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.td-priority-high {
+    color: #dc2626;
+}
+
+.td-priority-medium {
+    color: #d97706;
+}
+
+.td-priority-low {
+    color: #16a34a;
+}
+
+/* Subject */
+.td-subject-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.td-subject-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+}
+
+.td-subject-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0;
+}
+
+/* Conversation */
+.td-conversation {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.td-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+.td-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.td-message {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.td-message-user {
+    flex-direction: row-reverse;
+}
+
+.td-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.td-avatar-agent {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+.td-avatar-user {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.td-message-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 75%;
+}
+
+.td-message-user .td-message-body {
+    align-items: flex-end;
+}
+
+.td-message-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.td-message-user .td-message-meta {
+    flex-direction: row-reverse;
+}
+
+.td-message-sender {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.td-message-time {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.td-message-bubble {
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.td-bubble-agent {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #1a202c;
+    border-top-left-radius: 2px;
+}
+
+.td-bubble-user {
+    background: #014fa1;
+    color: #fff;
+    border-top-right-radius: 2px;
+}
+
+/* Reply Box */
+.td-reply-box {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.td-reply-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1a202c;
+    resize: vertical;
+    min-height: 80px;
+    box-sizing: border-box;
+}
+
+.td-reply-input:focus {
+    outline: none;
+    border-color: #014fa1;
+    box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.1);
+}
+
+.td-reply-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.td-attach-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    transition: all 0.2s;
+}
+
+.td-attach-btn:hover {
+    background: #e2e8f0;
+}
+
+.td-send-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: #014fa1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.td-send-btn:hover:not(:disabled) {
+    background: #013d80;
+}
+
+.td-send-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.td-sent-msg {
+    font-size: 13px;
+    color: #16a34a;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Closed Notice */
+.td-closed-notice {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+}
+
+.td-closed-notice button {
+    background: none;
+    border: none;
+    color: #014fa1;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .td-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .td-message-body {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .td-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .td-title {
+        font-size: 15px;
+    }
+
+    .td-reply-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .td-send-btn {
+        justify-content: center;
+    }
+}

@@ -1,0 +1,219 @@
+/* ======================================================
+   CSS FILE: outlet-earnings.css
+   ====================================================== */
+
+/* Earnings Summary */
+.earnings-summary {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.earnings-card,
+.commission-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.earnings-label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.earnings-amount {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.earnings-growth {
+    font-size: 13px;
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.commission-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 12px;
+}
+
+.commission-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.commission-rate,
+.commission-earned {
+    color: #428a26;
+    font-weight: 700;
+}
+
+.commission-pending {
+    color: #f59e0b;
+    font-weight: 700;
+}
+
+/* Breakdown Card */
+.breakdown-card {
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.breakdown-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.breakdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.breakdown-label {
+    color: #64748b;
+}
+
+.breakdown-amount {
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.breakdown-bar {
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.breakdown-percent {
+    font-size: 11px;
+    color: #94a3b8;
+    text-align: right;
+}
+
+/* Transactions Section */
+.transactions-section {
+    margin-top: 20px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0 0 16px;
+}
+
+.data-table-container {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.data-table th {
+    background: #f8fafc;
+    font-weight: 700;
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.data-table td {
+    font-size: 13px;
+    color: #1a202c;
+}
+
+.data-table tr:hover {
+    background: #f8fafc;
+}
+
+.txn-id {
+    font-family: monospace;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.amount-credit {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.amount-debit {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-badge.completed {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-badge.pending {
+    background: #dbeafe;
+    color: #014fa1;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .earnings-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .data-table {
+        font-size: 12px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 10px;
+    }
+}
