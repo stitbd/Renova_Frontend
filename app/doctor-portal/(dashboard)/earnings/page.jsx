@@ -1,148 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import "./earnings.css";
-
-// ========== ICONS ==========
-function IconWallet() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
-      <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
-      <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
-    </svg>
-  );
-}
-
-function IconCalendarDay() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <rect x="3" y="4" width="18" height="18" rx="2" />
-      <path d="M16 2v4M8 2v4M3 10h18" />
-    </svg>
-  );
-}
-
-function IconTrend() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M3 17l6-6 4 4 8-8" />
-      <path d="M14 7h7v7" />
-    </svg>
-  );
-}
-
-function IconChart() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M3 3v18h18" />
-      <path d="M7 16l4-6 4 3 5-7" />
-    </svg>
-  );
-}
-
-function IconClock() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 3" />
-    </svg>
-  );
-}
-
-function IconCheck() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
-
-function IconBank() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M3 21h18" />
-      <path d="M4 21V10l8-6 8 6v11" />
-      <path d="M9 21v-6h6v6" />
-    </svg>
-  );
-}
-
-function IconUsers() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
-
-function IconVideo() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <rect x="2" y="6" width="14" height="12" rx="2" />
-      <path d="M16 10l6-3v10l-6-3" />
-    </svg>
-  );
-}
-
-function IconRepeat() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M17 1l4 4-4 4" />
-      <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-      <path d="M7 23l-4-4 4-4" />
-      <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-    </svg>
-  );
-}
-
-function IconBolt() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" />
-    </svg>
-  );
-}
-
-function IconPrescription() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M6 3v18M6 11h6a3 3 0 0 0 0-6H6" />
-      <path d="M11 11l6 8M14 16h4" />
-    </svg>
-  );
-}
-
-function IconSearch() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="8" />
-      <path d="M21 21l-4.3-4.3" />
-    </svg>
-  );
-}
-
-function IconDownload() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M12 3v12" />
-      <path d="M7 10l5 5 5-5" />
-      <path d="M5 21h14" />
-    </svg>
-  );
-}
-
-function IconMobileMoney() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <rect x="6" y="2" width="12" height="20" rx="2" />
-      <path d="M11 18h2" />
-    </svg>
-  );
-}
+import {
+  Wallet,
+  Calendar,
+  TrendingUp,
+  BarChart3,
+  Clock,
+  CheckCircle,
+  Building2,
+  Users,
+  Video,
+  RotateCw,
+  Zap,
+  FileText,
+  Search,
+  Download,
+  Smartphone,
+  Banknote,
+  ArrowLeft,
+  ArrowRight
+} from "lucide-react";
 
 // ========== DATA ==========
 export const earningsSummary = {
@@ -286,29 +166,42 @@ function LineChart({ data, maxValue }) {
 // ========== EARNINGS SUMMARY CARDS ==========
 function EarningsSummaryCards({ data }) {
   const cards = [
-    { key: "totalEarnings", label: "Total Earnings", value: data.totalEarnings, color: "c-blue", icon: <IconWallet /> },
-    { key: "todayEarnings", label: "Today's Earnings", value: data.todayEarnings, color: "c-green", icon: <IconCalendarDay /> },
-    { key: "weekEarnings", label: "This Week", value: data.weekEarnings, color: "c-purple", icon: <IconTrend /> },
-    { key: "monthEarnings", label: "This Month", value: data.monthEarnings, color: "c-orange", icon: <IconChart /> },
-    { key: "pendingEarnings", label: "Pending Earnings", value: data.pendingEarnings, color: "c-amber", icon: <IconClock /> },
-    { key: "withdrawnAmount", label: "Withdrawn", value: data.withdrawnAmount, color: "c-teal", icon: <IconCheck /> },
-    { key: "availableBalance", label: "Available Balance", value: data.availableBalance, color: "c-cyan", icon: <IconBank /> },
-    { key: "totalConsultations", label: "Total Consultations", value: data.totalConsultations, color: "c-pink", icon: <IconUsers />, isCount: true },
+    { key: "totalEarnings", label: "Total Earnings", value: data.totalEarnings, color: "c-blue", icon: Wallet },
+    { key: "todayEarnings", label: "Today's Earnings", value: data.todayEarnings, color: "c-green", icon: Calendar },
+    { key: "weekEarnings", label: "This Week", value: data.weekEarnings, color: "c-purple", icon: TrendingUp },
+    { key: "monthEarnings", label: "This Month", value: data.monthEarnings, color: "c-orange", icon: BarChart3 },
+    { key: "pendingEarnings", label: "Pending Earnings", value: data.pendingEarnings, color: "c-amber", icon: Clock },
+    { key: "withdrawnAmount", label: "Withdrawn", value: data.withdrawnAmount, color: "c-teal", icon: CheckCircle },
+    { key: "availableBalance", label: "Available Balance", value: data.availableBalance, color: "c-cyan", icon: Building2 },
+    { key: "totalConsultations", label: "Total Consultations", value: data.totalConsultations, color: "c-pink", icon: Users, isCount: true },
   ];
 
   return (
     <div className="earnings-overview-grid">
-      {cards.map((card) => (
-        <div key={card.key} className={`earnings-overview-card ${card.color}`}>
-          <div className="earnings-overview-icon">{card.icon}</div>
-          <div className="earnings-overview-info">
-            <p className="earnings-overview-label">{card.label}</p>
-            <h3 className="earnings-overview-value">
-              {card.isCount ? card.value : `৳${card.value.toLocaleString("en-IN")}`}
-            </h3>
-          </div>
-        </div>
-      ))}
+      {cards.map((card) => {
+        const IconComponent = card.icon;
+        return (
+          <motion.div
+            key={card.key}
+            className={`earnings-overview-card ${card.color}`}
+            whileHover={{ y: -6, boxShadow: "0 8px 24px rgba(0,0,0,0.12)", transition: { duration: 0.2 } }}
+          >
+            <motion.div
+              className="earnings-overview-icon"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              <IconComponent size={20} />
+            </motion.div>
+            <div className="earnings-overview-info">
+              <p className="earnings-overview-label">{card.label}</p>
+              <h3 className="earnings-overview-value">
+                {card.isCount ? card.value : `৳${card.value.toLocaleString("en-IN")}`}
+              </h3>
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
@@ -396,10 +289,10 @@ function EarningsChartSection({ chartData }) {
 // ========== REVENUE BREAKDOWN ==========
 function RevenueBreakdown({ data }) {
   const icons = {
-    video: <IconVideo />,
-    repeat: <IconRepeat />,
-    bolt: <IconBolt />,
-    prescription: <IconPrescription />,
+    video: Video,
+    repeat: RotateCw,
+    bolt: Zap,
+    prescription: FileText,
   };
 
   return (
@@ -408,17 +301,22 @@ function RevenueBreakdown({ data }) {
         <h3 className="earnings-section-title">Consultation Revenue Breakdown</h3>
       </div>
       <div className="earnings-breakdown">
-        {data.map((item) => (
-          <div className="breakdown-card" key={item.type}>
-            <div className="breakdown-icon">{icons[item.icon]}</div>
-            <div className="breakdown-body">
-              <p className="breakdown-title">
-                {item.type} • {item.consultations} consultations
-              </p>
-              <p className="breakdown-amount">৳{item.earnings.toLocaleString("en-IN")}</p>
+        {data.map((item) => {
+          const IconComponent = icons[item.icon];
+          return (
+            <div className="breakdown-card" key={item.type}>
+              <div className="breakdown-icon">
+                <IconComponent size={20} />
+              </div>
+              <div className="breakdown-body">
+                <p className="breakdown-title">
+                  {item.type} • {item.consultations} consultations
+                </p>
+                <p className="breakdown-amount">৳{item.earnings.toLocaleString("en-IN")}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -461,7 +359,7 @@ function TransactionHistory({ transactions }) {
           ))}
         </div>
         <div className="transaction-search">
-          <IconSearch />
+          <Search size={16} />
           <input
             type="text"
             placeholder="Search Transaction ID, Patient, Appointment ID"
@@ -474,18 +372,15 @@ function TransactionHistory({ transactions }) {
         </div>
         <div className="export-buttons">
           <button className="export-btn">
-            <IconDownload /> PDF
+            <Download size={14} /> PDF
           </button>
           <button className="export-btn">
-            <IconDownload /> Excel
-          </button>
-          <button className="export-btn">
-            <IconDownload /> CSV
+            <Download size={14} /> Excel
           </button>
         </div>
       </div>
 
-      <div className="table-scroll">
+      <div className="table-scroll transaction-table-wrapper">
         <table className="earnings-table">
           <thead>
             <tr>
@@ -527,6 +422,44 @@ function TransactionHistory({ transactions }) {
         </table>
       </div>
 
+      <div className="transaction-cards">
+        {paged.map((t) => (
+          <div key={t.id} className="transaction-card">
+            <div className="transaction-card-header">
+              <div>
+                <div className="transaction-card-id">{t.id}</div>
+                <div className="transaction-card-patient">{t.patient}</div>
+                <div className="transaction-card-type">{t.type}</div>
+              </div>
+              <span className={`status-cell ${t.status.toLowerCase()}`}>{t.status}</span>
+            </div>
+            <div className="transaction-card-body">
+              <div className="transaction-card-field">
+                <span className="transaction-card-field-label">Fee</span>
+                <span className="transaction-card-field-value">৳{t.fee}</span>
+              </div>
+              <div className="transaction-card-field">
+                <span className="transaction-card-field-label">Charge</span>
+                <span className="transaction-card-field-value">৳{t.charge}</span>
+              </div>
+              <div className="transaction-card-field">
+                <span className="transaction-card-field-label">Receives</span>
+                <span className="transaction-card-field-value net">৳{t.net}</span>
+              </div>
+            </div>
+            <div className="transaction-card-footer">
+              <span className="transaction-card-apt">{t.appointmentId}</span>
+              <span className="transaction-card-date">{t.date}</span>
+            </div>
+          </div>
+        ))}
+        {paged.length === 0 && (
+          <p style={{ textAlign: "center", color: "var(--color-text-muted)", padding: "20px 0" }}>
+            No transactions found
+          </p>
+        )}
+      </div>
+
       <div className="table-pagination">
         <span>
           Page {page} of {totalPages}
@@ -537,14 +470,14 @@ function TransactionHistory({ transactions }) {
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
           >
-            ‹
+            <ArrowLeft size={14} />
           </button>
           <button
             className="pagination-btn"
             disabled={page === totalPages}
             onClick={() => setPage((p) => p + 1)}
           >
-            ›
+            <ArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -559,10 +492,10 @@ function WithdrawalSection({ balance, methods }) {
   const [amount, setAmount] = useState("");
 
   const icons = {
-    bank: <IconBank />,
-    bkash: <IconMobileMoney />,
-    nagad: <IconMobileMoney />,
-    rocket: <IconMobileMoney />,
+    bank: Building2,
+    bkash: Smartphone,
+    nagad: Smartphone,
+    rocket: Smartphone,
   };
 
   return (
@@ -581,16 +514,19 @@ function WithdrawalSection({ balance, methods }) {
 
       <p className="withdrawal-methods-label">Withdrawal Methods</p>
       <div className="withdrawal-methods-grid">
-        {methods.map((m) => (
-          <div
-            key={m.id}
-            className={`withdrawal-method-item ${selectedMethod === m.id ? "selected" : ""}`}
-            onClick={() => setSelectedMethod(m.id)}
-          >
-            {icons[m.icon]}
-            <span>{m.label}</span>
-          </div>
-        ))}
+        {methods.map((m) => {
+          const IconComponent = icons[m.icon] || Smartphone;
+          return (
+            <div
+              key={m.id}
+              className={`withdrawal-method-item ${selectedMethod === m.id ? "selected" : ""}`}
+              onClick={() => setSelectedMethod(m.id)}
+            >
+              <IconComponent size={18} />
+              <span>{m.label}</span>
+            </div>
+          );
+        })}
       </div>
 
       {showModal && (
@@ -616,16 +552,19 @@ function WithdrawalSection({ balance, methods }) {
               Select Method
             </p>
             <div className="withdrawal-methods-grid">
-              {methods.map((m) => (
-                <div
-                  key={m.id}
-                  className={`withdrawal-method-item ${selectedMethod === m.id ? "selected" : ""}`}
-                  onClick={() => setSelectedMethod(m.id)}
-                >
-                  {icons[m.icon]}
-                  <span>{m.label}</span>
-                </div>
-              ))}
+              {methods.map((m) => {
+                const IconComponent = icons[m.icon] || Smartphone;
+                return (
+                  <div
+                    key={m.id}
+                    className={`withdrawal-method-item ${selectedMethod === m.id ? "selected" : ""}`}
+                    onClick={() => setSelectedMethod(m.id)}
+                  >
+                    <IconComponent size={18} />
+                    <span>{m.label}</span>
+                  </div>
+                );
+              })}
             </div>
             <div className="modal-actions">
               <button onClick={() => setShowModal(false)}>Cancel</button>
@@ -648,7 +587,7 @@ function WithdrawalHistory({ history }) {
         <h3 className="earnings-section-title">Withdrawal History</h3>
       </div>
       <div className="table-scroll">
-        <table className="earnings-table">
+        <table className="earnings-table withdrawal-history-table">
           <thead>
             <tr>
               <th>Date</th>
@@ -696,30 +635,51 @@ function SettlementAndRefunds({ settlement, refunds }) {
       </div>
 
       {refunds.length > 0 && (
-        <div className="table-scroll" style={{ marginTop: "16px" }}>
-          <table className="earnings-table">
-            <thead>
-              <tr>
-                <th>Patient</th>
-                <th>Appointment ID</th>
-                <th>Amount</th>
-                <th>Reason</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {refunds.map((r, i) => (
-                <tr key={i}>
-                  <td>{r.patient}</td>
-                  <td>{r.appointmentId}</td>
-                  <td className="amount-cell">৳{r.amount}</td>
-                  <td>{r.reason}</td>
-                  <td>{r.date}</td>
+        <>
+          <div className="table-scroll refund-table-wrapper" style={{ marginTop: "16px" }}>
+            <table className="earnings-table">
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Appointment ID</th>
+                  <th>Amount</th>
+                  <th>Reason</th>
+                  <th>Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {refunds.map((r, i) => (
+                  <tr key={i}>
+                    <td>{r.patient}</td>
+                    <td>{r.appointmentId}</td>
+                    <td className="amount-cell">৳{r.amount}</td>
+                    <td>{r.reason}</td>
+                    <td>{r.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Refund Cards */}
+          <div className="refund-cards">
+            {refunds.map((r, i) => (
+              <div key={i} className="refund-card">
+                <div className="refund-card-header">
+                  <div>
+                    <div className="refund-card-patient">{r.patient}</div>
+                    <div className="refund-card-apt">{r.appointmentId}</div>
+                  </div>
+                  <div className="refund-card-amount">৳{r.amount}</div>
+                </div>
+                <div className="refund-card-footer">
+                  <span className="refund-card-reason">{r.reason}</span>
+                  <span className="refund-card-date">{r.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
