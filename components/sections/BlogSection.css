@@ -62,9 +62,9 @@
   transition: opacity 0.3s ease;
 }
 
-.blog-image-container .blog-image[src=""] + .blog-fallback,
-.blog-image-container img:not([src]) + .blog-fallback,
-.blog-image-container img[src=""] + .blog-fallback {
+.blog-image-container .blog-image[src=""]+.blog-fallback,
+.blog-image-container img:not([src])+.blog-fallback,
+.blog-image-container img[src=""]+.blog-fallback {
   opacity: 1;
 }
 
@@ -167,14 +167,14 @@
   margin-top: 1.5rem;
 }
 
- 
-  /* ── blog CTA (View All Button) ────────────────────────── */
+
+/* ── blog CTA (View All Button) ────────────────────────── */
 .blog-cta {
   display: flex;
   justify-content: center;
   margin-top: var(--space-6);
 }
-  
+
 .blog-cta-btn {
   padding: var(--space-3) var(--space-8);
 }
@@ -271,6 +271,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -278,16 +279,8 @@
 }
 
 .blog-card {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0;
+  opacity: 1;
 }
-
-.blog-card:nth-child(1) { animation-delay: 0.1s; }
-.blog-card:nth-child(2) { animation-delay: 0.2s; }
-.blog-card:nth-child(3) { animation-delay: 0.3s; }
-.blog-card:nth-child(4) { animation-delay: 0.4s; }
-.blog-card:nth-child(5) { animation-delay: 0.5s; }
-.blog-card:nth-child(6) { animation-delay: 0.6s; }
 
 /* Print Styles */
 @media print {
@@ -297,20 +290,20 @@
     border: 1px solid #e2e8f0;
     transform: none;
   }
-  
+
   .blog-image-container {
     height: 8rem;
   }
-  
+
   .blog-category-badge {
     position: static;
     margin-bottom: 0.5rem;
   }
-  
+
   .blog-read-more {
     display: none;
   }
-  
+
   .blog-view-all {
     display: none;
   }

@@ -1,5 +1,5 @@
+"use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { siteConfig } from "@/constants/siteData";
 import "./EmergencyBanner.css";
 

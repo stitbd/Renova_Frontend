@@ -64,8 +64,8 @@ export default function HeroSection() {
       aria-label="Welcome to Renova Life Care"
     >
       {/* Animated Background Slider - CSS animations preserved */}
-      <motion.div 
-        className="hero-bg-slider" 
+      <motion.div
+        className="hero-bg-slider"
         aria-hidden="true"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -74,9 +74,8 @@ export default function HeroSection() {
         {sliderImages.map((src, index) => (
           <div
             key={src}
-            className={`hero-bg-slide ${
-              index === currentSlide ? "active" : ""
-            }`}
+            className={`hero-bg-slide ${index === currentSlide ? "active" : ""
+              }`}
           >
             <img
               src={src}
@@ -87,9 +86,9 @@ export default function HeroSection() {
             <div className="hero-bg-overlay" />
           </div>
         ))}
-        
+
         {/* Slider Navigation Dots with Animation */}
-        <motion.div 
+        <motion.div
           className="hero-slider-dots"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -98,9 +97,8 @@ export default function HeroSection() {
           {sliderImages.map((_, index) => (
             <motion.button
               key={index}
-              className={`hero-slider-dot ${
-                index === currentSlide ? "active" : ""
-              }`}
+              className={`hero-slider-dot ${index === currentSlide ? "active" : ""
+                }`}
               onClick={() => setCurrentSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
               aria-current={index === currentSlide ? "true" : "false"}
@@ -116,7 +114,7 @@ export default function HeroSection() {
         <div className="hero-grid">
 
           {/* Left — Content with Slide-in Animation */}
-          <motion.div 
+          <motion.div
             className="hero-content-left"
             variants={slideInLeft}
             initial="hidden"
@@ -124,21 +122,21 @@ export default function HeroSection() {
             viewport={{ once: true }}
           >
             {/* Trust Badge with Fade-in */}
-            <motion.div 
+            <motion.div
               className="hero-trust-badge"
               variants={fadeInUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <motion.div 
-                className="hero-trust-badge-icon" 
+              <motion.div
+                className="hero-trust-badge-icon"
                 aria-hidden="true"
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
+                  <polyline points="20 6 9 17 4 12" />
                 </svg>
               </motion.div>
               <span className="hero-trust-badge-text">
@@ -147,19 +145,19 @@ export default function HeroSection() {
             </motion.div>
 
             {/* Headline with Staggered Animation */}
-            <motion.div 
+            <motion.div
               className="hero-headline"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <motion.h1 
+              <motion.h1
                 className="hero-title"
                 variants={fadeInUp}
               >
                 Your Health, Our{" "}
-                <motion.span 
+                <motion.span
                   className="hero-gradient-text"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
@@ -185,16 +183,16 @@ export default function HeroSection() {
                 {" "}—<br />
                 <span className="hero-authority-text">Expert Care,</span> Every Step
               </motion.h1>
-              <motion.p 
+              <motion.p
                 className="hero-description"
                 variants={fadeInUp}
               >
-                {siteConfig.description} Experience compassionate, world-class medicine with a personal touch.
+                {siteConfig.description} Certified specialists, advanced diagnostics, and telemedicine — all under one roof.
               </motion.p>
             </motion.div>
 
             {/* CTA Buttons with Stagger + Hover */}
-            <motion.div 
+            <motion.div
               className="hero-buttons"
               variants={staggerContainer}
               initial="hidden"
@@ -213,13 +211,13 @@ export default function HeroSection() {
                   aria-label="Book an appointment with our specialists"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                    <line x1="8" y1="14" x2="8" y2="14"/>
-                    <line x1="12" y1="14" x2="12" y2="14"/>
-                    <line x1="16" y1="14" x2="16" y2="14"/>
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                    <line x1="8" y1="14" x2="8" y2="14" />
+                    <line x1="12" y1="14" x2="12" y2="14" />
+                    <line x1="16" y1="14" x2="16" y2="14" />
                   </svg>
                   Book Appointment
                 </Link>
@@ -238,7 +236,7 @@ export default function HeroSection() {
                 >
                   <span className="hero-btn-call-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#05417d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 10a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.44 0h3a2 2 0 0 1 2 1.72A12.84 12.84 0 0 0 9.1 5.07a2 2 0 0 1-.45 2.11L7.5 8.28a16 16 0 0 0 6.29 6.29l1.1-1.1a2 2 0 0 1 2.11-.45A12.84 12.84 0 0 0 20.28 14a2 2 0 0 1 1.72 2z"/>
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 10a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.44 0h3a2 2 0 0 1 2 1.72A12.84 12.84 0 0 0 9.1 5.07a2 2 0 0 1-.45 2.11L7.5 8.28a16 16 0 0 0 6.29 6.29l1.1-1.1a2 2 0 0 1 2.11-.45A12.84 12.84 0 0 0 20.28 14a2 2 0 0 1 1.72 2z" />
                     </svg>
                   </span>
                   {siteConfig.phone}
@@ -247,15 +245,15 @@ export default function HeroSection() {
             </motion.div>
 
             {/* Trust Indicators with Staggered Animation */}
-            <motion.div 
+            <motion.div
               className="hero-trust-indicators"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <motion.div 
-                className="hero-doctor-avatars" 
+              <motion.div
+                className="hero-doctor-avatars"
                 aria-hidden="true"
                 variants={fadeInUp}
               >
@@ -265,8 +263,8 @@ export default function HeroSection() {
                   "/images/patients/03.jpg",
                   "/images/patients/04.jpg",
                 ].map((src, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     className="hero-avatar"
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -287,12 +285,12 @@ export default function HeroSection() {
                   </motion.div>
                 ))}
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="hero-rating"
                 variants={fadeInUp}
               >
-                <motion.div 
-                  className="hero-stars" 
+                <motion.div
+                  className="hero-stars"
                   aria-label="5 out of 5 stars rating"
                   variants={staggerContainer}
                   initial="hidden"
@@ -300,22 +298,22 @@ export default function HeroSection() {
                   viewport={{ once: true }}
                 >
                   {[...Array(5)].map((_, i) => (
-                    <motion.svg 
-                      key={i} 
-                      width="13" 
-                      height="13" 
-                      viewBox="0 0 24 24" 
-                      fill="#f59e0b" 
+                    <motion.svg
+                      key={i}
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="#f59e0b"
                       aria-hidden="true"
                       variants={fadeInUp}
                       whileHover={{ scale: 1.2, rotate: 10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                     </motion.svg>
                   ))}
                 </motion.div>
-                <motion.p 
+                <motion.p
                   className="hero-rating-text"
                   variants={fadeInUp}
                 >
@@ -326,14 +324,14 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Right — Visual Card with Slide-in Animation */}
-          <motion.div 
+          <motion.div
             className="hero-visual-right"
             variants={slideInRight}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <motion.div 
+            <motion.div
               className="hero-card-wrapper"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -341,7 +339,7 @@ export default function HeroSection() {
               transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
             >
               {/* Central health card */}
-              <motion.div 
+              <motion.div
                 className="hero-main-card"
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.3 }}
@@ -350,7 +348,7 @@ export default function HeroSection() {
                 <div className="hero-card-pattern" aria-hidden="true" />
 
                 {/* Health Illustration with Staggered Content */}
-                <motion.div 
+                <motion.div
                   className="hero-card-content"
                   variants={staggerContainer}
                   initial="hidden"
@@ -358,20 +356,20 @@ export default function HeroSection() {
                   viewport={{ once: true }}
                 >
                   {/* SVG Medical Cross with Pop-in */}
-                  <motion.div 
-                    className="hero-medical-icon" 
+                  <motion.div
+                    className="hero-medical-icon"
                     aria-hidden="true"
                     variants={fadeInUp}
                     whileHover={{ rotate: 180 }}
                     transition={{ duration: 0.6 }}
                   >
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="18" y="6" width="12" height="36" rx="3" fill="white" opacity="0.9"/>
-                      <rect x="6" y="18" width="36" height="12" rx="3" fill="white" opacity="0.9"/>
+                      <rect x="18" y="6" width="12" height="36" rx="3" fill="white" opacity="0.9" />
+                      <rect x="6" y="18" width="36" height="12" rx="3" fill="white" opacity="0.9" />
                     </svg>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     className="hero-card-text"
                     variants={fadeInUp}
                   >
@@ -382,19 +380,19 @@ export default function HeroSection() {
                   </motion.div>
 
                   {/* Quick Stat Pills with Stagger */}
-                  <motion.div 
+                  <motion.div
                     className="hero-stats-grid"
                     variants={staggerContainer}
                   >
                     {stats.map((stat, index) => (
-                      <motion.div 
-                        key={stat.label} 
+                      <motion.div
+                        key={stat.label}
                         className="hero-stat-item"
                         variants={fadeInUp}
                         whileHover={{ y: -3 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <motion.span 
+                        <motion.span
                           className="hero-stat-value"
                           initial={{ opacity: 0, scale: 0.8 }}
                           whileInView={{ opacity: 1, scale: 1 }}
@@ -409,12 +407,12 @@ export default function HeroSection() {
                   </motion.div>
 
                   {/* Availability indicator with Pulse */}
-                  <motion.div 
+                  <motion.div
                     className="hero-availability"
                     variants={fadeInUp}
                   >
-                    <motion.span 
-                      className="hero-availability-dot" 
+                    <motion.span
+                      className="hero-availability-dot"
                       aria-hidden="true"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -427,8 +425,8 @@ export default function HeroSection() {
               </motion.div>
 
               {/* Floating Badge — Top Left with Delayed Entrance */}
-              <motion.div 
-                className="hero-floating-badge-top" 
+              <motion.div
+                className="hero-floating-badge-top"
                 aria-hidden="true"
                 initial={{ opacity: 0, x: -30, y: -20 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
@@ -437,7 +435,7 @@ export default function HeroSection() {
                 whileHover={{ scale: 1.05 }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
                 <div>
                   <p className="hero-badge-title">BMDC Certified</p>
@@ -446,8 +444,8 @@ export default function HeroSection() {
               </motion.div>
 
               {/* Floating Badge — Bottom Right with Delayed Entrance */}
-              <motion.div 
-                className="hero-floating-badge-bottom" 
+              <motion.div
+                className="hero-floating-badge-bottom"
                 aria-hidden="true"
                 initial={{ opacity: 0, x: 30, y: 20 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
@@ -457,7 +455,7 @@ export default function HeroSection() {
               >
                 <div className="hero-badge-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86b437" strokeWidth="2.5">
-                    <polyline points="20 6 9 17 4 12"/>
+                    <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
                 <div>

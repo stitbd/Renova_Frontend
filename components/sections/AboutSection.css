@@ -39,6 +39,7 @@
     overflow: hidden;
     border-radius: var(--radius-xl);
   }
+
   .about-buttons {
     flex-direction: column;
     gap: var(--space-2);
@@ -222,9 +223,11 @@
   .about-content {
     gap: var(--space-3);
   }
+
   .about-stat-item {
     padding: var(--space-2) var(--space-1);
   }
+
   .about-stat-value {
     font-size: var(--font-size-lg);
   }
@@ -253,16 +256,19 @@
 }
 
 @media (max-width: 640px) {
-    .about-features {
+  .about-features {
     gap: var(--space-3);
   }
+
   .about-feature-item {
     gap: var(--space-2);
   }
+
   .about-feature-description {
     font-size: 0.78rem;
     line-height: 1.45;
   }
+
   .about-feature-icon {
     font-size: var(--font-size-lg);
   }
@@ -298,7 +304,7 @@
 @media (min-width: 1024px) {
   .about-stats-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 }
 
@@ -383,6 +389,7 @@
     opacity: 0;
     transform: translateY(var(--space-12));
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -414,10 +421,10 @@
 
 @media (max-width: 480px) {
   .about-overlay-badge {
-    bottom: var(--space-1);
-    left: var(--space-1);
-    right: var(--space-1);
-    padding: var(--space-1);
+    bottom: var(--space-2);
+    left: var(--space-2);
+    right: var(--space-2);
+    padding: var(--space-2) var(--space-3);
   }
 
   .about-badge-icon {
@@ -437,6 +444,7 @@
   .about-badge-subtitle {
     font-size: 0.65rem;
   }
+
   .about-stat-item {
     padding: 0;
   }

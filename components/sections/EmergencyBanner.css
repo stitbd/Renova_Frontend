@@ -1,6 +1,6 @@
 /* Emergency Banner Styles */
 .emergency-banner {
-  background: linear-gradient(135deg, #428a26, #2e6a1a);
+  background: var(--gradient-authority, linear-gradient(135deg, #428a26, #2e6a1a));
   padding: 1.25rem 0;
   width: 100%;
   overflow-x: hidden;
@@ -76,9 +76,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -86,8 +89,8 @@
 
 /* Titles - Font Family Applied */
 .emergency-banner-title {
-  font-family: 'Sen', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
   font-size: 1.125rem;
   line-height: 1.25;
   color: white;
@@ -95,9 +98,9 @@
 }
 
 .emergency-banner-subtitle {
-  font-family: 'Sen', sans-serif;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light-strong, rgba(255, 255, 255, 0.85));
   margin: 0;
   line-height: 1.4;
 }
@@ -123,9 +126,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: white;
-  color: #05417d;
-  font-weight: 700;
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-bold);
   padding: 0.625rem 1.5rem;
   border-radius: 9999px;
   font-size: 0.875rem;
@@ -181,25 +184,25 @@
   .emergency-banner {
     padding: 1rem 0;
   }
-  
+
   .emergency-banner-title {
     font-size: 1rem;
   }
-  
+
   .emergency-banner-subtitle {
     font-size: 0.75rem;
   }
-  
+
   .emergency-banner-icon {
     width: 2rem;
     height: 2rem;
   }
-  
+
   .emergency-banner-icon svg {
     width: 16px;
     height: 16px;
   }
-  
+
   .emergency-banner-btn-primary,
   .emergency-banner-btn-secondary {
     padding: 0.5rem 1rem;
@@ -212,7 +215,7 @@
   .emergency-banner-title {
     font-size: 1rem;
   }
-  
+
   .emergency-banner-subtitle {
     font-size: 0.75rem;
   }

@@ -8,12 +8,24 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["components/*"],
-      "@/constants/*": ["constants/*"],
-      "@/context/*": ["context/*"],
-      "@/lib/*": ["lib/*"],
-      "@/styles/*": ["styles/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/constants/*": [
+        "constants/*"
+      ],
+      "@/context/*": [
+        "context/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ]
     },
     "ignoreDeprecations": "6.0",
     "allowJs": true,
@@ -39,8 +51,10 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/supar-admin-panel/(dashboard)/website-content/components/pages/AboutPage.jsx"  ],
+    "**/*.tsx",
+    "app/supar-admin-panel/(dashboard)/website-content/components/pages/AboutPage.jsx",
+    "app/supar-admin-panel/(dashboard)/website-content/components/pages/HomePage.jsx"
+  ],
   "exclude": [
     "node_modules"
   ]
