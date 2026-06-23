@@ -1,0 +1,26 @@
+/* ======================================================
+   CSS FILE: outlet-details.css
+   Outlet Details Page Styles — imports staff profile base
+   ====================================================== */
+
+@import "../../staff/staff-profile/staff-profile.css";
+
+/* ── Outlet-specific overrides ──────────────────────────── */
+.type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #eff6ff;
+    color: #014fa1;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-closed {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.status-closed .status-dot {
+    background: #ef4444;
+}

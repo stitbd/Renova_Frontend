@@ -2,6 +2,28 @@
 
 import { useState } from "react";
 import "./patient-reports.css";
+import {
+  FileText,
+  Beaker,
+  Scan,
+  Calendar,
+  ChevronDown,
+  Search,
+  Filter,
+  RotateCcw,
+  Download,
+  Upload,
+  Eye,
+  Share2,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  File,
+  Image,
+  FileSearch,
+  Plus,
+  X
+} from "lucide-react";
 
 /* ── Mock Data ─────────────────────────────────────────────────── */
 const reportsData = [
@@ -57,30 +79,6 @@ const summaryData = [
   { label: "This Month", val: "08", cls: "blue" },
 ];
 
-/* ── Icons ─────────────────────────────────────────────────────── */
-function Icon({ type, cls = "" }) {
-  const map = {
-    reports: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>,
-    lab: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2zM9 9h6v6H9V9z" /></svg>,
-    imaging: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg>,
-    other: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>,
-    calendar: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
-    chevdown: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>,
-    search: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>,
-    filter: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>,
-    reset: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>,
-    download: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>,
-    upload: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>,
-    view: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>,
-    share: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>,
-    user: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
-    chevleft: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
-    chevright: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>,
-    date: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
-  };
-  return <>{map[type] || null}</>;
-}
-
 /* ── Page ──────────────────────────────────────────────────────── */
 export default function ReportsPage() {
   const [search, setSearch] = useState("");
@@ -122,32 +120,37 @@ export default function ReportsPage() {
       {/* Stats Row */}
       <div className="rpt-stats-row">
         {[
-          { label: "Total Reports", value: "24", sub: "View all reports", color: "green", icon: "reports" },
-          { label: "Lab Reports", value: "12", sub: "View lab reports", color: "blue", icon: "lab" },
-          { label: "Imaging Reports", value: "06", sub: "View imaging reports", color: "purple", icon: "imaging" },
-          { label: "Other Reports", value: "06", sub: "View other reports", color: "orange", icon: "other" },
-          { label: "This Month", value: "08", sub: "New reports added", color: "teal", icon: "calendar" },
-        ].map(s => (
-          <div key={s.label} className={`rpt-stat-card ${s.color}`}>
-            <div className={`rpt-stat-icon ${s.color}`}><Icon type={s.icon} /></div>
-            <div className="rpt-stat-body">
-              <p className="rpt-stat-label">{s.label}</p>
-              <p className={`rpt-stat-value ${s.color}`}>{s.value}</p>
-              <p className="rpt-stat-sub">{s.sub}</p>
+          { label: "Total Reports", value: "24", sub: "View all reports", color: "green", icon: FileText },
+          { label: "Lab Reports", value: "12", sub: "View lab reports", color: "blue", icon: Beaker },
+          { label: "Imaging Reports", value: "06", sub: "View imaging reports", color: "purple", icon: Scan },
+          { label: "Other Reports", value: "06", sub: "View other reports", color: "orange", icon: File },
+          { label: "This Month", value: "08", sub: "New reports added", color: "teal", icon: Calendar },
+        ].map(s => {
+          const IconComponent = s.icon;
+          return (
+            <div key={s.label} className={`rpt-stat-card ${s.color}`}>
+              <div className={`rpt-stat-icon ${s.color}`}>
+                <IconComponent size={20} />
+              </div>
+              <div className="rpt-stat-body">
+                <p className="rpt-stat-label">{s.label}</p>
+                <p className={`rpt-stat-value ${s.color}`}>{s.value}</p>
+                <p className="rpt-stat-sub">{s.sub}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Filter Bar - Updated to match PrescriptionsPage style */}
+      {/* Filter Bar */}
       <div className="rpt-filter-bar">
         <div className="rpt-filter-group">
           <div className="rpt-filter-group-row">
             <div style={{ position: "relative", flex: 1 }}>
               <button className="rpt-filter-item" onClick={() => { setShowDatePicker(v => !v); setShowTypeDropdown(false); setShowStatusDropdown(false); }}>
-                <Icon type="date" />
+                <Calendar size={14} />
                 <span>{dateFrom && dateTo ? `${dateFrom} – ${dateTo}` : dateFrom ? `From ${dateFrom}` : dateTo ? `To ${dateTo}` : "Date Range"}</span>
-                <Icon type="chevdown" cls="rpt-filter-chevron" />
+                <ChevronDown size={12} className="rpt-filter-chevron" />
               </button>
               {showDatePicker && (
                 <div className="rpt-dropdown rpt-date-dropdown">
@@ -169,7 +172,7 @@ export default function ReportsPage() {
             <div style={{ position: "relative", flex: 1 }}>
               <button className="rpt-filter-item" onClick={() => { setShowTypeDropdown(v => !v); setShowStatusDropdown(false); setShowDatePicker(false); }}>
                 <span>{typeFilter === "all" ? "All Types" : typeFilter === "lab" ? "Lab Reports" : typeFilter === "imaging" ? "Imaging Reports" : "Other Reports"}</span>
-                <Icon type="chevdown" cls="rpt-filter-chevron" />
+                <ChevronDown size={12} className="rpt-filter-chevron" />
               </button>
               {showTypeDropdown && (
                 <div className="rpt-dropdown">
@@ -183,7 +186,7 @@ export default function ReportsPage() {
             <div style={{ position: "relative", flex: 1 }}>
               <button className="rpt-filter-item" onClick={() => { setShowStatusDropdown(v => !v); setShowTypeDropdown(false); setShowDatePicker(false); }}>
                 <span>{statusFilter === "all" ? "All Status" : statusFilter === "normal" ? "Normal" : statusFilter === "abnormal" ? "Abnormal" : "Pending"}</span>
-                <Icon type="chevdown" cls="rpt-filter-chevron" />
+                <ChevronDown size={12} className="rpt-filter-chevron" />
               </button>
               {showStatusDropdown && (
                 <div className="rpt-dropdown">
@@ -197,7 +200,7 @@ export default function ReportsPage() {
           </div>
         </div>
         <div className="rpt-search-box">
-          <Icon type="search" />
+          <Search size={16} />
           <input
             type="text"
             placeholder="Search reports..."
@@ -207,10 +210,10 @@ export default function ReportsPage() {
         </div>
         <div className="rpt-filter-actions">
           <button className="rpt-apply-btn">
-            <Icon type="filter" /> Apply Filter
+            <Filter size={14} /> Apply Filter
           </button>
           <button className="rpt-reset-btn" onClick={() => { setTypeFilter("all"); setStatus("all"); setSearch(""); setDateFrom(""); setDateTo(""); setCurrentPage(1); }}>
-            <Icon type="reset" /> Reset
+            <RotateCcw size={14} /> Reset
           </button>
         </div>
       </div>
@@ -331,10 +334,10 @@ export default function ReportsPage() {
           <h3 className="rpt-table-title">Reports List</h3>
           <div className="rpt-table-btns">
             <button className="rpt-tbl-btn outline">
-              <Icon type="download" /> Download All
+              <Download size={14} /> Download All
             </button>
             <button className="rpt-tbl-btn green">
-              <Icon type="upload" /> Upload Report
+              <Upload size={14} /> Upload Report
             </button>
           </div>
         </div>
@@ -360,7 +363,7 @@ export default function ReportsPage() {
                   <td data-label="Patient Name">
                     <div className="rpt-patient-cell">
                       <div className="rpt-patient-avatar">
-                        <Icon type="user" />
+                        <User size={16} />
                       </div>
                       <div className="rpt-patient-info">
                         <p className="rpt-patient-name">{r.patient}</p>
@@ -384,9 +387,9 @@ export default function ReportsPage() {
                   </td>
                   <td data-label="Action">
                     <div className="rpt-action-btns">
-                      <button className="rpt-act-btn view" title="View">    <Icon type="view" /></button>
-                      <button className="rpt-act-btn download" title="Download"><Icon type="download" /></button>
-                      <button className="rpt-act-btn share" title="Share">   <Icon type="share" /></button>
+                      <button className="rpt-act-btn view" title="View"><Eye size={16} /></button>
+                      <button className="rpt-act-btn download" title="Download"><Download size={16} /></button>
+                      <button className="rpt-act-btn share" title="Share"><Share2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
@@ -403,7 +406,7 @@ export default function ReportsPage() {
           </span>
           <div className="rpt-pagination-btns">
             <button className="rpt-page-btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              <Icon type="chevleft" />
+              <ChevronLeft size={16} />
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1)
               .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
@@ -426,7 +429,7 @@ export default function ReportsPage() {
                 )
               )}
             <button className="rpt-page-btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0}>
-              <Icon type="chevright" />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>

@@ -3,6 +3,8 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import "./outlet-inventory.css";
+import { Plus, Package, AlertTriangle, DollarSign, Edit, RefreshCw, Search } from "lucide-react";
 
 export default function InventoryPage() {
   const [filter, setFilter] = useState("all");
@@ -24,17 +26,6 @@ export default function InventoryPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header */}
-      <motion.div className="page-header">
-        <h1 className="page-title">Inventory Management</h1>
-        <motion.button className="btn btn-primary" whileHover={{ scale: 1.02 }}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Add Product
-        </motion.button>
-      </motion.div>
 
       {/* Filters */}
       <motion.div className="filters-bar">
@@ -94,8 +85,8 @@ export default function InventoryPage() {
                 <td><span className={`status-badge ${item.status.toLowerCase().replace(" ", "-")}`}>{item.status}</span></td>
                 <td>
                   <div className="table-actions">
-                    <motion.button className="btn-icon edit" whileHover={{ scale: 1.1 }}>Edit</motion.button>
-                    <motion.button className="btn-icon restock" whileHover={{ scale: 1.1 }}>Restock</motion.button>
+                    <motion.button className="btn-icon edit" whileHover={{ scale: 1.1 }}><Edit size={16} /></motion.button>
+                    <motion.button className="btn-icon restock" whileHover={{ scale: 1.1 }}><RefreshCw size={16} /></motion.button>
                   </div>
                 </td>
               </motion.tr>
@@ -107,22 +98,30 @@ export default function InventoryPage() {
       {/* Summary Cards */}
       <motion.div className="inventory-summary">
         {[
-          { label: "Total Products", value: inventory.length, color: "#014fa1" },
-          { label: "Low Stock Items", value: inventory.filter(i => i.status === "Low Stock" || i.status === "Critical").length, color: "#f59e0b" },
-          { label: "Total Value", value: `৳${inventory.reduce((sum, i) => sum + i.price * i.stock, 0).toLocaleString()}`, color: "#428a26" },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            className="summary-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 + i * 0.1 }}
-            style={{ borderLeftColor: stat.color }}
-          >
-            <span className="summary-label">{stat.label}</span>
-            <span className="summary-value">{stat.value}</span>
-          </motion.div>
-        ))}
+          { label: "Total Products", value: inventory.length, color: "#014fa1", icon: Package },
+          { label: "Low Stock Items", value: inventory.filter(i => i.status === "Low Stock" || i.status === "Critical").length, color: "#f59e0b", icon: AlertTriangle },
+          { label: "Total Value", value: `৳${inventory.reduce((sum, i) => sum + i.price * i.stock, 0).toLocaleString()}`, color: "#428a26", icon: DollarSign },
+        ].map((stat, i) => {
+          const IconComponent = stat.icon;
+          return (
+            <motion.div
+              key={stat.label}
+              className="summary-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + i * 0.1 }}
+              style={{ borderLeftColor: stat.color }}
+            >
+              <div className="summary-icon" style={{ backgroundColor: stat.color + "20", color: stat.color }}>
+                <IconComponent size={20} />
+              </div>
+              <div className="summary-content">
+                <span className="summary-label">{stat.label}</span>
+                <span className="summary-value">{stat.value}</span>
+              </div>
+            </motion.div>
+          );
+        })}
       </motion.div>
     </motion.div>
   );

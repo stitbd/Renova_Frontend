@@ -1345,3 +1345,111 @@
 }
 
 /* end @media (max-width: 1024px) */
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   TOPBAR ACCOUNT DROPDOWN — Enhanced
+   ══════════════════════════════════════════════════════════════ */
+
+/* Logged-in: user header */
+.topbar-dropdown-user-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+}
+
+.topbar-dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #014fa1;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-dropdown-user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar-dropdown-user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a202c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-dropdown-user-email {
+  font-size: 11px;
+  color: #718096;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Guest: welcome header */
+.topbar-dropdown-guest-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+  text-align: center;
+}
+
+.topbar-dropdown-guest-header svg {
+  color: #014fa1;
+  opacity: 0.7;
+}
+
+.topbar-dropdown-guest-header span {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.topbar-dropdown-guest-header p {
+  font-size: 11px;
+  color: #718096;
+  margin: 0;
+}
+
+/* Divider */
+.topbar-dropdown-divider {
+  height: 1px;
+  background: #f0f4f8;
+  margin: 0;
+}
+
+/* Logout button — red */
+.topbar-dropdown-logout {
+  color: #e53e3e !important;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.topbar-dropdown-logout:hover {
+  background: #fff5f5 !important;
+  border-left-color: #e53e3e !important;
+  color: #e53e3e !important;
+}
+
+.topbar-dropdown-logout svg {
+  stroke: #e53e3e !important;
+}
