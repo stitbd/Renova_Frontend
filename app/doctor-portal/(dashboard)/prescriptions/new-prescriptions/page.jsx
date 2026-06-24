@@ -1,272 +1,457 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { generatePrescriptionPDF, buildPrescriptionDataFromForm } from "@/utils/prescriptionPDF";
-import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
-import "./new-prescriptions.css";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { API_URL } from "@/config";
+import { useAppSelector } from "@/redux/hook";
 import {
-    ArrowLeft,
-    Home,
-    Plus,
-    Save,
-    FileText,
-    Pill,
-    Clipboard,
-    Paperclip,
-    Upload,
-    User,
-    Search,
-    X,
-    Mail,
-    Phone,
-    Calendar,
-    MapPin,
-    Clock,
-    Stethoscope,
-    Eye,
-    Trash2,
-    File,
-    Image,
-    Printer,
-    ChevronDown,
-    MessageCircle,
-    Video,
-    Mic
-} from "lucide-react";
+    generatePrescriptionPDF,
+    buildPrescriptionDataFromForm,
+} from "@/utils/prescriptionPDF";
+import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 
-// ==================== NEW PRESCRIPTION PAGE ====================
+import "./new-prescriptions.css";
+
+function Icon({ type }) {
+    const icons = {
+        arrowLeft: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        ),
+        save: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                <polyline points="17 21 17 13 7 13 7 21" />
+                <polyline points="7 3 7 8 15 8" />
+            </svg>
+        ),
+        plus: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+        ),
+        trash: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+        ),
+        user: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+            </svg>
+        ),
+        calendar: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+        ),
+        clock: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg>
+        ),
+        phone: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.77.66 2.6a2 2 0 0 1-.45 2.11L9 9.7a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.83.32 1.7.54 2.6.66A2 2 0 0 1 22 16.92z" />
+            </svg>
+        ),
+        mail: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+            </svg>
+        ),
+        fileText: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+        ),
+        pill: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z" />
+                <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
+            </svg>
+        ),
+        clipboard: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <rect x="8" y="2" width="8" height="4" rx="1" />
+            </svg>
+        ),
+        x: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        ),
+    };
+
+    return icons[type] || null;
+}
+
+const createEmptyMedicine = () => ({
+    id: crypto.randomUUID(),
+    medicineName: "",
+    dosage: "",
+    frequency: "",
+    duration: "",
+    instruction: "",
+});
+
+const createEmptyTest = () => ({
+    id: crypto.randomUUID(),
+    testName: "",
+    instruction: "",
+});
+
+const formatDate = (date) => {
+    if (!date) return "N/A";
+    return new Date(date).toLocaleDateString("en-GB");
+};
+
+const formatTime = (date) => {
+    if (!date) return "N/A";
+    return new Date(date).toLocaleTimeString("en-BD", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    });
+};
+
 export default function NewPrescriptionPage() {
-    // --- State for form fields ---
-    const [prescriptionDate, setPrescriptionDate] = useState(
-        new Date().toISOString().split("T")[0]
-    );
-    const [visitType, setVisitType] = useState("OPD");
-    const [prescriptionType, setPrescriptionType] = useState("new");
+    const router = useRouter();
+    const token = useAppSelector((state) => state.auth.accessToken);
+
+    const searchParams = useSearchParams();
+    const patientId = searchParams.get("patientId");
+
+    const [doctorPatients, setDoctorPatients] = useState([]);
+    const [patientsLoading, setPatientsLoading] = useState(false);
+
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [patientAppointments, setPatientAppointments] = useState([]);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
+    const [appointmentLoading, setAppointmentLoading] = useState(false);
+
+    const [chiefComplaint, setChiefComplaint] = useState("");
+    const [diagnosis, setDiagnosis] = useState("");
+    const [advice, setAdvice] = useState("");
     const [followUpDate, setFollowUpDate] = useState("");
-    const [clinicalNotes, setClinicalNotes] = useState("");
+
+    const [medicines, setMedicines] = useState([createEmptyMedicine()]);
+    const [tests, setTests] = useState([createEmptyTest()]);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [previewUrl, setPreviewUrl] = useState(null);
-    const [isGenerating, setIsGenerating] = useState(false);
+    const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
 
-    // --- State for medicines (dynamic rows) ---
-    const [medicines, setMedicines] = useState([
-        {
-            id: 1,
-            name: "",
-            formStrength: "",
-            dose: "",
-            frequency: "",
-            customFrequency: "",
-            duration: "",
-            customDuration: "",
-            instructions: "",
-        },
-    ]);
-
-    const addMedicineRow = () => {
-        const newId = medicines.length + 1;
-        setMedicines([
-            ...medicines,
-            {
-                id: newId,
-                name: "",
-                formStrength: "",
-                dose: "",
-                frequency: "",
-                customFrequency: "",
-                duration: "",
-                customDuration: "",
-                instructions: "",
-            },
-        ]);
-    };
-
-    const updateMedicine = (id, field, value) => {
-        setMedicines(
-            medicines.map((med) => (med.id === id ? { ...med, [field]: value } : med))
-        );
-    };
-
-    const deleteMedicineRow = (id) => {
-        if (medicines.length === 1) return;
-        setMedicines(medicines.filter((med) => med.id !== id));
-    };
-
-    // --- State for additional instructions (dynamic list) ---
-    const [additionalInstructions, setAdditionalInstructions] = useState([
-        "Take medicines regularly as prescribed.",
-    ]);
-
-    const addInstruction = () => {
-        setAdditionalInstructions([...additionalInstructions, ""]);
-    };
-
-    const updateInstruction = (index, value) => {
-        const updated = [...additionalInstructions];
-        updated[index] = value;
-        setAdditionalInstructions(updated);
-    };
-
-    const deleteInstruction = (index) => {
-        if (additionalInstructions.length === 1) return;
-        setAdditionalInstructions(additionalInstructions.filter((_, i) => i !== index));
-    };
-
-    // --- State for attachments ---
-    const [attachments, setAttachments] = useState([]);
-    const [isDragOver, setIsDragOver] = useState(false);
-
-    const handleFileUpload = (files) => {
-        const newFiles = Array.from(files).map((file) => ({
-            id: Date.now() + Math.random(),
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            file: file,
-        }));
-        setAttachments([...attachments, ...newFiles]);
-    };
-
-    const handleDrop = (e) => {
-        e.preventDefault();
-        setIsDragOver(false);
-        const files = e.dataTransfer.files;
-        if (files.length) handleFileUpload(files);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        setIsDragOver(true);
-    };
-
-    const handleDragLeave = () => {
-        setIsDragOver(false);
-    };
-
-    const removeAttachment = (id) => {
-        setAttachments(attachments.filter((att) => att.id !== id));
-    };
-
-    const formatFileSize = (bytes) => {
-        if (bytes < 1024) return bytes + " B";
-        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
-        return (bytes / 1048576).toFixed(1) + " MB";
-    };
-
-    // --- State for patient search ---
-    const [patientSearchQuery, setPatientSearchQuery] = useState("");
-    const [selectedPatient, setSelectedPatient] = useState(null);
-    const [showPatientSuggestions, setShowPatientSuggestions] = useState(false);
-
-    // Today's patient list (mock — replace with API call)
-    const mockPatients = [
-        { id: "PT-2025-000123", name: "Ayesha Rahman", age: 28, gender: "Female", phone: "017XXXXXXXXXX", email: "ayesha@example.com", address: "Mirpur, Dhaka", avatar: null },
-        { id: "PT-2025-000456", name: "Md. Kamal Hossain", age: 45, gender: "Male", phone: "018XXXXXXXXXX", email: "kamal@example.com", address: "Uttara, Dhaka", avatar: null },
-        { id: "PT-2025-000789", name: "Fatema Begum", age: 35, gender: "Female", phone: "019XXXXXXXXXX", email: "fatema@example.com", address: "Gulshan, Dhaka", avatar: null },
-        { id: "PT-2025-000790", name: "Rafiq Ahmed", age: 38, gender: "Male", phone: "016XXXXXXXXXX", email: "rafiq@example.com", address: "Banani, Dhaka", avatar: null },
-        { id: "PT-2025-000791", name: "Nusrat Jahan", age: 26, gender: "Female", phone: "015XXXXXXXXXX", email: "nusrat@example.com", address: "Dhanmondi, Dhaka", avatar: null },
-        { id: "PT-2025-000792", name: "Sakib Khan", age: 41, gender: "Male", phone: "014XXXXXXXXXX", email: "sakib@example.com", address: "Mohammadpur, Dhaka", avatar: null },
-        { id: "PT-2025-000793", name: "Sumaiya Akter", age: 30, gender: "Female", phone: "013XXXXXXXXXX", email: "sumaiya@example.com", address: "Khilgaon, Dhaka", avatar: null },
-        { id: "PT-2025-000794", name: "Tanvir Hossain", age: 52, gender: "Male", phone: "012XXXXXXXXXX", email: "tanvir@example.com", address: "Wari, Dhaka", avatar: null },
-    ];
-
-    const filteredPatients = mockPatients.filter(
-        (p) =>
-            p.name.toLowerCase().includes(patientSearchQuery.toLowerCase()) ||
-            p.id.toLowerCase().includes(patientSearchQuery.toLowerCase())
+    const validMedicines = useMemo(
+        () => medicines.filter((item) => item.medicineName.trim()),
+        [medicines]
     );
+
+    const validTests = useMemo(
+        () => tests.filter((item) => item.testName.trim()),
+        [tests]
+    );
+
+    const summary = {
+        medicines: validMedicines.length,
+        tests: validTests.length,
+        appointment: selectedAppointment?.appointmentCode || "Not selected",
+        followUp: followUpDate || "Not set",
+    };
 
     const handleSelectPatient = (patient) => {
         setSelectedPatient(patient);
-        setPatientSearchQuery("");
-        setShowPatientSuggestions(false);
+        setSelectedAppointment(null);
+        setPatientAppointments([]);
     };
 
     const handleClearPatient = () => {
         setSelectedPatient(null);
+        setSelectedAppointment(null);
+        setPatientAppointments([]);
     };
 
-    // --- Summary data ---
-    const summary = {
-        totalMedicines: medicines.filter((m) => m.name.trim() !== "").length,
-        totalInstructions: additionalInstructions.filter((i) => i.trim() !== "").length,
-        followUpDate: followUpDate || "Not set",
-        nextVisit: visitType === "IPD" ? "Admitted" : "OPD follow-up",
+    const updateMedicine = (id, field, value) => {
+        setMedicines((prev) =>
+            prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+        );
     };
 
-    // Mock doctor info (from logged in user context)
-    const doctor = {
-        name: "Dr. Abdullah Al Noman",
-        specialization: "Cardiologist",
-        department: "Cardiology",
-        employeeId: "D-2025-001",
-        email: "dr.noman@hospital.com",
-        phone: "+880 1XXX XXXXXX",
-        avatar: null,
+    const addMedicine = () => {
+        setMedicines((prev) => [...prev, createEmptyMedicine()]);
     };
 
-    // --- Form submission handlers ---
-    const handleSavePrescription = () => {
-        if (!selectedPatient) {
-            alert("Please select a patient first.");
+    const removeMedicine = (id) => {
+        setMedicines((prev) => {
+            if (prev.length === 1) return prev;
+            return prev.filter((item) => item.id !== id);
+        });
+    };
+
+    const updateTest = (id, field, value) => {
+        setTests((prev) =>
+            prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+        );
+    };
+
+    const addTest = () => {
+        setTests((prev) => [...prev, createEmptyTest()]);
+    };
+
+    const removeTest = (id) => {
+        setTests((prev) => {
+            if (prev.length === 1) return prev;
+            return prev.filter((item) => item.id !== id);
+        });
+    };
+
+    const validateForm = () => {
+        if (!selectedPatient) return "Please select a patient.";
+        if (!selectedAppointment) return "Please select an appointment.";
+        if (!chiefComplaint.trim()) return "Chief complaint is required.";
+        if (!diagnosis.trim()) return "Diagnosis is required.";
+        if (!advice.trim()) return "Advice is required.";
+        if (!followUpDate) return "Follow-up date is required.";
+        if (validMedicines.length === 0) return "Please add at least one medicine.";
+
+        for (const medicine of validMedicines) {
+            if (!medicine.dosage.trim()) return "Medicine dosage is required.";
+            if (!medicine.frequency.trim()) return "Medicine frequency is required.";
+            if (!medicine.duration.trim()) return "Medicine duration is required.";
+        }
+
+        return "";
+    };
+
+    const handleCreatePrescription = async () => {
+        const validationError = validateForm();
+
+        if (validationError) {
+            setErrorMessage(validationError);
             return;
         }
-        const validMeds = medicines.filter((m) => m.name.trim() !== "");
-        if (validMeds.length === 0) {
-            alert("Please add at least one medicine.");
-            return;
-        }
-        const newRx = {
-            id: `RX-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`,
-            patient: {
-                name: selectedPatient.name,
-                pid: selectedPatient.id,
-                age: `${selectedPatient.age} Years, ${selectedPatient.gender}`,
-            },
-            date: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
-            time: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
-            medicines: validMeds.length,
-            instructions: additionalInstructions.filter((i) => i.trim() !== "").length,
-            status: "pending",
-            _fullData: {
-                prescriptionDate, visitType, prescriptionType, followUpDate,
-                clinicalNotes, medicines: validMeds,
-                additionalInstructions: additionalInstructions.filter((i) => i.trim() !== ""),
-                doctor, patient: selectedPatient,
-            },
-        };
-        // Save to localStorage so the list page can read it
-        const existing = JSON.parse(localStorage.getItem("prescriptions") || "[]");
-        localStorage.setItem("prescriptions", JSON.stringify([newRx, ...existing]));
-        alert("Prescription saved successfully!");
-        window.location.href = "/doctor-portal/prescriptions";
-    };
 
-    const handleSaveAsDraft = () => {
-        console.log("Saving as draft");
-        alert("Prescription saved as draft");
+        try {
+            setIsSubmitting(true);
+            setErrorMessage("");
+
+            const payload = {
+                appointmentId: selectedAppointment.id,
+                chiefComplaint: chiefComplaint.trim(),
+                diagnosis: diagnosis.trim(),
+                advice: advice.trim(),
+                followUpDate,
+                medicines: validMedicines.map((medicine) => ({
+                    medicineName: medicine.medicineName.trim(),
+                    dosage: medicine.dosage.trim(),
+                    frequency: medicine.frequency.trim(),
+                    duration: medicine.duration.trim(),
+                    instruction: medicine.instruction.trim(),
+                })),
+                tests: validTests.map((test) => ({
+                    testName: test.testName.trim(),
+                    instruction: test.instruction.trim(),
+                })),
+            };
+
+            const response = await fetch(`${API_URL}/prescription/create`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result?.message || "Failed to create prescription.");
+            }
+
+            alert("Prescription created successfully.");
+
+            router.push("/doctor-portal/prescriptions");
+        } catch (error) {
+            setErrorMessage(error.message || "Something went wrong.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handlePreview = async () => {
-        setIsGenerating(true);
-        const formData = buildPrescriptionDataFromForm({
-            prescriptionDate, visitType, prescriptionType, followUpDate, clinicalNotes,
-            medicines, additionalInstructions, selectedPatient, doctor,
-        });
-        const url = await generatePrescriptionPDF(formData, "preview");
-        setPreviewUrl(url);
-        setIsGenerating(false);
+        const validationError = validateForm();
+
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
+
+        try {
+            setIsGeneratingPreview(true);
+            setErrorMessage("");
+
+            const previewMedicines = validMedicines.map((medicine) => ({
+                id: medicine.id,
+                name: medicine.medicineName,
+                formStrength: "",
+                dose: medicine.dosage,
+                frequency: medicine.frequency,
+                customFrequency: "",
+                duration: medicine.duration,
+                customDuration: "",
+                instructions: medicine.instruction,
+            }));
+
+            const previewTests = validTests.map((test) => ({
+                testName: test.testName || "",
+                instruction: test.instruction || "",
+            }));
+
+            const formData = buildPrescriptionDataFromForm({
+                prescriptionDate: new Date().toISOString().split("T")[0],
+                visitType: selectedAppointment?.type || "OPD",
+                prescriptionType: "new",
+                followUpDate,
+                clinicalNotes: `Chief Complaint: ${chiefComplaint}\nDiagnosis: ${diagnosis}\nAdvice: ${advice}`,
+                medicines: previewMedicines,
+                additionalInstructions: [],
+                tests: previewTests,
+
+                selectedPatient: {
+                    id: selectedPatient?.id || selectedPatient?.patientId || "",
+                    name: selectedPatient?.fullName || "",
+                    age: selectedPatient?.age || "",
+                    gender: selectedPatient?.gender || "",
+                    phone: selectedPatient?.mobileNumber || "",
+                    email: selectedPatient?.email || "",
+                    address: selectedPatient?.address || "",
+                },
+
+                doctor: {
+                    name: selectedAppointment?.doctor?.fullName || "Doctor",
+                    specialization: selectedAppointment?.doctor?.specialization?.name || "",
+                    department: selectedAppointment?.doctor?.specialization?.name || "",
+                    employeeId: selectedAppointment?.doctor?.id || "",
+                    email: selectedAppointment?.doctor?.email || "",
+                    phone: selectedAppointment?.doctor?.mobile || "",
+                },
+            });
+
+            const url = await generatePrescriptionPDF(formData, "preview");
+            setPreviewUrl(url);
+        } catch (error) {
+            console.error("Preview generation error:", error);
+            setErrorMessage(error?.message || "Failed to generate preview.");
+        } finally {
+            setIsGeneratingPreview(false);
+        }
     };
 
     const handleClosePreview = () => {
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+        }
+
         setPreviewUrl(null);
     };
 
+    useEffect(() => {
+        if (!token) return;
+
+        const fetchDoctorPatients = async () => {
+            try {
+                setPatientsLoading(true);
+
+                const response = await fetch(`${API_URL}/appointments/doctor/patients`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    setDoctorPatients(Array.isArray(result.data) ? result.data : []);
+                }
+            } catch (error) {
+                console.error("Failed to fetch doctor patients:", error);
+            } finally {
+                setPatientsLoading(false);
+            }
+        };
+
+        fetchDoctorPatients();
+    }, [token]);
+
+    useEffect(() => {
+        if (!patientId || doctorPatients.length === 0) return;
+
+        const foundPatient = doctorPatients.find(
+            (patient) => patient.id === patientId || patient.patientId === patientId
+        );
+
+        if (foundPatient) {
+            handleSelectPatient(foundPatient);
+        }
+    }, [patientId, doctorPatients]);
+
+    useEffect(() => {
+        if (!token || !selectedPatient) return;
+
+        const patientIdForApi = selectedPatient.id || selectedPatient.patientId;
+
+        const fetchPatientAppointments = async () => {
+            try {
+                setAppointmentLoading(true);
+
+                const response = await fetch(
+                    `${API_URL}/appointments/patient/${patientIdForApi}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                const result = await response.json();
+
+                if (result.success) {
+                    setPatientAppointments(result?.data?.appointments || []);
+                }
+            } catch (error) {
+                console.error("Failed to fetch patient appointments:", error);
+                setPatientAppointments([]);
+            } finally {
+                setAppointmentLoading(false);
+            }
+        };
+
+        fetchPatientAppointments();
+    }, [token, selectedPatient]);
+
     return (
         <>
-            {/* Sub Header */}
             <div className="nrx-sub-header">
                 <div className="nrx-breadcrumb">
                     <Link href="/doctor-portal/dashboard">Dashboard</Link>
@@ -275,88 +460,91 @@ export default function NewPrescriptionPage() {
                     <span className="nrx-breadcrumb-sep">/</span>
                     <span className="nrx-breadcrumb-current">New Prescription</span>
                 </div>
+
                 <div className="nrx-header-actions">
                     <Link href="/doctor-portal/prescriptions" className="nrx-header-btn back">
                         <ArrowLeft size={16} /> Back
                     </Link>
-                    <button className="nrx-header-btn outline" onClick={handlePreview} disabled={isGenerating}>
-                        <Eye size={16} /> {isGenerating ? "Generating…" : "Preview"}
-                    </button>
-                    <button className="nrx-header-btn primary" onClick={handleSavePrescription}>
-                        <Save size={16} /> Save Prescription
+
+                    {/* <button
+                        type="button"
+                        className="nrx-header-btn outline"
+                        onClick={handlePreview}
+                        disabled={isGeneratingPreview}
+                    >
+                        <Icon type="fileText" />
+                        {isGeneratingPreview ? "Generating..." : "Preview"}
+                    </button> */}
+
+                    <button
+                        type="button"
+                        className="nrx-header-btn primary"
+                        onClick={handleCreatePrescription}
+                        disabled={isSubmitting}
+                    >
+                        <Icon type="save" />
+                        {isSubmitting ? "Saving..." : "Create Prescription"}
                     </button>
                 </div>
             </div>
 
-            {/* Main 2-column layout */}
+            {errorMessage && (
+                <div className="nrx-card" style={{ borderColor: "#fecaca", color: "#b91c1c" }}>
+                    {errorMessage}
+                </div>
+            )}
+
             <div className="nrx-layout">
-                {/* Left Column */}
                 <div className="nrx-left-col">
-                    {/* Prescription Information Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <FileText size={16} /> Prescription Information
+                            <Icon type="fileText" /> Patient Assessment
                         </h3>
+
                         <div className="nrx-form-grid">
+                            <div className="nrx-form-group full-width">
+                                <label className="nrx-label">
+                                    Chief Complaint <span className="nrx-required">*</span>
+                                </label>
+                                <textarea
+                                    className="nrx-textarea"
+                                    rows="3"
+                                    placeholder="Example: Fever, headache and body pain for 3 days"
+                                    value={chiefComplaint}
+                                    onChange={(event) => setChiefComplaint(event.target.value)}
+                                />
+                            </div>
+
+                            <div className="nrx-form-group full-width">
+                                <label className="nrx-label">
+                                    Diagnosis <span className="nrx-required">*</span>
+                                </label>
+                                <textarea
+                                    className="nrx-textarea"
+                                    rows="3"
+                                    placeholder="Example: Viral Fever"
+                                    value={diagnosis}
+                                    onChange={(event) => setDiagnosis(event.target.value)}
+                                />
+                            </div>
+
+                            <div className="nrx-form-group full-width">
+                                <label className="nrx-label">
+                                    Advice <span className="nrx-required">*</span>
+                                </label>
+                                <textarea
+                                    className="nrx-textarea"
+                                    rows="3"
+                                    placeholder="Example: Take rest, drink plenty of water and avoid cold drinks"
+                                    value={advice}
+                                    onChange={(event) => setAdvice(event.target.value)}
+                                />
+                            </div>
+
                             <div className="nrx-form-group">
                                 <label className="nrx-label">
-                                    Prescription Date <span className="nrx-required">*</span>
+                                    Follow-up Date <span className="nrx-required">*</span>
                                 </label>
-                                <div className="nrx-input-wrap">
-                                    <span className="nrx-input-icon">
-                                        <Calendar size={16} />
-                                    </span>
-                                    <input
-                                        type="date"
-                                        className="nrx-input"
-                                        value={prescriptionDate}
-                                        onChange={(e) => setPrescriptionDate(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="nrx-form-group">
-                                <label className="nrx-label">
-                                    Visit Type <span className="nrx-required">*</span>
-                                </label>
-                                <select
-                                    className="nrx-select"
-                                    value={visitType}
-                                    onChange={(e) => setVisitType(e.target.value)}
-                                >
-                                    <option value="OPD">OPD</option>
-                                    <option value="IPD">IPD</option>
-                                    <option value="Emergency">Emergency</option>
-                                    <option value="Telemedicine">Telemedicine</option>
-                                </select>
-                            </div>
-                            <div className="nrx-form-group">
-                                <label className="nrx-label">Prescription Type</label>
-                                <div className="nrx-type-selector">
-                                    <button
-                                        type="button"
-                                        className={`nrx-type-btn ${prescriptionType === "new" ? "active" : ""}`}
-                                        onClick={() => setPrescriptionType("new")}
-                                    >
-                                        <FileText size={14} /> New Prescription
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={`nrx-type-btn ${prescriptionType === "refill" ? "active" : ""}`}
-                                        onClick={() => setPrescriptionType("refill")}
-                                    >
-                                        <Clipboard size={14} /> Refill
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={`nrx-type-btn ${prescriptionType === "repeat" ? "active" : ""}`}
-                                        onClick={() => setPrescriptionType("repeat")}
-                                    >
-                                        <Clock size={14} /> Repeat
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="nrx-form-group">
-                                <label className="nrx-label">Follow-up Date</label>
                                 <div className="nrx-input-wrap">
                                     <span className="nrx-input-icon">
                                         <Calendar size={16} />
@@ -365,151 +553,111 @@ export default function NewPrescriptionPage() {
                                         type="date"
                                         className="nrx-input"
                                         value={followUpDate}
-                                        onChange={(e) => setFollowUpDate(e.target.value)}
+                                        onChange={(event) => setFollowUpDate(event.target.value)}
                                     />
                                 </div>
-                            </div>
-                            <div className="nrx-form-group full-width">
-                                <label className="nrx-label">Prescription Notes</label>
-                                <textarea
-                                    className="nrx-textarea"
-                                    rows="3"
-                                    placeholder="Enter clinical notes, diagnosis, or remarks..."
-                                    value={clinicalNotes}
-                                    onChange={(e) => setClinicalNotes(e.target.value)}
-                                />
                             </div>
                         </div>
                     </div>
 
-                    {/* Prescribed Medicines Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <Pill size={16} /> Prescribed Medicines
+                            <Icon type="pill" /> Medicines
                         </h3>
+
                         <div className="nrx-med-table-wrap">
                             <table className="nrx-med-table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Medicine Name & Form/Strength</th>
-                                        <th>Dose</th>
+                                        <th>Medicine</th>
+                                        <th>Dosage</th>
                                         <th>Frequency</th>
                                         <th>Duration</th>
-                                        <th>Instructions</th>
+                                        <th>Instruction</th>
                                         <th></th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
-                                    {medicines.map((med, idx) => (
-                                        <tr key={med.id}>
-                                            <td>{idx + 1}</td>
-                                            <td>
-                                                <div className="nrx-cell-name-wrap">
-                                                    <input
-                                                        type="text"
-                                                        className="nrx-cell-input"
-                                                        placeholder="Medicine name"
-                                                        value={med.name}
-                                                        onChange={(e) => updateMedicine(med.id, "name", e.target.value)}
-                                                    />
-                                                    <input
-                                                        type="text"
-                                                        className="nrx-med-form-input"
-                                                        placeholder="Form / Strength (e.g., Tablet 10mg)"
-                                                        value={med.formStrength}
-                                                        onChange={(e) => updateMedicine(med.id, "formStrength", e.target.value)}
-                                                    />
-                                                </div>
-                                            </td>
+                                    {medicines.map((medicine, index) => (
+                                        <tr key={medicine.id}>
+                                            <td>{index + 1}</td>
+
                                             <td>
                                                 <input
                                                     type="text"
                                                     className="nrx-cell-input"
-                                                    placeholder="e.g., 1 Tablet"
-                                                    value={med.dose}
-                                                    onChange={(e) => updateMedicine(med.id, "dose", e.target.value)}
+                                                    placeholder="Napa Extra"
+                                                    value={medicine.medicineName}
+                                                    onChange={(event) =>
+                                                        updateMedicine(medicine.id, "medicineName", event.target.value)
+                                                    }
                                                 />
                                             </td>
-                                            <td>
-                                                <div className="nrx-cell-combo">
-                                                    <select
-                                                        className="nrx-cell-select"
-                                                        value={med.frequency}
-                                                        onChange={(e) => updateMedicine(med.id, "frequency", e.target.value)}
-                                                    >
-                                                        <option value="">Select</option>
-                                                        <option value="1 + 1 + 1">1 + 1 + 1</option>
-                                                        <option value="1 + 0 + 1">1 + 0 + 1</option>
-                                                        <option value="1 + 0 + 0">1 + 0 + 0</option>
-                                                        <option value="0 + 1 + 0">0 + 1 + 0</option>
-                                                        <option value="0 + 0 + 1">0 + 0 + 1</option>
-                                                        <option value="1 + 1 + 0">1 + 1 + 0</option>
-                                                        <option value="1 + 1 + 1 + 1">1 + 1 + 1 + 1</option>
-                                                        <option value="Every 4 Hours">Every 4 Hours</option>
-                                                        <option value="Every 6 Hours">Every 6 Hours</option>
-                                                        <option value="Every 8 Hours">Every 8 Hours</option>
-                                                        <option value="Once Weekly">Once Weekly</option>
-                                                        <option value="Twice Weekly">Twice Weekly</option>
-                                                        <option value="As Needed">As Needed</option>
-                                                        <option value="custom">Custom...</option>
-                                                    </select>
-                                                    {med.frequency === "custom" && (
-                                                        <input
-                                                            type="text"
-                                                            className="nrx-cell-input nrx-combo-input"
-                                                            placeholder="Type frequency"
-                                                            value={med.customFrequency}
-                                                            onChange={(e) => updateMedicine(med.id, "customFrequency", e.target.value)}
-                                                        />
-                                                    )}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="nrx-cell-combo">
-                                                    <select
-                                                        className="nrx-cell-select"
-                                                        value={med.duration}
-                                                        onChange={(e) => updateMedicine(med.id, "duration", e.target.value)}
-                                                    >
-                                                        <option value="">Select</option>
-                                                        <option value="1 Day">1 Day</option>
-                                                        <option value="3 Days">3 Days</option>
-                                                        <option value="5 Days">5 Days</option>
-                                                        <option value="7 Days">7 Days</option>
-                                                        <option value="10 Days">10 Days</option>
-                                                        <option value="14 Days">14 Days</option>
-                                                        <option value="21 Days">21 Days</option>
-                                                        <option value="30 Days">30 Days</option>
-                                                        <option value="60 Days">60 Days</option>
-                                                        <option value="90 Days">90 Days</option>
-                                                        <option value="custom">Custom...</option>
-                                                    </select>
-                                                    {med.duration === "custom" && (
-                                                        <input
-                                                            type="text"
-                                                            className="nrx-cell-input nrx-combo-input"
-                                                            placeholder="e.g., 45 Days"
-                                                            value={med.customDuration}
-                                                            onChange={(e) => updateMedicine(med.id, "customDuration", e.target.value)}
-                                                        />
-                                                    )}
-                                                </div>
-                                            </td>
+
                                             <td>
                                                 <input
                                                     type="text"
                                                     className="nrx-cell-input"
-                                                    placeholder="e.g., After breakfast"
-                                                    value={med.instructions}
-                                                    onChange={(e) => updateMedicine(med.id, "instructions", e.target.value)}
+                                                    placeholder="1 Tablet"
+                                                    value={medicine.dosage}
+                                                    onChange={(event) =>
+                                                        updateMedicine(medicine.id, "dosage", event.target.value)
+                                                    }
                                                 />
                                             </td>
+
+                                            <td>
+                                                <select
+                                                    className="nrx-cell-select"
+                                                    value={medicine.frequency}
+                                                    onChange={(event) =>
+                                                        updateMedicine(medicine.id, "frequency", event.target.value)
+                                                    }
+                                                >
+                                                    <option value="">Select</option>
+                                                    <option value="1+1+1">1+1+1</option>
+                                                    <option value="1+0+1">1+0+1</option>
+                                                    <option value="1+0+0">1+0+0</option>
+                                                    <option value="0+1+0">0+1+0</option>
+                                                    <option value="0+0+1">0+0+1</option>
+                                                    <option value="1+1+0">1+1+0</option>
+                                                    <option value="Every 6 Hours">Every 6 Hours</option>
+                                                    <option value="Every 8 Hours">Every 8 Hours</option>
+                                                    <option value="As Needed">As Needed</option>
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="nrx-cell-input"
+                                                    placeholder="5 Days"
+                                                    value={medicine.duration}
+                                                    onChange={(event) =>
+                                                        updateMedicine(medicine.id, "duration", event.target.value)
+                                                    }
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="nrx-cell-input"
+                                                    placeholder="After Meal"
+                                                    value={medicine.instruction}
+                                                    onChange={(event) =>
+                                                        updateMedicine(medicine.id, "instruction", event.target.value)
+                                                    }
+                                                />
+                                            </td>
+
                                             <td>
                                                 <button
                                                     type="button"
                                                     className="nrx-row-del-btn"
-                                                    onClick={() => deleteMedicineRow(med.id)}
+                                                    onClick={() => removeMedicine(medicine.id)}
                                                 >
                                                     <Trash2 size={14} />
                                                 </button>
@@ -520,320 +668,246 @@ export default function NewPrescriptionPage() {
                             </table>
                         </div>
 
-                        {/* Mobile card view — shown only on small screens via CSS */}
-                        <div className="nrx-med-cards">
-                            {medicines.map((med, idx) => (
-                                <div key={med.id} className="nrx-med-card">
-                                    <div className="nrx-med-card-header">
-                                        <span className="nrx-med-card-num">#{idx + 1}</span>
-                                        <button
-                                            type="button"
-                                            className="nrx-row-del-btn"
-                                            onClick={() => deleteMedicineRow(med.id)}
-                                        >
-                                            <Trash2 size={14} />
-                                        </button>
-                                    </div>
-                                    <div className="nrx-med-card-body">
-                                        <div className="nrx-med-card-field full">
-                                            <label className="nrx-med-card-label">Medicine Name</label>
-                                            <input
-                                                type="text"
-                                                className="nrx-cell-input"
-                                                placeholder="Medicine name"
-                                                value={med.name}
-                                                onChange={(e) => updateMedicine(med.id, "name", e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="nrx-med-card-field full">
-                                            <label className="nrx-med-card-label">Form / Strength</label>
-                                            <input
-                                                type="text"
-                                                className="nrx-med-form-input"
-                                                placeholder="e.g., Tablet 10mg"
-                                                value={med.formStrength}
-                                                onChange={(e) => updateMedicine(med.id, "formStrength", e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="nrx-med-card-field">
-                                            <label className="nrx-med-card-label">Dose</label>
-                                            <input
-                                                type="text"
-                                                className="nrx-cell-input"
-                                                placeholder="e.g., 1 Tablet"
-                                                value={med.dose}
-                                                onChange={(e) => updateMedicine(med.id, "dose", e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="nrx-med-card-field">
-                                            <label className="nrx-med-card-label">Frequency</label>
-                                            <div className="nrx-cell-combo">
-                                                <select
-                                                    className="nrx-cell-select"
-                                                    value={med.frequency}
-                                                    onChange={(e) => updateMedicine(med.id, "frequency", e.target.value)}
-                                                >
-                                                    <option value="">Select</option>
-                                                    <option value="1 + 1 + 1">1 + 1 + 1</option>
-                                                    <option value="1 + 0 + 1">1 + 0 + 1</option>
-                                                    <option value="1 + 0 + 0">1 + 0 + 0</option>
-                                                    <option value="0 + 1 + 0">0 + 1 + 0</option>
-                                                    <option value="0 + 0 + 1">0 + 0 + 1</option>
-                                                    <option value="1 + 1 + 0">1 + 1 + 0</option>
-                                                    <option value="1 + 1 + 1 + 1">1 + 1 + 1 + 1</option>
-                                                    <option value="Every 4 Hours">Every 4 Hours</option>
-                                                    <option value="Every 6 Hours">Every 6 Hours</option>
-                                                    <option value="Every 8 Hours">Every 8 Hours</option>
-                                                    <option value="Once Weekly">Once Weekly</option>
-                                                    <option value="Twice Weekly">Twice Weekly</option>
-                                                    <option value="As Needed">As Needed</option>
-                                                    <option value="custom">Custom...</option>
-                                                </select>
-                                                {med.frequency === "custom" && (
-                                                    <input
-                                                        type="text"
-                                                        className="nrx-cell-input nrx-combo-input"
-                                                        placeholder="Type frequency"
-                                                        value={med.customFrequency}
-                                                        onChange={(e) => updateMedicine(med.id, "customFrequency", e.target.value)}
-                                                    />
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="nrx-med-card-field">
-                                            <label className="nrx-med-card-label">Duration</label>
-                                            <div className="nrx-cell-combo">
-                                                <select
-                                                    className="nrx-cell-select"
-                                                    value={med.duration}
-                                                    onChange={(e) => updateMedicine(med.id, "duration", e.target.value)}
-                                                >
-                                                    <option value="">Select</option>
-                                                    <option value="1 Day">1 Day</option>
-                                                    <option value="3 Days">3 Days</option>
-                                                    <option value="5 Days">5 Days</option>
-                                                    <option value="7 Days">7 Days</option>
-                                                    <option value="10 Days">10 Days</option>
-                                                    <option value="14 Days">14 Days</option>
-                                                    <option value="21 Days">21 Days</option>
-                                                    <option value="30 Days">30 Days</option>
-                                                    <option value="60 Days">60 Days</option>
-                                                    <option value="90 Days">90 Days</option>
-                                                    <option value="custom">Custom...</option>
-                                                </select>
-                                                {med.duration === "custom" && (
-                                                    <input
-                                                        type="text"
-                                                        className="nrx-cell-input nrx-combo-input"
-                                                        placeholder="e.g., 45 Days"
-                                                        value={med.customDuration}
-                                                        onChange={(e) => updateMedicine(med.id, "customDuration", e.target.value)}
-                                                    />
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="nrx-med-card-field full">
-                                            <label className="nrx-med-card-label">Instructions</label>
-                                            <input
-                                                type="text"
-                                                className="nrx-cell-input"
-                                                placeholder="e.g., After breakfast"
-                                                value={med.instructions}
-                                                onChange={(e) => updateMedicine(med.id, "instructions", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <button type="button" className="nrx-add-row-btn" onClick={addMedicineRow}>
-                            <Plus size={14} /> Add Medicine
+                        <button type="button" className="nrx-add-row-btn" onClick={addMedicine}>
+                            <Icon type="plus" /> Add Medicine
                         </button>
                     </div>
 
-                    {/* Additional Instructions Card */}
                     <div className="nrx-card">
                         <h3 className="nrx-section-title">
-                            <Clipboard size={16} /> Additional Instructions
+                            <Icon type="clipboard" /> Recommended Tests
                         </h3>
-                        <div className="nrx-instr-list">
-                            {additionalInstructions.map((instruction, idx) => (
-                                <div key={idx} className="nrx-instr-row">
-                                    <span className="nrx-instr-dot"></span>
-                                    <input
-                                        type="text"
-                                        className="nrx-instr-input"
-                                        placeholder="Instruction"
-                                        value={instruction}
-                                        onChange={(e) => updateInstruction(idx, e.target.value)}
-                                    />
-                                    <button
-                                        type="button"
-                                        className="nrx-instr-del-btn"
-                                        onClick={() => deleteInstruction(idx)}
-                                    >
-                                        <Trash2 size={14} />
-                                    </button>
-                                </div>
-                            ))}
+
+                        <div className="nrx-med-table-wrap">
+                            <table className="nrx-med-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Test Name</th>
+                                        <th>Instruction</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {tests.map((test, index) => (
+                                        <tr key={test.id}>
+                                            <td>{index + 1}</td>
+
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="nrx-cell-input"
+                                                    placeholder="CBC"
+                                                    value={test.testName}
+                                                    onChange={(event) =>
+                                                        updateTest(test.id, "testName", event.target.value)
+                                                    }
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="nrx-cell-input"
+                                                    placeholder="Complete Blood Count"
+                                                    value={test.instruction}
+                                                    onChange={(event) =>
+                                                        updateTest(test.id, "instruction", event.target.value)
+                                                    }
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="nrx-row-del-btn"
+                                                    onClick={() => removeTest(test.id)}
+                                                >
+                                                    <Icon type="trash" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
-                        <button type="button" className="nrx-add-instr-btn" onClick={addInstruction}>
-                            <Plus size={14} /> Add Instruction
+
+                        <button type="button" className="nrx-add-row-btn" onClick={addTest}>
+                            <Icon type="plus" /> Add Test
                         </button>
                     </div>
                 </div>
 
-                {/* Right Column */}
                 <div className="nrx-right-col">
-                    {/* Patient Search Card */}
                     <div className="nrx-patient-search-card">
                         <h4 className="nrx-right-section-title">Patient Information</h4>
+
                         {!selectedPatient ? (
-                            <>
-                                <div className="nrx-patient-dropdown-wrap">
-                                    <label className="nrx-label" style={{ marginBottom: 6, display: "block" }}>
-                                        Select Today's Patient <span className="nrx-required">*</span>
-                                    </label>
-                                    <div className="nrx-patient-select-box">
-                                        <User size={16} />
-                                        <select
-                                            className="nrx-patient-native-select"
-                                            value=""
-                                            onChange={(e) => {
-                                                const found = mockPatients.find((p) => p.id === e.target.value);
-                                                if (found) handleSelectPatient(found);
-                                            }}
-                                        >
-                                            <option value="" disabled>Select a patient…</option>
-                                            {mockPatients.map((p) => (
-                                                <option key={p.id} value={p.id}>
-                                                    {p.name}  ·  {p.id}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
+                            <div className="nrx-patient-dropdown-wrap">
+                                <label className="nrx-label" style={{ marginBottom: 6, display: "block" }}>
+                                    Select Patient <span className="nrx-required">*</span>
+                                </label>
+
+                                <div className="nrx-patient-select-box">
+                                    <Icon type="user" />
+
+                                    <select
+                                        className="nrx-patient-native-select"
+                                        value=""
+                                        disabled={patientsLoading}
+                                        onChange={(event) => {
+                                            const found = doctorPatients.find(
+                                                (patient) =>
+                                                    patient.id === event.target.value ||
+                                                    patient.patientId === event.target.value
+                                            );
+
+                                            if (found) handleSelectPatient(found);
+                                        }}
+                                    >
+                                        <option value="" disabled>
+                                            {patientsLoading ? "Loading patients..." : "Select a patient..."}
+                                        </option>
+
+                                        {doctorPatients.map((patient) => (
+                                            <option
+                                                key={patient.id || patient.patientId}
+                                                value={patient.id || patient.patientId}
+                                            >
+                                                {patient.fullName} · {patient.patientCode || "No Code"}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
-                            </>
+                            </div>
                         ) : (
                             <>
                                 <div className="nrx-selected-patient">
                                     <div className="nrx-sel-patient-avatar">
-                                        {selectedPatient.avatar ? (
-                                            <img src={selectedPatient.avatar} alt="" />
-                                        ) : (
-                                            <User size={16} />
-                                        )}
+                                        <Icon type="user" />
                                     </div>
+
                                     <div>
-                                        <p className="nrx-sel-patient-name">{selectedPatient.name}</p>
+                                        <p className="nrx-sel-patient-name">{selectedPatient.fullName}</p>
                                         <p className="nrx-sel-patient-meta">
-                                            {selectedPatient.age} yrs, {selectedPatient.gender}
+                                            {selectedPatient.age || "N/A"} yrs, {selectedPatient.gender || "N/A"}
                                         </p>
-                                        <p className="nrx-sel-patient-pid">{selectedPatient.id}</p>
+                                        <p className="nrx-sel-patient-pid">
+                                            {selectedPatient.patientCode || selectedPatient.id}
+                                        </p>
                                     </div>
-                                    <button className="nrx-clear-patient-btn" onClick={handleClearPatient}>
-                                        <X size={14} />
+
+                                    <button
+                                        type="button"
+                                        className="nrx-clear-patient-btn"
+                                        onClick={handleClearPatient}
+                                    >
+                                        <Icon type="x" />
                                     </button>
                                 </div>
+
                                 <div className="nrx-patient-detail-rows">
                                     <div className="nrx-patient-detail-row">
-                                        <Phone size={14} /> {selectedPatient.phone}
+                                        <Icon type="phone" /> {selectedPatient.mobileNumber || "N/A"}
                                     </div>
                                     <div className="nrx-patient-detail-row">
-                                        <Mail size={14} /> {selectedPatient.email}
-                                    </div>
-                                    <div className="nrx-patient-detail-row">
-                                        <MapPin size={14} /> {selectedPatient.address}
+                                        <Icon type="mail" /> {selectedPatient.email || "N/A"}
                                     </div>
                                 </div>
                             </>
                         )}
                     </div>
 
-                    {/* Prescription Summary Card */}
-                    <div className="nrx-summary-card">
-                        <h4 className="nrx-right-section-title">Prescription Summary</h4>
-                        <div className="nrx-summary-rows">
-                            <div className="nrx-summary-row">
-                                <span className="nrx-summary-key">Total Medicines</span>
-                                <span className="nrx-summary-val">{summary.totalMedicines}</span>
-                            </div>
-                            <div className="nrx-summary-row">
-                                <span className="nrx-summary-key">Total Instructions</span>
-                                <span className="nrx-summary-val">{summary.totalInstructions}</span>
-                            </div>
-                            <div className="nrx-summary-row">
-                                <span className="nrx-summary-key">Follow-up Date</span>
-                                <span className="nrx-summary-val blue">
-                                    {summary.followUpDate === "Not set" ? summary.followUpDate : summary.followUpDate}
-                                </span>
-                            </div>
-                            <div className="nrx-summary-row">
-                                <span className="nrx-summary-key">Next Visit</span>
-                                <span className="nrx-summary-val blue">{summary.nextVisit}</span>
-                            </div>
-                            <div className="nrx-summary-row">
-                                <span className="nrx-summary-key">Prescription Type</span>
-                                <span className="nrx-summary-val green">
-                                    {prescriptionType === "new"
-                                        ? "New"
-                                        : prescriptionType === "refill"
-                                            ? "Refill"
-                                            : "Repeat"}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    <div className="nrx-patient-search-card">
+                        <h4 className="nrx-right-section-title">Appointment Information</h4>
 
-                    {/* Attachments Card */}
-                    <div className="nrx-card">
-                        <h3 className="nrx-section-title">
-                            <Paperclip size={16} /> Attachments
-                        </h3>
-                        <div
-                            className={`nrx-upload-zone ${isDragOver ? "drag-over" : ""}`}
-                            onDrop={handleDrop}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                        >
-                            <div className="nrx-upload-icon">
-                                <Upload size={24} />
-                            </div>
-                            <p className="nrx-upload-title">Drag & drop files here</p>
-                            <p className="nrx-upload-sub">or</p>
-                            <label className="nrx-upload-btn-label">
-                                <Upload size={14} /> Browse Files
-                                <input
-                                    type="file"
-                                    multiple
-                                    style={{ display: "none" }}
-                                    onChange={(e) => handleFileUpload(e.target.files)}
-                                />
-                            </label>
-                            <p className="nrx-upload-sub">Supported: PDF, JPG, PNG, DOC (Max 10MB)</p>
-                        </div>
-                        {attachments.length > 0 && (
-                            <div className="nrx-uploaded-files">
-                                {attachments.map((att) => (
-                                    <div key={att.id} className="nrx-uploaded-file">
-                                        <div className="nrx-file-icon">
-                                            <File size={16} />
-                                        </div>
-                                        <div className="nrx-file-info">
-                                            <p className="nrx-file-name">{att.name}</p>
-                                            <p className="nrx-file-size">{formatFileSize(att.size)}</p>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            className="nrx-file-del-btn"
-                                            onClick={() => removeAttachment(att.id)}
-                                        >
-                                            <Trash2 size={14} />
-                                        </button>
-                                    </div>
-                                ))}
+                        {!selectedPatient ? (
+                            <p className="nrx-empty-text">Select a patient first.</p>
+                        ) : appointmentLoading ? (
+                            <p className="nrx-empty-text">Loading appointments...</p>
+                        ) : patientAppointments.length === 0 ? (
+                            <p className="nrx-empty-text">No appointment found for this patient.</p>
+                        ) : (
+                            <div className="nrx-patient-dropdown-wrap">
+                                <label className="nrx-label" style={{ marginBottom: 6, display: "block" }}>
+                                    Select Appointment <span className="nrx-required">*</span>
+                                </label>
+
+                                <div className="nrx-patient-select-box">
+                                    <Icon type="calendar" />
+
+                                    <select
+                                        className="nrx-patient-native-select"
+                                        value={selectedAppointment?.id || ""}
+                                        onChange={(event) => {
+                                            const found = patientAppointments.find(
+                                                (appointment) => appointment.id === event.target.value
+                                            );
+
+                                            setSelectedAppointment(found || null);
+                                        }}
+                                    >
+                                        <option value="" disabled>
+                                            Select an appointment...
+                                        </option>
+
+                                        {patientAppointments.map((appointment) => (
+                                            <option key={appointment.id} value={appointment.id}>
+                                                {formatDate(appointment.appointmentDate)} •{" "}
+                                                {formatTime(appointment.startTime)} • {appointment.reason}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                         )}
+
+                        {selectedAppointment && (
+                            <div className="nrx-patient-detail-rows" style={{ marginTop: 12 }}>
+                                <div className="nrx-patient-detail-row">
+                                    <Icon type="calendar" />
+                                    {formatDate(selectedAppointment.appointmentDate)}
+                                </div>
+
+                                <div className="nrx-patient-detail-row">
+                                    <Icon type="clock" />
+                                    {formatTime(selectedAppointment.startTime)} -{" "}
+                                    {formatTime(selectedAppointment.endTime)}
+                                </div>
+
+                                <div className="nrx-patient-detail-row">
+                                    <Icon type="fileText" />
+                                    {selectedAppointment.type} · {selectedAppointment.status}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="nrx-summary-card">
+                        <h4 className="nrx-right-section-title">Prescription Summary</h4>
+
+                        <div className="nrx-summary-rows">
+                            <div className="nrx-summary-row">
+                                <span className="nrx-summary-key">Appointment</span>
+                                <span className="nrx-summary-val blue">{summary.appointment}</span>
+                            </div>
+
+                            <div className="nrx-summary-row">
+                                <span className="nrx-summary-key">Medicines</span>
+                                <span className="nrx-summary-val">{summary.medicines}</span>
+                            </div>
+
+                            <div className="nrx-summary-row">
+                                <span className="nrx-summary-key">Tests</span>
+                                <span className="nrx-summary-val">{summary.tests}</span>
+                            </div>
+
+                            <div className="nrx-summary-row">
+                                <span className="nrx-summary-key">Follow-up</span>
+                                <span className="nrx-summary-val green">{summary.followUp}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

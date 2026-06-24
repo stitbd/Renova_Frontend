@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { API_URL } from "@/config";
+import { useAppSelector } from "@/redux/hook";
 import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import "./prescriptions.css";
 import {
@@ -29,244 +31,358 @@ import {
   Gauge
 } from "lucide-react";
 
-const prescriptionsData = [
-  {
-    id: "RX-2025-000156",
-    patient: { name: "Ayesha Rahman", pid: "PT-2025-000123", age: "28 Years, Female" },
-    vitalSigns: { bloodPressure: "Blood Pressure (145/90 mmHg)", heartRate: "Heart Rate (82 bpm)", temperature: "Temperature (98.6°F)", oxygenSaturation: "Oxygen Saturation (98%)", bloodSugar: "Blood Sugar (120 mg/dL)" },
-    date: "31 May 2025",
-    time: "10:30 AM",
-    medicines: 5,
-    instructions: 2,
-    status: "dispensed",
-  },
-  {
-    id: "RX-2025-000155",
-    patient: { name: "Hasan Mahmud", pid: "PT-2025-000122", age: "45 Years, Male" },
-    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
-    date: "31 May 2025",
-    time: "09:15 AM",
-    medicines: 3,
-    instructions: 1,
-    status: "pending",
-  },
-  {
-    id: "RX-2025-000154",
-    patient: { name: "Sumaiya Khan", pid: "PT-2025-000121", age: "32 Years, Female" },
-    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
-    date: "30 May 2025",
-    time: "04:20 PM",
-    medicines: 4,
-    instructions: 2,
-    status: "dispensed",
-  },
-  {
-    id: "RX-2025-000153",
-    patient: { name: "Jannatul Ferdous", pid: "PT-2025-000120", age: "29 Years, Female" },
-    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
-    date: "30 May 2025",
-    time: "11:00 AM",
-    medicines: 6,
-    instructions: 3,
-    status: "dispensed",
-  },
-  {
-    id: "RX-2025-000152",
-    patient: { name: "Rafiq Ahmed", pid: "PT-2025-000119", age: "38 Years, Male" },
-    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
-    date: "29 May 2025",
-    time: "03:45 PM",
-    medicines: 2,
-    instructions: 1,
-    status: "cancelled",
-  },
-  {
-    id: "RX-2025-000151",
-    patient: { name: "Nusrat Jahan", pid: "PT-2025-000118", age: "26 Years, Female" },
-    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
-    date: "29 May 2025",
-    time: "10:20 AM",
-    medicines: 4,
-    instructions: 2,
-    status: "pending",
-  },
-  {
-    id: "RX-2025-000150",
-    patient: { name: "Sakib Khan", pid: "PT-2025-000117", age: "41 Years, Male" },
-    vitalSigns: { bloodPressure: "BP (130/85 mmHg)", heartRate: "HR (78 bpm)", temperature: "Temp (99.1°F)", oxygenSaturation: "SpO2 (97%)", bloodSugar: "BS (110 mg/dL)" },
-    date: "28 May 2025",
-    time: "02:30 PM",
-    medicines: 5,
-    instructions: 2,
-    status: "dispensed",
-  },
-];
-
-const stats = [
-  { label: "Total Prescriptions", value: "156", sub: "View all prescriptions", color: "green", icon: FileText },
-  { label: "Today's Prescriptions", value: "12", sub: "View today's list", color: "blue", icon: Calendar },
-  { label: "Pending", value: "08", sub: "Not Dispensed", color: "yellow", icon: Clock },
-  { label: "Dispensed", value: "140", sub: "Completed", color: "teal", icon: CheckCircle },
-  { label: "Cancelled", value: "04", sub: "Cancelled prescriptions", color: "red", icon: XCircle },
-];
-
-const statusLabel = { dispensed: "Dispensed", pending: "Pending", cancelled: "Cancelled" };
-
-const getPatientImage = (index) => {
-  const imageNum = ((index % 10) + 1).toString().padStart(2, '0');
-  return `/images/patients/${imageNum}.jpg`;
-};
-
 const ITEMS_PER_PAGE = 10;
 
+function Icon({ type, cls = "" }) {
+  const icons = {
+    rx: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414A1 1 0 0 1 19 9.414V19a2 2 0 0 1-2 2z" /></svg>,
+    calendar: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
+    search: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>,
+    filter: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>,
+    reset: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-4" /></svg>,
+    plus: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>,
+    download: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>,
+    print: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>,
+    eye: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>,
+    user: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
+    chev_left: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>,
+    chev_right: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>,
+  };
+
+  return icons[type] || null;
+}
+
+const formatDate = (date) => {
+  if (!date) return "N/A";
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const formatTime = (date) => {
+  if (!date) return "";
+  return new Date(date).toLocaleTimeString("en-BD", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
+const calculateAge = (dateOfBirth) => {
+  if (!dateOfBirth) return "N/A";
+
+  const birthDate = new Date(dateOfBirth);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+};
+
+const getInitials = (name = "") => {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+};
+
+const buildPdfData = (rx) => {
+  return {
+    prescriptionId: rx.prescriptionCode,
+    prescriptionDate: formatDate(rx.createdAt),
+    prescriptionTime: formatTime(rx.createdAt),
+    visitType: rx.appointment?.type || "OPD",
+    prescriptionType: "New Prescription",
+    status: "completed",
+
+    doctor: {
+      name: rx.doctor?.fullName || "Doctor",
+      specialization: rx.doctor?.specialization?.name || "",
+      department: rx.doctor?.specialization?.name || "",
+      employeeId: rx.doctor?.id || "",
+      email: "",
+      phone: "",
+    },
+
+    patient: {
+      name: rx.patient?.fullName || rx.appointment?.patientName || "N/A",
+      pid: rx.patient?.id || rx.patientId || "N/A",
+      ageGender: `${calculateAge(rx.patient?.dateOfBirth)} yrs, ${rx.patient?.gender || "N/A"}`,
+      phone: rx.patient?.mobileNumber || rx.appointment?.patientPhone || "",
+      email: rx.patient?.email || rx.appointment?.patientEmail || "",
+    },
+
+    clinicalNotes: `Chief Complaint: ${rx.chiefComplaint || ""}\nDiagnosis: ${rx.diagnosis || ""}\nAdvice: ${rx.advice || ""}`,
+
+    medicines: (rx.medicines || []).map((medicine) => ({
+      name: medicine.medicineName,
+      formStrength: "",
+      dose: medicine.dosage,
+      frequency: medicine.frequency,
+      duration: medicine.duration,
+      instructions: medicine.instruction,
+    })),
+
+    tests: (rx.tests || []).map((test) => ({
+      testName: test.testName,
+      instruction: test.instruction,
+    })),
+
+    additionalInstructions: [],
+    followUpDate: rx.followUpDate ? formatDate(rx.followUpDate) : "",
+  };
+};
+
 export default function PrescriptionsPage() {
+  const token = useAppSelector((state) => state.auth.accessToken);
+
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [allPrescriptions, setAllPrescriptions] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [showDoctorDropdown, setShowDoctorDropdown] = useState(false);
-  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const fetchPrescriptions = async () => {
+    if (!token) return;
+
+    try {
+      setLoading(true);
+      setErrorMessage("");
+
+      const response = await fetch(`${API_URL}/prescription/my`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result?.message || "Failed to load prescriptions.");
+      }
+
+      setPrescriptions(Array.isArray(result.data) ? result.data : []);
+    } catch (error) {
+      setErrorMessage(error.message || "Something went wrong.");
+      setPrescriptions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("prescriptions") || "[]");
-    const validSaved = saved.filter(p => p && p.patient);
-    setAllPrescriptions([...validSaved, ...prescriptionsData]);
-  }, []);
+    fetchPrescriptions();
+  }, [token]);
 
-  const patientList = [...new Map(allPrescriptions.filter(p => p?.patient).map(p => [p.patient.name, p.patient])).values()];
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, selectedPatient, dateFrom, dateTo]);
 
-  const filtered = allPrescriptions.filter((p) => {
-    if (!p || !p.patient) return false;
-    const matchSearch =
-      p.patient?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.id?.toLowerCase().includes(search.toLowerCase());
-    const matchPatient = selectedPatient === "all" || p.patient?.name === selectedPatient;
-    const matchStatus = selectedStatus === "all" || p.status === selectedStatus;
+  const patientList = useMemo(() => {
+    const map = new Map();
 
-    const matchDate = (() => {
-      if (!dateFrom && !dateTo) return true;
-      const rxDate = new Date(p.date);
+    prescriptions.forEach((rx) => {
+      const patient = rx.patient;
+      if (patient?.id && patient?.fullName) {
+        map.set(patient.id, patient);
+      }
+    });
+
+    return Array.from(map.values());
+  }, [prescriptions]);
+
+  const stats = useMemo(() => {
+    const today = new Date().toDateString();
+
+    return [
+      {
+        label: "Total Prescriptions",
+        value: prescriptions.length,
+        sub: "All prescriptions",
+        color: "green",
+        icon: "rx",
+      },
+      {
+        label: "Today's Prescriptions",
+        value: prescriptions.filter((rx) => new Date(rx.createdAt).toDateString() === today).length,
+        sub: "Created today",
+        color: "blue",
+        icon: "calendar",
+      },
+      {
+        label: "Medicines",
+        value: prescriptions.reduce((sum, rx) => sum + (rx.medicines?.length || 0), 0),
+        sub: "Total prescribed",
+        color: "teal",
+        icon: "rx",
+      },
+      {
+        label: "Tests",
+        value: prescriptions.reduce((sum, rx) => sum + (rx.tests?.length || 0), 0),
+        sub: "Recommended tests",
+        color: "yellow",
+        icon: "calendar",
+      },
+      {
+        label: "Follow-ups",
+        value: prescriptions.filter((rx) => rx.followUpDate).length,
+        sub: "Follow-up scheduled",
+        color: "blue",
+        icon: "calendar",
+      }
+    ];
+  }, [prescriptions]);
+
+  const filteredPrescriptions = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    return prescriptions.filter((rx) => {
+      const patientName = rx.patient?.fullName || "";
+      const patientCode = rx.patient?.id || "";
+      const rxCode = rx.prescriptionCode || "";
+      const diagnosis = rx.diagnosis || "";
+
+      const matchesSearch =
+        !query ||
+        patientName.toLowerCase().includes(query) ||
+        patientCode.toLowerCase().includes(query) ||
+        rxCode.toLowerCase().includes(query) ||
+        diagnosis.toLowerCase().includes(query);
+
+      const matchesPatient = selectedPatient === "all" || rx.patient?.id === selectedPatient;
+
+      const rxDate = new Date(rx.createdAt);
       const from = dateFrom ? new Date(dateFrom) : null;
       const to = dateTo ? new Date(dateTo) : null;
-      if (from && rxDate < from) return false;
-      if (to && rxDate > to) return false;
-      return true;
-    })();
-    return matchSearch && matchPatient && matchStatus && matchDate;
-  });
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+      if (to) to.setHours(23, 59, 59, 999);
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+      const matchesDate = (!from || rxDate >= from) && (!to || rxDate <= to);
+
+      return matchesSearch && matchesPatient && matchesDate;
+    });
+  }, [prescriptions, search, selectedPatient, dateFrom, dateTo]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredPrescriptions.length / ITEMS_PER_PAGE));
+
+  const paginatedPrescriptions = filteredPrescriptions.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const resetFilters = () => {
+    setSearch("");
+    setSelectedPatient("all");
+    setDateFrom("");
+    setDateTo("");
+    setCurrentPage(1);
+  };
+
+  const handleDownload = async (rx) => {
+    await generatePrescriptionPDF(buildPdfData(rx), "download");
+  };
+
+  const handlePrint = async (rx) => {
+    await generatePrescriptionPDF(buildPdfData(rx), "print");
   };
 
   return (
     <>
       <div className="rx-stats-row">
-        {stats.map((s) => {
-          const IconComponent = s.icon;
-          return (
-            <div key={s.label} className={`rx-stat-card ${s.color}`}>
-              <div className={`rx-stat-icon ${s.color}`}>
-                <IconComponent size={20} />
-              </div>
-              <div className="rx-stat-body">
-                <p className="rx-stat-label">{s.label}</p>
-                <p className={`rx-stat-value ${s.color}`}>{s.value}</p>
-                <p className="rx-stat-sub">{s.sub}</p>
-              </div>
+        {stats.map((item) => (
+          <div key={item.label} className={`rx-stat-card ${item.color}`}>
+            <div className={`rx-stat-icon ${item.color}`}>
+              <Icon type={item.icon} />
             </div>
-          );
-        })}
+            <div className="rx-stat-body">
+              <p className="rx-stat-label">{item.label}</p>
+              <p className={`rx-stat-value ${item.color}`}>{item.value}</p>
+              <p className="rx-stat-sub">{item.sub}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="rx-filter-bar">
-        <div className="rx-filter-group">
-          <div className="rx-filter-group-row">
-            <div style={{ position: "relative", flex: 1 }}>
-              <button className="rx-filter-item" onClick={() => { setShowDatePicker(v => !v); setShowDoctorDropdown(false); setShowStatusDropdown(false); }}>
-                <Calendar size={14} />
-                <span>{dateFrom && dateTo ? `${dateFrom} – ${dateTo}` : dateFrom ? `From ${dateFrom}` : dateTo ? `To ${dateTo}` : "Date Range"}</span>
-                <ChevronDown size={12} className="rx-filter-chevron" />
-              </button>
-              {showDatePicker && (
-                <div className="rx-dropdown rx-date-dropdown">
-                  <div className="rx-date-row">
-                    <label>From</label>
-                    <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
-                  </div>
-                  <div className="rx-date-row">
-                    <label>To</label>
-                    <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} />
-                  </div>
-                  <div className="rx-date-actions">
-                    <button onClick={() => { setDateFrom(""); setDateTo(""); }}>Clear</button>
-                    <button className="apply" onClick={() => setShowDatePicker(false)}>Apply</button>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div style={{ position: "relative", flex: 1 }}>
-              <button className="rx-filter-item" onClick={() => { setShowDoctorDropdown(v => !v); setShowStatusDropdown(false); setShowDatePicker(false); }}>
-                <span>{selectedPatient === "all" ? "All Patients" : selectedPatient}</span>
-                <ChevronDown size={12} className="rx-filter-chevron" />
-              </button>
-              {showDoctorDropdown && (
-                <div className="rx-dropdown">
-                  <div className="rx-dropdown-item" onClick={() => { setSelectedPatient("all"); setShowDoctorDropdown(false); }}>All Patients</div>
-                  {patientList.map(p => (
-                    <div key={p.name} className="rx-dropdown-item" onClick={() => { setSelectedPatient(p.name); setShowDoctorDropdown(false); }}>
-                      {p.name} <span style={{ color: "#94a3b8", fontSize: "10px" }}>{p.pid}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div style={{ position: "relative", flex: 1 }}>
-              <button className="rx-filter-item" onClick={() => { setShowStatusDropdown(v => !v); setShowDoctorDropdown(false); setShowDatePicker(false); }}>
-                <span>{selectedStatus === "all" ? "All Status" : statusLabel[selectedStatus]}</span>
-                <ChevronDown size={12} className="rx-filter-chevron" />
-              </button>
-              {showStatusDropdown && (
-                <div className="rx-dropdown">
-                  {[["all", "All Status"], ["dispensed", "Dispensed"], ["pending", "Pending"], ["cancelled", "Cancelled"]].map(([val, label]) => (
-                    <div key={val} className="rx-dropdown-item" onClick={() => { setSelectedStatus(val); setShowStatusDropdown(false); }}>
-                      {label}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
         <div className="rx-search-box">
           <Search size={16} />
           <input
             type="text"
-            placeholder="Search prescriptions..."
+            placeholder="Search by patient, RX code, or diagnosis..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
+
+        <div className="rx-filter-group">
+          <div className="rx-filter-group-row">
+            <select
+              className="rx-filter-item"
+              value={selectedPatient}
+              onChange={(event) => setSelectedPatient(event.target.value)}
+            >
+              <option value="all">All Patients</option>
+              {patientList.map((patient) => (
+                <option key={patient.id} value={patient.id}>
+                  {patient.fullName}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="date"
+              className="rx-filter-item"
+              value={dateFrom}
+              onChange={(event) => setDateFrom(event.target.value)}
+            />
+
+            <input
+              type="date"
+              className="rx-filter-item"
+              value={dateTo}
+              onChange={(event) => setDateTo(event.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="rx-filter-actions">
-          <button className="rx-apply-btn">
-            <Filter size={14} /> Apply Filter
-          </button>
-          <button className="rx-reset-btn" onClick={() => { setSelectedPatient("all"); setSelectedStatus("all"); setSearch(""); setDateFrom(""); setDateTo(""); setCurrentPage(1); }}>
-            <RotateCcw size={14} /> Reset
+          <button className="rx-reset-btn" type="button" onClick={resetFilters}>
+            <Icon type="reset" /> Reset
           </button>
         </div>
       </div>
 
+      {errorMessage && (
+        <div className="rx-table-container" style={{ padding: 20, color: "#b91c1c" }}>
+          {errorMessage}
+        </div>
+      )}
+
       <div className="rx-table-container">
         <div className="rx-table-header">
-          <h2 className="rx-table-title">Prescriptions List</h2>
+          <div>
+            <h2 className="rx-table-title">Prescriptions List</h2>
+            <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
+              Showing {filteredPrescriptions.length} prescription records
+            </p>
+          </div>
+
           <div className="rx-table-actions">
             <Link href="/doctor-portal/prescriptions/new-prescriptions" className="rx-tbl-btn primary">
               <Plus size={16} /> New Prescription
@@ -279,124 +395,167 @@ export default function PrescriptionsPage() {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Prescription ID</th>
-                <th>Patient Info</th>
-                <th>Vital Signs</th>
+                <th>Prescription</th>
+                <th>Patient</th>
+                <th>Diagnosis</th>
                 <th>Date</th>
                 <th>Medicines</th>
-                <th>Status</th>
+                <th>Tests</th>
+                <th>Follow-up</th>
                 <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
-              {paginated.map((rx, i) => (
-                <tr key={rx.id}>
-                  <td data-label="#" className="rx-serial-td">{(currentPage - 1) * ITEMS_PER_PAGE + i + 1}</td>
-                  <td data-label="Prescription ID" className="rx-prescription-id">
-                    <span className="rx-card-rxid">{rx.id}</span>
-                    <span className={`rx-status-badge ${rx.status} rx-card-status`}>{statusLabel[rx.status]}</span>
-                  </td>
-                  <td data-label="Patient Info" className="rx-patient-td">
-                    <div className="rx-patient-cell">
-                      <div className="rx-patient-avatar">
-                        <img
-                          src={getPatientImage(i)}
-                          alt={rx.patient.name}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.parentElement.innerHTML = '<User size={18} color="#014fa1" />';
-                          }}
-                        />
-                      </div>
-                      <div className="rx-patient-info">
-                        <p className="rx-patient-name">{rx.patient.name}</p>
-                        <p className="rx-patient-id">{rx.patient.pid}</p>
-                        <p className="rx-patient-age">{rx.patient.age}</p>
-                      </div>
-                    </div>
-                    <div className="rx-card-actions">
-                      <Link href="/doctor-portal/prescriptions/prescriptions-details" className="rx-act-btn" title="View"><Eye size={16} /></Link>
-                      <button className="rx-act-btn" title="Download" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "download")}><Download size={16} /></button>
-                      <button className="rx-act-btn" title="Print" onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "print")}><Printer size={16} /></button>
-                    </div>
-                  </td>
-                  <td data-label="Vital Signs" className="rx-vital-td">
-                    <div className="rx-vital-cell">
-                      <p className="rx-vital-item"><Activity size={12} /> {rx.vitalSigns.bloodPressure}</p>
-                      <p className="rx-vital-item"><Activity size={12} /> {rx.vitalSigns.heartRate}</p>
-                      <p className="rx-vital-item"><Thermometer size={12} /> {rx.vitalSigns.temperature}</p>
-                      <p className="rx-vital-item"><Droplet size={12} /> {rx.vitalSigns.oxygenSaturation}</p>
-                      <p className="rx-vital-item"><Gauge size={12} /> {rx.vitalSigns.bloodSugar}</p>
-                    </div>
-                  </td>
-                  <td data-label="Date">
-                    <p className="rx-date-primary">{rx.date}</p>
-                    <p className="rx-date-time">{rx.time}</p>
-                  </td>
-                  <td data-label="Medicines">
-                    <div className="rx-medicine-icon-wrap">
-                      <div className="rx-med-icon"><Pill size={16} /></div>
-                      <div>
-                        <p className="rx-med-count">{rx.medicines} Medicines</p>
-                        <p className="rx-instr-count">{rx.instructions} Instructions</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td data-label="Status">
-                    <span className={`rx-status-badge ${rx.status}`}>{statusLabel[rx.status]}</span>
-                  </td>
-                  <td data-label="Action">
-                    <div className="rx-action-btns">
-                      <Link href={`/doctor-portal/prescriptions/prescriptions-details`} className="rx-act-btn" title="View">
-                        <Eye size={16} />
-                      </Link>
-                      <button className="rx-act-btn" title="Download"
-                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "download")}>
-                        <Download size={16} />
-                      </button>
-                      <button className="rx-act-btn" title="Print"
-                        onClick={() => generatePrescriptionPDF({ prescriptionId: rx.id, prescriptionDate: rx.date, prescriptionTime: rx.time, visitType: "OPD", prescriptionType: "New Prescription", status: rx.status, doctor: { name: "Dr. Tasnim Farin", specialization: "Cardiology" }, patient: { name: rx.patient.name, pid: rx.patient.pid, ageGender: rx.patient.age }, medicines: [], additionalInstructions: [] }, "print")}>
-                        <Printer size={16} />
-                      </button>
-                    </div>
+              {loading ? (
+                <tr>
+                  <td colSpan={9} style={{ textAlign: "center", padding: 32 }}>
+                    Loading prescriptions...
                   </td>
                 </tr>
-              ))}
+              ) : paginatedPrescriptions.length === 0 ? (
+                <tr>
+                  <td colSpan={9} style={{ textAlign: "center", padding: 32 }}>
+                    No prescriptions found.
+                  </td>
+                </tr>
+              ) : (
+                paginatedPrescriptions.map((rx, index) => (
+                  <tr key={rx.id}>
+                    <td className="rx-serial-td">
+                      {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                    </td>
+
+                    <td className="rx-prescription-id">
+                      <span className="rx-card-rxid">{rx.prescriptionCode}</span>
+                      <p style={{ margin: "4px 0 0", fontSize: 11, color: "#64748b" }}>
+                        {rx.appointment?.appointmentCode || "No appointment"}
+                      </p>
+                    </td>
+
+                    <td className="rx-patient-td">
+                      <div className="rx-patient-cell">
+                        <div className="rx-patient-avatar">
+                          <span>{getInitials(rx.patient?.fullName)}</span>
+                        </div>
+
+                        <div className="rx-patient-info">
+                          <p className="rx-patient-name">{rx.patient?.fullName || "N/A"}</p>
+                          <p className="rx-patient-id">{rx.patient?.mobileNumber || "N/A"}</p>
+                          <p className="rx-patient-age">
+                            {calculateAge(rx.patient?.dateOfBirth)} yrs, {rx.patient?.gender || "N/A"}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+                      <p style={{ margin: 0, fontWeight: 600, color: "#0f172a" }}>
+                        {rx.diagnosis || "N/A"}
+                      </p>
+                      <p style={{ margin: "4px 0 0", fontSize: 12, color: "#64748b" }}>
+                        {rx.chiefComplaint || "No complaint"}
+                      </p>
+                    </td>
+
+                    <td>
+                      <p className="rx-date-primary">{formatDate(rx.createdAt)}</p>
+                      <p className="rx-date-time">{formatTime(rx.createdAt)}</p>
+                    </td>
+
+                    <td>
+                      <div className="rx-medicine-icon-wrap">
+                        <div className="rx-med-icon">
+                          <Icon type="rx" />
+                        </div>
+                        <div>
+                          <p className="rx-med-count">{rx.medicines?.length || 0} Medicines</p>
+                          <p className="rx-instr-count">{rx.advice ? "Advice added" : "No advice"}</p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+                      <span className="rx-status-badge pending">
+                        {rx.tests?.length || 0} Tests
+                      </span>
+                    </td>
+
+                    <td>
+                      <p className="rx-date-primary">{formatDate(rx.followUpDate)}</p>
+                    </td>
+
+                    <td>
+                      <div className="rx-action-btns">
+                        <Link
+                          href={`/doctor-portal/prescriptions/prescriptions-details?id=${rx.id}`}
+                          className="rx-act-btn"
+                          title="View"
+                        >
+                          <Icon type="eye" />
+                        </Link>
+
+                        <button
+                          type="button"
+                          className="rx-act-btn"
+                          title="Download"
+                          onClick={() => handleDownload(rx)}
+                        >
+                          <Icon type="download" />
+                        </button>
+
+                        <button
+                          type="button"
+                          className="rx-act-btn"
+                          title="Print"
+                          onClick={() => handlePrint(rx)}
+                        >
+                          <Icon type="print" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
 
         <div className="rx-pagination-bar">
           <span className="rx-pagination-info">
-            Showing {filtered.length === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1} to{" "}
-            {Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of {filtered.length} entries
+            Showing{" "}
+            {filteredPrescriptions.length === 0
+              ? 0
+              : (currentPage - 1) * ITEMS_PER_PAGE + 1}{" "}
+            to {Math.min(currentPage * ITEMS_PER_PAGE, filteredPrescriptions.length)} of{" "}
+            {filteredPrescriptions.length} entries
           </span>
+
           <div className="rx-pagination-btns">
-            <button className="rx-page-btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              <ChevronLeft size={16} />
+            <button
+              className="rx-page-btn"
+              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+              disabled={currentPage === 1}
+            >
+              <Icon type="chev_left" />
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1)
-              .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
-              .reduce((acc, p, idx, arr) => {
-                if (idx > 0 && p - arr[idx - 1] > 1) acc.push("...");
-                acc.push(p);
-                return acc;
-              }, [])
-              .map((p, idx) =>
-                p === "..." ? (
-                  <button key={`dots-${idx}`} className="rx-page-btn dots">…</button>
-                ) : (
-                  <button
-                    key={p}
-                    className={`rx-page-btn${p === currentPage ? " active" : ""}`}
-                    onClick={() => handlePageChange(p)}
-                  >
-                    {p}
-                  </button>
-                )
-              )}
-            <button className="rx-page-btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-              <ChevronRight size={16} />
+
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+              <button
+                key={page}
+                className={`rx-page-btn${page === currentPage ? " active" : ""}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              className="rx-page-btn"
+              onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+              disabled={currentPage === totalPages}
+            >
+              <Icon type="chev_right" />
             </button>
           </div>
         </div>
