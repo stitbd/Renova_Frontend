@@ -9,7 +9,7 @@ import { useAppSelector } from "@/redux/hook";
 import "./doctor-dashboard-massages.css";
 import { chatApi } from "@/utils/chatApi";
 import { getSocket } from "@/utils/socket";
-import { ArrowDownToLine, Check, CheckCheck, Paperclip, Phone, PhoneOff, Search, Send, Video } from "lucide-react";
+import { ArrowDownToLine, Check, CheckCheck, NotebookText, Paperclip, Phone, PhoneOff, Search, Send, Video } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { videoCallApi } from "@/utils/videoCallApi";
 import { useCall } from "@/providers/CallProvider";
@@ -35,12 +35,16 @@ function formatTime(date) {
 function normalizeConversation(conv) {
   const user = conv.otherUser || {};
 
+  console.log('normalize user', user)
+
   return {
     id: conv.id,
     appointmentId: conv.appointmentId,
     receiverId: user.id,
     name: user.name || "Unknown Patient",
-    phone: user.phone || "N/A",
+    phone: user.mobileNumber || "N/A",
+    gender: user.gender,
+    dateOfBirth: user.dateOfBirth,
     patientId: user.id || "N/A",
     lastMessage: conv.lastMessage?.message || "",
     lastMessageAt:
@@ -75,6 +79,27 @@ function uniqueMessages(messages) {
     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
   );
 }
+
+const calculateAge = (dateOfBirth) => {
+  if (!dateOfBirth) return "N/A";
+
+  const birthDate = new Date(dateOfBirth);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+};
+
 
 
 export default function MessagesPage() {
@@ -111,6 +136,8 @@ export default function MessagesPage() {
   const isPrependingRef = useRef(false);
   const previousScrollHeightRef = useRef(0);
 
+
+  console.log('selectedConv', selectedConv)
 
   const [error, setError] = useState("");
   const router = useRouter();
@@ -201,6 +228,7 @@ export default function MessagesPage() {
         const list = Array.isArray(result.data) ? result.data : [];
 
         const normalized = list.map(normalizeConversation);
+        // console.log('normalized 8',normalized)
         setConversations(normalized);
 
         if (receiverIdFromUrl) {
@@ -210,6 +238,8 @@ export default function MessagesPage() {
           });
 
           const detail = detailResult.data;
+
+          console.log('details', detail)
 
           const selected = detail.conversation
             ? normalizeConversation({
@@ -222,12 +252,14 @@ export default function MessagesPage() {
               receiverId: detail.receiverId,
               appointmentId: detail.appointmentId,
               name: detail.otherUser?.name || "Patient",
-              phone: "N/A",
+              phone: detail.otherUser.mobileNumber || "N/A",
               patientId: detail.otherUser?.id || receiverIdFromUrl,
               lastMessage: "",
               lastMessageAt: null,
               unread: 0,
             };
+
+          console.log('selecteed ', selected)
 
           setSelectedConv(selected);
           return;
@@ -1004,20 +1036,33 @@ export default function MessagesPage() {
                 </div>
 
                 <h3>{selectedConv.name}</h3>
+
+                <p className="msg-patient-id">
+                  {calculateAge(selectedConv.dateOfBirth)} Years, {selectedConv.gender}
+                </p>
+
                 <p className="msg-patient-id">{selectedConv.phone}</p>
-                <p className="msg-patient-id">{selectedConv.patientId}</p>
 
                 <Link
                   href={`/doctor-portal/patients/patient-profile?id=${selectedConv.patientId}&from=/doctor-portal/messages`}
                   className="msg-view-profile-btn"
-                  style={{
-                    display: "block",
-                    textAlign: "center",
-                    textDecoration: "none",
-                  }}
                 >
                   View Full Profile
                 </Link>
+              </div>
+
+              <div className="msg-quick-actions">
+                <h4>Quick Actions</h4>
+
+                <Link href={`/doctor-portal/prescriptions/new-prescriptions?patientId=${selectedConv.patientId}`} className="msg-action-btn">
+                  <span className="msg-action-icon blue"><NotebookText /></span>
+                  Attach Prescription
+                </Link>
+
+                <button className="msg-action-btn">
+                  <span className="msg-action-icon red">📋</span>
+                  Send Report
+                </button>
               </div>
             </>
           )}

@@ -43,11 +43,11 @@ const navItems = [
     href: "/doctor-portal/patient-queue",
     label: "Patient Queue",
     icon: Users,
-    badge: 5,
+    // badge: 5,
   },
   {
     href: "/doctor-portal/appointments",
-    label: "Appointments",
+    label: "Schedule",
     icon: Calendar,
   },
   {
