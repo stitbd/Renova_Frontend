@@ -6,6 +6,30 @@ import { API_URL } from "@/config";
 import { useAppSelector } from "@/redux/hook";
 import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import "./prescriptions.css";
+import {
+  FileText,
+  Calendar,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Filter,
+  RotateCcw,
+  Search,
+  ChevronDown,
+  Plus,
+  Download,
+  Printer,
+  Eye,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  Pill,
+  Stethoscope,
+  Activity,
+  Thermometer,
+  Droplet,
+  Gauge
+} from "lucide-react";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -297,7 +321,7 @@ export default function PrescriptionsPage() {
 
       <div className="rx-filter-bar">
         <div className="rx-search-box">
-          <Icon type="search" />
+          <Search size={16} />
           <input
             type="text"
             placeholder="Search by patient, RX code, or diagnosis..."
@@ -361,7 +385,7 @@ export default function PrescriptionsPage() {
 
           <div className="rx-table-actions">
             <Link href="/doctor-portal/prescriptions/new-prescriptions" className="rx-tbl-btn primary">
-              <Icon type="plus" /> New Prescription
+              <Plus size={16} /> New Prescription
             </Link>
           </div>
         </div>

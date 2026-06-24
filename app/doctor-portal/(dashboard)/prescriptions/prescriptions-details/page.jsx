@@ -8,6 +8,28 @@ import { useAppSelector } from "@/redux/hook";
 import { generatePrescriptionPDF } from "@/utils/prescriptionPDF";
 import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 import "./prescriptions-details.css";
+import {
+    ArrowLeft,
+    Printer,
+    Download,
+    Edit,
+    FileText,
+    Pill,
+    Info,
+    Paperclip,
+    Eye,
+    User,
+    Phone,
+    Calendar,
+    MapPin,
+    MessageCircle,
+    Mail,
+    Share2,
+    X,
+    Clock,
+    Stethoscope,
+    Clipboard
+} from "lucide-react";
 
 function Icon({ type }) {
   const icons = {

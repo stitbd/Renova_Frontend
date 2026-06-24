@@ -1,0 +1,79 @@
+/* Packages Page Specific Styles */
+.wc-packages-page {
+  height: 100%;
+  background: var(--color-bg-light, #f0f4f8);
+}
+
+.wc-packages-page .wc-editor-card {
+  margin-bottom: 20px;
+}
+
+/* Packages Grid */
+.wc-packages-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.wc-package-card {
+  background: var(--color-white, #fff);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wc-package-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.wc-package-header .wc-input:first-child {
+  flex: 1;
+  font-weight: 700;
+}
+
+.wc-package-items {
+  background: var(--color-bg-light, #f8fafc);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wc-package-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.wc-package-item .wc-input {
+  font-size: 12px;
+}
+
+.wc-package-item .wc-btn {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.wc-package-pricing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.wc-package-pricing .wc-input:last-child {
+  border-color: var(--color-primary, #014fa1);
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wc-packages-grid {
+    grid-template-columns: 1fr;
+  }
+}

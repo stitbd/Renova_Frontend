@@ -463,7 +463,7 @@ export default function NewPrescriptionPage() {
 
                 <div className="nrx-header-actions">
                     <Link href="/doctor-portal/prescriptions" className="nrx-header-btn back">
-                        <Icon type="arrowLeft" /> Back
+                        <ArrowLeft size={16} /> Back
                     </Link>
 
                     {/* <button
@@ -547,7 +547,7 @@ export default function NewPrescriptionPage() {
                                 </label>
                                 <div className="nrx-input-wrap">
                                     <span className="nrx-input-icon">
-                                        <Icon type="calendar" />
+                                        <Calendar size={16} />
                                     </span>
                                     <input
                                         type="date"
@@ -659,7 +659,7 @@ export default function NewPrescriptionPage() {
                                                     className="nrx-row-del-btn"
                                                     onClick={() => removeMedicine(medicine.id)}
                                                 >
-                                                    <Icon type="trash" />
+                                                    <Trash2 size={14} />
                                                 </button>
                                             </td>
                                         </tr>

@@ -1,9 +1,9 @@
-// super-admin-panel/website-content/doctor-page/page.jsx
+// super-admin-panel/website-content/image-gallery-page/page.jsx
 "use client";
 
 import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
-import "./doctor-page.css";
+import "./image-gallery-page.css";
 import {
   Home,
   Info,
@@ -31,28 +31,20 @@ import {
   X,
   ChevronDown,
   List,
-  Stethoscope,
-  Building2,
+  Camera,
+  Film,
+  Grid3x3,
+  ZoomIn,
+  Download,
+  Share2,
   Calendar,
-  Briefcase,
-  DollarSign,
-  TrendingUp,
-  Shield,
-  Lock,
-  Key,
-  Zap,
-  Menu,
-  UserCheck,
-  UserCog,
-  Activity,
-  Clipboard,
-  FileText,
-  Globe,
-  Twitter,
-  Linkedin,
-  Youtube,
-  Instagram,
-  Facebook
+  Tag,
+  FolderOpen,
+  ImageUp,
+  Palette,
+  GalleryHorizontal,
+  ImageOff,
+  Images
 } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════════
@@ -86,28 +78,20 @@ const Icon = ({ name, size = 14, className = "" }) => {
     x: X,
     "chevron-down": ChevronDown,
     list: List,
-    stethoscope: Stethoscope,
-    building: Building2,
+    camera: Camera,
+    film: Film,
+    grid: Grid3x3,
+    zoom: ZoomIn,
+    download: Download,
+    share: Share2,
     calendar: Calendar,
-    briefcase: Briefcase,
-    dollar: DollarSign,
-    trend: TrendingUp,
-    shield: Shield,
-    lock: Lock,
-    key: Key,
-    zap: Zap,
-    menu: Menu,
-    usercheck: UserCheck,
-    usercog: UserCog,
-    activity: Activity,
-    clipboard: Clipboard,
-    filetext: FileText,
-    globe: Globe,
-    twitter: Twitter,
-    linkedin: Linkedin,
-    youtube: Youtube,
-    instagram: Instagram,
-    facebook: Facebook
+    tag: Tag,
+    folder: FolderOpen,
+    imageup: ImageUp,
+    palette: Palette,
+    gallery: GalleryHorizontal,
+    imageoff: ImageOff,
+    images: Images
   };
 
   const IconComponent = iconMap[name];
@@ -120,47 +104,48 @@ const Icon = ({ name, size = 14, className = "" }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════
-   INITIAL DOCTOR PAGE DATA
+   INITIAL IMAGE GALLERY PAGE DATA
    ══════════════════════════════════════════════════════════════ */
-const INITIAL_DOCTOR_DATA = {
+const INITIAL_GALLERY_DATA = {
   hero: {
-    section_header_title: "Our Doctors",
-    section_header_subtitle: "Meet our expert medical professionals dedicated to your health.",
-    section_description: "Internationally trained, BMDC-certified doctors dedicated to delivering the highest standard of patient care."
+    section_header_title: "Photo Gallery",
+    section_header_subtitle: "Explore our state-of-the-art facilities, expert medical team, and patient care moments.",
+    section_description: "A visual journey through our healthcare center, expert medical team, and commitment to patient care."
   },
-  filter: {
-    title: "Find a Doctor",
-    placeholder: "Search by doctor name…",
-    filters: [
-      { id: "gender", label: "All Genders", options: ["Male", "Female", "Other"] },
-      { id: "specialty", label: "All Specialties" },
-      { id: "branch", label: "All Branches" },
-      { id: "consultation", label: "Consultation Type", options: ["Online", "In-Person"] }
+  gallery: {
+    title: "Medical Facilities Gallery",
+    subtitle: "Browse through our collection of healthcare images",
+    categories: [
+      { id: "facilities", label: "Facilities", icon: "building" },
+      { id: "doctors", label: "Doctors", icon: "user" },
+      { id: "equipment", label: "Equipment", icon: "camera" },
+      { id: "events", label: "Events", icon: "calendar" }
     ],
-    button_text: "Search",
-    clear_text: "Clear all"
+    view_all_text: "View All",
+    no_results_text: "No photos found",
+    clear_filters_text: "Clear Filters"
   },
-  doctor_card: {
-    experience_label: "Experience",
-    rating_label: "Rating",
-    patients_label: "Patients",
-    profile_button: "Profile",
-    appointment_button: "Appointment"
+  lightbox: {
+    download_text: "Download",
+    share_text: "Share",
+    close_text: "Close",
+    prev_text: "Previous",
+    next_text: "Next"
   },
   cta: {
-    title: "Book a Consultation",
-    subtitle: "Choose your preferred specialist and schedule an appointment at your convenience.",
-    button_text: "Book Appointment"
+    title: "Visit Our Facility",
+    subtitle: "Schedule a visit to experience our healthcare excellence firsthand.",
+    button_text: "Book a Visit"
   },
   seo: {
-    meta_title: "Our Doctors — Expert Medical Team at Renova Life Care",
-    meta_description: "Meet BMDC-certified specialist doctors at Renova Life Care. Book appointments with expert physicians across all departments.",
-    og_title: "Our Doctors | Renova Life Care",
-    og_description: "Expert medical team dedicated to your health and well-being.",
-    og_image: "/images/og-doctors.jpg",
-    canonical_url: "https://renovalifecare.com/doctors",
+    meta_title: "Photo Gallery — Renova Life Care Facilities & Team",
+    meta_description: "Explore our state-of-the-art medical facilities, expert doctors, and patient care moments at Renova Life Care.",
+    og_title: "Photo Gallery | Renova Life Care",
+    og_description: "A visual journey through our healthcare center and medical team.",
+    og_image: "/images/og-gallery.jpg",
+    canonical_url: "https://renovalifecare.com/gallery",
     robots: "index, follow",
-    keywords: "doctors, specialists, healthcare, BMDC, medical team"
+    keywords: "gallery, photos, facilities, medical team, healthcare"
   }
 };
 
@@ -269,29 +254,27 @@ const ToggleSwitch = ({ label, desc, checked, onChange }) => (
 /* ══════════════════════════════════════════════════════════════
    HERO SECTION EDITOR
    ══════════════════════════════════════════════════════════════ */
-const DoctorHeroEditor = ({ data, onChange }) => {
+const GalleryHeroEditor = ({ data, onChange }) => {
   const set = (k, v) => onChange({ ...data, [k]: v });
 
   return (
-    <div>
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="stethoscope" size={15} /> Hero Section</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Section Header Title</label>
-              <input className="wc-input" value={data?.section_header_title || ""} onChange={e => set("section_header_title", e.target.value)} placeholder="Our Doctors" />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Section Header Subtitle</label>
-              <textarea className="wc-textarea" value={data?.section_header_subtitle || ""} onChange={e => set("section_header_subtitle", e.target.value)} rows={2} placeholder="Meet our expert medical professionals..." />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Section Description</label>
-              <textarea className="wc-textarea" value={data?.section_description || ""} onChange={e => set("section_description", e.target.value)} rows={2} placeholder="Internationally trained, BMDC-certified doctors..." />
-            </div>
+    <div className="wc-editor-card">
+      <div className="wc-editor-card-header">
+        <h3 className="wc-editor-card-title"><Icon name="camera" size={15} /> Hero Section</h3>
+      </div>
+      <div className="wc-editor-card-body">
+        <div className="wc-field-grid">
+          <div className="wc-field span-2">
+            <label className="wc-field-label">Section Header Title</label>
+            <input className="wc-input" value={data?.section_header_title || ""} onChange={e => set("section_header_title", e.target.value)} placeholder="Photo Gallery" />
+          </div>
+          <div className="wc-field span-2">
+            <label className="wc-field-label">Section Header Subtitle</label>
+            <textarea className="wc-textarea" value={data?.section_header_subtitle || ""} onChange={e => set("section_header_subtitle", e.target.value)} rows={2} placeholder="Explore our state-of-the-art facilities..." />
+          </div>
+          <div className="wc-field span-2">
+            <label className="wc-field-label">Section Description</label>
+            <textarea className="wc-textarea" value={data?.section_description || ""} onChange={e => set("section_description", e.target.value)} rows={2} placeholder="A visual journey through our healthcare center..." />
           </div>
         </div>
       </div>
@@ -300,40 +283,44 @@ const DoctorHeroEditor = ({ data, onChange }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════
-   FILTER SECTION EDITOR
+   GALLERY SECTION EDITOR
    ══════════════════════════════════════════════════════════════ */
-const FilterEditor = ({ data, onChange }) => {
+const GalleryEditor = ({ data, onChange }) => {
   const set = (k, v) => onChange({ ...data, [k]: v });
 
-  const addFilter = () => ({
-    id: `filter_${Date.now()}`,
-    label: "New Filter",
-    options: ["Option 1", "Option 2"]
+  const addCategory = () => ({
+    id: `cat_${Date.now()}`,
+    label: "New Category",
+    icon: "folder"
   });
 
   return (
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="search" size={15} /> Filter Settings</h3>
+          <h3 className="wc-editor-card-title"><Icon name="grid" size={15} /> Gallery Settings</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
             <div className="wc-field span-2">
-              <label className="wc-field-label">Filter Title</label>
-              <input className="wc-input" value={data?.title || ""} onChange={e => set("title", e.target.value)} placeholder="Find a Doctor" />
+              <label className="wc-field-label">Gallery Title</label>
+              <input className="wc-input" value={data?.title || ""} onChange={e => set("title", e.target.value)} placeholder="Medical Facilities Gallery" />
             </div>
             <div className="wc-field span-2">
-              <label className="wc-field-label">Search Placeholder</label>
-              <input className="wc-input" value={data?.placeholder || ""} onChange={e => set("placeholder", e.target.value)} placeholder="Search by doctor name…" />
+              <label className="wc-field-label">Gallery Subtitle</label>
+              <textarea className="wc-textarea" value={data?.subtitle || ""} onChange={e => set("subtitle", e.target.value)} rows={2} placeholder="Browse through our collection of healthcare images" />
             </div>
             <div className="wc-field">
-              <label className="wc-field-label">Search Button Text</label>
-              <input className="wc-input" value={data?.button_text || ""} onChange={e => set("button_text", e.target.value)} placeholder="Search" />
+              <label className="wc-field-label">View All Text</label>
+              <input className="wc-input" value={data?.view_all_text || ""} onChange={e => set("view_all_text", e.target.value)} placeholder="View All" />
             </div>
             <div className="wc-field">
-              <label className="wc-field-label">Clear Button Text</label>
-              <input className="wc-input" value={data?.clear_text || ""} onChange={e => set("clear_text", e.target.value)} placeholder="Clear all" />
+              <label className="wc-field-label">No Results Text</label>
+              <input className="wc-input" value={data?.no_results_text || ""} onChange={e => set("no_results_text", e.target.value)} placeholder="No photos found" />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Clear Filters Text</label>
+              <input className="wc-input" value={data?.clear_filters_text || ""} onChange={e => set("clear_filters_text", e.target.value)} placeholder="Clear Filters" />
             </div>
           </div>
         </div>
@@ -341,28 +328,34 @@ const FilterEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Filter Options</h3>
+          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Categories</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
-            label="Filters"
-            hint="Add/Edit filter dropdowns"
-            items={data?.filters || []}
-            onChange={v => set("filters", v)}
-            onAdd={addFilter}
-            className="wc-repeater-filters"
-            renderItem={(filter, i, update, remove) => (
-              <div className="wc-filter-card">
-                <div className="wc-filter-header">
-                  <input className="wc-input" value={filter.label} onChange={e => update(i, { ...filter, label: e.target.value })} placeholder="Filter Label" style={{ width: '50%' }} />
+            label="Categories"
+            hint="Add/Edit gallery categories"
+            items={data?.categories || []}
+            onChange={v => set("categories", v)}
+            onAdd={addCategory}
+            className="wc-repeater-categories"
+            renderItem={(cat, i, update, remove) => (
+              <div className="wc-category-card">
+                <div className="wc-category-header">
+                  <input className="wc-input" value={cat.label} onChange={e => update(i, { ...cat, label: e.target.value })} placeholder="Category Label" style={{ width: '50%' }} />
                   <button className="wc-repeater-remove-icon" onClick={() => remove(i)}>
                     <Icon name="trash" size={14} />
                   </button>
                 </div>
-                <input className="wc-input" value={filter.id} onChange={e => update(i, { ...filter, id: e.target.value })} placeholder="Filter ID (e.g., gender)" />
-                {filter.options && (
-                  <input className="wc-input" value={filter.options.join(", ")} onChange={e => update(i, { ...filter, options: e.target.value.split(",").map(s => s.trim()) })} placeholder="Options (comma separated)" />
-                )}
+                <input className="wc-input" value={cat.id} onChange={e => update(i, { ...cat, id: e.target.value })} placeholder="Category ID (e.g., facilities)" />
+                <select className="wc-select" value={cat.icon} onChange={e => update(i, { ...cat, icon: e.target.value })}>
+                  <option value="building">Building</option>
+                  <option value="user">User</option>
+                  <option value="camera">Camera</option>
+                  <option value="calendar">Calendar</option>
+                  <option value="folder">Folder</option>
+                  <option value="star">Star</option>
+                  <option value="heart">Heart</option>
+                </select>
               </div>
             )}
           />
@@ -373,37 +366,37 @@ const FilterEditor = ({ data, onChange }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════
-   DOCTOR CARD EDITOR
+   LIGHTBOX EDITOR
    ══════════════════════════════════════════════════════════════ */
-const DoctorCardEditor = ({ data, onChange }) => {
+const LightboxEditor = ({ data, onChange }) => {
   const set = (k, v) => onChange({ ...data, [k]: v });
 
   return (
     <div className="wc-editor-card">
       <div className="wc-editor-card-header">
-        <h3 className="wc-editor-card-title"><Icon name="user" size={15} /> Doctor Card Labels</h3>
+        <h3 className="wc-editor-card-title"><Icon name="zoom" size={15} /> Lightbox Labels</h3>
       </div>
       <div className="wc-editor-card-body">
         <div className="wc-field-grid">
           <div className="wc-field">
-            <label className="wc-field-label">Experience Label</label>
-            <input className="wc-input" value={data?.experience_label || ""} onChange={e => set("experience_label", e.target.value)} placeholder="Experience" />
+            <label className="wc-field-label">Download Text</label>
+            <input className="wc-input" value={data?.download_text || ""} onChange={e => set("download_text", e.target.value)} placeholder="Download" />
           </div>
           <div className="wc-field">
-            <label className="wc-field-label">Rating Label</label>
-            <input className="wc-input" value={data?.rating_label || ""} onChange={e => set("rating_label", e.target.value)} placeholder="Rating" />
+            <label className="wc-field-label">Share Text</label>
+            <input className="wc-input" value={data?.share_text || ""} onChange={e => set("share_text", e.target.value)} placeholder="Share" />
           </div>
           <div className="wc-field">
-            <label className="wc-field-label">Patients Label</label>
-            <input className="wc-input" value={data?.patients_label || ""} onChange={e => set("patients_label", e.target.value)} placeholder="Patients" />
+            <label className="wc-field-label">Close Text</label>
+            <input className="wc-input" value={data?.close_text || ""} onChange={e => set("close_text", e.target.value)} placeholder="Close" />
           </div>
           <div className="wc-field">
-            <label className="wc-field-label">Profile Button Text</label>
-            <input className="wc-input" value={data?.profile_button || ""} onChange={e => set("profile_button", e.target.value)} placeholder="Profile" />
+            <label className="wc-field-label">Previous Text</label>
+            <input className="wc-input" value={data?.prev_text || ""} onChange={e => set("prev_text", e.target.value)} placeholder="Previous" />
           </div>
           <div className="wc-field">
-            <label className="wc-field-label">Appointment Button Text</label>
-            <input className="wc-input" value={data?.appointment_button || ""} onChange={e => set("appointment_button", e.target.value)} placeholder="Appointment" />
+            <label className="wc-field-label">Next Text</label>
+            <input className="wc-input" value={data?.next_text || ""} onChange={e => set("next_text", e.target.value)} placeholder="Next" />
           </div>
         </div>
       </div>
@@ -426,15 +419,15 @@ const CtaEditor = ({ data, onChange }) => {
         <div className="wc-field-grid">
           <div className="wc-field span-2">
             <label className="wc-field-label">CTA Title</label>
-            <input className="wc-input" value={data?.title || ""} onChange={e => set("title", e.target.value)} placeholder="Book a Consultation" />
+            <input className="wc-input" value={data?.title || ""} onChange={e => set("title", e.target.value)} placeholder="Visit Our Facility" />
           </div>
           <div className="wc-field span-2">
             <label className="wc-field-label">CTA Subtitle</label>
-            <textarea className="wc-textarea" value={data?.subtitle || ""} onChange={e => set("subtitle", e.target.value)} rows={2} placeholder="Choose your preferred specialist..." />
+            <textarea className="wc-textarea" value={data?.subtitle || ""} onChange={e => set("subtitle", e.target.value)} rows={2} placeholder="Schedule a visit to experience our healthcare excellence..." />
           </div>
           <div className="wc-field">
             <label className="wc-field-label">Button Text</label>
-            <input className="wc-input" value={data?.button_text || ""} onChange={e => set("button_text", e.target.value)} placeholder="Book Appointment" />
+            <input className="wc-input" value={data?.button_text || ""} onChange={e => set("button_text", e.target.value)} placeholder="Book a Visit" />
           </div>
         </div>
       </div>
@@ -454,8 +447,8 @@ const SeoEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-seo-preview">
         <div className="wc-seo-preview-label">Google Search Preview</div>
-        <div className="wc-seo-preview-url">{data?.canonical_url || "https://renovalifecare.com/doctors"}</div>
-        <div className="wc-seo-preview-title">{data?.meta_title || "Our Doctors"}</div>
+        <div className="wc-seo-preview-url">{data?.canonical_url || "https://renovalifecare.com/gallery"}</div>
+        <div className="wc-seo-preview-title">{data?.meta_title || "Photo Gallery"}</div>
         <p className="wc-seo-preview-desc">{data?.meta_description || "Meta description appears here..."}</p>
       </div>
       <div className="wc-editor-card">
@@ -466,19 +459,19 @@ const SeoEditor = ({ data, onChange }) => {
           <div className="wc-field-grid">
             <div className="wc-field span-2">
               <label className="wc-field-label">Meta Title <span className={`wc-field-counter ${titleLen > 60 ? "warn" : ""}`}>{titleLen}/70</span></label>
-              <input className="wc-input" value={data?.meta_title || ""} onChange={e => set("meta_title", e.target.value)} placeholder="Our Doctors — Expert Medical Team" />
+              <input className="wc-input" value={data?.meta_title || ""} onChange={e => set("meta_title", e.target.value)} placeholder="Photo Gallery — Renova Life Care" />
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Meta Description <span className={`wc-field-counter ${descLen > 155 ? "warn" : ""}`}>{descLen}/170</span></label>
-              <textarea className="wc-textarea" value={data?.meta_description || ""} onChange={e => set("meta_description", e.target.value)} rows={3} placeholder="Meet BMDC-certified specialist doctors..." />
+              <textarea className="wc-textarea" value={data?.meta_description || ""} onChange={e => set("meta_description", e.target.value)} rows={3} placeholder="Explore our state-of-the-art medical facilities..." />
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
-              <input className="wc-input" value={data?.keywords || ""} onChange={e => set("keywords", e.target.value)} placeholder="doctors, specialists, healthcare, BMDC" />
+              <input className="wc-input" value={data?.keywords || ""} onChange={e => set("keywords", e.target.value)} placeholder="gallery, photos, facilities, medical team" />
             </div>
             <div className="wc-field">
               <label className="wc-field-label">Canonical URL</label>
-              <input className="wc-input" value={data?.canonical_url || ""} onChange={e => set("canonical_url", e.target.value)} placeholder="https://renovalifecare.com/doctors" />
+              <input className="wc-input" value={data?.canonical_url || ""} onChange={e => set("canonical_url", e.target.value)} placeholder="https://renovalifecare.com/gallery" />
             </div>
             <div className="wc-field">
               <label className="wc-field-label">Robots</label>
@@ -500,7 +493,7 @@ const SeoEditor = ({ data, onChange }) => {
           <div className="wc-field-grid">
             <div className="wc-field span-2">
               <label className="wc-field-label">OG Title</label>
-              <input className="wc-input" value={data?.og_title || ""} onChange={e => set("og_title", e.target.value)} placeholder="Our Doctors | Renova Life Care" />
+              <input className="wc-input" value={data?.og_title || ""} onChange={e => set("og_title", e.target.value)} placeholder="Photo Gallery | Renova Life Care" />
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">OG Description</label>
@@ -520,9 +513,9 @@ const SeoEditor = ({ data, onChange }) => {
    SECTION RENDERER
    ══════════════════════════════════════════════════════════════ */
 const SectionEditor = ({ sectionId, data, onChange }) => {
-  if (sectionId === "hero") return <DoctorHeroEditor data={data} onChange={onChange} />;
-  if (sectionId === "filter") return <FilterEditor data={data} onChange={onChange} />;
-  if (sectionId === "doctor_card") return <DoctorCardEditor data={data} onChange={onChange} />;
+  if (sectionId === "hero") return <GalleryHeroEditor data={data} onChange={onChange} />;
+  if (sectionId === "gallery") return <GalleryEditor data={data} onChange={onChange} />;
+  if (sectionId === "lightbox") return <LightboxEditor data={data} onChange={onChange} />;
   if (sectionId === "cta") return <CtaEditor data={data} onChange={onChange} />;
   if (sectionId === "seo") return <SeoEditor data={data} onChange={onChange} />;
   return <div>Unknown section</div>;
@@ -531,9 +524,9 @@ const SectionEditor = ({ sectionId, data, onChange }) => {
 /* ══════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ══════════════════════════════════════════════════════════════ */
-export default function DoctorWebsiteContent() {
+export default function ImageGalleryWebsiteContent() {
   const [selectedSection, setSelectedSection] = useState("hero");
-  const [pageData, setPageData] = useState(INITIAL_DOCTOR_DATA);
+  const [pageData, setPageData] = useState(INITIAL_GALLERY_DATA);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
   const toastTimeout = useRef(null);
@@ -548,24 +541,24 @@ export default function DoctorWebsiteContent() {
     setSaving(true);
     await new Promise(r => setTimeout(r, 900));
     setSaving(false);
-    showToast("Doctor page changes saved successfully!", "success");
+    showToast("Image Gallery page changes saved successfully!", "success");
   };
 
   const handlePreview = () => {
-    window.open("/doctors", "_blank");
+    window.open("/gallery", "_blank");
   };
 
   const handleReset = () => {
-    if (confirm("Reset all Doctor page content to default? This cannot be undone.")) {
-      setPageData(INITIAL_DOCTOR_DATA);
+    if (confirm("Reset all Image Gallery page content to default? This cannot be undone.")) {
+      setPageData(INITIAL_GALLERY_DATA);
       showToast("Reset to default content", "success");
     }
   };
 
   const sections = [
-    { id: "hero", label: "Hero Section", icon: "stethoscope", desc: "Header & description" },
-    { id: "filter", label: "Filter Section", icon: "search", desc: "Search & filter options" },
-    { id: "doctor_card", label: "Doctor Card", icon: "user", desc: "Card labels & buttons" },
+    { id: "hero", label: "Hero Section", icon: "camera", desc: "Header & description" },
+    { id: "gallery", label: "Gallery Settings", icon: "grid", desc: "Categories & gallery text" },
+    { id: "lightbox", label: "Lightbox Labels", icon: "zoom", desc: "Lightbox button texts" },
     { id: "cta", label: "Call to Action", icon: "trend", desc: "CTA section" },
     { id: "seo", label: "SEO & Meta", icon: "search", desc: "Meta tags & social sharing" },
   ];
@@ -581,7 +574,7 @@ export default function DoctorWebsiteContent() {
   };
 
   return (
-    <div className="wc-doctor-layout">
+    <div className="wc-gallery-layout">
       <div className="wc-editor">
         <div className="wc-editor-topbar">
           <div className="wc-breadcrumb">
@@ -589,7 +582,7 @@ export default function DoctorWebsiteContent() {
               Website Content
             </Link>
             <Icon name="chevron-down" size={12} className="wc-breadcrumb-chevron" />
-            <span className="wc-breadcrumb-current">Doctor Page</span>
+            <span className="wc-breadcrumb-current">Image Gallery Page</span>
             <Icon name="chevron-down" size={12} className="wc-breadcrumb-chevron" />
             <span className="wc-breadcrumb-current">{currentSection?.label}</span>
           </div>
@@ -634,14 +627,14 @@ export default function DoctorWebsiteContent() {
                   <Icon name="info" size={22} />
                 </div>
                 <div className="wc-page-info-text">
-                  <h2>Doctor Page Content</h2>
+                  <h2>Image Gallery Page Content</h2>
                   <p>Editing: {currentSection?.label} — {currentSection?.desc}</p>
                 </div>
               </div>
               <div className="wc-page-info-meta">
                 <span className="wc-meta-tag">
                   <Icon name="external" size={11} />
-                  /doctors
+                  /gallery
                 </span>
                 <span className="wc-meta-tag">
                   <Icon name="clock" size={11} />

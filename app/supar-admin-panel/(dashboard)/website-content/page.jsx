@@ -2,6 +2,52 @@
 
 import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
+import {
+  Home,
+  Info,
+  Users,
+  Target,
+  Award,
+  Clock,
+  Heart,
+  Star,
+  Layout,
+  Image as ImageIcon,
+  User,
+  UserPlus,
+  Phone,
+  Mail,
+  Search,
+  Save,
+  Eye,
+  Trash,
+  Upload,
+  RefreshCw,
+  ExternalLink,
+  Check,
+  Plus,
+  X,
+  ChevronDown,
+  List,
+  Grid,
+  Calendar,
+  ShoppingBag,
+  MessageCircle,
+  FileText,
+  MapPin,
+  Tag,
+  Link as LinkIcon,
+  Package,
+  UserCheck,
+  BookOpen,
+  Activity,
+  AlertCircle,
+  Layers,
+  Menu,
+  MoreHorizontal,
+  CheckCircle,
+  XCircle
+} from "lucide-react";
 import "./website-content.css";
 
 /* ══════════════════════════════════════════════════════════════
@@ -688,61 +734,52 @@ const INITIAL_DATA = {
 };
 
 /* ══════════════════════════════════════════════════════════════
-   ICONS
-
-
+   ICON MAP - Maps icon names to Lucide components
    ══════════════════════════════════════════════════════════════ */
-const Icon = ({ name, size = 14, className = "" }) => {
-  const paths = {
-    home: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
-    info: <><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></>,
-    services: <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />,
-    doctors: <path d="M22 12h-4l-3 9L9 3l-3 9H2" />,
-    package: <><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></>,
-    shop: <><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></>,
-    blog: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
-    contact: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></>,
-    layout: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></>,
-    grid: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></>,
-    user: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
-    users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
-    calendar: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>,
-    "shopping-bag": <><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></>,
-    "message-circle": <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></>,
-    "file-text": <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
-    target: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></>,
-    clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
-    award: <><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></>,
-    list: <><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></>,
-    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></>,
-    star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />,
-    phone: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />,
-    "map-pin": <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></>,
-    mail: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></>,
-    search: <><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></>,
-    chevron: <polyline points="9 18 15 12 9 6" />,
-    plus: <><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>,
-    save: <><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></>,
-    eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>,
-    trash: <><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /></>,
-    upload: <><polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" /></>,
-    refresh: <><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></>,
-    external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></>,
-    check: <polyline points="20 6 9 17 4 12" />,
-    drag: <><line x1="9" y1="5" x2="9" y2="19" /><line x1="15" y1="5" x2="15" y2="19" /></>,
-    x: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
-    link: <><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></>,
-    image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></>,
-    "user-plus": <><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="23" y1="11" x2="17" y2="11" /></>,
-    heart: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />,
-    target: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></>,
-    clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
+const getIconComponent = (iconName) => {
+  const iconMap = {
+    home: Home,
+    info: Info,
+    users: Users,
+    target: Target,
+    award: Award,
+    clock: Clock,
+    heart: Heart,
+    star: Star,
+    layout: Layout,
+    image: ImageIcon,
+    user: User,
+    "user-plus": UserPlus,
+    phone: Phone,
+    mail: Mail,
+    search: Search,
+    save: Save,
+    eye: Eye,
+    trash: Trash,
+    upload: Upload,
+    refresh: RefreshCw,
+    external: ExternalLink,
+    check: Check,
+    plus: Plus,
+    x: X,
+    "chevron-down": ChevronDown,
+    list: List,
+    grid: Grid,
+    calendar: Calendar,
+    "shopping-bag": ShoppingBag,
+    "message-circle": MessageCircle,
+    "file-text": FileText,
+    "map-pin": MapPin,
+    tag: Tag,
+    link: LinkIcon,
+    package: Package,
+    services: Activity,
+    doctors: UserCheck,
+    contact: Phone,
+    blog: BookOpen,
+    shop: ShoppingBag,
   };
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {paths[name]}
-    </svg>
-  );
+  return iconMap[iconName] || Layout;
 };
 
 /* ══════════════════════════════════════════════════════════════
@@ -760,8 +797,8 @@ const RichEditor = ({ value, onChange, minHeight = 120 }) => (
         </button>
       ))}
       <div className="wc-rich-divider" />
-      <button className="wc-rich-btn"><Icon name="link" size={13} /></button>
-      <button className="wc-rich-btn"><Icon name="image" size={13} /></button>
+      <button className="wc-rich-btn"><LinkIcon size={13} /></button>
+      <button className="wc-rich-btn"><ImageIcon size={13} /></button>
     </div>
     <div
       className="wc-rich-content"
@@ -820,13 +857,13 @@ const ImageUploadField = ({ label, hint, value, onChange, multiple = false, onFi
                     newArr.splice(idx, 1);
                     onChange?.(newArr);
                   }} title="Remove">
-                    <Icon name="trash" size={13} />
+                    <Trash size={13} />
                   </button>
                 </div>
               </div>
             ))}
             <div className="wc-image-upload wc-add-more" onClick={handleClick}>
-              <Icon name="plus" size={24} />
+              <Plus size={24} />
             </div>
           </div>
         ) : (
@@ -834,17 +871,17 @@ const ImageUploadField = ({ label, hint, value, onChange, multiple = false, onFi
             <img src={value} alt="preview" />
             <div className="wc-image-preview-actions">
               <button className="wc-img-action-btn" onClick={() => onChange?.("")} title="Remove">
-                <Icon name="trash" size={13} />
+                <Trash size={13} />
               </button>
               <button className="wc-img-action-btn" onClick={handleClick} title="Replace">
-                <Icon name="upload" size={13} />
+                <Upload size={13} />
               </button>
             </div>
           </div>
         )
       ) : (
         <div className="wc-image-upload" onClick={handleClick}>
-          <div className="wc-image-upload-icon"><Icon name="upload" size={20} /></div>
+          <div className="wc-image-upload-icon"><Upload size={20} /></div>
           <p>Click to browse from desktop</p>
           <span>PNG, JPG, WEBP up to 5MB {multiple ? "(multiple allowed)" : ""}</span>
         </div>
@@ -875,14 +912,14 @@ const Repeater = ({ label, hint, items = [], onChange, renderItem, onAdd, classN
               <>
                 <input value={item} onChange={e => update(i, e.target.value)} placeholder={`Item ${i + 1}`} />
                 <button className="wc-repeater-remove" onClick={() => remove(i)}>
-                  <Icon name="x" size={13} />
+                  <X size={13} />
                 </button>
               </>
             )}
           </div>
         ))}
         <button className="wc-repeater-add" onClick={add}>
-          <Icon name="plus" size={14} /> Add Item
+          <Plus size={14} /> Add Item
         </button>
       </div>
       {hint && <span className="wc-field-hint">{hint}</span>}
@@ -920,7 +957,7 @@ const HeroEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="layout" size={15} /> Hero Content <span className="wc-editor-card-desc">— Main banner section</span></h3>
+          <h3 className="wc-editor-card-title"><Layout size={15} /> Hero Content <span className="wc-editor-card-desc">— Main banner section</span></h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -948,7 +985,7 @@ const HeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="image" size={15} /> Background Images</h3>
+          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> Background Images</h3>
         </div>
         <div className="wc-editor-card-body">
           <ImageUploadField
@@ -964,7 +1001,7 @@ const HeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Patient Trust Images</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Patient Trust Images</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -982,7 +1019,7 @@ const HeroEditor = ({ data, onChange }) => {
                   hint=""
                 />
                 <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ marginTop: 8 }}>
-                  <Icon name="x" size={13} /> Remove
+                  <X size={13} /> Remove
                 </button>
               </>
             )}
@@ -992,7 +1029,7 @@ const HeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Stats Counter Strip</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> Stats Counter Strip</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-stat-inputs">
@@ -1030,7 +1067,7 @@ const AppointmentCTAEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="calendar" size={15} /> Appointment CTA Content</h3>
+          <h3 className="wc-editor-card-title"><Calendar size={15} /> Appointment CTA Content</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1048,7 +1085,7 @@ const AppointmentCTAEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Trust Stats</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> Trust Stats</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-stat-inputs">
@@ -1096,7 +1133,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="message-circle" size={15} /> Testimonials Section</h3>
+          <h3 className="wc-editor-card-title"><MessageCircle size={15} /> Testimonials Section</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1121,7 +1158,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Satisfaction Stats</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> Satisfaction Stats</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-stat-inputs">
@@ -1148,7 +1185,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Testimonial Cards</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Testimonial Cards</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -1165,7 +1202,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
                     {card.image ? (
                       <img src={card.image} alt={card.customer_name} />
                     ) : (
-                      <Icon name="user" size={24} />
+                      <User size={24} />
                     )}
                   </div>
                   <div className="wc-testimonial-info">
@@ -1189,7 +1226,7 @@ const TestimonialsEditor = ({ data, onChange }) => {
                     />
                   </div>
                   <button className="wc-testimonial-remove" onClick={() => remove(i)}>
-                    <Icon name="trash" size={14} />
+                    <Trash size={14} />
                   </button>
                 </div>
                 <div className="wc-testimonial-card-body">
@@ -1246,7 +1283,7 @@ const PartnersEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="award" size={15} /> Partners Section</h3>
+          <h3 className="wc-editor-card-title"><Award size={15} /> Partners Section</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1268,7 +1305,7 @@ const PartnersEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="grid" size={15} /> Partner Logos</h3>
+          <h3 className="wc-editor-card-title"><Grid size={15} /> Partner Logos</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -1287,7 +1324,7 @@ const PartnersEditor = ({ data, onChange }) => {
                   hint=""
                 />
                 <button className="wc-repeater-remove" onClick={() => remove(i)}>
-                  <Icon name="x" size={13} /> Remove
+                  <X size={13} /> Remove
                 </button>
               </>
             )}
@@ -1315,7 +1352,7 @@ const SeoEditor = ({ data, onChange }) => {
       </div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="search" size={15} /> Meta Tags</h3>
+          <h3 className="wc-editor-card-title"><Search size={15} /> Meta Tags</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1355,7 +1392,7 @@ const SeoEditor = ({ data, onChange }) => {
       </div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="external" size={15} /> Open Graph (Social Sharing)</h3>
+          <h3 className="wc-editor-card-title"><ExternalLink size={15} /> Open Graph (Social Sharing)</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1428,7 +1465,7 @@ const AddPageModal = ({ isOpen, onClose, onAdd, parentPageId }) => {
         <div className="wc-modal-header">
           <h3>Add New Service Page</h3>
           <button className="wc-modal-close" onClick={onClose}>
-            <Icon name="x" size={18} />
+            <X size={18} />
           </button>
         </div>
         <div className="wc-modal-body">
@@ -1470,7 +1507,7 @@ const AddPageModal = ({ isOpen, onClose, onAdd, parentPageId }) => {
             Cancel
           </button>
           <button className="wc-btn wc-btn-primary" onClick={handleSubmit}>
-            <Icon name="plus" size={14} /> Add Page
+            <Plus size={14} /> Add Page
           </button>
         </div>
       </div>
@@ -1489,7 +1526,7 @@ const AboutHeroEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="layout" size={15} /> Hero Section Header</h3>
+          <h3 className="wc-editor-card-title"><Layout size={15} /> Hero Section Header</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1507,7 +1544,7 @@ const AboutHeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="image" size={15} /> About Section Image</h3>
+          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> About Section Image</h3>
         </div>
         <div className="wc-editor-card-body">
           <ImageUploadField
@@ -1521,7 +1558,7 @@ const AboutHeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="info" size={15} /> About Content</h3>
+          <h3 className="wc-editor-card-title"><Info size={15} /> About Content</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1539,7 +1576,7 @@ const AboutHeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="star" size={15} /> Features (3 Items)</h3>
+          <h3 className="wc-editor-card-title"><Star size={15} /> Features (3 Items)</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -1561,7 +1598,7 @@ const AboutHeroEditor = ({ data, onChange }) => {
                     <option value="award">Award</option>
                   </select>
                   <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
-                    <Icon name="trash" size={13} />
+                    <Trash size={13} />
                   </button>
                 </div>
                 <input className="wc-input" value={feature.title} onChange={e => update(i, { ...feature, title: e.target.value })} placeholder="Feature Title" />
@@ -1574,7 +1611,7 @@ const AboutHeroEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Hero Stats (shown below features)</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> Hero Stats (shown below features)</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-stat-inputs">
@@ -1602,13 +1639,13 @@ const MissionVisionEditor = ({ data, onChange }) => {
   return (
     <div>
       {[
-        { key: "mission", label: "Mission", icon: "target" },
-        { key: "vision", label: "Vision", icon: "eye" },
-        { key: "values", label: "Values", icon: "award" },
-      ].map(({ key, label, icon }) => (
+        { key: "mission", label: "Mission", icon: Target },
+        { key: "vision", label: "Vision", icon: Eye },
+        { key: "values", label: "Values", icon: Award },
+      ].map(({ key, label, icon: IconComponent }) => (
         <div className="wc-editor-card" key={key}>
           <div className="wc-editor-card-header">
-            <h3 className="wc-editor-card-title"><Icon name={icon} size={15} /> {label}</h3>
+            <h3 className="wc-editor-card-title"><IconComponent size={15} /> {label}</h3>
           </div>
           <div className="wc-editor-card-body">
             <div className="wc-field">
@@ -1637,7 +1674,7 @@ const TeamEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Team Section Header</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Team Section Header</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1659,7 +1696,7 @@ const TeamEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Team Members</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Team Members</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -1673,7 +1710,7 @@ const TeamEditor = ({ data, onChange }) => {
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
-                    <Icon name="trash" size={13} /> Remove
+                    <Trash size={13} /> Remove
                   </button>
                 </div>
                 <ImageUploadField label="Photo" value={member.photo} onChange={v => update(i, { ...member, photo: v })} hint="Recommended: 400×400px" />
@@ -1700,7 +1737,7 @@ const ManagingDirectorEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="user" size={15} /> MD Section Labels</h3>
+          <h3 className="wc-editor-card-title"><User size={15} /> MD Section Labels</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1722,7 +1759,7 @@ const ManagingDirectorEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="user" size={15} /> MD Profile</h3>
+          <h3 className="wc-editor-card-title"><User size={15} /> MD Profile</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1756,7 +1793,7 @@ const ManagingDirectorEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="message-circle" size={15} /> MD Quote / Message</h3>
+          <h3 className="wc-editor-card-title"><MessageCircle size={15} /> MD Quote / Message</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field">
@@ -1768,7 +1805,7 @@ const ManagingDirectorEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> MD Stats (3 Items)</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> MD Stats (3 Items)</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-stat-inputs" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
@@ -1818,7 +1855,7 @@ const StatsBarEditor = ({ data, onChange }) => {
   return (
     <div className="wc-editor-card">
       <div className="wc-editor-card-header">
-        <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Stats Bar (4 Items)</h3>
+        <h3 className="wc-editor-card-title"><List size={15} /> Stats Bar (4 Items)</h3>
       </div>
       <div className="wc-editor-card-body">
         <div className="wc-stat-inputs" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
@@ -1844,7 +1881,7 @@ const CompanyHistoryEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="clock" size={15} /> Company History</h3>
+          <h3 className="wc-editor-card-title"><Clock size={15} /> Company History</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1869,7 +1906,7 @@ const CompanyHistoryEditor = ({ data, onChange }) => {
                   <input className="wc-input" value={m.title} onChange={e => update(i, { ...m, title: e.target.value })} placeholder="Milestone Title" style={{ flex: 1 }} />
                 </div>
                 <textarea className="wc-textarea" value={m.description} onChange={e => update(i, { ...m, description: e.target.value })} placeholder="Description" rows={2} />
-                <button className="wc-repeater-remove" onClick={() => remove(i)}><Icon name="trash" size={13} /> Remove</button>
+                <button className="wc-repeater-remove" onClick={() => remove(i)}><Trash size={13} /> Remove</button>
               </div>
             )}
           />
@@ -1889,7 +1926,7 @@ const CertificationsEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="award" size={15} /> Certifications</h3>
+          <h3 className="wc-editor-card-title"><Award size={15} /> Certifications</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1913,7 +1950,7 @@ const CertificationsEditor = ({ data, onChange }) => {
                 <ImageUploadField label="Logo/Badge" value={cert.image} onChange={v => update(i, { ...cert, image: v })} hint="PNG transparent recommended" />
                 <input className="wc-input" value={cert.title} onChange={e => update(i, { ...cert, title: e.target.value })} placeholder="Certification Title (e.g. ISO 9001:2015)" />
                 <input className="wc-input" value={cert.description} onChange={e => update(i, { ...cert, description: e.target.value })} placeholder="Description" />
-                <button className="wc-repeater-remove" onClick={() => remove(i)}><Icon name="trash" size={13} /> Remove</button>
+                <button className="wc-repeater-remove" onClick={() => remove(i)}><Trash size={13} /> Remove</button>
               </div>
             )}
           />
@@ -1944,7 +1981,7 @@ const DoctorListingEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="search" size={15} /> Search & Filter Labels</h3>
+          <h3 className="wc-editor-card-title"><Search size={15} /> Search & Filter Labels</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -1970,7 +2007,7 @@ const DoctorListingEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="users" size={15} /> Doctor Cards</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Doctor Cards</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -1987,7 +2024,7 @@ const DoctorListingEditor = ({ data, onChange }) => {
                     {doc.available ? "● AVAILABLE" : "○ UNAVAILABLE"}
                   </span>
                   <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
-                    <Icon name="trash" size={13} />
+                    <Trash size={13} />
                   </button>
                 </div>
                 <ImageUploadField label="Doctor Photo" value={doc.photo} onChange={v => update(i, { ...doc, photo: v })} hint="Recommended: 300×300px circular" />
@@ -2030,7 +2067,7 @@ const CareerCTAEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="user-plus" size={15} /> Career CTA Section</h3>
+          <h3 className="wc-editor-card-title"><UserPlus size={15} /> Career CTA Section</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -2060,7 +2097,7 @@ const CareerCTAEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="check" size={15} /> Feature Bullets (4 items)</h3>
+          <h3 className="wc-editor-card-title"><Check size={15} /> Feature Bullets (4 items)</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -2072,7 +2109,7 @@ const CareerCTAEditor = ({ data, onChange }) => {
               <>
                 <input className="wc-input" value={feat} onChange={e => update(i, e.target.value)} placeholder="Feature text" style={{ flex: 1 }} />
                 <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ marginTop: 4 }}>
-                  <Icon name="x" size={13} /> Remove
+                  <X size={13} /> Remove
                 </button>
               </>
             )}
@@ -2082,7 +2119,7 @@ const CareerCTAEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="list" size={15} /> Stats (3 Items)</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> Stats (3 Items)</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-stat-inputs" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
@@ -2122,7 +2159,7 @@ const PackagesListingEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="info" size={15} /> Bottom Note</h3>
+          <h3 className="wc-editor-card-title"><Info size={15} /> Bottom Note</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
@@ -2144,7 +2181,7 @@ const PackagesListingEditor = ({ data, onChange }) => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="package" size={15} /> Health Packages</h3>
+          <h3 className="wc-editor-card-title"><Package size={15} /> Health Packages</h3>
         </div>
         <div className="wc-editor-card-body">
           <Repeater
@@ -2159,7 +2196,7 @@ const PackagesListingEditor = ({ data, onChange }) => {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: "#014fa1", background: "#eff6ff", padding: "3px 10px", borderRadius: 20, border: "1px solid #dbeafe" }}>{pkg.badge}</span>
                   <button className="wc-repeater-remove" onClick={() => remove(i)} style={{ width: "auto", padding: "6px 12px", marginTop: 0 }}>
-                    <Icon name="trash" size={13} />
+                    <Trash size={13} />
                   </button>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -2184,7 +2221,7 @@ const PackagesListingEditor = ({ data, onChange }) => {
                     </div>
                   ))}
                   <button onClick={() => update(i, { ...pkg, items: [...(pkg.items || []), { test: "", price: "" }] })} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "1px dashed #cbd5e1", borderRadius: 6, padding: "6px 12px", fontSize: 12, color: "#64748b", cursor: "pointer", width: "100%", justifyContent: "center", marginTop: 4 }}>
-                    <Icon name="plus" size={12} /> Add Test Item
+                    <Plus size={12} /> Add Test Item
                   </button>
                 </div>
 
@@ -2224,7 +2261,7 @@ const PhotoGalleryEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="image" size={15} /> Photo Gallery Items</h3>
+          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> Photo Gallery Items</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-gallery-grid">
@@ -2242,7 +2279,7 @@ const PhotoGalleryEditor = ({ data, onChange }) => {
                       <img src={photo.image} alt={photo.title || "photo"} />
                     ) : (
                       <div className="wc-gallery-item-placeholder">
-                        <Icon name="image" size={28} />
+                        <ImageIcon size={28} />
                         <span>Click to upload</span>
                       </div>
                     )}
@@ -2260,7 +2297,7 @@ const PhotoGalleryEditor = ({ data, onChange }) => {
                     {photo.image && (
                       <div className="wc-gallery-item-overlay">
                         <button className="wc-gallery-overlay-btn" onClick={e => { e.stopPropagation(); document.getElementById(`photo-upload-${i}`).click(); }} title="Change image">
-                          <Icon name="upload" size={14} />
+                          <Upload size={14} />
                         </button>
                       </div>
                     )}
@@ -2285,14 +2322,14 @@ const PhotoGalleryEditor = ({ data, onChange }) => {
                       onChange={e => update({ ...photo, date: e.target.value })}
                     />
                     <button className="wc-gallery-delete-btn" onClick={remove}>
-                      <Icon name="trash" size={13} /> Delete
+                      <Trash size={13} /> Delete
                     </button>
                   </div>
                 </div>
               );
             })}
             <div className="wc-gallery-add-item" onClick={() => set("photos", [...(data?.photos || []), addPhoto()])}>
-              <Icon name="plus" size={28} />
+              <Plus size={28} />
               <span>Add Photo</span>
             </div>
           </div>
@@ -2319,7 +2356,7 @@ const VideoGalleryEditor = ({ data, onChange }) => {
     <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Icon name="layout" size={15} /> Video Gallery Items</h3>
+          <h3 className="wc-editor-card-title"><Layout size={15} /> Video Gallery Items</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-gallery-grid">
@@ -2336,11 +2373,11 @@ const VideoGalleryEditor = ({ data, onChange }) => {
                     {vid.thumbnail ? (
                       <>
                         <img src={vid.thumbnail} alt={vid.title || "video thumbnail"} />
-                        <div className="wc-video-play-badge"><Icon name="layout" size={18} /></div>
+                        <div className="wc-video-play-badge"><Layout size={18} /></div>
                       </>
                     ) : (
                       <div className="wc-gallery-item-placeholder">
-                        <Icon name="layout" size={28} />
+                        <Layout size={28} />
                         <span>Click to upload thumbnail</span>
                       </div>
                     )}
@@ -2358,7 +2395,7 @@ const VideoGalleryEditor = ({ data, onChange }) => {
                     {vid.thumbnail && (
                       <div className="wc-gallery-item-overlay">
                         <button className="wc-gallery-overlay-btn" onClick={e => { e.stopPropagation(); document.getElementById(`video-upload-${i}`).click(); }} title="Change thumbnail">
-                          <Icon name="upload" size={14} />
+                          <Upload size={14} />
                         </button>
                       </div>
                     )}
@@ -2383,14 +2420,14 @@ const VideoGalleryEditor = ({ data, onChange }) => {
                       onChange={e => update({ ...vid, date: e.target.value })}
                     />
                     <button className="wc-gallery-delete-btn" onClick={remove}>
-                      <Icon name="trash" size={13} /> Delete
+                      <Trash size={13} /> Delete
                     </button>
                   </div>
                 </div>
               );
             })}
             <div className="wc-gallery-add-item" onClick={() => set("videos", [...(data?.videos || []), addVideo()])}>
-              <Icon name="plus" size={28} />
+              <Plus size={28} />
               <span>Add Video</span>
             </div>
           </div>
@@ -2541,8 +2578,54 @@ export default function WebsiteContentPage() {
     : pageTree;
 
   const pageIcons = {
-    home: "home", info: "info", doctors: "doctors", services: "services",
-    package: "package", shop: "shop", blog: "blog", contact: "contact",
+    home: Home,
+    info: Info,
+    doctors: UserCheck,
+    services: Activity,
+    package: Package,
+    shop: ShoppingBag,
+    blog: BookOpen,
+    contact: Phone,
+    image: ImageIcon,
+    layout: Layout,
+  };
+
+  // Helper function to render icons in the sidebar
+  const renderIcon = (iconName, size = 14) => {
+    const IconComponent = pageIcons[iconName] || Layout;
+    return <IconComponent size={size} />;
+  };
+
+  // Helper function to render section icons
+  const renderSectionIcon = (sectionId, size = 14) => {
+    const def = SECTION_DEFS[sectionId];
+    if (!def) return <Layout size={size} />;
+    const iconMap = {
+      layout: Layout,
+      calendar: Calendar,
+      "message-circle": MessageCircle,
+      award: Award,
+      search: Search,
+      target: Target,
+      user: User,
+      list: List,
+      clock: Clock,
+      image: ImageIcon,
+      "user-plus": UserPlus,
+      grid: Grid,
+      "shopping-bag": ShoppingBag,
+      package: Package,
+      "file-text": FileText,
+      star: Star,
+      phone: Phone,
+      "map-pin": MapPin,
+      mail: Mail,
+      tag: Tag,
+      info: Info,
+      users: Users,
+    };
+    const IconComponent = iconMap[def.icon] || Layout;
+    return <IconComponent size={size} />;
   };
 
   return (
@@ -2551,9 +2634,7 @@ export default function WebsiteContentPage() {
         <div className="wc-sidebar-header">
           <p className="wc-sidebar-title">Website Pages</p>
           <div className="wc-search">
-            <svg className="wc-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+            <Search className="wc-search-icon" size={16} />
             <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search pages..." />
           </div>
         </div>
@@ -2575,14 +2656,12 @@ export default function WebsiteContentPage() {
                   }}
                 >
                   <div className="wc-tree-page-icon">
-                    <Icon name={pageIcons[page.icon] || "layout"} size={14} />
+                    {renderIcon(page.icon, 14)}
                   </div>
                   <span className="wc-tree-parent-label">{page.label}</span>
                   <span className="wc-tree-status" />
                   {hasChildren && (
-                    <svg className={`wc-tree-chevron ${isOpen ? "open" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
+                    <ChevronDown className={`wc-tree-chevron ${isOpen ? "open" : ""}`} size={16} />
                   )}
                 </button>
 
@@ -2602,7 +2681,7 @@ export default function WebsiteContentPage() {
                         className="wc-tree-add-btn"
                         onClick={() => setIsAddModalOpen(true)}
                       >
-                        <Icon name="plus" size={12} />
+                        <Plus size={12} />
                         Add New Service
                       </button>
                     )}
@@ -2615,7 +2694,7 @@ export default function WebsiteContentPage() {
 
         <div className="wc-sidebar-footer">
           <div className="wc-sidebar-note">
-            <Icon name="info" size={10} />
+            <Info size={10} />
             <span>Only Services subpages can be added</span>
           </div>
         </div>
@@ -2625,39 +2704,33 @@ export default function WebsiteContentPage() {
         <div className="wc-editor-topbar">
           <div className="wc-breadcrumb">
             <span>Website Content</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
+            <ChevronDown size={12} className="wc-breadcrumb-chevron" />
             {currentParentDef && currentParentDef.id !== selectedPage && (
               <>
                 <span onClick={() => selectPage(currentParentDef.id, currentParentDef.sections?.[0])} style={{ cursor: "pointer" }}>
                   {currentParentDef.label}
                 </span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
+                <ChevronDown size={12} className="wc-breadcrumb-chevron" />
               </>
             )}
             <span className="current">{currentPageDef?.label || selectedPage}</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
+            <ChevronDown size={12} className="wc-breadcrumb-chevron" />
             <span className="current">{SECTION_DEFS[selectedSection]?.label || selectedSection}</span>
           </div>
 
           <div className="wc-topbar-actions">
             <div className="wc-status-dot">Live</div>
             <button className="wc-btn wc-btn-ghost" onClick={handlePreview}>
-              <Icon name="eye" size={14} /> Preview
+              <Eye size={14} /> Preview
             </button>
             <button className="wc-btn wc-btn-ghost">
-              <Icon name="refresh" size={14} /> Reset
+              <RefreshCw size={14} /> Reset
             </button>
             <button className="wc-btn wc-btn-success" onClick={handleSave} disabled={saving}>
               {saving ? (
-                <><Icon name="refresh" size={14} /> Saving...</>
+                <><RefreshCw size={14} /> Saving...</>
               ) : (
-                <><Icon name="save" size={14} /> Save Changes</>
+                <><Save size={14} /> Save Changes</>
               )}
             </button>
           </div>
@@ -2674,7 +2747,7 @@ export default function WebsiteContentPage() {
                   className={`wc-section-tab ${selectedSection === sectionId ? "active" : ""}`}
                   onClick={() => setSelectedSection(sectionId)}
                 >
-                  <Icon name={def.icon || "layout"} size={14} />
+                  {renderSectionIcon(sectionId, 14)}
                   {def.label}
                   {sectionId === "seo" && <span className="wc-section-tab-badge">SEO</span>}
                 </button>
@@ -2695,15 +2768,15 @@ export default function WebsiteContentPage() {
               </div>
               <div className="wc-page-info-meta">
                 <span className="wc-meta-tag live">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="11" height="11"><circle cx="12" cy="12" r="10" /></svg>
+                  <CheckCircle size={11} />
                   Published
                 </span>
                 <span className="wc-meta-tag">
-                  <Icon name="external" size={11} />
+                  <ExternalLink size={11} />
                   {currentPageDef?.href || "/"}
                 </span>
                 <span className="wc-meta-tag">
-                  <Icon name="clock" size={11} />
+                  <Clock size={11} />
                   Last saved: Just now
                 </span>
               </div>
@@ -2727,9 +2800,7 @@ export default function WebsiteContentPage() {
       />
 
       <div className={`wc-toast ${toast.type} ${toast.show ? "show" : ""}`}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+        <Check size={16} />
         {toast.msg}
       </div>
     </div>

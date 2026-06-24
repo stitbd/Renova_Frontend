@@ -1,0 +1,146 @@
+/* Doctors Page Specific Styles */
+.wc-doctors-page {
+  height: 100%;
+  background: var(--color-bg-light, #f0f4f8);
+}
+
+.wc-doctors-page .wc-editor-card {
+  margin-bottom: 20px;
+}
+
+/* Doctor Cards Grid */
+.wc-doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.wc-doctor-card {
+  background: var(--color-white, #fff);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+.wc-doctor-card-image {
+  width: 120px;
+  min-width: 120px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-bg-light, #f8fafc);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+}
+
+.wc-doctor-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wc-doctor-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wc-doctor-card-info .wc-input {
+  font-size: 13px;
+}
+
+.wc-doctor-card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.wc-doctor-card-stats .wc-input {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+/* Career CTA Features */
+.wc-features-bullets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.wc-features-bullets .wc-input {
+  padding: 8px 12px;
+}
+
+/* Stats for Career CTA */
+.wc-doctors-page .wc-stat-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.wc-doctors-page .wc-stat-input-item {
+  background: var(--color-bg-light, #f8fafc);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.wc-doctors-page .wc-stat-input-item label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--color-text-muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.wc-doctors-page .wc-stat-input-item input {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-primary, #1a202c);
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wc-doctor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .wc-doctor-card {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .wc-doctor-card-image {
+    width: 100px;
+    min-width: 100px;
+  }
+  
+  .wc-doctor-card-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .wc-features-bullets {
+    grid-template-columns: 1fr;
+  }
+  
+  .wc-doctors-page .wc-stat-inputs {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .wc-doctors-page .wc-stat-inputs {
+    grid-template-columns: 1fr;
+  }
+}
