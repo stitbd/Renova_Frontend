@@ -12,6 +12,7 @@ import {
 import PrescriptionPreviewModal from "@/components/PrescriptionPreviewModal";
 
 import "./new-prescriptions.css";
+import { ArrowLeft, Calendar, Trash2 } from "lucide-react";
 
 function Icon({ type }) {
     const icons = {
