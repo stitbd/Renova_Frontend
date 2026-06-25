@@ -1,36 +1,36 @@
-// app/supar-admin-panel/website-content/partners-page/page.jsx
+// app/supar-admin-panel/website-content/appointment-page/page.jsx
 "use client";
 
 import { useState } from "react";
 import {
   Home,
-  Layout,
-  Award,
+  Calendar,
   Search,
   Eye,
   Save,
   RefreshCw,
   Check,
-  Image as ImageIcon,
-  Upload,
-  Plus,
-  X,
   Clock,
   ChevronDown,
-  List,
   ExternalLink,
-  Users
+  CheckCircle,
+  Shield,
+  Calendar as CalendarIcon,
+  Clock as ClockIcon,
+  FileText,
+  Headphones,
+  UserPlus
 } from "lucide-react";
-import "./partners.css";
+import "./appointment.css";
 
-const PartnersPage = () => {
-  const [selectedSection, setSelectedSection] = useState("partners");
+const AppointmentPage = () => {
+  const [selectedSection, setSelectedSection] = useState("appointment-cta");
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
 
-  // Section definitions for Partners Page
+  // Section definitions for Appointment Page
   const sections = [
-    { id: "partners", label: "Partners & Affiliations", icon: Award },
+    { id: "appointment-cta", label: "Appointment CTA", icon: Calendar },
     { id: "seo", label: "SEO & Meta", icon: Search }
   ];
 
@@ -48,23 +48,23 @@ const PartnersPage = () => {
 
   const renderContent = () => {
     switch (selectedSection) {
-      case "partners":
-        return <PartnersEditor />;
+      case "appointment-cta":
+        return <AppointmentCTAEditor />;
       case "seo":
         return <SeoEditor />;
       default:
-        return <PartnersEditor />;
+        return <AppointmentCTAEditor />;
     }
   };
 
   return (
-    <div className="wc-home-page">
+    <div className="wc-appointment-page">
       <div className="wc-editor">
         <div className="wc-editor-topbar">
           <div className="wc-breadcrumb">
             <span>Website Content</span>
             <ChevronDown size={12} className="wc-breadcrumb-chevron" />
-            <span className="current">Partners Page</span>
+            <span className="current">Appointment Page</span>
             <ChevronDown size={12} className="wc-breadcrumb-chevron" />
             <span className="current">{sections.find(s => s.id === selectedSection)?.label}</span>
           </div>
@@ -110,10 +110,10 @@ const PartnersPage = () => {
             <div className="wc-page-info-banner">
               <div className="wc-page-info-left">
                 <div className="wc-page-info-icon">
-                  <Award size={20} />
+                  <Calendar size={20} />
                 </div>
                 <div className="wc-page-info-text">
-                  <h2>Partners Page</h2>
+                  <h2>Appointment Page</h2>
                   <p>Editing: {sections.find(s => s.id === selectedSection)?.label}</p>
                 </div>
               </div>
@@ -142,70 +142,80 @@ const PartnersPage = () => {
   );
 };
 
-// Partners Editor Component
-const PartnersEditor = () => {
+// Appointment CTA Editor Component
+const AppointmentCTAEditor = () => {
   const [data, setData] = useState({
-    section_label: "Our Trusted Partners",
-    heading: "Affiliations & Partnerships",
-    subheading: "We collaborate with leading healthcare organizations worldwide.",
-    partners: [
-      { id: 1, name: "World Health Organization", logo: "/images/partners/who.png", website: "https://www.who.int" },
-      { id: 2, name: "Bangladesh Medical Association", logo: "/images/partners/bma.png", website: "https://www.bma.org" },
-      { id: 3, name: "International Red Cross", logo: "/images/partners/redcross.png", website: "https://www.icrc.org" },
-      { id: 4, name: "Dhaka Medical College", logo: "/images/partners/dmc.png", website: "https://www.dmc.gov.bd" },
-      { id: 5, name: "World Medical Association", logo: "/images/partners/wma.png", website: "https://www.wma.net" },
-      { id: 6, name: "Bangladesh Health Ministry", logo: "/images/partners/health-ministry.png", website: "https://www.mohfw.gov.bd" }
+    badge_text: "NOW ACCEPTING PATIENTS",
+    heading: "Your Health Deserves Expert Care, Right Now.",
+    subheading: "Connect with Bangladesh's leading specialists in seconds. Smart, secure, and built around your wellbeing—book an appointment in under two minutes.",
+    features: [
+      { id: 1, text: "Instant confirmation", icon: "CheckCircle" },
+      { id: 2, text: "Free rescheduling", icon: "Calendar" },
+      { id: 3, text: "SSL-encrypted data", icon: "Shield" },
+      { id: 4, text: "Board-certified doctors", icon: "UserPlus" },
+      { id: 5, text: "Digital reports delivered", icon: "FileText" },
+      { id: 6, text: "24/7 support available", icon: "Headphones" }
     ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
 
-  const addPartner = () => {
-    const newPartner = {
-      id: Date.now(),
-      name: "",
-      logo: "",
-      website: ""
-    };
-    set("partners", [...data.partners, newPartner]);
-  };
-
-  const removePartner = (id) => {
-    set("partners", data.partners.filter(p => p.id !== id));
-  };
-
-  const updatePartner = (id, field, value) => {
-    set("partners", data.partners.map(p =>
-      p.id === id ? { ...p, [field]: value } : p
+  const updateFeature = (id, value) => {
+    set("features", data.features.map(f =>
+      f.id === id ? { ...f, text: value } : f
     ));
   };
 
+  const addFeature = () => {
+    const newFeature = {
+      id: Date.now(),
+      text: "",
+      icon: "CheckCircle"
+    };
+    set("features", [...data.features, newFeature]);
+  };
+
+  const removeFeature = (id) => {
+    set("features", data.features.filter(f => f.id !== id));
+  };
+
+  const getIconComponent = (iconName) => {
+    const icons = {
+      CheckCircle: CheckCircle,
+      Calendar: CalendarIcon,
+      Shield: Shield,
+      UserPlus: UserPlus,
+      FileText: FileText,
+      Headphones: Headphones
+    };
+    return icons[iconName] || CheckCircle;
+  };
+
   return (
-    <div className="wc-home-editor">
+    <div className="wc-appointment-editor">
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Award size={15} /> Partners Section</h3>
+          <h3 className="wc-editor-card-title"><Calendar size={15} /> Appointment CTA Content</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
-            <div className="wc-field">
-              <label className="wc-field-label">Section Label</label>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Badge Text</label>
               <input
                 className="wc-input"
-                value={data.section_label}
-                onChange={e => set("section_label", e.target.value)}
+                value={data.badge_text}
+                onChange={e => set("badge_text", e.target.value)}
+                placeholder="e.g., NOW ACCEPTING PATIENTS"
               />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Number of Partners</label>
-              <span className="wc-field-hint">{data.partners.length} partners</span>
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Heading <span className="required">*</span></label>
-              <input
-                className="wc-input"
+              <textarea
+                className="wc-textarea"
                 value={data.heading}
                 onChange={e => set("heading", e.target.value)}
+                rows={2}
+                placeholder="Main heading for appointment section"
               />
             </div>
             <div className="wc-field span-2">
@@ -214,7 +224,8 @@ const PartnersEditor = () => {
                 className="wc-textarea"
                 value={data.subheading}
                 onChange={e => set("subheading", e.target.value)}
-                rows={2}
+                rows={3}
+                placeholder="Supporting text for appointment section"
               />
             </div>
           </div>
@@ -223,64 +234,38 @@ const PartnersEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Users size={15} /> Partner Logos</h3>
-          <span className="wc-editor-card-desc">{data.partners.length} partners</span>
+          <h3 className="wc-editor-card-title"><CheckCircle size={15} /> Why Book With Us?</h3>
+          <span className="wc-editor-card-desc">{data.features.length} features</span>
         </div>
         <div className="wc-editor-card-body">
-          <div className="wc-repeater-partners">
-            {data.partners.map((partner) => (
-              <div key={partner.id} className="wc-repeater-item">
-                <div className="wc-repeater-drag">
-                  <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <circle cx="9" cy="12" r="1" />
-                    <circle cx="15" cy="12" r="1" />
-                    <circle cx="9" cy="16" r="1" />
-                    <circle cx="15" cy="16" r="1" />
-                    <circle cx="9" cy="8" r="1" />
-                    <circle cx="15" cy="8" r="1" />
-                  </svg>
+          <div className="wc-features-grid">
+            {data.features.map((feature) => {
+              const IconComponent = getIconComponent(feature.icon);
+              return (
+                <div key={feature.id} className="wc-feature-item">
+                  <div className="wc-feature-icon">
+                    <IconComponent size={18} />
+                  </div>
+                  <input
+                    className="wc-feature-input"
+                    value={feature.text}
+                    onChange={e => updateFeature(feature.id, e.target.value)}
+                    placeholder="Enter feature text"
+                  />
+                  <button
+                    className="wc-feature-remove"
+                    onClick={() => removeFeature(feature.id)}
+                    title="Remove feature"
+                  >
+                    <X size={14} />
+                  </button>
                 </div>
-
-                {partner.logo ? (
-                  <div className="wc-image-preview">
-                    <img src={partner.logo} alt={partner.name} />
-                    <div className="wc-image-preview-actions">
-                      <button
-                        className="wc-img-action-btn"
-                        onClick={() => updatePartner(partner.id, "logo", "")}
-                        title="Remove logo"
-                      >
-                        <X size={13} />
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="wc-image-upload" onClick={() => updatePartner(partner.id, "logo", "/images/partners/placeholder.png")}>
-                    <div className="wc-image-upload-icon"><Upload size={16} /></div>
-                    <p>Upload Logo</p>
-                    <span>PNG, JPG</span>
-                  </div>
-                )}
-
-                <input
-                  placeholder="Partner Name *"
-                  value={partner.name}
-                  onChange={e => updatePartner(partner.id, "name", e.target.value)}
-                />
-                <input
-                  placeholder="Website URL"
-                  value={partner.website}
-                  onChange={e => updatePartner(partner.id, "website", e.target.value)}
-                />
-                <button className="wc-repeater-remove" onClick={() => removePartner(partner.id)}>
-                  <X size={13} /> Remove
-                </button>
-              </div>
-            ))}
-            <button className="wc-repeater-add" onClick={addPartner}>
-              <Plus size={14} /> Add Partner
-            </button>
+              );
+            })}
           </div>
+          <button className="wc-repeater-add" onClick={addFeature}>
+            <Plus size={14} /> Add Feature
+          </button>
         </div>
       </div>
     </div>
@@ -290,14 +275,14 @@ const PartnersEditor = () => {
 // Seo Editor Component
 const SeoEditor = () => {
   const [data, setData] = useState({
-    meta_title: "Our Partners & Affiliations | Renova Life Care Bangladesh",
-    meta_description: "Discover our trusted partners and affiliations at Renova Life Care. We collaborate with leading healthcare organizations to deliver world-class medical services.",
-    og_title: "Partners & Affiliations | Renova Life Care",
-    og_description: "Renova Life Care's strategic partnerships with global healthcare leaders.",
-    og_image: "/images/og-partners.jpg",
-    canonical_url: "https://renovalifecare.com/partners",
+    meta_title: "Book Appointment | Renova Life Care Bangladesh",
+    meta_description: "Schedule your appointment with Renova Life Care's expert doctors. Book in-person, video consultation, or home visit. World-class healthcare across Bangladesh.",
+    og_title: "Book Appointment | Renova Life Care",
+    og_description: "Expert healthcare consultation at your convenience. Book now.",
+    og_image: "/images/og-appointment.jpg",
+    canonical_url: "https://renovalifecare.com/appointment",
     robots: "index, follow",
-    keywords: "healthcare partners, medical affiliations, Renova Life Care, Bangladesh healthcare partnerships"
+    keywords: "book appointment, healthcare consultation, Renova Life Care, doctor appointment Bangladesh"
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
@@ -415,40 +400,42 @@ const SeoEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Award size={15} /> Schema Markup</h3>
+          <h3 className="wc-editor-card-title"><Calendar size={15} /> Schema Markup</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
             <div className="wc-field span-2">
-              <label className="wc-field-label">Organization Schema</label>
+              <label className="wc-field-label">Medical Appointment Schema</label>
               <textarea
                 className="wc-textarea xl"
                 value={`{
   "@context": "https://schema.org",
-  "@type": "MedicalOrganization",
-  "name": "Renova Life Care Ltd.",
-  "description": "Healthcare provider with trusted partnerships",
+  "@type": "MedicalWebPage",
+  "name": "Book Appointment",
+  "description": "Schedule your consultation with expert doctors",
   "url": "${data.canonical_url}",
-  "memberOf": [
-    {
-      "@type": "Organization",
-      "name": "Bangladesh Medical Association"
-    },
-    {
-      "@type": "Organization",
-      "name": "World Health Organization"
-    }
-  ],
+  "about": {
+    "@type": "MedicalOrganization",
+    "name": "Renova Life Care Ltd.",
+    "medicalSpecialty": "General Healthcare"
+  },
   "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://renovalifecare.com/search?q={search_term_string}",
-    "query-input": "required name=search_term_string"
+    "@type": "ReserveAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "${data.canonical_url}/book",
+      "inLanguage": "en-US",
+      "actionPlatform": [
+        "http://schema.org/DesktopWebPlatform",
+        "http://schema.org/MobileWebPlatform"
+      ]
+    }
   }
 }`}
                 onChange={() => { }}
                 style={{ fontFamily: 'monospace', fontSize: '12px' }}
               />
-              <span className="wc-field-hint">This schema helps search engines understand your organization's partnerships</span>
+              <span className="wc-field-hint">This schema helps search engines understand your appointment booking page</span>
             </div>
           </div>
         </div>
@@ -487,4 +474,27 @@ const ImageUploadField = ({ label, hint, value, onChange }) => {
   );
 };
 
-export default PartnersPage;
+// Icons used
+const Plus = ({ size }) => (
+  <svg width={size || 14} height={size || 14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="12" y1="5" x2="12" y2="19" />
+    <line x1="5" y1="12" x2="19" y2="12" />
+  </svg>
+);
+
+const X = ({ size }) => (
+  <svg width={size || 14} height={size || 14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
+const Upload = ({ size }) => (
+  <svg width={size || 20} height={size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="17 8 12 3 7 8" />
+    <line x1="12" y1="3" x2="12" y2="15" />
+  </svg>
+);
+
+export default AppointmentPage;

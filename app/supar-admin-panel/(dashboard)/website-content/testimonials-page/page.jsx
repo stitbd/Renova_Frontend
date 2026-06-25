@@ -30,7 +30,7 @@ const TestimonialsPage = () => {
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
 
-  // Section definitions for Testimonials & SEO page
+  // Section definitions for Testimonials page
   const sections = [
     { id: "testimonials", label: "Testimonials", icon: MessageCircle },
     { id: "seo", label: "SEO & Meta", icon: Search }
@@ -117,7 +117,7 @@ const TestimonialsPage = () => {
                   <Home size={20} />
                 </div>
                 <div className="wc-page-info-text">
-                  <h2>Testimonials & SEO Page</h2>
+                  <h2>Testimonials Page</h2>
                   <p>Editing: {sections.find(s => s.id === selectedSection)?.label}</p>
                 </div>
               </div>

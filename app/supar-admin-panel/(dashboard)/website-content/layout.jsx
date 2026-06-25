@@ -114,6 +114,7 @@ const PAGE_TREE = [
   { id: "photos", label: "Photos Gallery", href: "/photos-gallery-page", icon: "image" },
   { id: "videos", label: "Videos Gallery", href: "/videos-gallery-page", icon: "video" },
   { id: "contact", label: "Contact", href: "/contact-page", icon: "contact" },
+  { id: "appointment", label: "Appointment", href: "/appointment-page", icon: "calendar" },
   { id: "testimonials", label: "Testimonials", href: "/testimonials-page", icon: "testimonials" },
   { id: "partners", label: "Partners", href: "/partners-page", icon: "partners" },
   { id: "general-settings", label: "General Settings", href: "/general-settings-page", icon: "settings" },

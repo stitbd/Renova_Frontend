@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   PARTNERS PAGE — Professional Admin CSS
+   APPOINTMENT PAGE — Professional Admin CSS
    Fully integrated with Global Design Tokens
    ═══════════════════════════════════════════════════════════════ */
 
@@ -909,10 +909,8 @@
 
 .wc-image-preview img {
   width: 100%;
-  height: 120px;
-  object-fit: contain;
-  background: #f8fafc;
-  padding: 8px;
+  height: 160px;
+  object-fit: cover;
   display: block;
 }
 
@@ -949,143 +947,86 @@
   fill: none;
 }
 
-/* Partners Logos - 6 columns */
-.wc-repeater-partners {
+/* Features Grid */
+.wc-features-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-4, 16px);
-  align-items: stretch;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3, 12px);
+  margin-bottom: var(--space-4, 16px);
 }
 
-.wc-repeater-partners .wc-repeater-item {
+.wc-feature-item {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: var(--space-2, 8px);
-  padding: var(--space-2, 12px);
-  background: var(--color-white, #fff);
+  align-items: center;
+  gap: var(--space-2, 10px);
+  padding: var(--space-2, 10px) var(--space-3, 14px);
+  background: var(--color-bg-light, #f8fafc);
   border: var(--border-default, 1px solid #e2e8f0);
-  border-radius: var(--radius-md, 12px);
-  transition: var(--transition-default, 0.2s);
+  border-radius: var(--radius-sm, 8px);
+  transition: var(--transition-fast, 0.15s);
+}
+
+.wc-feature-item:hover {
+  background: var(--color-white, #fff);
+  border-color: #cbd5e1;
   box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
 }
 
-.wc-repeater-partners .wc-repeater-item:hover {
-  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
-  border-color: #cbd5e1;
-}
-
-.wc-repeater-partners .wc-image-preview {
-  aspect-ratio: 16 / 9;
-}
-
-.wc-repeater-partners .wc-image-preview img {
-  height: 100%;
-  object-fit: contain;
-  background: #f8fafc;
-  padding: 8px;
-}
-
-.wc-repeater-partners .wc-image-upload {
-  aspect-ratio: 16 / 9;
+.wc-feature-icon {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3, 12px);
-}
-
-.wc-repeater-partners .wc-image-upload-icon {
-  width: 32px;
-  height: 32px;
-}
-
-.wc-repeater-partners .wc-image-upload p {
-  font-size: 11px;
-}
-
-.wc-repeater-partners .wc-image-upload span {
-  font-size: 10px;
-}
-
-.wc-repeater-drag {
-  cursor: grab;
-  color: #cbd5e1;
-  flex-shrink: 0;
-  padding: var(--space-1, 4px);
-  background: var(--color-border-muted, #f1f5f9);
   border-radius: var(--radius-sm, 6px);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  margin-bottom: var(--space-1, 4px);
+  background: #dbeafe;
+  color: var(--color-primary, #014fa1);
+  flex-shrink: 0;
 }
 
-.wc-repeater-drag:active {
-  cursor: grabbing;
-}
-
-.wc-repeater-drag svg {
-  width: 14px;
-  height: 14px;
+.wc-feature-icon svg {
+  width: 18px;
+  height: 18px;
   stroke: currentColor;
   fill: none;
 }
 
-.wc-repeater-partners input {
-  width: 100%;
-  border: var(--border-default, 1px solid #e2e8f0);
-  background: var(--color-white, #fff);
-  font-size: var(--font-size-sm, 12px);
+.wc-feature-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-sm, 13px);
   color: var(--color-text-primary, #1a202c);
   outline: none;
   font-family: var(--font-body, 'DM Sans', sans-serif);
-  padding: var(--space-2, 8px) var(--space-2, 10px);
-  border-radius: var(--radius-sm, 6px);
-  transition: var(--transition-default, 0.2s);
+  padding: 4px 0;
 }
 
-.wc-repeater-partners input:focus {
-  border-color: var(--color-primary, #014fa1);
-  box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.08);
-}
-
-.wc-repeater-partners input::placeholder {
+.wc-feature-input::placeholder {
   color: #cbd5e1;
 }
 
-.wc-repeater-remove {
-  width: 100%;
-  padding: var(--space-2, 6px);
-  background: #fef2f2;
-  border: 1px solid #fee2e2;
+.wc-feature-remove {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm, 4px);
   cursor: pointer;
-  color: var(--color-status-error, #dc2626);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  border-radius: var(--radius-sm, 6px);
-  transition: var(--transition-default, 0.2s);
-  font-size: var(--font-size-sm, 11px);
-  font-weight: var(--font-weight-medium, 500);
-  margin-top: var(--space-1, 4px);
+  color: var(--color-text-muted, #94a3b8);
+  transition: var(--transition-fast, 0.15s);
+  flex-shrink: 0;
 }
 
-.wc-repeater-remove:hover {
+.wc-feature-remove:hover {
   background: #fee2e2;
-  border-color: #fecaca;
-  color: #b91c1c;
-  transform: translateY(-1px);
+  color: var(--color-status-error, #dc2626);
 }
 
-.wc-repeater-remove svg {
-  width: 12px;
-  height: 12px;
-  stroke: currentColor;
-  fill: none;
-}
-
+/* Repeater add button */
 .wc-repeater-add {
   display: inline-flex;
   align-items: center;
@@ -1102,7 +1043,6 @@
   width: 100%;
   transition: var(--transition-default, 0.2s);
   font-family: var(--font-body, 'DM Sans', sans-serif);
-  margin-top: var(--space-4, 16px);
 }
 
 .wc-repeater-add:hover {
@@ -1118,13 +1058,6 @@
 
 .wc-repeater-add:hover svg {
   transform: rotate(90deg);
-}
-
-.wc-repeater-add svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  fill: none;
 }
 
 /* SEO preview */
@@ -1214,12 +1147,6 @@
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 1200px) {
-  .wc-repeater-partners {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 @media (max-width: 1024px) {
   .wc-sidebar {
     display: none;
@@ -1233,8 +1160,8 @@
     grid-column: span 1;
   }
 
-  .wc-repeater-partners {
-    grid-template-columns: repeat(3, 1fr);
+  .wc-features-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1271,29 +1198,29 @@
     width: 100%;
   }
 
-  .wc-repeater-partners {
-    grid-template-columns: repeat(2, 1fr);
+  .wc-features-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .wc-repeater-partners {
-    grid-template-columns: 1fr;
-  }
-
   .wc-editor-card-body {
     padding: var(--space-3, 12px);
+  }
+
+  .wc-feature-item {
+    flex-wrap: wrap;
   }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PARTNERS PAGE SPECIFIC STYLES
+   APPOINTMENT PAGE SPECIFIC STYLES
    ═══════════════════════════════════════════════════════════════ */
-.wc-home-page {
+.wc-appointment-page {
   height: 100%;
   background: var(--color-bg-light, #f0f4f8);
 }
 
-.wc-home-editor .wc-editor-card {
+.wc-appointment-editor .wc-editor-card {
   margin-bottom: 20px;
 }
