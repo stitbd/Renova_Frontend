@@ -1,254 +1,507 @@
 // app/doctor-portal/consultations/page.jsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { API_URL } from "@/config";
+import { useAppSelector } from "@/redux/hook";
 import "./consultations.css";
 
-const consultationsData = [
-  { id: 1, patient: "Khalid Hasan", age: 45, gender: "Male", date: "10 May 2025", time: "09:15 AM", condition: "Hypertension", diagnosis: "Stage 2 Hypertension", treatment: "Prescribed medication and lifestyle changes", fee: "500", duration: "22 min", type: "In-person", followUp: "25 May 2025", prescription: true, status: "completed", patientId: "PT-2025-00210", phone: "01712-345678", avatar: "/images/patients/01.jpg", bloodGroup: "B+", notes: "Patient advised to reduce sodium intake." },
-  { id: 2, patient: "Maliha Islam", age: 29, gender: "Female", date: "10 May 2025", time: "08:30 AM", condition: "Anxiety Disorder", diagnosis: "Generalized Anxiety", treatment: "Therapy recommended and mild anxiolytic", fee: "500", duration: "18 min", type: "Video", followUp: "30 May 2025", prescription: true, status: "completed", patientId: "PT-2025-00198", phone: "01811-223344", avatar: "/images/patients/02.jpg", bloodGroup: "A+", notes: "Refer to therapist if no improvement in 2 weeks." },
-  { id: 3, patient: "Rashidul Alam", age: 52, gender: "Male", date: "09 May 2025", time: "07:45 PM", condition: "ECG Review", diagnosis: "Normal ECG", treatment: "Regular monitoring advised", fee: "600", duration: "15 min", type: "In-person", followUp: "None", prescription: false, status: "completed", patientId: "PT-2025-00176", phone: "01912-556677", avatar: "/images/patients/03.jpg", bloodGroup: "O+", notes: "Schedule follow-up ECG in 6 months." },
-  { id: 4, patient: "Nasrin Akter", age: 38, gender: "Female", date: "09 May 2025", time: "05:30 PM", condition: "Chest Pain", diagnosis: "Angina", treatment: "Medication prescribed, stress test ordered", fee: "700", duration: "25 min", type: "Audio", followUp: "20 May 2025", prescription: true, status: "completed", patientId: "PT-2025-00155", phone: "01712-998877", avatar: "/images/patients/04.jpg", bloodGroup: "AB+", notes: "Avoid strenuous activity until stress test done." },
-  { id: 5, patient: "Tariqul Islam", age: 60, gender: "Male", date: "08 May 2025", time: "10:00 AM", condition: "Diabetes Type 2", diagnosis: "Uncontrolled DM", treatment: "Insulin dose adjusted, diet chart given", fee: "500", duration: "30 min", type: "In-person", followUp: "22 May 2025", prescription: true, status: "completed", patientId: "PT-2025-00142", phone: "01611-445566", avatar: "/images/patients/05.jpg", bloodGroup: "B-", notes: "Check HbA1c in next visit." },
-  { id: 6, patient: "Sharmin Sultana", age: 34, gender: "Female", date: "08 May 2025", time: "09:00 AM", condition: "Shortness of Breath", diagnosis: "Mild Asthma", treatment: "Inhaler prescribed, avoid allergens", fee: "450", duration: "20 min", type: "Video", followUp: "28 May 2025", prescription: true, status: "completed", patientId: "PT-2025-00130", phone: "01922-334455", avatar: "/images/patients/06.jpg", bloodGroup: "A-", notes: "Spirometry recommended." },
-];
-
 const typeColors = {
-  "In-person": { bg: "#f0fdf4", color: "#166534" },
-  "Video": { bg: "#eff6ff", color: "#1e40af" },
-  "Audio": { bg: "#fdf4ff", color: "#7e22ce" },
+  ONLINE: { bg: "#eff6ff", color: "#1e40af", label: "Video" },
+  VIDEO: { bg: "#eff6ff", color: "#1e40af", label: "Video" },
+  IN_PERSON: { bg: "#f0fdf4", color: "#166534", label: "In-person" },
+};
+
+function Icon({ type, cls = "" }) {
+  const icons = {
+    users: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    money: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <line x1="12" y1="1" x2="12" y2="23" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+    clock: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </svg>
+    ),
+    calendar: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </svg>
+    ),
+    rx: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414A1 1 0 0 1 19 9.414V19a2 2 0 0 1-2 2z" />
+      </svg>
+    ),
+    search: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
+      </svg>
+    ),
+    user: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    ),
+    file: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+      </svg>
+    ),
+    chevDown: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    ),
+    chevUp: (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    ),
+  };
+
+  return icons[type] || null;
+}
+
+const formatCurrency = (value) => {
+  const amount = Number(value || 0);
+  return `৳${amount.toLocaleString("en-BD")}`;
+};
+
+const formatFollowUp = (date) => {
+  if (!date) return "None";
+
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const normalizeType = (type) => {
+  if (!type) return "IN_PERSON";
+  return String(type).toUpperCase();
+};
+
+const getInitials = (name = "") => {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 };
 
 export default function ConsultationsPage() {
+  const token = useAppSelector((state) => state.auth.accessToken);
+
+  const [consultations, setConsultations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
-  const filtered = consultationsData.filter(c => {
-    const matchSearch = c.patient.toLowerCase().includes(search.toLowerCase()) ||
-      c.condition.toLowerCase().includes(search.toLowerCase()) ||
-      c.patientId.toLowerCase().includes(search.toLowerCase());
-    const matchType = typeFilter === "all" || c.type === typeFilter;
-    return matchSearch && matchType;
-  });
+  const fetchConsultations = async () => {
+    if (!token) return;
 
-  // Summary stats
-  const totalRevenue = consultationsData.reduce((sum, c) => sum + parseInt(c.fee), 0);
-  const avgDuration = Math.round(consultationsData.reduce((sum, c) => sum + parseInt(c.duration), 0) / consultationsData.length);
-  const withFollowUp = consultationsData.filter(c => c.followUp !== "None").length;
-  const withPrescription = consultationsData.filter(c => c.prescription).length;
+    try {
+      setLoading(true);
+      setErrorMessage("");
+
+      const response = await fetch(`${API_URL}/appointments/doctor/consultations`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result?.message || "Failed to load consultations.");
+      }
+
+      setConsultations(Array.isArray(result.data) ? result.data : []);
+    } catch (error) {
+      setConsultations([]);
+      setErrorMessage(error.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchConsultations();
+  }, [token]);
+
+  const stats = useMemo(() => {
+    const totalRevenue = consultations.reduce(
+      (sum, item) => sum + Number(item.consultation?.fee || 0),
+      0
+    );
+
+    const totalDuration = consultations.reduce(
+      (sum, item) => sum + Number(item.consultation?.duration || 0),
+      0
+    );
+
+    const avgDuration = consultations.length
+      ? Math.round(totalDuration / consultations.length)
+      : 0;
+
+    const followUps = consultations.filter((item) => Boolean(item.followUpDate)).length;
+    const prescriptions = consultations.filter((item) => Boolean(item.prescription?.id)).length;
+
+    return [
+      {
+        label: "Total Consultations",
+        value: consultations.length,
+        sub: "Completed encounters",
+        icon: "users",
+        className: "total-icon",
+      },
+      {
+        label: "Total Revenue",
+        value: formatCurrency(totalRevenue),
+        sub: "Consultation fees",
+        icon: "money",
+        className: "revenue-icon",
+      },
+      {
+        label: "Avg Duration",
+        value: `${avgDuration} min`,
+        sub: "Per consultation",
+        icon: "clock",
+        className: "duration-icon",
+      },
+      {
+        label: "Follow-ups",
+        value: followUps,
+        sub: "Scheduled follow-ups",
+        icon: "calendar",
+        className: "followup-icon",
+      },
+      {
+        label: "Prescriptions",
+        value: prescriptions,
+        sub: "Issued prescriptions",
+        icon: "rx",
+        className: "rx-icon",
+      },
+    ];
+  }, [consultations]);
+
+  const filteredConsultations = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    return consultations.filter((item) => {
+      const consultationType = normalizeType(item.consultation?.type);
+
+      const matchesType =
+        typeFilter === "all" ||
+        consultationType === typeFilter ||
+        typeColors[consultationType]?.label === typeFilter;
+
+      const searchableText = [
+        item.appointmentCode,
+        item.patient?.fullName,
+        item.patient?.phone,
+        item.patient?.id,
+        item.clinical?.chiefComplaint,
+        item.clinical?.diagnosis,
+        item.clinical?.advice,
+        item.prescription?.code,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      const matchesSearch = !query || searchableText.includes(query);
+
+      return matchesType && matchesSearch;
+    });
+  }, [consultations, search, typeFilter]);
 
   return (
     <div className="dashboard-content">
-
-      {/* ── Summary Bar ──────────────────────────────────── */}
       <div className="con-stats-row">
-        <div className="con-stat-card">
-          <div className="con-stat-icon total-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+        {stats.map((stat) => (
+          <div key={stat.label} className="con-stat-card">
+            <div className={`con-stat-icon ${stat.className}`}>
+              <Icon type={stat.icon} />
+            </div>
+
+            <div>
+              <span className="con-stat-num">{stat.value}</span>
+              <span className="con-stat-lbl">{stat.label}</span>
+              <span className="con-stat-lbl" style={{ fontSize: 11, opacity: 0.7 }}>
+                {stat.sub}
+              </span>
+            </div>
           </div>
-          <div>
-            <span className="con-stat-num">{consultationsData.length}</span>
-            <span className="con-stat-lbl">Total Consultations</span>
-          </div>
-        </div>
-        <div className="con-stat-card">
-          <div className="con-stat-icon revenue-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
-          </div>
-          <div>
-            <span className="con-stat-num">৳{totalRevenue.toLocaleString()}</span>
-            <span className="con-stat-lbl">Total Revenue</span>
-          </div>
-        </div>
-        <div className="con-stat-card">
-          <div className="con-stat-icon duration-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-          </div>
-          <div>
-            <span className="con-stat-num">{avgDuration} min</span>
-            <span className="con-stat-lbl">Avg Duration</span>
-          </div>
-        </div>
-        <div className="con-stat-card">
-          <div className="con-stat-icon followup-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
-          </div>
-          <div>
-            <span className="con-stat-num">{withFollowUp}</span>
-            <span className="con-stat-lbl">Follow-ups Booked</span>
-          </div>
-        </div>
-        <div className="con-stat-card">
-          <div className="con-stat-icon rx-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>
-          </div>
-          <div>
-            <span className="con-stat-num">{withPrescription}</span>
-            <span className="con-stat-lbl">Prescriptions Issued</span>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* ── Controls ─────────────────────────────────────── */}
       <div className="con-controls">
         <div className="con-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+          <Icon type="search" />
           <input
             type="text"
-            placeholder="Search by patient, condition, or ID…"
+            placeholder="Search by patient, phone, appointment, diagnosis, or prescription..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
+
         <div className="con-type-filters">
-          {["all", "In-person", "Video", "Audio"].map(t => (
+          {[
+            { value: "all", label: "All Types" },
+            { value: "IN_PERSON", label: "In-person" },
+            { value: "ONLINE", label: "Video" },
+          ].map((item) => (
             <button
-              key={t}
-              className={`con-type-btn${typeFilter === t ? " active" : ""}`}
-              onClick={() => setTypeFilter(t)}
+              key={item.value}
+              className={`con-type-btn${typeFilter === item.value ? " active" : ""}`}
+              onClick={() => setTypeFilter(item.value)}
             >
-              {t === "all" ? "All Types" : t}
+              {item.label}
             </button>
           ))}
         </div>
+        
       </div>
 
-      {/* ── Consultation Cards ───────────────────────────── */}
       <div className="con-list">
-        {filtered.length === 0 && (
+        {loading && (
           <div className="con-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>
+            <p>Loading consultations...</p>
+          </div>
+        )}
+
+        {!loading && errorMessage && (
+          <div className="con-empty">
+            <p style={{ color: "#b91c1c" }}>{errorMessage}</p>
+          </div>
+        )}
+
+        {!loading && !errorMessage && filteredConsultations.length === 0 && (
+          <div className="con-empty">
+            <Icon type="file" />
             <p>No consultations found</p>
           </div>
         )}
 
-        {filtered.map(c => {
-          const tc = typeColors[c.type] || { bg: "#f8fafc", color: "#64748b" };
-          const isOpen = expanded === c.id;
-          return (
-            <div key={c.id} className="con-card">
-              {/* Card Header */}
-              <div className="con-card-header">
-                {/* Patient */}
-                <div className="con-patient-block">
-                  <div className="con-avatar">
-                    <img src={c.avatar} alt={c.patient}
-                      onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-                    />
-                    <span className="con-avatar-fallback">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+        {!loading &&
+          !errorMessage &&
+          filteredConsultations.map((item) => {
+            const typeKey = normalizeType(item.consultation?.type);
+            const typeMeta = typeColors[typeKey] || typeColors.IN_PERSON;
+            const isOpen = expanded === item.appointmentId;
+            const hasPrescription = Boolean(item.prescription?.id);
+
+            return (
+              <div key={item.appointmentId} className="con-card">
+                <div className="con-card-header">
+                  <div className="con-patient-block">
+                    <div className="con-avatar">
+                      <span className="con-avatar-fallback" style={{ display: "flex" }}>
+                        {getInitials(item.patient?.fullName) || <Icon type="user" />}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="con-name-row">
+                        <h3 className="con-patient-name">
+                          {item.patient?.fullName || "Unknown Patient"}
+                        </h3>
+
+                        <span
+                          className="con-type-pill"
+                          style={{ background: typeMeta.bg, color: typeMeta.color }}
+                        >
+                          {typeMeta.label}
+                        </span>
+
+                        <span className="con-rx-pill">
+                          {hasPrescription ? "Rx Issued" : "No Rx"}
+                        </span>
+                      </div>
+
+                      <p className="con-patient-meta">
+                        {item.patient?.age || "N/A"} yrs • {item.patient?.gender || "N/A"} •{" "}
+                        {item.patient?.phone || "N/A"}
+                      </p>
+
+                      <p className="con-condition">
+                        {item.clinical?.chiefComplaint || "No chief complaint recorded"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="con-meta-block">
+                    <div className="con-meta-row">
+                      <Icon type="calendar" cls="con-meta-icon" />
+                      <span>
+                        {item.consultation?.date || "N/A"}, {item.consultation?.startTime || ""}
+                      </span>
+                    </div>
+
+                    <div className="con-meta-row">
+                      <Icon type="clock" cls="con-meta-icon" />
+                      <span>{item.consultation?.duration || 0} min</span>
+                    </div>
+
+                    <div className="con-fee-badge">
+                      {formatCurrency(item.consultation?.fee)}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="con-details-row">
+                  <div className="con-detail-item">
+                    <span className="con-detail-lbl">Diagnosis</span>
+                    <span className="con-detail-val">
+                      {item.clinical?.diagnosis || "N/A"}
                     </span>
                   </div>
-                  <div>
-                    <div className="con-name-row">
-                      <h3 className="con-patient-name">{c.patient}</h3>
-                      <span className="con-type-pill" style={{ background: tc.bg, color: tc.color }}>
-                        {c.type}
-                      </span>
-                      {c.prescription && (
-                        <span className="con-rx-pill">Rx Issued</span>
-                      )}
-                    </div>
-                    <p className="con-patient-meta">{c.age} yrs • {c.gender} • {c.patientId} • {c.phone}</p>
-                    <p className="con-condition">{c.condition}</p>
+
+                  <div className="con-detail-item">
+                    <span className="con-detail-lbl">Treatment Advice</span>
+                    <span className="con-detail-val">
+                      {item.clinical?.advice || "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="con-detail-item">
+                    <span className="con-detail-lbl">Follow-up</span>
+                    <span
+                      className={`con-detail-val${
+                        item.followUpDate ? " has-followup" : " no-followup"
+                      }`}
+                    >
+                      {formatFollowUp(item.followUpDate)}
+                    </span>
                   </div>
                 </div>
 
-                {/* Meta */}
-                <div className="con-meta-block">
-                  <div className="con-meta-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="con-meta-icon"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
-                    <span>{c.date}, {c.time}</span>
-                  </div>
-                  <div className="con-meta-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="con-meta-icon"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                    <span>{c.duration}</span>
-                  </div>
-                  <div className="con-fee-badge">৳{c.fee}</div>
-                </div>
-              </div>
+                {isOpen && (
+                  <div className="con-notes-row">
+                    <div className="con-notes-block">
+                      <span className="con-notes-lbl">Consultation Summary</span>
+                      <p className="con-notes-text">
+                        {item.clinical?.chiefComplaint || "No chief complaint"}{" "}
+                        {item.clinical?.diagnosis
+                          ? `Diagnosis: ${item.clinical.diagnosis}.`
+                          : ""}
+                      </p>
+                    </div>
 
-              {/* Diagnosis & Treatment Row */}
-              <div className="con-details-row">
-                <div className="con-detail-item">
-                  <span className="con-detail-lbl">Diagnosis</span>
-                  <span className="con-detail-val">{c.diagnosis}</span>
-                </div>
-                <div className="con-detail-item">
-                  <span className="con-detail-lbl">Treatment</span>
-                  <span className="con-detail-val">{c.treatment}</span>
-                </div>
-                <div className="con-detail-item">
-                  <span className="con-detail-lbl">Follow-up</span>
-                  <span className={`con-detail-val${c.followUp === "None" ? " no-followup" : " has-followup"}`}>
-                    {c.followUp}
-                  </span>
-                </div>
-              </div>
+                    <div className="con-extra-grid">
+                      <div className="con-extra-item">
+                        <span className="con-extra-lbl">Appointment Code</span>
+                        <span className="con-extra-val">{item.appointmentCode}</span>
+                      </div>
 
-              {/* Expandable Notes */}
-              {isOpen && (
-                <div className="con-notes-row">
-                  <div className="con-notes-block">
-                    <span className="con-notes-lbl">Doctor Notes</span>
-                    <p className="con-notes-text">{c.notes}</p>
-                  </div>
-                  <div className="con-extra-grid">
-                    <div className="con-extra-item">
-                      <span className="con-extra-lbl">Blood Group</span>
-                      <span className="con-extra-val">{c.bloodGroup}</span>
-                    </div>
-                    <div className="con-extra-item">
-                      <span className="con-extra-lbl">Phone</span>
-                      <span className="con-extra-val">{c.phone}</span>
-                    </div>
-                    <div className="con-extra-item">
-                      <span className="con-extra-lbl">Patient ID</span>
-                      <span className="con-extra-val">{c.patientId}</span>
-                    </div>
-                    <div className="con-extra-item">
-                      <span className="con-extra-lbl">Consultation Type</span>
-                      <span className="con-extra-val">{c.type}</span>
+                      <div className="con-extra-item">
+                        <span className="con-extra-lbl">Time</span>
+                        <span className="con-extra-val">
+                          {item.consultation?.startTime} - {item.consultation?.endTime}
+                        </span>
+                      </div>
+
+                      <div className="con-extra-item">
+                        <span className="con-extra-lbl">Payment</span>
+                        <span className="con-extra-val">
+                          {item.consultation?.paymentStatus || "N/A"}
+                        </span>
+                      </div>
+
+                      <div className="con-extra-item">
+                        <span className="con-extra-lbl">Prescription</span>
+                        <span className="con-extra-val">
+                          {hasPrescription ? item.prescription.code : "Not issued"}
+                        </span>
+                      </div>
+
+                      <div className="con-extra-item">
+                        <span className="con-extra-lbl">Medicines</span>
+                        <span className="con-extra-val">
+                          {item.prescription?.medicinesCount || 0}
+                        </span>
+                      </div>
+
+                      <div className="con-extra-item">
+                        <span className="con-extra-lbl">Tests</span>
+                        <span className="con-extra-val">
+                          {item.prescription?.testsCount || 0}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Actions */}
-              <div className="con-actions">
-                <div className="con-action-btns">
-                  {c.prescription && (
+                <div className="con-actions">
+                  <div className="con-action-btns">
+                    {hasPrescription && (
+                      <Link
+                        href={`/doctor-portal/prescriptions/prescriptions-details?id=${item.prescription.id}`}
+                        className="con-btn prescription"
+                      >
+                        <Icon type="rx" />
+                        View Prescription
+                      </Link>
+                    )}
 
-                    <Link href="/doctor-portal/prescriptions/prescriptions-details" className="con-btn prescription">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" /></svg>
-                      View Prescription
+                    <Link
+                      href={`/doctor-portal/patients/patient-profile?id=${item.patient?.id}&from=/doctor-portal/consultations`}
+                      className="con-btn profile"
+                    >
+                      <Icon type="user" />
+                      Patient Profile
                     </Link>
-                  )}
-                  <button className="con-btn report">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
-                    View Report
+                  </div>
+
+                  <button
+                    type="button"
+                    className="con-expand-btn"
+                    onClick={() => setExpanded(isOpen ? null : item.appointmentId)}
+                  >
+                    {isOpen ? (
+                      <>
+                        Less <Icon type="chevUp" />
+                      </>
+                    ) : (
+                      <>
+                        More <Icon type="chevDown" />
+                      </>
+                    )}
                   </button>
-                  <Link href={`/doctor-portal/patients/patient-profile?id=${c.patientId}`} className="con-btn profile">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                    Patient Profile
-                  </Link>
                 </div>
-                <button
-                  className="con-expand-btn"
-                  onClick={() => setExpanded(isOpen ? null : c.id)}
-                >
-                  {isOpen ? (
-                    <>Less <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15" /></svg></>
-                  ) : (
-                    <>More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg></>
-                  )}
-                </button>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </div>
   );
