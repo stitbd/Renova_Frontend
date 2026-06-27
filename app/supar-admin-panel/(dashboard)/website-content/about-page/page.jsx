@@ -1,7 +1,7 @@
 // app/supar-admin-panel/website-content/about-page/page.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Info,
   Layout,
@@ -27,7 +27,16 @@ import {
   Upload,
   Trash,
   Plus,
-  X
+  X,
+  Mail,
+  Phone,
+  MapPin,
+  Linkedin,
+  Quote,
+  Briefcase,
+  GraduationCap,
+  FileText,
+  Globe
 } from "lucide-react";
 import "./about.css";
 
@@ -40,10 +49,7 @@ const AboutPage = () => {
     { id: "about-hero", label: "Hero Section", icon: Layout },
     { id: "mission-vision", label: "Mission & Vision", icon: Target },
     { id: "team", label: "Team", icon: Users },
-    { id: "stats-bar", label: "Stats Bar", icon: List },
     { id: "managing-director", label: "Managing Director", icon: User },
-    { id: "company-history", label: "Company History", icon: Clock },
-    { id: "certifications", label: "Certifications", icon: Award },
     { id: "seo", label: "SEO & Meta", icon: Search }
   ];
 
@@ -67,14 +73,8 @@ const AboutPage = () => {
         return <MissionVisionEditor />;
       case "team":
         return <TeamEditor />;
-      case "stats-bar":
-        return <StatsBarEditor />;
       case "managing-director":
         return <ManagingDirectorEditor />;
-      case "company-history":
-        return <CompanyHistoryEditor />;
-      case "certifications":
-        return <CertificationsEditor />;
       case "seo":
         return <SeoEditor />;
       default:
@@ -169,18 +169,13 @@ const AboutHeroEditor = () => {
   const [data, setData] = useState({
     section_header_title: "About Renova Life Care",
     section_header_subtitle: "Delivering compassionate, world-class medicine to the people of Bangladesh since 2010.",
-    about_image: "/images/about/hero.jpg",
     about_title: "Compassionate Care, Expert Medicine",
-    about_description: "Renova Life Care Ltd. delivers world-class healthcare services across Bangladesh.",
+    about_description: "Renova Life Care Ltd. delivers world-class healthcare services across Bangladesh. From general checkups to specialized treatments, our expert doctors are here for you.",
+    about_image: "",
     features: [
-      { icon: "user-plus", title: "Expert Doctors", description: "BMDC-certified specialists" },
-      { icon: "layout", title: "Modern Facilities", description: "State-of-the-art equipment" },
-      { icon: "heart", title: "Patient-First Approach", description: "Compassionate care tailored to your needs" }
-    ],
-    stats: [
-      { label: "Happy Patients", value: "15,000+" },
-      { label: "Network in South Asia", value: "120+" },
-      { label: "Setting new standards", value: "Excellence" }
+      { title: "Expert Doctors", description: "BMDC-certified specialists" },
+      { title: "Modern Facilities", description: "State-of-the-art equipment" },
+      { title: "Patient-First Approach", description: "Compassionate care tailored to your needs" }
     ]
   });
 
@@ -211,7 +206,12 @@ const AboutHeroEditor = () => {
           <h3 className="wc-editor-card-title"><ImageIcon size={15} /> About Section Image</h3>
         </div>
         <div className="wc-editor-card-body">
-          <ImageUploadField label="About Hero Image" hint="Recommended: 600×500px" />
+          <ImageUploadField 
+            label="About Hero Image" 
+            hint="Recommended: 600×500px"
+            value={data.about_image}
+            onChange={(val) => set("about_image", val)}
+          />
         </div>
       </div>
 
@@ -227,7 +227,7 @@ const AboutHeroEditor = () => {
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">About Description</label>
-              <textarea className="wc-textarea" value={data.about_description} onChange={e => set("about_description", e.target.value)} rows={4} />
+              <textarea className="wc-textarea lg" value={data.about_description} onChange={e => set("about_description", e.target.value)} rows={4} />
             </div>
           </div>
         </div>
@@ -263,9 +263,18 @@ const AboutHeroEditor = () => {
 // Mission Vision Editor
 const MissionVisionEditor = () => {
   const [data, setData] = useState({
-    mission: { title: "Our Mission", text: "To provide accessible, affordable, and high-quality healthcare to every individual in Bangladesh." },
-    vision: { title: "Our Vision", text: "To be the most trusted and comprehensive healthcare network in South Asia." },
-    values: { title: "Our Values", text: "Integrity, compassion, excellence, and continuous learning." }
+    mission: { 
+      title: "Our Mission", 
+      text: "To provide accessible, affordable, and high-quality healthcare to every individual in Bangladesh — ensuring no one is left without expert medical attention regardless of their background." 
+    },
+    vision: { 
+      title: "Our Vision", 
+      text: "To be the most trusted and comprehensive healthcare network in South Asia — setting new standards in patient care, medical innovation, and community wellness." 
+    },
+    values: { 
+      title: "Our Values", 
+      text: "Integrity, compassion, excellence, and continuous learning — these are the pillars that define every decision we make and every patient interaction we have." 
+    }
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
@@ -288,11 +297,151 @@ const MissionVisionEditor = () => {
             </div>
             <div className="wc-field" style={{ marginTop: 12 }}>
               <label className="wc-field-label">{label} Text</label>
-              <textarea className="wc-textarea" value={data[key]?.text || ""} onChange={e => set(key, { ...data[key], text: e.target.value })} rows={4} />
+              <textarea className="wc-textarea lg" value={data[key]?.text || ""} onChange={e => set(key, { ...data[key], text: e.target.value })} rows={4} />
             </div>
           </div>
         </div>
       ))}
+    </div>
+  );
+};
+
+// Team Photo Upload Component
+const TeamPhotoUpload = ({ value, onChange, name }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      onChange?.(imageUrl);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const removeImage = () => {
+    if (value && value.startsWith('blob:')) {
+      URL.revokeObjectURL(value);
+    }
+    onChange?.(null);
+  };
+
+  return (
+    <div className="wc-team-photo-wrapper">
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        onChange={handleFileSelect}
+      />
+      {value ? (
+        <div className="wc-team-photo-preview">
+          <img src={value} alt={name || "Team member"} />
+          <div className="wc-team-photo-overlay">
+            <button 
+              className="wc-photo-action-btn"
+              onClick={triggerUpload}
+              title="Replace photo"
+            >
+              <Upload size={14} />
+            </button>
+            <button 
+              className="wc-photo-action-btn wc-photo-remove"
+              onClick={removeImage}
+              title="Remove photo"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="wc-team-photo-upload" onClick={triggerUpload}>
+          <div className="wc-team-photo-icon">
+            <Upload size={24} />
+          </div>
+          <p>Upload Photo</p>
+          <span>Click to browse</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// MD Photo Upload Component
+const MDPhotoUpload = ({ value, onChange, name }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      onChange?.(imageUrl);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const removeImage = () => {
+    if (value && value.startsWith('blob:')) {
+      URL.revokeObjectURL(value);
+    }
+    onChange?.(null);
+  };
+
+  return (
+    <div className="wc-md-photo-wrapper">
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        onChange={handleFileSelect}
+      />
+      {value ? (
+        <div className="wc-md-photo-preview">
+          <img src={value} alt={name || "Managing Director"} />
+          <div className="wc-md-photo-overlay">
+            <button 
+              className="wc-photo-action-btn"
+              onClick={triggerUpload}
+              title="Replace photo"
+            >
+              <Upload size={14} />
+            </button>
+            <button 
+              className="wc-photo-action-btn wc-photo-remove"
+              onClick={removeImage}
+              title="Remove photo"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="wc-md-photo-upload" onClick={triggerUpload}>
+          <div className="wc-md-photo-icon">
+            <User size={32} />
+          </div>
+          <p>Upload Photo</p>
+          <span>Click to browse</span>
+        </div>
+      )}
     </div>
   );
 };
@@ -303,10 +452,68 @@ const TeamEditor = () => {
     section_title: "Our Leadership",
     section_subtitle: "The Team Behind Our Excellence",
     description: "Experienced leaders driving innovation, compassion, and quality across every department.",
-    members: []
+    members: [
+      {
+        name: "Prof. Nasrin Akter",
+        role: "MEDICAL DIRECTOR",
+        credentials: "MBBS, MS (Gynaecology)",
+        social_linkedin: true,
+        image: ""
+      },
+      {
+        name: "Dr. Kamrun Nahar",
+        role: "CHIEF OPERATIONS OFFICER",
+        credentials: "MBIA (Healthcare Management)",
+        social_linkedin: true,
+        image: ""
+      },
+      {
+        name: "Dr. Shirin Sultana",
+        role: "HEAD OF DIAGNOSTICS",
+        credentials: "MBBS, MD (Pathology)",
+        social_linkedin: true,
+        image: ""
+      },
+      {
+        name: "Dr. Shehreen Amin Monami",
+        role: "CHIEF FINANCIAL OFFICER",
+        credentials: "CA, MBA (Finance)",
+        social_linkedin: true,
+        image: ""
+      },
+      {
+        name: "Dr. Farhana Begum",
+        role: "HEAD OF NURSING",
+        credentials: "BSc Nursing, MPH",
+        social_linkedin: true,
+        image: ""
+      }
+    ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
+
+  const updateMember = (index, key, value) => {
+    const updated = [...data.members];
+    updated[index] = { ...updated[index], [key]: value };
+    set("members", updated);
+  };
+
+  const addMember = () => {
+    set("members", [...data.members, { 
+      name: "", 
+      role: "", 
+      credentials: "", 
+      social_linkedin: false,
+      image: "" 
+    }]);
+  };
+
+  const removeMember = (index) => {
+    const updated = [...data.members];
+    updated.splice(index, 1);
+    set("members", updated);
+  };
 
   return (
     <div>
@@ -334,45 +541,73 @@ const TeamEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Users size={15} /> Team Members</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Team Members ({data.members.length})</h3>
+          <span className="wc-editor-card-desc">Click on photo to upload</span>
         </div>
         <div className="wc-editor-card-body">
-          <Repeater label="Team Members" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Stats Bar Editor
-const StatsBarEditor = () => {
-  const [data, setData] = useState({
-    happy_patients: "15,000+",
-    expert_doctors: "120+",
-    departments: "35+",
-    years_experience: "14"
-  });
-
-  const set = (k, v) => setData({ ...data, [k]: v });
-
-  return (
-    <div className="wc-editor-card">
-      <div className="wc-editor-card-header">
-        <h3 className="wc-editor-card-title"><List size={15} /> Stats Bar (4 Items)</h3>
-      </div>
-      <div className="wc-editor-card-body">
-        <div className="wc-stat-inputs">
-          {[
-            { key: "happy_patients", label: "Happy Patients" },
-            { key: "expert_doctors", label: "Expert Doctors" },
-            { key: "departments", label: "Departments" },
-            { key: "years_experience", label: "Years Experience" }
-          ].map(({ key, label }) => (
-            <div key={key} className="wc-stat-input-item">
-              <label>{label}</label>
-              <input value={data[key] || ""} onChange={e => set(key, e.target.value)} />
-            </div>
-          ))}
+          <div className="wc-team-grid">
+            {data.members.map((member, index) => (
+              <div key={index} className="wc-team-member-card">
+                <div className="wc-team-member-header">
+                  <TeamPhotoUpload 
+                    value={member.image}
+                    onChange={(val) => updateMember(index, "image", val)}
+                    name={member.name || "Team Member"}
+                  />
+                  <button 
+                    className="wc-team-remove-btn"
+                    onClick={() => removeMember(index)}
+                    title="Remove member"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+                <div className="wc-field">
+                  <label className="wc-field-label">Name</label>
+                  <input 
+                    className="wc-input" 
+                    value={member.name} 
+                    onChange={e => updateMember(index, "name", e.target.value)} 
+                    placeholder="Full name"
+                  />
+                </div>
+                <div className="wc-field">
+                  <label className="wc-field-label">Role</label>
+                  <input 
+                    className="wc-input" 
+                    value={member.role} 
+                    onChange={e => updateMember(index, "role", e.target.value)} 
+                    placeholder="Job title"
+                  />
+                </div>
+                <div className="wc-field">
+                  <label className="wc-field-label">Credentials</label>
+                  <input 
+                    className="wc-input" 
+                    value={member.credentials} 
+                    onChange={e => updateMember(index, "credentials", e.target.value)} 
+                    placeholder="Degrees / certifications"
+                  />
+                </div>
+                <div className="wc-toggle-row" style={{ paddingTop: 8 }}>
+                  <div className="wc-toggle-info">
+                    <h4 style={{ fontSize: 12 }}>Show LinkedIn</h4>
+                  </div>
+                  <label className="wc-switch">
+                    <input 
+                      type="checkbox" 
+                      checked={member.social_linkedin} 
+                      onChange={e => updateMember(index, "social_linkedin", e.target.checked)} 
+                    />
+                    <span className="wc-switch-slider" />
+                  </label>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="wc-repeater-add" onClick={addMember}>
+            <Plus size={14} /> Add Team Member
+          </button>
         </div>
       </div>
     </div>
@@ -388,8 +623,9 @@ const ManagingDirectorEditor = () => {
     md_name: "Dr. Homayon Kabir",
     md_role: "MANAGING DIRECTOR",
     md_specialty: "MBBS, FCPS (Medicine)",
-    md_badge: "BMDC Verified",
-    quote: "At Renova Life Care, our mission has always been simple: to deliver world-class healthcare with a human touch.",
+    md_badge: "15+ Years Leading | 50K+ Lives Touched | 98% Patient Satisfaction",
+    md_image: "",
+    quote: "At Renova Life Care, our mission has always been simple: to deliver world-class healthcare with a human touch. Every patient who walks through our doors deserves the best medical expertise paired with genuine compassion. We are committed to continuous growth, ethical practice, and making quality care accessible to all.",
     stats: [
       { label: "Years Leading", value: "15+" },
       { label: "Lives Touched", value: "50K+" },
@@ -426,27 +662,36 @@ const ManagingDirectorEditor = () => {
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
           <h3 className="wc-editor-card-title"><User size={15} /> MD Profile</h3>
+          <span className="wc-editor-card-desc">Click on photo to upload</span>
         </div>
         <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <ImageUploadField label="MD Photo" hint="Recommended: 400×400px" />
+          <div className="wc-md-profile">
+            <div className="wc-md-photo-section">
+              <MDPhotoUpload 
+                value={data.md_image}
+                onChange={(val) => set("md_image", val)}
+                name={data.md_name || "Managing Director"}
+              />
             </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Full Name</label>
-              <input className="wc-input" value={data.md_name} onChange={e => set("md_name", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Role / Title</label>
-              <input className="wc-input" value={data.md_role} onChange={e => set("md_role", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Specialty / Credentials</label>
-              <input className="wc-input" value={data.md_specialty} onChange={e => set("md_specialty", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Badge Text</label>
-              <input className="wc-input" value={data.md_badge} onChange={e => set("md_badge", e.target.value)} />
+            <div className="wc-md-info-section">
+              <div className="wc-field-grid">
+                <div className="wc-field">
+                  <label className="wc-field-label">Full Name</label>
+                  <input className="wc-input" value={data.md_name} onChange={e => set("md_name", e.target.value)} />
+                </div>
+                <div className="wc-field">
+                  <label className="wc-field-label">Role / Title</label>
+                  <input className="wc-input" value={data.md_role} onChange={e => set("md_role", e.target.value)} />
+                </div>
+                <div className="wc-field span-2">
+                  <label className="wc-field-label">Specialty / Credentials</label>
+                  <input className="wc-input" value={data.md_specialty} onChange={e => set("md_specialty", e.target.value)} />
+                </div>
+                <div className="wc-field span-2">
+                  <label className="wc-field-label">Badge Text</label>
+                  <input className="wc-input" value={data.md_badge} onChange={e => set("md_badge", e.target.value)} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -454,100 +699,50 @@ const ManagingDirectorEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><MessageCircle size={15} /> MD Quote / Message</h3>
+          <h3 className="wc-editor-card-title"><Quote size={15} /> MD Quote / Message</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field">
             <label className="wc-field-label">Quote Text</label>
-            <textarea className="wc-textarea lg" value={data.quote} onChange={e => set("quote", e.target.value)} rows={5} />
+            <textarea className="wc-textarea xl" value={data.quote} onChange={e => set("quote", e.target.value)} rows={6} />
           </div>
         </div>
       </div>
-    </div>
-  );
-};
 
-// Company History Editor
-const CompanyHistoryEditor = () => {
-  const [data, setData] = useState({
-    heading: "Our Journey",
-    subheading: "A decade of compassionate care and innovation",
-    milestones: [
-      { year: "2010", title: "Founded", description: "Renova Life Care was established in Dhaka." },
-      { year: "2015", title: "Expanded", description: "Opened 5 new branches across Bangladesh." }
-    ]
-  });
-
-  const set = (k, v) => setData({ ...data, [k]: v });
-
-  return (
-    <div>
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Clock size={15} /> Company History</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> MD Stats</h3>
         </div>
         <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Heading</label>
-              <input className="wc-input" value={data.heading} onChange={e => set("heading", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Subheading</label>
-              <input className="wc-input" value={data.subheading} onChange={e => set("subheading", e.target.value)} />
-            </div>
+          <div className="wc-stat-inputs">
+            {data.stats.map((stat, i) => (
+              <div key={i} className="wc-stat-input-item">
+                <label>{stat.label}</label>
+                <input value={stat.value} onChange={e => {
+                  const s = [...data.stats];
+                  s[i] = { ...s[i], value: e.target.value };
+                  set("stats", s);
+                }} />
+              </div>
+            ))}
           </div>
-          <Repeater label="Milestones" />
         </div>
       </div>
     </div>
   );
 };
 
-// Certifications Editor
-const CertificationsEditor = () => {
-  const [data, setData] = useState({
-    heading: "Accreditations & Certifications",
-    subheading: "Recognized by leading healthcare organizations"
-  });
-
-  const set = (k, v) => setData({ ...data, [k]: v });
-
-  return (
-    <div>
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Award size={15} /> Certifications</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Heading</label>
-              <input className="wc-input" value={data.heading} onChange={e => set("heading", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Subheading</label>
-              <input className="wc-input" value={data.subheading} onChange={e => set("subheading", e.target.value)} />
-            </div>
-          </div>
-          <Repeater label="Certifications" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// SEO Editor (reused from Home page)
+// SEO Editor
 const SeoEditor = () => {
   const [data, setData] = useState({
     meta_title: "About Renova Life Care — Compassionate Healthcare in Bangladesh",
-    meta_description: "Learn about Renova Life Care's mission, vision, and leadership team.",
+    meta_description: "Learn about Renova Life Care's mission, vision, and leadership team. Delivering compassionate, world-class medicine to the people of Bangladesh since 2010.",
     og_title: "About Renova Life Care Ltd.",
     og_description: "Compassionate Care, Expert Medicine — Serving Bangladesh since 2010.",
     og_image: "/images/og-about.jpg",
     canonical_url: "https://renovalifecare.com/about",
     robots: "index, follow",
-    keywords: "about Renova, healthcare Bangladesh"
+    keywords: "about Renova, healthcare Bangladesh, compassionate care"
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
@@ -569,14 +764,21 @@ const SeoEditor = () => {
             <div className="wc-field span-2">
               <label className="wc-field-label">Meta Title <span className="required">*</span></label>
               <input className="wc-input" value={data.meta_title} onChange={e => set("meta_title", e.target.value)} />
+              <span className="wc-field-hint">Recommended: 50-60 characters</span>
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Meta Description</label>
               <textarea className="wc-textarea" value={data.meta_description} onChange={e => set("meta_description", e.target.value)} rows={3} />
+              <span className="wc-field-hint">Recommended: 150-160 characters</span>
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
               <input className="wc-input" value={data.keywords} onChange={e => set("keywords", e.target.value)} />
+              <span className="wc-field-hint">Comma separated keywords</span>
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Canonical URL</label>
+              <input className="wc-input" value={data.canonical_url} onChange={e => set("canonical_url", e.target.value)} />
             </div>
           </div>
         </div>
@@ -585,52 +787,82 @@ const SeoEditor = () => {
   );
 };
 
-// Helper components (ImageUploadField, Repeater, ToggleSwitch)
-// These are the same as in HomePage.jsx
+// Helper Components
+const ImageUploadField = ({ label, hint, value, onChange, isAvatar = false, multiple = false }) => {
+  const fileInputRef = useRef(null);
 
-const ImageUploadField = ({ label, hint, value, onChange, multiple = false }) => {
+  const handleFileSelect = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+
+    if (multiple) {
+      const imageUrls = files.map(file => URL.createObjectURL(file));
+      onChange?.(imageUrls);
+    } else {
+      const file = files[0];
+      const imageUrl = URL.createObjectURL(file);
+      onChange?.(imageUrl);
+    }
+    
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const removeImage = () => {
+    if (value && value.startsWith('blob:')) {
+      URL.revokeObjectURL(value);
+    }
+    onChange?.(null);
+  };
+
   return (
     <div className="wc-field">
-      <label className="wc-field-label">{label}</label>
-      <div className="wc-image-upload">
-        <div className="wc-image-upload-icon"><Upload size={20} /></div>
-        <p>Click to browse from desktop</p>
-        <span>PNG, JPG, WEBP up to 5MB {multiple ? "(multiple allowed)" : ""}</span>
-      </div>
-      {hint && <span className="wc-field-hint">{hint}</span>}
-    </div>
-  );
-};
-
-const Repeater = ({ label, hint, items = [], onChange }) => {
-  return (
-    <div className="wc-field">
-      <label className="wc-field-label">{label}</label>
-      <div className="wc-repeater">
-        {items.map((item, i) => (
-          <div key={i} className="wc-repeater-item">
-            <input value={item} placeholder={`Item ${i + 1}`} />
-            <button className="wc-repeater-remove"><X size={13} /> Remove</button>
+      {label && <label className="wc-field-label">{label}</label>}
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        multiple={multiple}
+        onChange={handleFileSelect}
+      />
+      {value ? (
+        <div className={`wc-image-preview ${isAvatar ? 'wc-avatar-preview' : ''}`}>
+          <img src={value} alt={label || "Uploaded image"} />
+          <div className="wc-image-preview-actions">
+            <button
+              className="wc-img-action-btn"
+              onClick={triggerUpload}
+              title="Replace image"
+            >
+              <Upload size={13} />
+            </button>
+            <button
+              className="wc-img-action-btn"
+              onClick={removeImage}
+              title="Remove image"
+            >
+              <X size={13} />
+            </button>
           </div>
-        ))}
-        <button className="wc-repeater-add"><Plus size={14} /> Add Item</button>
-      </div>
+        </div>
+      ) : (
+        <div className={`wc-image-upload ${isAvatar ? 'wc-avatar-upload' : ''}`} onClick={triggerUpload}>
+          <div className="wc-image-upload-icon">
+            <Upload size={20} />
+          </div>
+          <p>Click to browse from desktop</p>
+          <span>PNG, JPG, WEBP up to 5MB {multiple ? "(multiple allowed)" : ""}</span>
+        </div>
+      )}
       {hint && <span className="wc-field-hint">{hint}</span>}
-    </div>
-  );
-};
-
-const ToggleSwitch = ({ label, desc, checked, onChange }) => {
-  return (
-    <div className="wc-toggle-row">
-      <div className="wc-toggle-info">
-        <h4>{label}</h4>
-        {desc && <p>{desc}</p>}
-      </div>
-      <label className="wc-switch">
-        <input type="checkbox" checked={checked} onChange={e => onChange?.(e.target.checked)} />
-        <span className="wc-switch-slider" />
-      </label>
     </div>
   );
 };

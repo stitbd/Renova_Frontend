@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Settings,
   Layout,
@@ -30,7 +30,9 @@ import {
   Shield,
   Bell,
   Moon,
-  Sun
+  Sun,
+  List,
+  FileText
 } from "lucide-react";
 import "./general-settings.css";
 
@@ -167,16 +169,23 @@ const GeneralSettingsEditor = () => {
     contact_email: "info@renovalifecare.com",
     contact_phone: "+880 1234-567890",
     address: "123, Dhanmondi, Dhaka, Bangladesh",
-    timezone: "Asia/Dhaka",
-    date_format: "MMM DD, YYYY",
-    time_format: "24 Hour",
-    maintenance_mode: false,
-    enable_registration: true,
-    enable_appointments: true,
-    enable_online_payments: true
+    stats: [
+      { label: "Happy Patients", value: "15,000+" },
+      { label: "Expert Doctors", value: "120+" },
+      { label: "Departments", value: "25+" },
+      { label: "Years Experience", value: "15+" }
+    ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
+
+  const handleLogoUpload = (imageUrl) => {
+    set("site_logo", imageUrl);
+  };
+
+  const handleFaviconUpload = (imageUrl) => {
+    set("favicon", imageUrl);
+  };
 
   return (
     <div>
@@ -196,11 +205,21 @@ const GeneralSettingsEditor = () => {
             </div>
             <div className="wc-field">
               <label className="wc-field-label">Site Logo</label>
-              <ImageUploadField label="" hint="Recommended: 200×60px" />
+              <ImageUploadField 
+                value={data.site_logo}
+                onChange={handleLogoUpload}
+                hint="Recommended: 200×60px"
+                type="logo"
+              />
             </div>
             <div className="wc-field">
               <label className="wc-field-label">Favicon</label>
-              <ImageUploadField label="" hint="Recommended: 32×32px" />
+              <ImageUploadField 
+                value={data.favicon}
+                onChange={handleFaviconUpload}
+                hint="Recommended: 32×32px"
+                type="favicon"
+              />
             </div>
           </div>
         </div>
@@ -212,6 +231,14 @@ const GeneralSettingsEditor = () => {
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-field-grid">
+            <div className="wc-field">
+              <label className="wc-field-label">Hotmail <span className="required">*</span></label>
+              <input className="wc-input" type="email" value={data.contact_email} onChange={e => set("contact_email", e.target.value)} />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Hotline <span className="required">*</span></label>
+              <input className="wc-input" value={data.contact_phone} onChange={e => set("contact_phone", e.target.value)} />
+            </div>
             <div className="wc-field">
               <label className="wc-field-label">Contact Email <span className="required">*</span></label>
               <input className="wc-input" type="email" value={data.contact_email} onChange={e => set("contact_email", e.target.value)} />
@@ -230,47 +257,25 @@ const GeneralSettingsEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Clock size={15} /> Regional Settings</h3>
+          <h3 className="wc-editor-card-title"><List size={15} /> Stats Counter Strip</h3>
         </div>
         <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field">
-              <label className="wc-field-label">Timezone</label>
-              <select className="wc-select" value={data.timezone} onChange={e => set("timezone", e.target.value)}>
-                <option value="Asia/Dhaka">Asia/Dhaka (UTC+6)</option>
-                <option value="Asia/Kolkata">Asia/Kolkata (UTC+5:30)</option>
-                <option value="UTC">UTC</option>
-              </select>
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Date Format</label>
-              <select className="wc-select" value={data.date_format} onChange={e => set("date_format", e.target.value)}>
-                <option value="MMM DD, YYYY">MMM DD, YYYY</option>
-                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-              </select>
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Time Format</label>
-              <select className="wc-select" value={data.time_format} onChange={e => set("time_format", e.target.value)}>
-                <option value="24 Hour">24 Hour</option>
-                <option value="12 Hour">12 Hour</option>
-              </select>
-            </div>
+          <div className="wc-stat-inputs">
+            {data.stats.map((stat, i) => (
+              <div key={i} className="wc-stat-input-item">
+                <label>{stat.label}</label>
+                <input
+                  value={stat.value}
+                  onChange={e => {
+                    const s = [...data.stats];
+                    s[i] = { ...s[i], value: e.target.value };
+                    set("stats", s);
+                  }}
+                  placeholder="Enter value"
+                />
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Shield size={15} /> Site Features</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <ToggleSwitch label="Maintenance Mode" desc="Show maintenance page to visitors" checked={data.maintenance_mode} />
-          <ToggleSwitch label="Enable User Registration" desc="Allow new user registrations" checked={data.enable_registration} />
-          <ToggleSwitch label="Enable Appointments" desc="Allow patients to book appointments online" checked={data.enable_appointments} />
-          <ToggleSwitch label="Enable Online Payments" desc="Accept online payments for services" checked={data.enable_online_payments} />
         </div>
       </div>
     </div>
@@ -319,16 +324,6 @@ const SocialMediaEditor = () => {
             ))}
             <button className="wc-repeater-add"><Plus size={14} /> Add Social Platform</button>
           </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Settings size={15} /> Social Features</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <ToggleSwitch label="Enable Social Sharing" desc="Allow users to share content on social media" checked={data.social_share_enabled} />
-          <ToggleSwitch label="Enable Social Login" desc="Allow users to login using social accounts" checked={data.social_login_enabled} />
         </div>
       </div>
     </div>
@@ -416,6 +411,7 @@ const PaymentGatewayEditor = () => {
 };
 
 // SMS Gateway Editor
+// SMS Gateway Editor - Fixed
 const SMSGatewayEditor = () => {
   const [data, setData] = useState({
     provider: "Twilio",
@@ -476,7 +472,7 @@ const SMSGatewayEditor = () => {
           <div className="wc-field">
             <label className="wc-field-label">SMS Message Template</label>
             <textarea className="wc-textarea" value={data.message_template} onChange={e => set("message_template", e.target.value)} rows={4} />
-            <span className="wc-field-hint">Available variables: {name}, {date}, {time}, {phone}, {email}</span>
+            <span className="wc-field-hint">Available variables: &#123;name&#125;, &#123;date&#125;, &#123;time&#125;, &#123;phone&#125;, &#123;email&#125;</span>
           </div>
           <div style={{ marginTop: 16 }}>
             <ToggleSwitch label="Enable SMS Gateway" checked={data.enabled} />
@@ -488,10 +484,14 @@ const SMSGatewayEditor = () => {
     </div>
   );
 };
-
 // Analytics Editor
 const AnalyticsEditor = () => {
   const [data, setData] = useState({
+    google_search_console: {
+      enabled: false,
+      verification_code: "",
+      property_url: "https://renovalifecare.com"
+    },
     google_analytics: {
       enabled: true,
       measurement_id: "G-XXXXXXXXXX",
@@ -504,16 +504,44 @@ const AnalyticsEditor = () => {
     facebook_pixel: {
       enabled: false,
       pixel_id: "XXXXXXXXXXXXXXX"
-    },
-    enable_consent_banner: true,
-    track_events: true,
-    anonymize_ip: true
+    }
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
 
   return (
     <div>
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><FileText size={15} /> Google Search Console</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Property URL</label>
+              <input 
+                className="wc-input" 
+                value={data.google_search_console.property_url} 
+                onChange={e => set("google_search_console", { ...data.google_search_console, property_url: e.target.value })} 
+                placeholder="https://yourwebsite.com" 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Verification Code</label>
+              <textarea 
+                className="wc-textarea" 
+                value={data.google_search_console.verification_code} 
+                onChange={e => set("google_search_console", { ...data.google_search_console, verification_code: e.target.value })} 
+                rows={3}
+                placeholder="Paste the HTML meta tag verification code here..."
+              />
+              <span className="wc-field-hint">Copy the meta tag content from Google Search Console and paste it here</span>
+            </div>
+          </div>
+          <ToggleSwitch label="Enable Google Search Console" checked={data.google_search_console.enabled} />
+        </div>
+      </div>
+
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
           <h3 className="wc-editor-card-title"><BarChart size={15} /> Google Analytics</h3>
@@ -558,35 +586,87 @@ const AnalyticsEditor = () => {
           <ToggleSwitch label="Enable Facebook Pixel" checked={data.facebook_pixel.enabled} />
         </div>
       </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Shield size={15} /> Privacy & Tracking Settings</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <ToggleSwitch label="Enable Consent Banner" desc="Show cookie consent banner to visitors" checked={data.enable_consent_banner} />
-          <ToggleSwitch label="Track Events" desc="Track user interactions and events" checked={data.track_events} />
-          <ToggleSwitch label="Anonymize IP" desc="Anonymize IP addresses for privacy" checked={data.anonymize_ip} />
-        </div>
-      </div>
     </div>
   );
 };
 
-// Helper Components
-const ImageUploadField = ({ label, hint }) => {
+// ImageUploadField Component
+const ImageUploadField = ({ value, onChange, hint, type = 'default' }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      onChange?.(imageUrl);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const removeImage = () => {
+    if (value && value.startsWith('blob:')) {
+      URL.revokeObjectURL(value);
+    }
+    onChange?.(null);
+  };
+
+  const getPreviewClass = () => {
+    if (type === 'logo') return 'wc-image-preview logo-preview';
+    if (type === 'favicon') return 'wc-image-preview favicon-preview';
+    return 'wc-image-preview';
+  };
+
   return (
     <div className="wc-field">
-      <label className="wc-field-label">{label}</label>
-      <div className="wc-image-upload">
-        <div className="wc-image-upload-icon"><Upload size={20} /></div>
-        <p>Click to browse</p>
-        <span>{hint}</span>
-      </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        onChange={handleFileSelect}
+      />
+      {value ? (
+        <div className={getPreviewClass()}>
+          <img src={value} alt={type === 'logo' ? 'Site Logo' : type === 'favicon' ? 'Favicon' : 'Uploaded image'} />
+          <div className="wc-image-preview-actions">
+            <button
+              className="wc-img-action-btn"
+              onClick={triggerUpload}
+              title="Replace image"
+            >
+              <Upload size={13} />
+            </button>
+            <button
+              className="wc-img-action-btn"
+              onClick={removeImage}
+              title="Remove image"
+            >
+              <X size={13} />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="wc-image-upload" onClick={triggerUpload}>
+          <div className="wc-image-upload-icon">
+            <Upload size={20} />
+          </div>
+          <p>Click to browse</p>
+          <span>{hint || 'Upload image'}</span>
+        </div>
+      )}
     </div>
   );
 };
 
+// ToggleSwitch Component
 const ToggleSwitch = ({ label, desc, checked }) => {
   return (
     <div className="wc-toggle-row">

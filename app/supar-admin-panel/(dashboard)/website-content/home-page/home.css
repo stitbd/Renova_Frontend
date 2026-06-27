@@ -453,7 +453,6 @@
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -482,12 +481,10 @@
 }
 
 @keyframes wc-pulse {
-
   0%,
   100% {
     opacity: 1;
   }
-
   50% {
     opacity: 0.4;
   }
@@ -854,7 +851,7 @@
   padding-right: var(--space-8, 32px);
 }
 
-/* Image upload */
+/* Image upload - Base styles */
 .wc-image-upload {
   border: 2px dashed var(--color-border-default, #e2e8f0);
   border-radius: var(--radius-sm, 10px);
@@ -905,6 +902,7 @@
   border-radius: var(--radius-sm, 10px);
   overflow: hidden;
   border: var(--border-default, 1px solid #e2e8f0);
+  background: #f8fafc;
 }
 
 .wc-image-preview img {
@@ -947,7 +945,7 @@
   fill: none;
 }
 
-/* Background Images Grid */
+/* Background Images Grid with proper aspect ratio */
 .wc-background-images-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -955,26 +953,141 @@
   margin-bottom: var(--space-4, 16px);
 }
 
-.wc-background-image-item,
+.wc-background-image-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+}
+
+.wc-background-image-item .wc-image-preview {
+  position: relative;
+  width: 100%;
+  padding-bottom: 66.67%; /* 3:2 aspect ratio */
+  border-radius: var(--radius-sm, 10px);
+  overflow: hidden;
+  border: var(--border-default, 1px solid #e2e8f0);
+  background: #f8fafc;
+}
+
+.wc-background-image-item .wc-image-preview img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.wc-background-image-item .wc-image-preview-actions {
+  position: absolute;
+  top: var(--space-2, 8px);
+  right: var(--space-2, 8px);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+/* Patient Images Grid with square aspect ratio */
+.wc-patient-images-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-3, 12px);
+  margin-bottom: var(--space-4, 16px);
+}
+
 .wc-patient-image-item {
   display: flex;
   flex-direction: column;
   gap: var(--space-2, 8px);
 }
 
-.wc-background-image-item .wc-image-preview,
 .wc-patient-image-item .wc-image-preview {
-  margin-bottom: 0;
-}
-
-.wc-background-image-item .wc-image-preview img {
-  height: 120px;
-  object-fit: cover;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* 1:1 square aspect ratio */
+  border-radius: var(--radius-sm, 10px);
+  overflow: hidden;
+  border: var(--border-default, 1px solid #e2e8f0);
+  background: #f8fafc;
 }
 
 .wc-patient-image-item .wc-image-preview img {
-  height: 120px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.wc-patient-image-item .wc-image-preview-actions {
+  position: absolute;
+  top: var(--space-2, 8px);
+  right: var(--space-2, 8px);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+/* Patient image upload area - square */
+.wc-patient-image-item .wc-image-upload {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* 1:1 square aspect ratio */
+  border: 2px dashed var(--color-border-default, #e2e8f0);
+  border-radius: var(--radius-sm, 10px);
+  cursor: pointer;
+  transition: var(--transition-default, 0.2s);
+  background: #fafbfc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wc-patient-image-item .wc-image-upload > * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.wc-patient-image-item .wc-image-upload:hover {
+  border-color: var(--color-primary, #014fa1);
+  background: #eff6ff;
+}
+
+.wc-patient-image-item .wc-image-upload-icon {
+  width: 32px;
+  height: 32px;
+  background: #e0e7ff;
+  border-radius: var(--radius-sm, 10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-2, 8px);
+  color: #6366f1;
+}
+
+.wc-patient-image-item .wc-image-upload-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
+
+.wc-patient-image-item .wc-image-upload p {
+  font-size: 10px;
+  color: var(--color-text-muted, #64748b);
+  margin: 0 0 var(--space-1, 4px);
+}
+
+.wc-patient-image-item .wc-image-upload span {
+  font-size: 9px;
+  color: var(--color-text-muted, #94a3b8);
 }
 
 .wc-image-alt-input {
@@ -1039,45 +1152,6 @@
   border-color: var(--color-primary, #014fa1);
   color: var(--color-primary, #014fa1);
   background: #eff6ff;
-}
-
-/* Patient Images Grid */
-.wc-patient-images-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-3, 12px);
-  margin-bottom: var(--space-4, 16px);
-}
-
-.wc-patient-image-item .wc-image-preview {
-  aspect-ratio: 1 / 1;
-}
-
-.wc-patient-image-item .wc-image-preview img {
-  height: 100%;
-  object-fit: cover;
-}
-
-.wc-patient-image-item .wc-image-upload {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-3, 12px);
-}
-
-.wc-patient-image-item .wc-image-upload-icon {
-  width: 32px;
-  height: 32px;
-}
-
-.wc-patient-image-item .wc-image-upload p {
-  font-size: 10px;
-}
-
-.wc-patient-image-item .wc-image-upload span {
-  font-size: 9px;
 }
 
 /* Stats/numbers row */

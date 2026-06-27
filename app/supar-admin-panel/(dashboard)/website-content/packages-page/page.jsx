@@ -22,12 +22,13 @@ import {
   MessageCircle,
   Award,
   ExternalLink,
-  Upload
+  Upload,
+  GripVertical
 } from "lucide-react";
 import "./packages.css";
 
 const PackagesPage = () => {
-  const [selectedSection, setSelectedSection] = useState("hero");
+  const [selectedSection, setSelectedSection] = useState("packages-listing");
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
 
@@ -58,7 +59,7 @@ const PackagesPage = () => {
       case "seo":
         return <SeoEditor />;
       default:
-        return <HeroEditor />;
+        return <PackagesListingEditor />;
     }
   };
 
@@ -186,16 +187,226 @@ const HeroEditor = () => {
   );
 };
 
-// Packages Listing Editor
+// Packages Listing Editor with all 8 packages from image
 const PackagesListingEditor = () => {
   const [data, setData] = useState({
     custom_note: "Custom packages available for corporate health programs.",
     contact_link_text: "Contact us →",
     contact_link_url: "/contact",
-    packages: []
+    packages: [
+      {
+        id: 1,
+        name: "Package-1",
+        badge: "Essential health screening",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Random Blood Sugar", price: "BDT 200.00" },
+          { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+          { test: "Blood Grouping & RH Factor", price: "BDT 300.00" },
+          { test: "Serum Creatinine", price: "BDT 1,000.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 110.00" }
+        ],
+        total_cost: "BDT 7,710.00",
+        discounted_price: "BDT 5,900.00"
+      },
+      {
+        id: 2,
+        name: "Package-2",
+        badge: "Comprehensive wellness check",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 1,400.00" },
+          { test: "HbA1c", price: "BDT 1,400.00" },
+          { test: "Lipid Profile (Fasting)", price: "BDT 1,000.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Serum Uric Acid", price: "BDT 400.00" },
+          { test: "Serum Electrolytes", price: "BDT 400.00" },
+          { test: "TSH", price: "BDT 400.00" },
+          { test: "PSA", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 130.00" }
+        ],
+        total_cost: "BDT 14,030.00",
+        discounted_price: "BDT 10,650.00"
+      },
+      {
+        id: 3,
+        name: "Package-3",
+        badge: "Advanced full-body package",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 1,400.00" },
+          { test: "HbA1c", price: "BDT 1,400.00" },
+          { test: "Lipid Profile (Fasting)", price: "BDT 1,000.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Serum Uric Acid", price: "BDT 400.00" },
+          { test: "Serum Electrolytes", price: "BDT 400.00" },
+          { test: "TSH", price: "BDT 400.00" },
+          { test: "PSA", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 130.00" }
+        ],
+        total_cost: "BDT 16,930.00",
+        discounted_price: "BDT 12,850.00"
+      },
+      {
+        id: 4,
+        name: "Package-4",
+        badge: "Essential health screening",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Random Blood Sugar", price: "BDT 200.00" },
+          { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 110.00" }
+        ],
+        total_cost: "BDT 7,710.00",
+        discounted_price: "BDT 5,900.00"
+      },
+      {
+        id: 5,
+        name: "Package-5",
+        badge: "Comprehensive wellness check",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 1,400.00" },
+          { test: "HbA1c", price: "BDT 1,400.00" },
+          { test: "Lipid Profile (Fasting)", price: "BDT 1,000.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Serum Uric Acid", price: "BDT 400.00" },
+          { test: "Serum Electrolytes", price: "BDT 400.00" },
+          { test: "TSH", price: "BDT 400.00" },
+          { test: "PSA", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 130.00" }
+        ],
+        total_cost: "BDT 40,000.00",
+        discounted_price: "BDT 20,000.00"
+      },
+      {
+        id: 6,
+        name: "Package-6",
+        badge: "Advanced full-body package",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Blood Sugar (Fasting & 2 hrs ABF)", price: "BDT 1,400.00" },
+          { test: "HbA1c", price: "BDT 1,400.00" },
+          { test: "Lipid Profile (Fasting)", price: "BDT 1,000.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Serum Uric Acid", price: "BDT 400.00" },
+          { test: "Serum Electrolytes", price: "BDT 400.00" },
+          { test: "TSH", price: "BDT 400.00" },
+          { test: "PSA", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 130.00" }
+        ],
+        total_cost: "BDT 40,000.00",
+        discounted_price: "BDT 20,000.00"
+      },
+      {
+        id: 7,
+        name: "Package-7",
+        badge: "Essential health screening",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Random Blood Sugar", price: "BDT 200.00" },
+          { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Serum Uric Acid", price: "BDT 400.00" },
+          { test: "Serum Electrolytes", price: "BDT 400.00" },
+          { test: "TSH", price: "BDT 400.00" },
+          { test: "PSA", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 130.00" }
+        ],
+        total_cost: "BDT 10,000.00",
+        discounted_price: "BDT 5,900.00"
+      },
+      {
+        id: 8,
+        name: "Package-8",
+        badge: "Comprehensive wellness check",
+        items: [
+          { test: "Complete Blood Count (CBC)", price: "BDT 400.00" },
+          { test: "Random Blood Sugar", price: "BDT 200.00" },
+          { test: "Lipid Profile (Random)", price: "BDT 1,400.00" },
+          { test: "Serum Creatinine", price: "BDT 400.00" },
+          { test: "Serum Uric Acid", price: "BDT 400.00" },
+          { test: "Serum Electrolytes", price: "BDT 400.00" },
+          { test: "TSH", price: "BDT 400.00" },
+          { test: "PSA", price: "BDT 400.00" },
+          { test: "Urine R/E", price: "BDT 400.00" },
+          { test: "ECG", price: "BDT 400.00" },
+          { test: "Digital X-Ray of Chest P/A View (Digital)", price: "BDT 2,500.00" },
+          { test: "Ultrasonography of Whole Abdomen", price: "BDT 130.00" }
+        ],
+        total_cost: "BDT 14,030.00",
+        discounted_price: "BDT 10,650.00"
+      }
+    ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
+
+  const updatePackage = (index, field, value) => {
+    const updated = [...data.packages];
+    updated[index] = { ...updated[index], [field]: value };
+    setData({ ...data, packages: updated });
+  };
+
+  const updateItem = (pkgIndex, itemIndex, field, value) => {
+    const updated = [...data.packages];
+    const items = [...updated[pkgIndex].items];
+    items[itemIndex] = { ...items[itemIndex], [field]: value };
+    updated[pkgIndex].items = items;
+    setData({ ...data, packages: updated });
+  };
+
+  const addItem = (pkgIndex) => {
+    const updated = [...data.packages];
+    updated[pkgIndex].items.push({ test: "New Test", price: "BDT 0.00" });
+    setData({ ...data, packages: updated });
+  };
+
+  const removeItem = (pkgIndex, itemIndex) => {
+    const updated = [...data.packages];
+    updated[pkgIndex].items = updated[pkgIndex].items.filter((_, i) => i !== itemIndex);
+    setData({ ...data, packages: updated });
+  };
+
+  const addPackage = () => {
+    const newPkg = {
+      id: Date.now(),
+      name: `Package-${data.packages.length + 1}`,
+      badge: "New package",
+      items: [{ test: "New Test", price: "BDT 0.00" }],
+      total_cost: "BDT 0.00",
+      discounted_price: "BDT 0.00"
+    };
+    setData({ ...data, packages: [...data.packages, newPkg] });
+  };
+
+  const removePackage = (index) => {
+    const updated = [...data.packages];
+    updated.splice(index, 1);
+    setData({ ...data, packages: updated });
+  };
 
   return (
     <div>
@@ -223,34 +434,80 @@ const PackagesListingEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Package size={15} /> Health Packages</h3>
+          <h3 className="wc-editor-card-title"><Package size={15} /> Health Packages ({data.packages.length})</h3>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-packages-grid">
-            <div className="wc-package-card">
-              <div className="wc-package-header">
-                <input className="wc-input" placeholder="Package Name" style={{ fontWeight: 700 }} />
-                <input className="wc-input" placeholder="Badge (e.g. SAVE 13%)" style={{ width: '40%' }} />
-              </div>
-              <input className="wc-input" placeholder="Package type description" />
-              
-              <div className="wc-package-items">
-                <div className="wc-package-item">
-                  <input className="wc-input" placeholder="Test name" style={{ flex: 2 }} />
-                  <input className="wc-input" placeholder="BDT 400.00" style={{ flex: 1 }} />
-                  <button className="wc-btn wc-btn-danger"><X size={14} /></button>
+            {data.packages.map((pkg, pkgIndex) => (
+              <div key={pkg.id} className="wc-package-card">
+                <div className="wc-package-header">
+                  <input 
+                    className="wc-input" 
+                    value={pkg.name} 
+                    onChange={e => updatePackage(pkgIndex, "name", e.target.value)}
+                    style={{ fontWeight: 700 }}
+                    placeholder="Package Name"
+                  />
+                  <input 
+                    className="wc-input" 
+                    value={pkg.badge} 
+                    onChange={e => updatePackage(pkgIndex, "badge", e.target.value)}
+                    style={{ width: '40%' }}
+                    placeholder="Badge (e.g. SAVE 13%)"
+                  />
                 </div>
-                <button className="wc-btn wc-btn-ghost"><Plus size={14} /> Add Test Item</button>
-              </div>
+                
+                <div className="wc-package-items">
+                  {pkg.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="wc-package-item">
+                      <input 
+                        className="wc-input" 
+                        value={item.test} 
+                        onChange={e => updateItem(pkgIndex, itemIndex, "test", e.target.value)}
+                        style={{ flex: 2 }}
+                        placeholder="Test name"
+                      />
+                      <input 
+                        className="wc-input" 
+                        value={item.price} 
+                        onChange={e => updateItem(pkgIndex, itemIndex, "price", e.target.value)}
+                        style={{ flex: 1 }}
+                        placeholder="BDT 0.00"
+                      />
+                      <button className="wc-btn wc-btn-danger" onClick={() => removeItem(pkgIndex, itemIndex)}>
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ))}
+                  <button className="wc-btn wc-btn-ghost" onClick={() => addItem(pkgIndex)}>
+                    <Plus size={14} /> Add Test Item
+                  </button>
+                </div>
 
-              <div className="wc-package-pricing">
-                <input className="wc-input" placeholder="Total Cost (strikethrough)" />
-                <input className="wc-input" placeholder="Discounted Price" style={{ borderColor: '#014fa1', fontWeight: 700 }} />
+                <div className="wc-package-pricing">
+                  <input 
+                    className="wc-input" 
+                    value={pkg.total_cost} 
+                    onChange={e => updatePackage(pkgIndex, "total_cost", e.target.value)}
+                    placeholder="Total Cost (strikethrough)"
+                  />
+                  <input 
+                    className="wc-input" 
+                    value={pkg.discounted_price} 
+                    onChange={e => updatePackage(pkgIndex, "discounted_price", e.target.value)}
+                    style={{ borderColor: '#014fa1', fontWeight: 700 }}
+                    placeholder="Discounted Price"
+                  />
+                </div>
+                <button className="wc-btn wc-btn-danger" onClick={() => removePackage(pkgIndex)}>
+                  <Trash size={14} /> Remove Package
+                </button>
               </div>
-              <button className="wc-btn wc-btn-danger"><Trash size={14} /> Remove Package</button>
-            </div>
+            ))}
           </div>
-          <button className="wc-repeater-add"><Plus size={14} /> Add Package</button>
+          <button className="wc-repeater-add" onClick={addPackage}>
+            <Plus size={14} /> Add Package
+          </button>
         </div>
       </div>
     </div>

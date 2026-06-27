@@ -1,3 +1,5 @@
+/* general-settings.css */
+
 /* ═══════════════════════════════════════════════════════════════
    GENERAL SETTINGS PAGE CMS — Professional Admin CSS
    Fully integrated with Global Design Tokens
@@ -905,6 +907,11 @@
   cursor: pointer;
   transition: var(--transition-default, 0.2s);
   background: #fafbfc;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .wc-image-upload:hover {
@@ -942,18 +949,44 @@
   color: var(--color-text-muted, #94a3b8);
 }
 
+/* Image preview with proper aspect ratio */
 .wc-image-preview {
   position: relative;
   border-radius: var(--radius-sm, 10px);
   overflow: hidden;
   border: var(--border-default, 1px solid #e2e8f0);
+  background: #fafbfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wc-image-preview img {
   width: 100%;
-  height: 160px;
-  object-fit: cover;
+  height: auto;
+  max-height: 160px;
+  object-fit: contain;
   display: block;
+}
+
+/* For logo - specific sizing */
+.wc-image-preview.logo-preview img {
+  max-height: 80px;
+  padding: 8px;
+}
+
+/* For favicon - specific sizing */
+.wc-image-preview.favicon-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+}
+
+.wc-image-preview.favicon-preview img {
+  width: 40px;
+  height: 40px;
+  max-height: 40px;
+  object-fit: contain;
 }
 
 .wc-image-preview-actions {
@@ -1826,6 +1859,17 @@
 
   .wc-stat-inputs {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .wc-image-preview.favicon-preview {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .wc-image-preview.favicon-preview img {
+    width: 30px;
+    height: 30px;
+    max-height: 30px;
   }
 }
 

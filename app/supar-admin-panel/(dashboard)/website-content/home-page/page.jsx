@@ -1,7 +1,7 @@
 // app/supar-admin-panel/website-content/home-page/page.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Home,
   Layout,
@@ -146,7 +146,7 @@ const HomePage = () => {
   );
 };
 
-// Hero Editor Component
+// Hero Editor Component with Image Upload
 const HeroEditor = () => {
   const [data, setData] = useState({
     badge_text: "BANGLADESH'S MOST TRUSTED HEALTHCARE",
@@ -166,18 +166,101 @@ const HeroEditor = () => {
     ]
   });
 
+  const fileInputRef = useRef(null);
+  const patientFileInputRef = useRef(null);
+  const currentImageId = useRef(null);
+
   const set = (k, v) => setData({ ...data, [k]: v });
 
+  // Handle file selection for background images
+  const handleBackgroundFileSelect = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+
+    const newImages = files.map((file, index) => ({
+      id: Date.now() + index,
+      url: URL.createObjectURL(file),
+      alt: file.name || "Hero Background",
+      file: file,
+      fileName: file.name,
+      fileSize: file.size
+    }));
+
+    if (currentImageId.current) {
+      // Replace specific image
+      const updatedImages = data.background_images.map(img => 
+        img.id === currentImageId.current ? newImages[0] : img
+      );
+      set("background_images", updatedImages);
+      currentImageId.current = null;
+    } else {
+      // Add multiple images
+      set("background_images", [...data.background_images, ...newImages]);
+    }
+    
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  // Trigger file input for background images
+  const triggerBackgroundUpload = (id = null) => {
+    currentImageId.current = id;
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // Handle file selection for patient images
+  const handlePatientFileSelect = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+
+    const newImages = files.map((file, index) => ({
+      id: Date.now() + index,
+      url: URL.createObjectURL(file),
+      alt: file.name || "Patient Image",
+      file: file,
+      fileName: file.name,
+      fileSize: file.size
+    }));
+
+    if (currentImageId.current) {
+      // Replace specific image
+      const updatedImages = data.patient_images.map(img => 
+        img.id === currentImageId.current ? newImages[0] : img
+      );
+      set("patient_images", updatedImages);
+      currentImageId.current = null;
+    } else {
+      // Add multiple images
+      set("patient_images", [...data.patient_images, ...newImages]);
+    }
+    
+    // Reset file input
+    if (patientFileInputRef.current) {
+      patientFileInputRef.current.value = '';
+    }
+  };
+
+  // Trigger file input for patient images
+  const triggerPatientUpload = (id = null) => {
+    currentImageId.current = id;
+    if (patientFileInputRef.current) {
+      patientFileInputRef.current.click();
+    }
+  };
+
   const addBackgroundImage = () => {
-    const newImage = {
-      id: Date.now(),
-      url: "",
-      alt: "Hero Background"
-    };
-    set("background_images", [...data.background_images, newImage]);
+    triggerBackgroundUpload();
   };
 
   const removeBackgroundImage = (id) => {
+    const imageToRemove = data.background_images.find(img => img.id === id);
+    if (imageToRemove && imageToRemove.url && imageToRemove.url.startsWith('blob:')) {
+      URL.revokeObjectURL(imageToRemove.url);
+    }
     set("background_images", data.background_images.filter(img => img.id !== id));
   };
 
@@ -188,15 +271,14 @@ const HeroEditor = () => {
   };
 
   const addPatientImage = () => {
-    const newImage = {
-      id: Date.now(),
-      url: "",
-      alt: "Patient Trust Image"
-    };
-    set("patient_images", [...data.patient_images, newImage]);
+    triggerPatientUpload();
   };
 
   const removePatientImage = (id) => {
+    const imageToRemove = data.patient_images.find(img => img.id === id);
+    if (imageToRemove && imageToRemove.url && imageToRemove.url.startsWith('blob:')) {
+      URL.revokeObjectURL(imageToRemove.url);
+    }
     set("patient_images", data.patient_images.filter(img => img.id !== id));
   };
 
@@ -208,6 +290,24 @@ const HeroEditor = () => {
 
   return (
     <div className="wc-home-editor">
+      {/* Hidden file inputs */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        multiple
+        onChange={handleBackgroundFileSelect}
+      />
+      <input
+        type="file"
+        ref={patientFileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        multiple
+        onChange={handlePatientFileSelect}
+      />
+
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
           <h3 className="wc-editor-card-title"><Layout size={15} /> Hero Content</h3>
@@ -268,7 +368,14 @@ const HeroEditor = () => {
                     <div className="wc-image-preview-actions">
                       <button
                         className="wc-img-action-btn"
-                        onClick={() => updateBackgroundImage(image.id, "url", "")}
+                        onClick={() => triggerBackgroundUpload(image.id)}
+                        title="Replace image"
+                      >
+                        <Upload size={13} />
+                      </button>
+                      <button
+                        className="wc-img-action-btn"
+                        onClick={() => removeBackgroundImage(image.id)}
                         title="Remove image"
                       >
                         <X size={13} />
@@ -276,7 +383,10 @@ const HeroEditor = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="wc-image-upload" onClick={() => updateBackgroundImage(image.id, "url", "/images/hero-bg-placeholder.jpg")}>
+                  <div 
+                    className="wc-image-upload" 
+                    onClick={() => triggerBackgroundUpload(image.id)}
+                  >
                     <div className="wc-image-upload-icon"><Upload size={20} /></div>
                     <p>Upload Background</p>
                     <span>1920×800px</span>
@@ -297,7 +407,7 @@ const HeroEditor = () => {
               <Plus size={16} /> Add Background Image
             </button>
           </div>
-          <span className="wc-field-hint">Recommended: 1920×800px. PNG, JPG, WEBP up to 5MB</span>
+          <span className="wc-field-hint">Click on image or "Add Background Image" to upload. Supports multiple selection. Recommended: 1920×800px. PNG, JPG, WEBP up to 5MB</span>
         </div>
       </div>
 
@@ -316,7 +426,14 @@ const HeroEditor = () => {
                     <div className="wc-image-preview-actions">
                       <button
                         className="wc-img-action-btn"
-                        onClick={() => updatePatientImage(image.id, "url", "")}
+                        onClick={() => triggerPatientUpload(image.id)}
+                        title="Replace image"
+                      >
+                        <Upload size={13} />
+                      </button>
+                      <button
+                        className="wc-img-action-btn"
+                        onClick={() => removePatientImage(image.id)}
                         title="Remove image"
                       >
                         <X size={13} />
@@ -324,7 +441,10 @@ const HeroEditor = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="wc-image-upload" onClick={() => updatePatientImage(image.id, "url", "/images/patient-placeholder.jpg")}>
+                  <div 
+                    className="wc-image-upload" 
+                    onClick={() => triggerPatientUpload(image.id)}
+                  >
                     <div className="wc-image-upload-icon"><Upload size={20} /></div>
                     <p>Upload Photo</p>
                     <span>Square recommended</span>
@@ -345,7 +465,7 @@ const HeroEditor = () => {
               <Plus size={16} /> Add Patient Image
             </button>
           </div>
-          <span className="wc-field-hint">Add up to 5 patient trust images. Recommended: 1:1 ratio</span>
+          <span className="wc-field-hint">Click on image or "Add Patient Image" to upload. Supports multiple selection. Recommended: 1:1 ratio</span>
         </div>
       </div>
 
@@ -550,13 +670,46 @@ const SeoEditor = () => {
 
 // Helper Components
 const ImageUploadField = ({ label, hint, value, onChange }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      onChange?.(imageUrl);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div className="wc-field">
       <label className="wc-field-label">{label}</label>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif"
+        onChange={handleFileSelect}
+      />
       {value ? (
         <div className="wc-image-preview">
           <img src={value} alt={label} />
           <div className="wc-image-preview-actions">
+            <button
+              className="wc-img-action-btn"
+              onClick={triggerUpload}
+              title="Replace image"
+            >
+              <Upload size={13} />
+            </button>
             <button
               className="wc-img-action-btn"
               onClick={() => onChange?.(null)}
@@ -567,7 +720,7 @@ const ImageUploadField = ({ label, hint, value, onChange }) => {
           </div>
         </div>
       ) : (
-        <div className="wc-image-upload" onClick={() => onChange?.("/images/og-placeholder.jpg")}>
+        <div className="wc-image-upload" onClick={triggerUpload}>
           <div className="wc-image-upload-icon"><Upload size={20} /></div>
           <p>Click to upload image</p>
           <span>PNG, JPG, WEBP up to 5MB</span>
