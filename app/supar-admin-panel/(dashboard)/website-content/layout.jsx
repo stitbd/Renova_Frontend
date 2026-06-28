@@ -108,6 +108,7 @@ const PAGE_TREE = [
     ],
   },
   { id: "packages", label: "Packages", href: "/packages-page", icon: "package" },
+  { id: "test-list", label: "Test List", href: "/test-list-page", icon: "package" },
   { id: "shop", label: "Shop", href: "/shop-page", icon: "shop" },
   { id: "blog", label: "Blog", href: "/blog-page", icon: "blog" },
   { id: "news", label: "News", href: "/news-page", icon: "news" },
