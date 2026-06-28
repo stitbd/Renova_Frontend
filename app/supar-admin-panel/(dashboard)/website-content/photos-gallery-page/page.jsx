@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Image as ImageIcon,
   Layout,
@@ -185,6 +185,76 @@ const HeroEditor = () => {
   );
 };
 
+// Photo Upload Component
+const PhotoUpload = ({ value, onChange, onRemove }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+
+    const imageUrls = files.map(file => URL.createObjectURL(file));
+    onChange?.(imageUrls);
+    
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const removeImage = () => {
+    if (value && value.startsWith('blob:')) {
+      URL.revokeObjectURL(value);
+    }
+    onRemove?.();
+  };
+
+  return (
+    <div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        multiple
+        onChange={handleFileSelect}
+      />
+      {value ? (
+        <div className="wc-photo-preview">
+          <img src={value} alt="Photo" />
+          <div className="wc-photo-preview-actions">
+            <button
+              className="wc-img-action-btn"
+              onClick={triggerUpload}
+              title="Replace image"
+            >
+              <Upload size={12} />
+            </button>
+            <button
+              className="wc-img-action-btn"
+              onClick={removeImage}
+              title="Remove image"
+            >
+              <X size={12} />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="wc-image-upload" onClick={triggerUpload}>
+          <div className="wc-image-upload-icon"><Upload size={20} /></div>
+          <p>Click to browse</p>
+          <span>PNG, JPG, WEBP</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Photo Gallery Editor
 const PhotoGalleryEditor = () => {
   const [data, setData] = useState({
@@ -196,10 +266,60 @@ const PhotoGalleryEditor = () => {
       { id: "facilities", label: "Facilities", count: 8 },
       { id: "doctors", label: "Doctors", count: 6 }
     ],
-    photos: []
+    photos: [
+      { id: 1, title: "Reception Area", category: "facilities", alt: "Modern reception area", image: "" },
+      { id: 2, title: "Doctor's Consultation", category: "doctors", alt: "Doctor consulting patient", image: "" }
+    ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
+
+  const updateCategory = (index, field, value) => {
+    const updated = [...data.categories];
+    updated[index] = { ...updated[index], [field]: value };
+    set("categories", updated);
+  };
+
+  const addCategory = () => {
+    set("categories", [...data.categories, { id: Date.now(), label: "New Category", count: 0 }]);
+  };
+
+  const removeCategory = (index) => {
+    const updated = [...data.categories];
+    updated.splice(index, 1);
+    set("categories", updated);
+  };
+
+  const updatePhoto = (index, field, value) => {
+    const updated = [...data.photos];
+    updated[index] = { ...updated[index], [field]: value };
+    set("photos", updated);
+  };
+
+  const addPhoto = () => {
+    set("photos", [...data.photos, { 
+      id: Date.now(), 
+      title: "", 
+      category: "", 
+      alt: "", 
+      image: "" 
+    }]);
+  };
+
+  const removePhoto = (index) => {
+    const updated = [...data.photos];
+    if (updated[index].image && updated[index].image.startsWith('blob:')) {
+      URL.revokeObjectURL(updated[index].image);
+    }
+    updated.splice(index, 1);
+    set("photos", updated);
+  };
+
+  const handlePhotoUpload = (index, imageUrls) => {
+    if (imageUrls && imageUrls.length > 0) {
+      updatePhoto(index, "image", imageUrls[0]);
+    }
+  };
 
   return (
     <div>
@@ -228,21 +348,34 @@ const PhotoGalleryEditor = () => {
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
           <h3 className="wc-editor-card-title"><Grid size={15} /> Gallery Categories</h3>
+          <button className="wc-btn wc-btn-ghost" onClick={addCategory}>
+            <Plus size={14} /> Add Category
+          </button>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-gallery-categories">
             {data.categories.map((cat, i) => (
               <div key={i} className="wc-gallery-category">
-                <input className="wc-input" value={cat.label} onChange={e => {
-                  const c = [...data.categories];
-                  c[i] = { ...c[i], label: e.target.value };
-                  set("categories", c);
-                }} />
-                <input className="wc-input" value={cat.count} onChange={e => {
-                  const c = [...data.categories];
-                  c[i] = { ...c[i], count: e.target.value };
-                  set("categories", c);
-                }} style={{ width: '80px' }} />
+                <input 
+                  className="wc-input" 
+                  value={cat.label} 
+                  onChange={e => updateCategory(i, "label", e.target.value)} 
+                  placeholder="Category name"
+                />
+                <input 
+                  className="wc-input" 
+                  value={cat.count} 
+                  onChange={e => updateCategory(i, "count", e.target.value)} 
+                  placeholder="Count"
+                  style={{ width: '80px' }}
+                />
+                <button 
+                  className="wc-btn wc-btn-danger" 
+                  onClick={() => removeCategory(i)}
+                  disabled={data.categories.length <= 1}
+                >
+                  <Trash size={14} />
+                </button>
               </div>
             ))}
           </div>
@@ -251,23 +384,52 @@ const PhotoGalleryEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> Photos</h3>
+          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> Photos ({data.photos.length})</h3>
+          <span className="wc-editor-card-desc">Click on image to upload</span>
         </div>
         <div className="wc-editor-card-body">
           <div className="wc-photo-grid">
-            <div className="wc-photo-item">
-              <div className="wc-photo-thumb">
-                <ImageUploadField label="" hint="Click to upload" />
+            {data.photos.map((photo, index) => (
+              <div key={photo.id} className="wc-photo-item">
+                <div className="wc-photo-thumb">
+                  <PhotoUpload 
+                    value={photo.image}
+                    onChange={(urls) => handlePhotoUpload(index, urls)}
+                    onRemove={() => removePhoto(index)}
+                  />
+                </div>
+                <div className="wc-photo-info">
+                  <input 
+                    className="wc-input" 
+                    placeholder="Photo Title" 
+                    value={photo.title}
+                    onChange={e => updatePhoto(index, "title", e.target.value)}
+                  />
+                  <input 
+                    className="wc-input" 
+                    placeholder="Category (e.g., facilities, doctors)" 
+                    value={photo.category}
+                    onChange={e => updatePhoto(index, "category", e.target.value)}
+                  />
+                  <input 
+                    className="wc-input" 
+                    placeholder="Alt Text" 
+                    value={photo.alt}
+                    onChange={e => updatePhoto(index, "alt", e.target.value)}
+                  />
+                  <button 
+                    className="wc-btn wc-btn-danger" 
+                    onClick={() => removePhoto(index)}
+                  >
+                    <Trash size={14} /> Remove
+                  </button>
+                </div>
               </div>
-              <div className="wc-photo-info">
-                <input className="wc-input" placeholder="Photo Title" />
-                <input className="wc-input" placeholder="Category (facilities, doctors, events)" />
-                <input className="wc-input" placeholder="Alt Text" />
-                <button className="wc-btn wc-btn-danger"><Trash size={14} /> Remove</button>
-              </div>
-            </div>
+            ))}
           </div>
-          <button className="wc-repeater-add"><Plus size={14} /> Add Photo</button>
+          <button className="wc-repeater-add" onClick={addPhoto}>
+            <Plus size={14} /> Add Photo
+          </button>
         </div>
       </div>
     </div>
@@ -306,31 +468,20 @@ const SeoEditor = () => {
             <div className="wc-field span-2">
               <label className="wc-field-label">Meta Title <span className="required">*</span></label>
               <input className="wc-input" value={data.meta_title} onChange={e => set("meta_title", e.target.value)} />
+              <span className="wc-field-hint">Recommended: 50-60 characters</span>
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Meta Description</label>
               <textarea className="wc-textarea" value={data.meta_description} onChange={e => set("meta_description", e.target.value)} rows={3} />
+              <span className="wc-field-hint">Recommended: 150-160 characters</span>
             </div>
             <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
               <input className="wc-input" value={data.keywords} onChange={e => set("keywords", e.target.value)} />
+              <span className="wc-field-hint">Comma separated keywords</span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-// Helper Components
-const ImageUploadField = ({ label, hint }) => {
-  return (
-    <div className="wc-field">
-      <label className="wc-field-label">{label}</label>
-      <div className="wc-image-upload">
-        <div className="wc-image-upload-icon"><Upload size={20} /></div>
-        <p>Click to browse</p>
-        <span>{hint}</span>
       </div>
     </div>
   );

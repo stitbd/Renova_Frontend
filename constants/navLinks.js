@@ -68,7 +68,7 @@ export const footerLinks = {
   ],
   support: [
     { label: "Book Appointment", href: "/appointment" },
-    { label: "Doctor Portal", href: "/doctor-portal/doctor-signin" },
+    { label: "Test Price List", href: "/test-price-list" },
     // { label: "Patient Portal", href: "/patient-portal/patient-signin" },
     // { label: "Outlet Portal", href: "/outlet-portal/outlet-signin" },
     { label: "FAQ", href: "/faq" },

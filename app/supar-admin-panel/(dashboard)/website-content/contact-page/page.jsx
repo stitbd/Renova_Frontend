@@ -34,9 +34,8 @@ const ContactPage = () => {
 
   const sections = [
     { id: "hero", label: "Hero Section", icon: Layout },
-    { id: "contact-info", label: "Contact Info", icon: Phone },
-    { id: "map", label: "Map & Location", icon: MapPin },
     { id: "form-settings", label: "Form Settings", icon: MessageSquare },
+    { id: "map", label: "Map & Location", icon: MapPin },
     { id: "seo", label: "SEO & Meta", icon: Search }
   ];
 
@@ -214,91 +213,6 @@ const ContactInfoEditor = () => {
 
   const set = (k, v) => setData({ ...data, [k]: v });
 
-  return (
-    <div>
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Phone size={15} /> Contact Info Section</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field">
-              <label className="wc-field-label">Section Label</label>
-              <input className="wc-input" value={data.section_label} onChange={e => set("section_label", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Heading <span className="required">*</span></label>
-              <input className="wc-input" value={data.heading} onChange={e => set("heading", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Sub Heading</label>
-              <textarea className="wc-textarea" value={data.subheading} onChange={e => set("subheading", e.target.value)} rows={2} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Phone size={15} /> Contact Details</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-contact-items">
-            {data.contact_items.map((item, i) => (
-              <div key={i} className="wc-contact-item">
-                <div className="wc-contact-item-icon">
-                  <input className="wc-input" value={item.icon} onChange={e => {
-                    const items = [...data.contact_items];
-                    items[i] = { ...items[i], icon: e.target.value };
-                    set("contact_items", items);
-                  }} placeholder="Icon name" style={{ width: '100px' }} />
-                </div>
-                <div className="wc-contact-item-fields">
-                  <input className="wc-input" value={item.label} onChange={e => {
-                    const items = [...data.contact_items];
-                    items[i] = { ...items[i], label: e.target.value };
-                    set("contact_items", items);
-                  }} placeholder="Label" />
-                  <input className="wc-input" value={item.value} onChange={e => {
-                    const items = [...data.contact_items];
-                    items[i] = { ...items[i], value: e.target.value };
-                    set("contact_items", items);
-                  }} placeholder="Value" />
-                  <button className="wc-btn wc-btn-danger"><Trash size={14} /></button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Globe size={15} /> Social Media Links</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-social-links">
-            {data.social_links.map((link, i) => (
-              <div key={i} className="wc-social-link">
-                <input className="wc-input" value={link.platform} onChange={e => {
-                  const links = [...data.social_links];
-                  links[i] = { ...links[i], platform: e.target.value };
-                  set("social_links", links);
-                }} placeholder="Platform" />
-                <input className="wc-input" value={link.url} onChange={e => {
-                  const links = [...data.social_links];
-                  links[i] = { ...links[i], url: e.target.value };
-                  set("social_links", links);
-                }} placeholder="URL" />
-                <button className="wc-btn wc-btn-danger"><Trash size={14} /></button>
-              </div>
-            ))}
-            <button className="wc-repeater-add"><Plus size={14} /> Add Social Link</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 // Map Editor
@@ -427,66 +341,6 @@ const FormSettingsEditor = () => {
             <div className="wc-field span-2">
               <label className="wc-field-label">Sub Heading</label>
               <textarea className="wc-textarea" value={data.subheading} onChange={e => set("subheading", e.target.value)} rows={2} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><MessageSquare size={15} /> Form Fields</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-form-fields">
-            {data.form_fields.map((field, i) => (
-              <div key={i} className="wc-form-field">
-                <input className="wc-input" value={field.label} onChange={e => {
-                  const f = [...data.form_fields];
-                  f[i] = { ...f[i], label: e.target.value };
-                  set("form_fields", f);
-                }} placeholder="Field Label" />
-                <input className="wc-input" value={field.type} onChange={e => {
-                  const f = [...data.form_fields];
-                  f[i] = { ...f[i], type: e.target.value };
-                  set("form_fields", f);
-                }} placeholder="Field Type (text, email, tel, textarea)" />
-                <input className="wc-input" value={field.placeholder} onChange={e => {
-                  const f = [...data.form_fields];
-                  f[i] = { ...f[i], placeholder: e.target.value };
-                  set("form_fields", f);
-                }} placeholder="Placeholder" />
-                <div className="wc-form-field-actions">
-                  <ToggleSwitch label="Required" checked={field.required} />
-                  <button className="wc-btn wc-btn-danger"><Trash size={14} /></button>
-                </div>
-              </div>
-            ))}
-            <button className="wc-repeater-add"><Plus size={14} /> Add Form Field</button>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Send size={15} /> Form Settings</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field">
-              <label className="wc-field-label">Submit Button Text</label>
-              <input className="wc-input" value={data.submit_button_text} onChange={e => set("submit_button_text", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Email Recipient</label>
-              <input className="wc-input" value={data.email_recipient} onChange={e => set("email_recipient", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Email Subject</label>
-              <input className="wc-input" value={data.email_subject} onChange={e => set("email_subject", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Success Message</label>
-              <textarea className="wc-textarea" value={data.success_message} onChange={e => set("success_message", e.target.value)} rows={2} />
             </div>
           </div>
         </div>

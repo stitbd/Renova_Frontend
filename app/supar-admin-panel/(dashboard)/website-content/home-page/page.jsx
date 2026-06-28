@@ -355,7 +355,7 @@ const HeroEditor = () => {
 
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> Background Images</h3>
+          <h3 className="wc-editor-card-title"><ImageIcon size={15} /> Slider Images</h3>
           <span className="wc-editor-card-desc">{data.background_images.length} images</span>
         </div>
         <div className="wc-editor-card-body">
@@ -404,10 +404,10 @@ const HeroEditor = () => {
               </div>
             ))}
             <button className="wc-add-image-btn" onClick={addBackgroundImage}>
-              <Plus size={16} /> Add Background Image
+              <Plus size={16} /> Add Slider Image
             </button>
           </div>
-          <span className="wc-field-hint">Click on image or "Add Background Image" to upload. Supports multiple selection. Recommended: 1920×800px. PNG, JPG, WEBP up to 5MB</span>
+          <span className="wc-field-hint">Click on image or "Add Slider Image" to upload. Supports multiple selection. Recommended: 1920×800px. PNG, JPG, WEBP up to 5MB</span>
         </div>
       </div>
 
@@ -689,6 +689,13 @@ const ImageUploadField = ({ label, hint, value, onChange }) => {
     }
   };
 
+  const removeImage = () => {
+    if (value && value.startsWith('blob:')) {
+      URL.revokeObjectURL(value);
+    }
+    onChange?.(null);
+  };
+
   return (
     <div className="wc-field">
       <label className="wc-field-label">{label}</label>
@@ -712,7 +719,7 @@ const ImageUploadField = ({ label, hint, value, onChange }) => {
             </button>
             <button
               className="wc-img-action-btn"
-              onClick={() => onChange?.(null)}
+              onClick={removeImage}
               title="Remove image"
             >
               <X size={13} />
