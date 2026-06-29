@@ -468,30 +468,6 @@ const HeroEditor = () => {
           <span className="wc-field-hint">Click on image or "Add Patient Image" to upload. Supports multiple selection. Recommended: 1:1 ratio</span>
         </div>
       </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><List size={15} /> Stats Counter Strip</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-stat-inputs">
-            {data.stats.map((stat, i) => (
-              <div key={i} className="wc-stat-input-item">
-                <label>{stat.label}</label>
-                <input
-                  value={stat.value}
-                  onChange={e => {
-                    const s = [...data.stats];
-                    s[i] = { ...s[i], value: e.target.value };
-                    set("stats", s);
-                  }}
-                  placeholder="Enter value"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

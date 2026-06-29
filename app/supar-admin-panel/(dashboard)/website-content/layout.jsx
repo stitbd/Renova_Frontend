@@ -278,15 +278,6 @@ export default function WebsiteContentLayout({ children }) {
           </button>
         </div>
 
-        <div className="wc-sidebar-search">
-          <Search className="wc-search-icon" size={16} />
-          <input
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search pages..."
-          />
-        </div>
-
         <div className="wc-page-tree">
           {filteredTree.map(page => {
             const hasChildren = page.children && page.children.length > 0;

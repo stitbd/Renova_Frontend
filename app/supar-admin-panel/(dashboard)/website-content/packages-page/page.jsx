@@ -987,7 +987,7 @@ const PackagesListingEditor = () => {
                     className="wc-input" 
                     value={pkg.badge} 
                     onChange={e => updatePackage(pkgIndex, "badge", e.target.value)}
-                    style={{ width: '40%' }}
+                    style={{ fontWeight: 500 }}
                     placeholder="Badge"
                   />
                 </div>
