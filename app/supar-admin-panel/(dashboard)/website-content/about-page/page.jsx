@@ -56,6 +56,7 @@ import {
   Filter
 } from "lucide-react";
 import "./about.css";
+import "../website-content.css";
 
 // Custom LinkedIn Icon (SVG)
 const LinkedinIcon = ({ size = 14 }) => (
@@ -1164,31 +1165,6 @@ const SeoEditor = () => {
               <label className="wc-field-label">Keywords</label>
               <input className="wc-input" value={data.keywords} onChange={e => set("keywords", e.target.value)} />
               <span className="wc-field-hint">Comma separated keywords</span>
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Canonical URL</label>
-              <input className="wc-input" value={data.canonical_url} onChange={e => set("canonical_url", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Robots</label>
-              <select 
-                className="wc-select" 
-                value={data.robots} 
-                onChange={e => set("robots", e.target.value)}
-              >
-                <option value="index, follow">index, follow</option>
-                <option value="index, nofollow">index, nofollow</option>
-                <option value="noindex, follow">noindex, follow</option>
-                <option value="noindex, nofollow">noindex, nofollow</option>
-              </select>
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Image</label>
-              <ImageUploadField 
-                value={data.og_image}
-                onChange={(val) => set("og_image", val)}
-                hint="Recommended: 1200×630px"
-              />
             </div>
           </div>
         </div>

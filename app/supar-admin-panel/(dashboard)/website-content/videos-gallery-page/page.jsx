@@ -24,6 +24,7 @@ import {
   FileText
 } from "lucide-react";
 import "./videos-gallery.css";
+import "../website-content.css";
 
 const VideosGalleryPage = () => {
   const [selectedSection, setSelectedSection] = useState("hero");
@@ -627,10 +628,6 @@ const SeoEditor = () => {
               <label className="wc-field-label">Keywords</label>
               <input className="wc-input" value={data.keywords} onChange={e => set("keywords", e.target.value)} />
               <span className="wc-field-hint">Comma separated keywords</span>
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Canonical URL</label>
-              <input className="wc-input" value={data.canonical_url} onChange={e => set("canonical_url", e.target.value)} />
             </div>
           </div>
         </div>

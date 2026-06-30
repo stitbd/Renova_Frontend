@@ -45,6 +45,7 @@ import {
   Handshake
 } from "lucide-react";
 import "./terms-of-service.css";
+import "../website-content.css";
 
 // ──────────────────────────────────────────────
 // Main Component
@@ -1270,36 +1271,6 @@ const TermsSeoEditor = () => {
                 placeholder="Comma separated keywords"
               />
               <span className="wc-field-hint">Comma separated keywords</span>
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Canonical URL</label>
-              <input 
-                className="wc-input" 
-                value={data.canonical_url} 
-                onChange={e => set("canonical_url", e.target.value)} 
-                placeholder="https://example.com/page"
-              />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Robots</label>
-              <select 
-                className="wc-select" 
-                value={data.robots} 
-                onChange={e => set("robots", e.target.value)}
-              >
-                <option value="index, follow">index, follow</option>
-                <option value="index, nofollow">index, nofollow</option>
-                <option value="noindex, follow">noindex, follow</option>
-                <option value="noindex, nofollow">noindex, nofollow</option>
-              </select>
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Image</label>
-              <ImageUploadField 
-                value={data.og_image}
-                onChange={(val) => set("og_image", val)}
-                hint="Recommended: 1200×630px"
-              />
             </div>
           </div>
         </div>

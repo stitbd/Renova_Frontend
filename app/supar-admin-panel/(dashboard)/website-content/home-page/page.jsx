@@ -26,6 +26,7 @@ import {
   Globe
 } from "lucide-react";
 import "./home.css";
+import "../website-content.css";
 
 const HomePage = () => {
   const [selectedSection, setSelectedSection] = useState("hero");
@@ -536,110 +537,10 @@ const SeoEditor = () => {
                 placeholder="Enter keywords separated by commas"
               />
             </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Canonical URL</label>
-              <input
-                className="wc-input"
-                value={data.canonical_url}
-                onChange={e => set("canonical_url", e.target.value)}
-              />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Robots</label>
-              <select
-                className="wc-select"
-                value={data.robots}
-                onChange={e => set("robots", e.target.value)}
-              >
-                <option value="index, follow">index, follow</option>
-                <option value="noindex, follow">noindex, follow</option>
-                <option value="index, nofollow">index, nofollow</option>
-                <option value="noindex, nofollow">noindex, nofollow</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
 
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><ExternalLink size={15} /> Open Graph (Social Sharing)</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Title</label>
-              <input
-                className="wc-input"
-                value={data.og_title}
-                onChange={e => set("og_title", e.target.value)}
-                placeholder="Open Graph title"
-              />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Description</label>
-              <textarea
-                className="wc-textarea"
-                value={data.og_description}
-                onChange={e => set("og_description", e.target.value)}
-                rows={2}
-                placeholder="Open Graph description"
-              />
-            </div>
-            <div className="wc-field span-2">
-              <ImageUploadField
-                label="OG Image"
-                hint="Recommended: 1200×630px for social sharing"
-                value={data.og_image}
-                onChange={(val) => set("og_image", val)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Globe size={15} /> Schema Markup</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Organization Schema</label>
-              <textarea
-                className="wc-textarea xl"
-                value={`{
-  "@context": "https://schema.org",
-  "@type": "MedicalOrganization",
-  "name": "Renova Life Care Ltd.",
-  "description": "Renova Life Care Ltd. delivers world-class healthcare services across Bangladesh.",
-  "url": "${data.canonical_url}",
-  "logo": "https://renovalifecare.com/logo.png",
-  "medicalSpecialty": "General Healthcare",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Dhaka",
-    "addressCountry": "Bangladesh"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+880-1234-567890",
-    "contactType": "Appointment"
-  },
-  "sameAs": [
-    "https://facebook.com/renovalifecare",
-    "https://twitter.com/renovalifecare",
-    "https://linkedin.com/company/renovalifecare"
-  ]
-}`}
-                onChange={() => { }}
-                style={{ fontFamily: 'monospace', fontSize: '12px' }}
-              />
-              <span className="wc-field-hint">This schema helps search engines understand your healthcare organization</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

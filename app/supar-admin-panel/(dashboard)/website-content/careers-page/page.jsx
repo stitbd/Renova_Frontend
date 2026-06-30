@@ -42,6 +42,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import "./careers.css";
+import "../website-content.css";
 
 const CareersPage = () => {
   const [selectedSection, setSelectedSection] = useState("careers-hero");

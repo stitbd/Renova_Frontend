@@ -26,6 +26,7 @@ import {
   User
 } from "lucide-react";
 import "./contact.css";
+import "../website-content.css";
 
 const ContactPage = () => {
   const [selectedSection, setSelectedSection] = useState("hero");

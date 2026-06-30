@@ -31,6 +31,7 @@ import {
   Link
 } from "lucide-react";
 import "./blog.css";
+import "../website-content.css";
 
 // ============================================================
 // MAIN BLOG PAGE COMPONENT
@@ -664,27 +665,6 @@ const SeoEditor = () => {
             <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
               <input className="wc-input" value={data.keywords} onChange={e => set("keywords", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">OG Title</label>
-              <input className="wc-input" value={data.og_title} onChange={e => set("og_title", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">OG Description</label>
-              <input className="wc-input" value={data.og_description} onChange={e => set("og_description", e.target.value)} />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Canonical URL</label>
-              <input className="wc-input" value={data.canonical_url} onChange={e => set("canonical_url", e.target.value)} />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Robots</label>
-              <select className="wc-select" value={data.robots} onChange={e => set("robots", e.target.value)}>
-                <option value="index, follow">index, follow</option>
-                <option value="index, nofollow">index, nofollow</option>
-                <option value="noindex, follow">noindex, follow</option>
-                <option value="noindex, nofollow">noindex, nofollow</option>
-              </select>
             </div>
           </div>
         </div>

@@ -57,6 +57,7 @@ import {
   Filter
 } from "lucide-react";
 import "./doctors.css";
+import "../website-content.css";
 
 // ──────────────────────────────────────────────
 // Main Component

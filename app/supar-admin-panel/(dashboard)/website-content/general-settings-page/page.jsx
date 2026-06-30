@@ -35,6 +35,7 @@ import {
   FileText
 } from "lucide-react";
 import "./general-settings.css";
+import "../website-content.css";
 
 const GeneralSettingsPage = () => {
   const [selectedSection, setSelectedSection] = useState("general");

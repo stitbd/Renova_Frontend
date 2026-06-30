@@ -36,6 +36,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import "./events.css";
+import "../website-content.css";
 
 const EventsPage = () => {
   const [selectedSection, setSelectedSection] = useState("events-content");
@@ -945,38 +946,6 @@ const EventsSeoEditor = () => {
               <span className="wc-field-hint">Recommended: 150-160 characters</span>
             </div>
             <div className="wc-field span-2">
-              <label className="wc-field-label">OG Title</label>
-              <input 
-                className="wc-input" 
-                value={data.og_title} 
-                onChange={e => set("og_title", e.target.value)} 
-              />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Description</label>
-              <textarea 
-                className="wc-textarea" 
-                value={data.og_description} 
-                onChange={e => set("og_description", e.target.value)} 
-                rows={2} 
-              />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Image</label>
-              <ImageUploadField 
-                value={data.og_image} 
-                onChange={(val) => set("og_image", val)} 
-              />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Canonical URL</label>
-              <input 
-                className="wc-input" 
-                value={data.canonical_url} 
-                onChange={e => set("canonical_url", e.target.value)} 
-              />
-            </div>
-            <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
               <input 
                 className="wc-input" 
@@ -984,19 +953,6 @@ const EventsSeoEditor = () => {
                 onChange={e => set("keywords", e.target.value)} 
               />
               <span className="wc-field-hint">Comma separated keywords</span>
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Robots</label>
-              <select 
-                className="wc-select" 
-                value={data.robots} 
-                onChange={e => set("robots", e.target.value)}
-              >
-                <option value="index, follow">Index, Follow</option>
-                <option value="index, nofollow">Index, No Follow</option>
-                <option value="noindex, follow">No Index, Follow</option>
-                <option value="noindex, nofollow">No Index, No Follow</option>
-              </select>
             </div>
           </div>
         </div>

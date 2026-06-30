@@ -48,6 +48,7 @@ import {
   Tags
 } from "lucide-react";
 import "./our-team.css";
+import "../website-content.css";
 
 // Custom LinkedIn Icon (SVG)
 const LinkedinIcon = ({ size = 14 }) => (

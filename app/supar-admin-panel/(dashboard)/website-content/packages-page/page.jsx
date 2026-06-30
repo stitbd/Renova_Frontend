@@ -21,6 +21,7 @@ import {
   Percent
 } from "lucide-react";
 import "./packages.css";
+import "../website-content.css";
 
 const PackagesPage = () => {
   const [selectedSection, setSelectedSection] = useState("packages-listing");

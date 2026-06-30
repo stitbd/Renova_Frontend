@@ -31,6 +31,7 @@ import {
   ShoppingCart
 } from "lucide-react";
 import "./shop.css";
+import "../website-content.css";
 
 const ShopPage = () => {
   const [selectedSection, setSelectedSection] = useState("hero");

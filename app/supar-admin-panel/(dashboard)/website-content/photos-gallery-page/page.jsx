@@ -24,6 +24,7 @@ import {
   ZoomIn
 } from "lucide-react";
 import "./photos-gallery.css";
+import "../website-content.css";
 
 const PhotosGalleryPage = () => {
   const [selectedSection, setSelectedSection] = useState("hero");

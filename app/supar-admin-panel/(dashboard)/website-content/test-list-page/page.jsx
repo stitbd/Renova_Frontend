@@ -22,6 +22,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import "./text-list.css";
+import "../website-content.css";
 
 const TestListPage = () => {
   const [selectedSection, setSelectedSection] = useState("test-listing");

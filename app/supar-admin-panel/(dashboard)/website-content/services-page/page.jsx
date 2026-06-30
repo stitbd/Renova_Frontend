@@ -35,6 +35,7 @@ import {
   Target
 } from "lucide-react";
 import "./services.css";
+import "../website-content.css";
 
 const ServicesPage = () => {
   const [selectedSection, setSelectedSection] = useState("hero");

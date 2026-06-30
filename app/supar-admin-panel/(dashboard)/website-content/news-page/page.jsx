@@ -41,6 +41,7 @@ import {
   Share2
 } from "lucide-react";
 import "./news.css";
+import "../website-content.css";
 
 /* ══════════════════════════════════════════════════════════════
    INITIAL DATA
@@ -634,19 +635,6 @@ const SeoEditor = ({ data, onChange }) => {
             <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
               <input className="wc-input" value={data?.keywords || ""} onChange={e => set("keywords", e.target.value)} placeholder="news, press releases, media" />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Canonical URL</label>
-              <input className="wc-input" value={data?.canonical_url || ""} onChange={e => set("canonical_url", e.target.value)} placeholder="https://renovalifecare.com/news" />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Robots</label>
-              <select className="wc-select" value={data?.robots || "index, follow"} onChange={e => set("robots", e.target.value)}>
-                <option value="index, follow">index, follow</option>
-                <option value="noindex, follow">noindex, follow</option>
-                <option value="index, nofollow">index, nofollow</option>
-                <option value="noindex, nofollow">noindex, nofollow</option>
-              </select>
             </div>
           </div>
         </div>

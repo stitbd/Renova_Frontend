@@ -24,6 +24,7 @@ import {
   Award
 } from "lucide-react";
 import "./testimonials.css";
+import "../website-content.css";
 
 const TestimonialsPage = () => {
   const [selectedSection, setSelectedSection] = useState("testimonials");
@@ -448,112 +449,6 @@ const SeoEditor = () => {
                 onChange={e => set("keywords", e.target.value)}
                 placeholder="Enter keywords separated by commas"
               />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Canonical URL</label>
-              <input
-                className="wc-input"
-                value={data.canonical_url}
-                onChange={e => set("canonical_url", e.target.value)}
-              />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Robots Meta</label>
-              <select
-                className="wc-select"
-                value={data.robots}
-                onChange={e => set("robots", e.target.value)}
-              >
-                <option value="index, follow">index, follow</option>
-                <option value="noindex, follow">noindex, follow</option>
-                <option value="index, nofollow">index, nofollow</option>
-                <option value="noindex, nofollow">noindex, nofollow</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><ExternalLink size={15} /> Open Graph (Social Sharing)</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Title</label>
-              <input
-                className="wc-input"
-                value={data.og_title}
-                onChange={e => set("og_title", e.target.value)}
-                placeholder="Open Graph title"
-              />
-            </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">OG Description</label>
-              <textarea
-                className="wc-textarea"
-                value={data.og_description}
-                onChange={e => set("og_description", e.target.value)}
-                rows={2}
-                placeholder="Open Graph description"
-              />
-            </div>
-            <div className="wc-field span-2">
-              <ImageUploadField
-                label="OG Image"
-                hint="Recommended: 1200×630px for social sharing"
-                value={data.og_image}
-                onChange={(val) => set("og_image", val)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Award size={15} /> Schema Markup</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">JSON-LD Schema</label>
-              <textarea
-                className="wc-textarea xl"
-                value={`{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Patient Testimonials",
-  "description": "Real patient experiences at Renova Life Care",
-  "about": {
-    "@type": "MedicalOrganization",
-    "name": "Renova Life Care Ltd.",
-    "medicalSpecialty": "General Healthcare"
-  },
-  "mainEntity": {
-    "@type": "ItemList",
-    "itemListElement": [
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Dr. Md. Abdur Rahman"
-        },
-        "reviewBody": "Renova Life Care has transformed my practice.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        }
-      }
-    ]
-  }
-}`}
-                onChange={() => { }}
-                style={{ fontFamily: 'monospace', fontSize: '12px' }}
-              />
-              <span className="wc-field-hint">This schema helps search engines understand your testimonials page</span>
             </div>
           </div>
         </div>

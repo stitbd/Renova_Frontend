@@ -35,6 +35,7 @@ import {
   Link as LinkIcon
 } from "lucide-react";
 import "./faq.css";
+import "../website-content.css";
 
 const FaqPage = () => {
   const [selectedSection, setSelectedSection] = useState("faq-hero");
