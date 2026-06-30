@@ -1,9 +1,8 @@
-// app/supar-admin-panel/website-content/faq-page/page.jsx
+// app/supar-admin-panel/website-content/events-page/page.jsx
 "use client";
 
 import { useState, useRef } from "react";
 import {
-  Info,
   Layout,
   Search,
   Save,
@@ -15,38 +14,39 @@ import {
   Trash,
   Plus,
   X,
-  MessageCircle,
-  Phone,
-  Mail,
-  HelpCircle,
-  FileText,
+  Calendar,
+  MapPin,
   Users,
-  CreditCard,
-  Shield,
-  Settings,
-  Globe,
-  Star,
+  Heart,
   Award,
-  Target,
   Eye,
-  User,
-  List,
-  ExternalLink,
-  Link as LinkIcon
+  FileText,
+  Image,
+  Tag,
+  Filter,
+  ArrowRight,
+  CalendarDays,
+  Clock as ClockIcon,
+  Globe,
+  MessageCircle,
+  Share2,
+  Edit,
+  Copy,
+  Link as LinkIcon,
+  ChevronRight
 } from "lucide-react";
 import "./events.css";
 
 const EventsPage = () => {
-  const [selectedSection, setSelectedSection] = useState("events-hero");
+  const [selectedSection, setSelectedSection] = useState("events-content");
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
 
   const sections = [
     { id: "events-hero", label: "Hero Section", icon: Layout },
-    { id: "events-content", label: "Event Content", icon: FileText },
-    { id: "events-questions", label: "Questions & Answers", icon: HelpCircle },
-    { id: "events-support", label: "Support & Contact", icon: MessageCircle },
-    { id: "events-features", label: "Features Section", icon: Star },
+    { id: "events-content", label: "Event Content", icon: Calendar },
+    { id: "events-outreach", label: "Community Outreach", icon: Users },
+    { id: "events-volunteer", label: "Volunteer Section", icon: Heart },
     { id: "seo", label: "SEO & Meta", icon: Search }
   ];
 
@@ -54,7 +54,7 @@ const EventsPage = () => {
     setSaving(true);
     await new Promise(r => setTimeout(r, 900));
     setSaving(false);
-    showToast("FAQ changes saved successfully!", "success");
+    showToast("Events changes saved successfully!", "success");
   };
 
   const showToast = (msg, type = "success") => {
@@ -64,31 +64,29 @@ const EventsPage = () => {
 
   const renderContent = () => {
     switch (selectedSection) {
-      case "faq-hero":
-        return <FaqHeroEditor />;
-      case "faq-categories":
-        return <FaqCategoriesEditor />;
-      case "faq-questions":
-        return <FaqQuestionsEditor />;
-      case "faq-support":
-        return <FaqSupportEditor />;
-      case "faq-features":
-        return <FaqFeaturesEditor />;
+      case "events-hero":
+        return <EventsHeroEditor />;
+      case "events-content":
+        return <EventsContentEditor />;
+      case "events-outreach":
+        return <EventsOutreachEditor />;
+      case "events-volunteer":
+        return <EventsVolunteerEditor />;
       case "seo":
-        return <FaqSeoEditor />;
+        return <EventsSeoEditor />;
       default:
-        return <FaqHeroEditor />;
+        return <EventsContentEditor />;
     }
   };
 
   return (
-    <div className="wc-faq-page">
+    <div className="wc-events-page">
       <div className="wc-editor">
         <div className="wc-editor-topbar">
           <div className="wc-breadcrumb">
             <span>Website Content</span>
             <ChevronDown size={12} className="wc-breadcrumb-chevron" />
-            <span className="current">FAQ</span>
+            <span className="current">Events</span>
             <ChevronDown size={12} className="wc-breadcrumb-chevron" />
             <span className="current">{sections.find(s => s.id === selectedSection)?.label}</span>
           </div>
@@ -131,10 +129,10 @@ const EventsPage = () => {
             <div className="wc-page-info-banner">
               <div className="wc-page-info-left">
                 <div className="wc-page-info-icon">
-                  <HelpCircle size={20} />
+                  <Calendar size={20} />
                 </div>
                 <div className="wc-page-info-text">
-                  <h2>FAQ Page</h2>
+                  <h2>Events Page</h2>
                   <p>Editing: {sections.find(s => s.id === selectedSection)?.label}</p>
                 </div>
               </div>
@@ -164,32 +162,31 @@ const EventsPage = () => {
 };
 
 // ──────────────────────────────────────────────
-// FAQ Hero Section Editor
+// Events Hero Section Editor
 // ──────────────────────────────────────────────
-const FaqHeroEditor = () => {
+const EventsHeroEditor = () => {
   const [data, setData] = useState({
-    section_title: "Frequently Asked Questions",
-    section_subtitle: "Quick answers to common questions about our healthcare services. Can't find what you're looking for? Contact us.",
-    search_placeholder: "Search questions (e.g., 'insurance', 'teleconsultation', 'refund')",
-    search_tip: "Try keywords like appointment, billing, prescription, or privacy",
-    quick_links: [
-      { label: "Book an Appointment", url: "/appointments" },
-      { label: "Find a Doctor", url: "/doctors" },
-      { label: "View Pricing", url: "/pricing" },
-      { label: "Contact Support", url: "/contact" }
+    section_title: "COMMUNITY & OUTREACH",
+    section_subtitle: "Our Events",
+    section_description: "Free health camps, awareness seminars, and community drives – bringing quality healthcare closer to the people of Bangladesh.",
+    breadcrumb_home: "Home",
+    breadcrumb_events: "Events",
+    stats: [
+      { number: "98", label: "Events Hosted" },
+      { number: "20", label: "Communities Served" }
     ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
 
-  const updateQuickLink = (index, key, value) => {
-    const updated = [...data.quick_links];
+  const updateStat = (index, key, value) => {
+    const updated = [...data.stats];
     updated[index] = { ...updated[index], [key]: value };
-    set("quick_links", updated);
+    set("stats", updated);
   };
 
   return (
-    <div className="wc-faq-editor">
+    <div className="wc-events-editor">
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
           <h3 className="wc-editor-card-title"><Layout size={15} /> Hero Section</h3>
@@ -202,391 +199,64 @@ const FaqHeroEditor = () => {
                 className="wc-input" 
                 value={data.section_title} 
                 onChange={e => set("section_title", e.target.value)} 
+                placeholder="COMMUNITY & OUTREACH"
               />
             </div>
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Section Subtitle</label>
-              <textarea 
-                className="wc-textarea" 
+            <div className="wc-field">
+              <label className="wc-field-label">Subtitle <span className="required">*</span></label>
+              <input 
+                className="wc-input" 
                 value={data.section_subtitle} 
                 onChange={e => set("section_subtitle", e.target.value)} 
-                rows={2} 
+                placeholder="Our Events"
               />
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ──────────────────────────────────────────────
-// FAQ Categories Editor
-// ──────────────────────────────────────────────
-const FaqCategoriesEditor = () => {
-  const [categories, setCategories] = useState([
-    { id: "A", label: "Appointments & Booking", icon: "Calendar", count: 4 },
-    { id: "B", label: "Services & Treatments", icon: "Stethoscope", count: 4 },
-    { id: "C", label: "Billing & Insurance", icon: "CreditCard", count: 4 },
-    { id: "D", label: "Privacy & Data", icon: "Shield", count: 4 },
-    { id: "E", label: "Technical Support", icon: "Settings", count: 4 },
-    { id: "F", label: "Emergency & Urgent Care", icon: "AlertCircle", count: 3 }
-  ]);
-
-  const updateCategory = (index, key, value) => {
-    const updated = [...categories];
-    updated[index] = { ...updated[index], [key]: value };
-    setCategories(updated);
-  };
-
-  const addCategory = () => {
-    setCategories([...categories, { 
-      id: String.fromCharCode(65 + categories.length), 
-      label: "", 
-      icon: "HelpCircle", 
-      count: 0 
-    }]);
-  };
-
-  const removeCategory = (index) => {
-    const updated = [...categories];
-    updated.splice(index, 1);
-    setCategories(updated);
-  };
-
-  return (
-    <div className="wc-faq-editor">
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><FileText size={15} /> FAQ Categories</h3>
-          <span className="wc-editor-card-desc">{categories.length} categories</span>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-faq-categories-grid">
-            {categories.map((cat, index) => (
-              <div key={index} className="wc-faq-category-card">
-                <div className="wc-faq-category-header">
-                  <span className="wc-faq-category-id">{cat.id}</span>
-                  <button 
-                    className="wc-btn wc-btn-danger wc-btn-sm"
-                    onClick={() => removeCategory(index)}
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-                <div className="wc-faq-category-body">
-                  <div className="wc-field">
-                    <label className="wc-field-label">Category Label</label>
-                    <input 
-                      className="wc-input" 
-                      value={cat.label} 
-                      onChange={e => updateCategory(index, "label", e.target.value)} 
-                      placeholder="e.g., Appointments & Booking"
-                    />
-                  </div>
-                  <div className="wc-field">
-                    <label className="wc-field-label">Icon</label>
-                    <select 
-                      className="wc-select" 
-                      value={cat.icon} 
-                      onChange={e => updateCategory(index, "icon", e.target.value)}
-                    >
-                      <option value="Calendar">Calendar</option>
-                      <option value="Stethoscope">Stethoscope</option>
-                      <option value="CreditCard">Credit Card</option>
-                      <option value="Shield">Shield</option>
-                      <option value="Settings">Settings</option>
-                      <option value="AlertCircle">Alert Circle</option>
-                      <option value="HelpCircle">Help Circle</option>
-                    </select>
-                  </div>
-                  <div className="wc-field">
-                    <label className="wc-field-label">Question Count</label>
-                    <input 
-                      className="wc-input" 
-                      type="number" 
-                      value={cat.count} 
-                      onChange={e => updateCategory(index, "count", parseInt(e.target.value) || 0)} 
-                      min="0"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="wc-repeater-add" onClick={addCategory}>
-            <Plus size={14} /> Add Category
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ──────────────────────────────────────────────
-// FAQ Questions & Answers Editor
-// ──────────────────────────────────────────────
-const FaqQuestionsEditor = () => {
-  const [questions, setQuestions] = useState([
-    // A. Appointments & Booking
-    { id: "A1", category: "A", question: "How do I book an appointment?", answer: "" },
-    { id: "A2", category: "A", question: "Can I reschedule or cancel my appointment?", answer: "" },
-    { id: "A3", category: "A", question: "What should I bring to my first visit?", answer: "" },
-    { id: "A4", category: "A", question: "Do you offer teleconsultations?", answer: "" },
-    
-    // B. Services & Treatments
-    { id: "B1", category: "B", question: "What medical specialties do you offer?", answer: "" },
-    { id: "B2", category: "B", question: "Do you provide diagnostic tests?", answer: "" },
-    { id: "B3", category: "B", question: "Can I get a prescription refilled online?", answer: "" },
-    { id: "B4", category: "B", question: "Do you offer home visit services?", answer: "" },
-    
-    // C. Billing & Insurance
-    { id: "C1", category: "C", question: "What payment methods do you accept?", answer: "" },
-    { id: "C2", category: "C", question: "Do you accept health insurance?", answer: "" },
-    { id: "C3", category: "C", question: "What is your refund policy?", answer: "" },
-    { id: "C4", category: "C", question: "Can I get an itemized bill?", answer: "" },
-    
-    // D. Privacy & Data
-    { id: "D1", category: "D", question: "How is my health data protected?", answer: "" },
-    { id: "D2", category: "D", question: "Who can access my medical records?", answer: "" },
-    { id: "D3", category: "D", question: "Can I download or transfer my health data?", answer: "" },
-    { id: "D4", category: "D", question: "Do you share my data with third parties?", answer: "" },
-    
-    // E. Technical Support
-    { id: "E1", category: "E", question: "What browsers/devices are supported?", answer: "" },
-    { id: "E2", category: "E", question: "I forgot my password. How do I reset it?", answer: "" },
-    { id: "E3", category: "E", question: "My video consultation isn't working. What should I do?", answer: "" },
-    { id: "E4", category: "E", question: "How do I delete my account?", answer: "" },
-    
-    // F. Emergency & Urgent Care
-    { id: "F1", category: "F", question: "What should I do in a medical emergency?", answer: "" },
-    { id: "F2", category: "F", question: "Do you offer urgent same-day appointments?", answer: "" },
-    { id: "F3", category: "F", question: "Can I get advice for a child's fever at night?", answer: "" }
-  ]);
-
-  const [selectedCategory, setSelectedCategory] = useState("A");
-
-  const categoryLabels = {
-    A: "Appointments & Booking",
-    B: "Services & Treatments",
-    C: "Billing & Insurance",
-    D: "Privacy & Data",
-    E: "Technical Support",
-    F: "Emergency & Urgent Care"
-  };
-
-  const updateQuestion = (index, key, value) => {
-    const updated = [...questions];
-    updated[index] = { ...updated[index], [key]: value };
-    setQuestions(updated);
-  };
-
-  const addQuestion = () => {
-    const lastId = questions[questions.length - 1]?.id || "A0";
-    const newId = String.fromCharCode(lastId.charCodeAt(0)) + (parseInt(lastId.substring(1)) + 1);
-    setQuestions([...questions, { 
-      id: newId, 
-      category: selectedCategory, 
-      question: "", 
-      answer: "" 
-    }]);
-  };
-
-  const removeQuestion = (index) => {
-    const updated = [...questions];
-    updated.splice(index, 1);
-    setQuestions(updated);
-  };
-
-  const getCategoryQuestions = () => {
-    return questions.filter(q => q.category === selectedCategory);
-  };
-
-  const getCategoryCount = (catId) => {
-    return questions.filter(q => q.category === catId).length;
-  };
-
-  return (
-    <div className="wc-faq-editor">
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><HelpCircle size={15} /> Questions & Answers</h3>
-          <span className="wc-editor-card-desc">{questions.length} total questions</span>
-        </div>
-        <div className="wc-editor-card-body">
-          {/* Category Filter */}
-          <div className="wc-faq-category-filter">
-            <label className="wc-field-label">Filter by Category:</label>
-            <select 
-              className="wc-select" 
-              value={selectedCategory} 
-              onChange={e => setSelectedCategory(e.target.value)}
-              style={{ maxWidth: '300px' }}
-            >
-              {Object.entries(categoryLabels).map(([id, label]) => (
-                <option key={id} value={id}>
-                  {id}. {label} ({getCategoryCount(id)})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="wc-faq-questions-list">
-            {getCategoryQuestions().map((q, index) => {
-              const globalIndex = questions.findIndex(item => item.id === q.id);
-              return (
-                <div key={q.id} className="wc-faq-question-item">
-                  <div className="wc-faq-question-header">
-                    <span className="wc-faq-question-id">{q.id}</span>
-                    <button 
-                      className="wc-btn wc-btn-danger wc-btn-sm"
-                      onClick={() => removeQuestion(globalIndex)}
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                  <div className="wc-faq-question-body">
-                    <div className="wc-field">
-                      <label className="wc-field-label">Question</label>
-                      <input 
-                        className="wc-input" 
-                        value={q.question} 
-                        onChange={e => updateQuestion(globalIndex, "question", e.target.value)} 
-                        placeholder="Enter the question"
-                      />
-                    </div>
-                    <div className="wc-field">
-                      <label className="wc-field-label">Answer</label>
-                      <textarea 
-                        className="wc-textarea lg" 
-                        value={q.answer} 
-                        onChange={e => updateQuestion(globalIndex, "answer", e.target.value)} 
-                        placeholder="Enter the answer"
-                        rows={3}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <button className="wc-repeater-add" onClick={addQuestion}>
-            <Plus size={14} /> Add Question to {categoryLabels[selectedCategory] || "Selected Category"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ──────────────────────────────────────────────
-// FAQ Support & Contact Editor
-// ──────────────────────────────────────────────
-const FaqSupportEditor = () => {
-  const [data, setData] = useState({
-    support_title: "Still have questions?",
-    support_description: "Our support team is here to help. Get personalized assistance via chat, email, or phone.",
-    contact_button_text: "Contact Support",
-    contact_phone: "+880 1234-567890",
-    contact_email: "support@renovalifecare.com",
-    support_hours: "24/7 Availability",
-    support_hours_desc: "Online booking & chat support anytime",
-    response_time: "Fast Responses",
-    response_time_desc: "Average reply time: under 2 hours",
-    expert_answers: "Expert Answers",
-    expert_answers_desc: "Responses reviewed by medical staff",
-    secure_private: "Secure & Private",
-    secure_private_desc: "Your inquiries are confidential"
-  });
-
-  const set = (k, v) => setData({ ...data, [k]: v });
-
-  return (
-    <div className="wc-faq-editor">
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><MessageCircle size={15} /> Support Section</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-field-grid">
-            <div className="wc-field span-2">
-              <label className="wc-field-label">Support Title</label>
+            <div className="wc-field">
+              <label className="wc-field-label">Breadcrumb - Home</label>
               <input 
                 className="wc-input" 
-                value={data.support_title} 
-                onChange={e => set("support_title", e.target.value)} 
+                value={data.breadcrumb_home} 
+                onChange={e => set("breadcrumb_home", e.target.value)} 
               />
             </div>
             <div className="wc-field span-2">
-              <label className="wc-field-label">Support Description</label>
+              <label className="wc-field-label">Section Description</label>
               <textarea 
                 className="wc-textarea" 
-                value={data.support_description} 
-                onChange={e => set("support_description", e.target.value)} 
+                value={data.section_description} 
+                onChange={e => set("section_description", e.target.value)} 
                 rows={2} 
               />
             </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Contact Button Text</label>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Breadcrumb - Events</label>
               <input 
                 className="wc-input" 
-                value={data.contact_button_text} 
-                onChange={e => set("contact_button_text", e.target.value)} 
-              />
-            </div>
-            <div className="wc-field">
-              <label className="wc-field-label">Contact Phone</label>
-              <input 
-                className="wc-input" 
-                value={data.contact_phone} 
-                onChange={e => set("contact_phone", e.target.value)} 
+                value={data.breadcrumb_events} 
+                onChange={e => set("breadcrumb_events", e.target.value)} 
               />
             </div>
             <div className="wc-field span-2">
-              <label className="wc-field-label">Contact Email</label>
-              <input 
-                className="wc-input" 
-                type="email"
-                value={data.contact_email} 
-                onChange={e => set("contact_email", e.target.value)} 
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="wc-editor-card">
-        <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Star size={15} /> Feature Cards (4 Items)</h3>
-        </div>
-        <div className="wc-editor-card-body">
-          <div className="wc-faq-features-grid">
-            {[
-              { key: "response_time", label: "Fast Responses", desc: "Average reply time: under 2 hours" },
-              { key: "support_hours", label: "24/7 Availability", desc: "Online booking & chat support anytime" },
-              { key: "expert_answers", label: "Expert Answers", desc: "Responses reviewed by medical staff" },
-              { key: "secure_private", label: "Secure & Private", desc: "Your inquiries are confidential" }
-            ].map(({ key, label, desc }) => (
-              <div key={key} className="wc-faq-feature-card">
-                <div className="wc-field">
-                  <label className="wc-field-label">Feature Title</label>
-                  <input 
-                    className="wc-input" 
-                    value={data[key.replace("_", "") + "_title"] || label} 
-                    onChange={e => set(key + "_title", e.target.value)} 
-                  />
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Feature Description</label>
-                  <input 
-                    className="wc-input" 
-                    value={data[key + "_desc"] || desc} 
-                    onChange={e => set(key + "_desc", e.target.value)} 
-                  />
-                </div>
+              <label className="wc-field-label">Statistics</label>
+              <div className="wc-stats-grid">
+                {data.stats.map((stat, index) => (
+                  <div key={index} className="wc-stat-item">
+                    <input 
+                      className="wc-input" 
+                      value={stat.number} 
+                      onChange={e => updateStat(index, "number", e.target.value)} 
+                      placeholder="Number"
+                    />
+                    <input 
+                      className="wc-input" 
+                      value={stat.label} 
+                      onChange={e => updateStat(index, "label", e.target.value)} 
+                      placeholder="Label"
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
@@ -595,71 +265,557 @@ const FaqSupportEditor = () => {
 };
 
 // ──────────────────────────────────────────────
-// FAQ Features Editor
+// Events Content Editor with Tab View
 // ──────────────────────────────────────────────
-const FaqFeaturesEditor = () => {
+const EventsContentEditor = () => {
+  const [events, setEvents] = useState([
+    {
+      id: 1,
+      title: "Free Diabetes Screening Camp",
+      description: "Complimentary blood sugar testing, diet counseling, and consultations with our endocrinology specialists.",
+      time: "9:00 AM – 4:00 PM",
+      location: "Renova Life Care, Main Campus, Dhaka",
+      image: "/images/events/01.jpg",
+      category: "Health Camp",
+      date: "2025-04-15"
+    },
+    {
+      id: 2,
+      title: "Heart Health Awareness Seminar",
+      description: "Cardiologists discuss prevention, early warning signs, and Q&A on cardiovascular wellness.",
+      time: "10:00 AM – 1:00 PM",
+      location: "Renova Auditorium, 3rd Floor",
+      image: "/images/events/02.jpg",
+      category: "Seminar",
+      date: "2025-04-20"
+    },
+    {
+      id: 3,
+      title: "Rural Community Health Drive",
+      description: "Free general checkups, medicine distribution, and maternal health support for underserved communities.",
+      time: "8:00 AM – 5:00 PM",
+      location: "Savar Union, Dhaka Division",
+      image: "/images/events/03.jpg",
+      category: "Community Drive",
+      date: "2025-05-25"
+    },
+    {
+      id: 4,
+      title: "Child Nutrition & Vaccination Camp",
+      description: "Free vaccinations, growth monitoring, and nutrition guidance for children under 12.",
+      time: "11:00 AM – 2:00 PM",
+      location: "Renova Pediatric Wing",
+      image: "/images/events/04.jpg",
+      category: "Health Camp",
+      date: "2025-05-01"
+    },
+    {
+      id: 5,
+      title: "World Health Day Free Checkup Camp",
+      description: "Free health checkups and consultations for the community.",
+      time: "9:00 AM – 6:00 PM",
+      location: "Renova Main Campus, Dhaka",
+      image: "/images/events/05.jpg",
+      category: "Health Camp",
+      date: "2025-04-07"
+    },
+    {
+      id: 6,
+      title: "Annual Blood Donation Drive",
+      description: "Community blood donation drive in partnership with local hospitals.",
+      time: "8:00 AM – 4:00 PM",
+      location: "Renova Blood Bank, Dhaka",
+      image: "/images/events/06.jpg",
+      category: "Community Drive",
+      date: "2025-09-05"
+    }
+  ]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
+  const [expandedEvent, setExpandedEvent] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [activeTab, setActiveTab] = useState("upcoming");
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    time: "",
+    location: "",
+    image: "",
+    category: "Health Camp",
+    date: ""
+  });
+
+  // Get today's date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Separate events into upcoming and past
+  const upcomingEvents = events.filter(event => {
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  });
+
+  const pastEvents = events.filter(event => {
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate < today;
+  });
+
+  const openModal = (event = null) => {
+    if (event) {
+      setEditingEvent(event);
+      setFormData({
+        title: event.title,
+        description: event.description,
+        time: event.time,
+        location: event.location,
+        image: event.image,
+        category: event.category,
+        date: event.date
+      });
+    } else {
+      setEditingEvent(null);
+      setFormData({
+        title: "",
+        description: "",
+        time: "",
+        location: "",
+        image: "",
+        category: "Health Camp",
+        date: ""
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingEvent(null);
+    setFormData({
+      title: "",
+      description: "",
+      time: "",
+      location: "",
+      image: "",
+      category: "Health Camp",
+      date: ""
+    });
+  };
+
+  const handleFormChange = (key, value) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmit = () => {
+    if (!formData.title.trim()) {
+      alert("Please enter an event title");
+      return;
+    }
+
+    if (editingEvent) {
+      const updated = events.map(event => 
+        event.id === editingEvent.id 
+          ? { ...event, ...formData }
+          : event
+      );
+      setEvents(updated);
+    } else {
+      const newEvent = {
+        id: Date.now(),
+        ...formData
+      };
+      setEvents([...events, newEvent]);
+    }
+    closeModal();
+  };
+
+  const removeEvent = (id) => {
+    const updated = events.filter(event => event.id !== id);
+    setEvents(updated);
+    if (expandedEvent === id) setExpandedEvent(null);
+  };
+
+  const duplicateEvent = (id) => {
+    const event = events.find(e => e.id === id);
+    if (event) {
+      const newEvent = {
+        ...event,
+        id: Date.now(),
+        title: `${event.title} (Copy)`
+      };
+      setEvents([...events, newEvent]);
+    }
+  };
+
+  const toggleExpand = (id) => {
+    setExpandedEvent(expandedEvent === id ? null : id);
+  };
+
+  const categories = ["all", "Health Camp", "Seminar", "Community Drive", "Workshop"];
+
+  const getFilteredEvents = (eventList) => {
+    return eventList.filter(event => {
+      const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            event.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === "all" || event.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  };
+
+  const filteredUpcoming = getFilteredEvents(upcomingEvents);
+  const filteredPast = getFilteredEvents(pastEvents);
+
+  const renderEventList = (eventList, isPast = false) => {
+    if (eventList.length === 0) {
+      return (
+        <div className="wc-empty-state">
+          <div className="wc-empty-state-icon">
+            {isPast ? <Clock size={30} /> : <Calendar size={30} />}
+          </div>
+          <h3>{isPast ? "No past events" : "No upcoming events"}</h3>
+          <p>{isPast ? "Past events will appear here" : "Click 'Add Event' to create a new event"}</p>
+        </div>
+      );
+    }
+
+    return eventList.map(event => {
+      const isExpanded = expandedEvent === event.id;
+      const imagePath = event.image || "/images/events/01.jpg";
+
+      return (
+        <div key={event.id} className={`wc-event-accordion ${isExpanded ? "expanded" : ""}`}>
+          <div className="wc-event-accordion-header" onClick={() => toggleExpand(event.id)}>
+            <div className="wc-event-accordion-left">
+              <div className="wc-event-accordion-thumb">
+                <img src={imagePath} alt={event.title} />
+              </div>
+              <div className="wc-event-accordion-info">
+                <div className="wc-event-accordion-title">{event.title}</div>
+                <div className="wc-event-accordion-meta">
+                  <span className="wc-event-accordion-date">
+                    <CalendarDays size={12} />
+                    {event.date ? new Date(event.date).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    }) : "Date TBD"}
+                  </span>
+                  <span className="wc-event-accordion-category">{event.category}</span>
+                </div>
+              </div>
+            </div>
+            <div className="wc-event-accordion-right">
+              <div className="wc-event-accordion-actions">
+                <button 
+                  className="wc-icon-btn" 
+                  onClick={(e) => { e.stopPropagation(); duplicateEvent(event.id); }}
+                  title="Duplicate"
+                >
+                  <Copy size={14} />
+                </button>
+                <button 
+                  className="wc-icon-btn" 
+                  onClick={(e) => { e.stopPropagation(); openModal(event); }}
+                  title="Edit"
+                >
+                  <Edit size={14} />
+                </button>
+                <button 
+                  className="wc-icon-btn wc-icon-btn-danger" 
+                  onClick={(e) => { e.stopPropagation(); removeEvent(event.id); }}
+                  title="Delete"
+                >
+                  <Trash size={14} />
+                </button>
+              </div>
+              <ChevronRight 
+                size={18} 
+                className={`wc-accordion-chevron ${isExpanded ? "rotated" : ""}`}
+              />
+            </div>
+          </div>
+          {isExpanded && (
+            <div className="wc-event-accordion-body">
+              <div className="wc-event-detail-grid">
+                <div className="wc-event-detail-image">
+                  <img src={imagePath} alt={event.title} />
+                </div>
+                <div className="wc-event-detail-content">
+                  <p className="wc-event-detail-desc">{event.description}</p>
+                  <div className="wc-event-detail-meta">
+                    <div className="wc-event-detail-item">
+                      <ClockIcon size={14} />
+                      <span>{event.time}</span>
+                    </div>
+                    <div className="wc-event-detail-item">
+                      <MapPin size={14} />
+                      <span>{event.location}</span>
+                    </div>
+                    <div className="wc-event-detail-item">
+                      <CalendarDays size={14} />
+                      <span>{event.date ? new Date(event.date).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      }) : "Date TBD"}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <div className="wc-events-editor">
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Calendar size={15} /> Events</h3>
+          <div className="wc-editor-card-actions">
+            <span className="wc-editor-card-desc">{events.length} total events</span>
+            <button className="wc-btn wc-btn-primary wc-btn-sm" onClick={() => openModal()}>
+              <Plus size={14} /> Add Event
+            </button>
+          </div>
+        </div>
+        <div className="wc-editor-card-body">
+          {/* Filters */}
+          <div className="wc-events-filters">
+            <div className="wc-events-categories">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  className={`wc-filter-btn ${selectedCategory === cat ? "active" : ""}`}
+                  onClick={() => setSelectedCategory(cat)}
+                >
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </button>
+              ))}
+            </div>
+            <div className="wc-search">
+              <Search size={14} className="wc-search-icon" />
+              <input 
+                type="text" 
+                placeholder="Search events..." 
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="wc-event-tabs">
+            <button 
+              className={`wc-event-tab ${activeTab === "upcoming" ? "active" : ""}`}
+              onClick={() => setActiveTab("upcoming")}
+            >
+              <Calendar size={14} />
+              Upcoming Events
+              <span className="wc-event-tab-count">{filteredUpcoming.length}</span>
+            </button>
+            <button 
+              className={`wc-event-tab ${activeTab === "past" ? "active" : ""}`}
+              onClick={() => setActiveTab("past")}
+            >
+              <Clock size={14} />
+              Past Events
+              <span className="wc-event-tab-count">{filteredPast.length}</span>
+            </button>
+          </div>
+
+          {/* Event List */}
+          <div className="wc-event-accordion-list">
+            {activeTab === "upcoming" 
+              ? renderEventList(filteredUpcoming, false)
+              : renderEventList(filteredPast, true)
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="wc-modal-overlay" onClick={closeModal}>
+          <div className="wc-modal" onClick={e => e.stopPropagation()}>
+            <div className="wc-modal-header">
+              <h3 className="wc-modal-title">
+                {editingEvent ? "Edit Event" : "Create New Event"}
+              </h3>
+              <button className="wc-modal-close" onClick={closeModal}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="wc-modal-body">
+              <div className="wc-field">
+                <label className="wc-field-label">
+                  Event Title <span className="required">*</span>
+                </label>
+                <input 
+                  className="wc-input" 
+                  value={formData.title} 
+                  onChange={e => handleFormChange("title", e.target.value)} 
+                  placeholder="Enter event title"
+                  autoFocus
+                />
+              </div>
+              <div className="wc-field">
+                <label className="wc-field-label">Description</label>
+                <textarea 
+                  className="wc-textarea" 
+                  value={formData.description} 
+                  onChange={e => handleFormChange("description", e.target.value)} 
+                  rows={3}
+                  placeholder="Brief description of the event"
+                />
+              </div>
+              <div className="wc-field-grid-2">
+                <div className="wc-field">
+                  <label className="wc-field-label">Date</label>
+                  <input 
+                    className="wc-input" 
+                    type="date"
+                    value={formData.date} 
+                    onChange={e => handleFormChange("date", e.target.value)} 
+                  />
+                </div>
+                <div className="wc-field">
+                  <label className="wc-field-label">Time</label>
+                  <input 
+                    className="wc-input" 
+                    value={formData.time} 
+                    onChange={e => handleFormChange("time", e.target.value)} 
+                    placeholder="9:00 AM – 4:00 PM"
+                  />
+                </div>
+              </div>
+              <div className="wc-field">
+                <label className="wc-field-label">Location</label>
+                <input 
+                  className="wc-input" 
+                  value={formData.location} 
+                  onChange={e => handleFormChange("location", e.target.value)} 
+                  placeholder="Venue location"
+                />
+              </div>
+              <div className="wc-field">
+                <label className="wc-field-label">Category</label>
+                <select 
+                  className="wc-select" 
+                  value={formData.category} 
+                  onChange={e => handleFormChange("category", e.target.value)}
+                >
+                  <option value="Health Camp">Health Camp</option>
+                  <option value="Seminar">Seminar</option>
+                  <option value="Community Drive">Community Drive</option>
+                  <option value="Workshop">Workshop</option>
+                </select>
+              </div>
+              <div className="wc-field">
+                <label className="wc-field-label">Event Image</label>
+                <ImageUploadField 
+                  value={formData.image} 
+                  onChange={(val) => handleFormChange("image", val)} 
+                />
+              </div>
+            </div>
+            <div className="wc-modal-footer">
+              <button className="wc-btn wc-btn-ghost" onClick={closeModal}>
+                Cancel
+              </button>
+              <button className="wc-btn wc-btn-primary" onClick={handleSubmit}>
+                {editingEvent ? "Update Event" : "Create Event"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ──────────────────────────────────────────────
+// Community Outreach Editor
+// ──────────────────────────────────────────────
+const EventsOutreachEditor = () => {
   const [data, setData] = useState({
-    features: [
-      { title: "Fast Responses", description: "Average reply time: under 2 hours", icon: "Clock" },
-      { title: "24/7 Availability", description: "Online booking & chat support anytime", icon: "Globe" },
-      { title: "Expert Answers", description: "Responses reviewed by medical staff", icon: "Award" },
-      { title: "Secure & Private", description: "Your inquiries are confidential", icon: "Shield" }
+    title: "COMMUNITY & OUTREACH",
+    subtitle: "Our Events",
+    description: "Free health camps, awareness seminars, and community drives – bringing quality healthcare closer to the people of Bangladesh.",
+    stats: [
+      { number: "98", label: "Events Hosted" },
+      { number: "20", label: "Communities Served" }
     ]
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
 
-  const updateFeature = (index, key, value) => {
-    const updated = [...data.features];
+  const updateStat = (index, key, value) => {
+    const updated = [...data.stats];
     updated[index] = { ...updated[index], [key]: value };
-    set("features", updated);
+    set("stats", updated);
   };
 
   return (
-    <div className="wc-faq-editor">
+    <div className="wc-events-editor">
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
-          <h3 className="wc-editor-card-title"><Star size={15} /> Features Section</h3>
+          <h3 className="wc-editor-card-title"><Users size={15} /> Community Outreach Section</h3>
         </div>
         <div className="wc-editor-card-body">
-          <div className="wc-faq-features-grid">
-            {data.features.map((feature, i) => (
-              <div key={i} className="wc-faq-feature-card">
-                <div className="wc-field">
-                  <label className="wc-field-label">Feature Title</label>
-                  <input 
-                    className="wc-input" 
-                    value={feature.title} 
-                    onChange={e => updateFeature(i, "title", e.target.value)} 
-                  />
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Feature Description</label>
-                  <input 
-                    className="wc-input" 
-                    value={feature.description} 
-                    onChange={e => updateFeature(i, "description", e.target.value)} 
-                  />
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Icon</label>
-                  <select 
-                    className="wc-select" 
-                    value={feature.icon} 
-                    onChange={e => updateFeature(i, "icon", e.target.value)}
-                  >
-                    <option value="Clock">Clock</option>
-                    <option value="Globe">Globe</option>
-                    <option value="Award">Award</option>
-                    <option value="Shield">Shield</option>
-                    <option value="Star">Star</option>
-                    <option value="Heart">Heart</option>
-                    <option value="Users">Users</option>
-                    <option value="Settings">Settings</option>
-                  </select>
-                </div>
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Section Title</label>
+              <input 
+                className="wc-input" 
+                value={data.title} 
+                onChange={e => set("title", e.target.value)} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Subtitle</label>
+              <input 
+                className="wc-input" 
+                value={data.subtitle} 
+                onChange={e => set("subtitle", e.target.value)} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Description</label>
+              <textarea 
+                className="wc-textarea" 
+                value={data.description} 
+                onChange={e => set("description", e.target.value)} 
+                rows={2} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Statistics</label>
+              <div className="wc-stats-grid">
+                {data.stats.map((stat, index) => (
+                  <div key={index} className="wc-stat-item">
+                    <input 
+                      className="wc-input" 
+                      value={stat.number} 
+                      onChange={e => updateStat(index, "number", e.target.value)} 
+                      placeholder="Number"
+                    />
+                    <input 
+                      className="wc-input" 
+                      value={stat.label} 
+                      onChange={e => updateStat(index, "label", e.target.value)} 
+                      placeholder="Label"
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
@@ -668,24 +824,94 @@ const FaqFeaturesEditor = () => {
 };
 
 // ──────────────────────────────────────────────
-// FAQ SEO Editor
+// Volunteer Section Editor
 // ──────────────────────────────────────────────
-const FaqSeoEditor = () => {
+const EventsVolunteerEditor = () => {
   const [data, setData] = useState({
-    meta_title: "FAQ — Renova Life Care | Healthcare Questions Answered",
-    meta_description: "Find answers to common questions about appointments, billing, teleconsultation, insurance, privacy, and more at Renova Life Care.",
-    og_title: "Frequently Asked Questions — Renova Life Care",
-    og_description: "Quick answers to common questions about our healthcare services. Can't find what you're looking for? Contact us.",
-    og_image: "/images/og-faq.jpg",
-    canonical_url: "https://renovalifecare.com/faq",
-    robots: "index, follow",
-    keywords: "faq, healthcare questions, appointments, billing, insurance, teleconsultation, privacy"
+    title: "Want to Partner or Volunteer?",
+    description: "Reach out to our outreach team to collaborate on the next community health initiative.",
+    button_text: "Get in Touch",
+    button_url: "/contact",
+    image: "/images/volunteer.jpg"
   });
 
   const set = (k, v) => setData({ ...data, [k]: v });
 
   return (
-    <div className="wc-faq-editor">
+    <div className="wc-events-editor">
+      <div className="wc-editor-card">
+        <div className="wc-editor-card-header">
+          <h3 className="wc-editor-card-title"><Heart size={15} /> Volunteer / Partner Section</h3>
+        </div>
+        <div className="wc-editor-card-body">
+          <div className="wc-field-grid">
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Title <span className="required">*</span></label>
+              <input 
+                className="wc-input" 
+                value={data.title} 
+                onChange={e => set("title", e.target.value)} 
+                placeholder="Want to Partner or Volunteer?"
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Description</label>
+              <textarea 
+                className="wc-textarea" 
+                value={data.description} 
+                onChange={e => set("description", e.target.value)} 
+                rows={2} 
+              />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Button Text</label>
+              <input 
+                className="wc-input" 
+                value={data.button_text} 
+                onChange={e => set("button_text", e.target.value)} 
+              />
+            </div>
+            <div className="wc-field">
+              <label className="wc-field-label">Button URL</label>
+              <input 
+                className="wc-input" 
+                value={data.button_url} 
+                onChange={e => set("button_url", e.target.value)} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Background Image</label>
+              <ImageUploadField 
+                value={data.image} 
+                onChange={(val) => set("image", val)} 
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ──────────────────────────────────────────────
+// SEO Editor
+// ──────────────────────────────────────────────
+const EventsSeoEditor = () => {
+  const [data, setData] = useState({
+    meta_title: "Events — Renova Life Care | Health Camps & Community Outreach",
+    meta_description: "Join Renova Life Care's health camps, awareness seminars, and community drives. Free checkups, vaccinations, and health education in Bangladesh.",
+    og_title: "Community Events — Renova Life Care",
+    og_description: "Free health camps, awareness seminars, and community drives – bringing quality healthcare closer to the people of Bangladesh.",
+    og_image: "/images/og-events.jpg",
+    canonical_url: "https://renovalifecare.com/events",
+    robots: "index, follow",
+    keywords: "health camps, community outreach, awareness seminars, free checkups, healthcare Bangladesh"
+  });
+
+  const set = (k, v) => setData({ ...data, [k]: v });
+
+  return (
+    <div className="wc-events-editor">
       <div className="wc-seo-preview">
         <div className="wc-seo-preview-label">Google Search Preview</div>
         <div className="wc-seo-preview-url">{data.canonical_url}</div>
@@ -719,6 +945,38 @@ const FaqSeoEditor = () => {
               <span className="wc-field-hint">Recommended: 150-160 characters</span>
             </div>
             <div className="wc-field span-2">
+              <label className="wc-field-label">OG Title</label>
+              <input 
+                className="wc-input" 
+                value={data.og_title} 
+                onChange={e => set("og_title", e.target.value)} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">OG Description</label>
+              <textarea 
+                className="wc-textarea" 
+                value={data.og_description} 
+                onChange={e => set("og_description", e.target.value)} 
+                rows={2} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">OG Image</label>
+              <ImageUploadField 
+                value={data.og_image} 
+                onChange={(val) => set("og_image", val)} 
+              />
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Canonical URL</label>
+              <input 
+                className="wc-input" 
+                value={data.canonical_url} 
+                onChange={e => set("canonical_url", e.target.value)} 
+              />
+            </div>
+            <div className="wc-field span-2">
               <label className="wc-field-label">Keywords</label>
               <input 
                 className="wc-input" 
@@ -726,6 +984,19 @@ const FaqSeoEditor = () => {
                 onChange={e => set("keywords", e.target.value)} 
               />
               <span className="wc-field-hint">Comma separated keywords</span>
+            </div>
+            <div className="wc-field span-2">
+              <label className="wc-field-label">Robots</label>
+              <select 
+                className="wc-select" 
+                value={data.robots} 
+                onChange={e => set("robots", e.target.value)}
+              >
+                <option value="index, follow">Index, Follow</option>
+                <option value="index, nofollow">Index, No Follow</option>
+                <option value="noindex, follow">No Index, Follow</option>
+                <option value="noindex, nofollow">No Index, No Follow</option>
+              </select>
             </div>
           </div>
         </div>
@@ -735,7 +1006,7 @@ const FaqSeoEditor = () => {
 };
 
 // ──────────────────────────────────────────────
-// Helper Components
+// Image Upload Field Component
 // ──────────────────────────────────────────────
 const ImageUploadField = ({ label, hint, value, onChange }) => {
   const fileInputRef = useRef(null);
