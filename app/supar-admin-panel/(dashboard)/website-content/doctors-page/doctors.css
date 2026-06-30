@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   DOCTORS PAGE — Unique Styles
+   DOCTORS PAGE — Unique Styles (FIXED)
    ═══════════════════════════════════════════════════════════════ */
 
 .wc-doctors-page {
@@ -300,7 +300,6 @@
 
 /* ── Doctor Detail View ─────────────────────────────────────────── */
 .wc-doctor-detail-view {
-  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -592,6 +591,139 @@
   color: var(--color-text-muted);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   SPECIALTIES SECTION — FIXED STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Add Specialty Row ──────────────────────────────────────────── */
+.wc-specialties-add {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.wc-specialties-add .wc-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* ── Specialties Grid ───────────────────────────────────────────── */
+.wc-specialties-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+/* ── Specialty Item ────────────────────────────────────────────── */
+.wc-specialty-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.wc-specialty-item:hover {
+  border-color: #cbd5e1;
+}
+
+.wc-specialty-item-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* ── Specialty Actions ──────────────────────────────────────────── */
+.wc-specialty-item-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.wc-specialty-item-actions .wc-btn {
+  padding: 4px 8px;
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.wc-move-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Specialty Edit ────────────────────────────────────────────── */
+.wc-specialty-edit {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.wc-specialty-edit .wc-input {
+  flex: 1;
+  min-width: 80px;
+}
+
+/* ── Specialties Empty State ───────────────────────────────────── */
+.wc-specialties-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  color: var(--color-text-muted);
+  gap: var(--space-2);
+}
+
+.wc-specialties-empty svg {
+  color: var(--color-text-muted);
+}
+
+/* ── Features Bullets ───────────────────────────────────────────── */
+.wc-features-bullets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.wc-features-bullets .wc-input {
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ── Modal ───────────────────────────────────────────────────────── */
+.wc-modal-add-doctor {
+  max-width: 480px !important;
+  width: 95% !important;
+}
+
+.wc-modal-add-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.wc-modal-add-grid .wc-field {
+  margin-bottom: 0;
+}
+
+.wc-field-hint-warning {
+  color: var(--color-status-warning);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.wc-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--color-bg-light);
+}
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .wc-doctor-grid { grid-template-columns: 1fr; }
@@ -608,4 +740,17 @@
   .wc-doctor-avatar-placeholder { width: 150px; height: 150px; font-size: 48px; }
   .wc-detail-header { flex-direction: column; align-items: center; text-align: center; }
   .wc-detail-avatar-img { width: 140px; height: 140px; }
+  .wc-specialties-grid { grid-template-columns: 1fr; }
+  .wc-specialties-add { flex-direction: column; align-items: stretch; }
+  .wc-specialties-add .wc-input { min-width: unset; }
+  .wc-features-bullets { grid-template-columns: 1fr; }
+  .wc-modal-add-doctor { max-width: 100% !important; width: 95% !important; }
+}
+
+@media (max-width: 480px) {
+  .wc-specialty-item { flex-wrap: wrap; gap: var(--space-1); }
+  .wc-specialty-item-actions { flex-wrap: wrap; }
+  .wc-specialty-edit { flex-wrap: wrap; }
+  .wc-specialty-edit .wc-input { flex: 1 1 100%; }
+  .wc-modal-add-grid .wc-field-label { font-size: var(--font-size-sm); }
 }
