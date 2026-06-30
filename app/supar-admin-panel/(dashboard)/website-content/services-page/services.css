@@ -473,3 +473,327 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+SERVICE DETAIL SECTIONS — New Styles
+═══════════════════════════════════════════════════════════════ */
+
+/* ── What to Expect Steps ─────────────────────────────────────── */
+.wc-expect-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.wc-expect-step {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  border: var(--border-default);
+  transition: var(--transition-default);
+}
+.wc-expect-step:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+.wc-expect-step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), #0a7ed9);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+}
+.wc-expect-step-content h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+.wc-expect-step-content p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ─ Why Choose Checklist ─────────────────────────────────────── */
+.wc-why-choose-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.wc-why-choose-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+.wc-why-choose-item svg {
+  color: var(--color-status-success);
+  flex-shrink: 0;
+}
+
+/* ── FAQ Accordion ────────────────────────────────────────────── */
+.wc-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.wc-faq-item {
+  background: var(--color-white);
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: var(--transition-default);
+}
+.wc-faq-item:hover {
+  border-color: #cbd5e1;
+}
+.wc-faq-item.expanded {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+.wc-faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+}
+.wc-faq-question:hover {
+  background: var(--color-bg-light);
+}
+.wc-faq-answer {
+  padding: 0 var(--space-4) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  animation: wc-slide-down 0.2s ease;
+}
+
+/* ── Specialists Selector (inside modal) ─────────────────────── */
+.wc-specialists-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.wc-specialists-search {
+  position: relative;
+}
+.wc-specialists-search input {
+  width: 100%;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-8);
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  background: var(--color-white);
+  outline: none;
+  transition: var(--transition-fast);
+}
+.wc-specialists-search input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(1, 79, 161, 0.08);
+}
+.wc-specialists-search .wc-search-icon {
+  position: absolute;
+  left: var(--space-2);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+}
+.wc-specialists-filter-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.wc-specialists-filter-row .wc-filter-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+}
+.wc-specialists-list {
+  max-height: 280px;
+  overflow-y: auto;
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-light);
+}
+.wc-specialists-list::-webkit-scrollbar {
+  width: 4px;
+}
+.wc-specialists-list::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: 2px;
+}
+.wc-specialist-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+.wc-specialist-option:last-child {
+  border-bottom: none;
+}
+.wc-specialist-option:hover {
+  background: var(--color-white);
+}
+.wc-specialist-option.selected {
+  background: var(--color-primary-light);
+  border-left: 3px solid var(--color-primary);
+}
+.wc-specialist-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.wc-specialist-option-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), #0a7ed9);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+.wc-specialist-option-info {
+  flex: 1;
+  min-width: 0;
+}
+.wc-specialist-option-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wc-specialist-option-spec {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.wc-specialists-selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: var(--space-2);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-sm);
+  min-height: 40px;
+  border: var(--border-default);
+}
+.wc-specialist-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  border: 1px solid #dbeafe;
+}
+.wc-specialist-tag button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+}
+.wc-specialist-tag button:hover {
+  color: var(--color-status-error);
+}
+.wc-specialists-empty {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.wc-selected-count {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ── Repeater Row (for What to Expect / Why Choose / FAQ) ───── */
+.wc-repeater-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-2);
+}
+.wc-repeater-row .wc-input,
+.wc-repeater-row .wc-textarea {
+  padding: 6px 10px;
+  font-size: var(--font-size-sm);
+}
+.wc-repeater-row .wc-textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+.wc-repeater-row-actions {
+  display: flex;
+  gap: 4px;
+}
+.wc-repeater-number {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .wc-repeater-row {
+    grid-template-columns: 1fr;
+  }
+  .wc-repeater-row-actions {
+    justify-content: flex-end;
+  }
+  .wc-specialists-list {
+    max-height: 220px;
+  }
+}
