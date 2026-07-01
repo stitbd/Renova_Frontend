@@ -88,7 +88,7 @@ const AboutPage = () => {
   const sections = [
     { id: "about-hero", label: "Hero Section", icon: Layout },
     { id: "mission-vision", label: "Mission & Vision", icon: Target },
-    { id: "team", label: "Team", icon: Users },
+    { id: "team", label: "Our Leadership", icon: Users },
     { id: "managing-director", label: "Managing Director", icon: User },
     { id: "seo", label: "SEO & Meta", icon: Search }
   ];
@@ -493,7 +493,7 @@ const MDPhotoUpload = ({ value, onChange, name }) => {
 };
 
 // ──────────────────────────────────────────────
-// Team Editor with Add Member Modal & Search
+// Team Editor with Tab View & Expandable Details
 // ──────────────────────────────────────────────
 const TeamEditor = () => {
   // State for section header data
@@ -520,16 +520,16 @@ const TeamEditor = () => {
     "Nursing"
   ];
 
-  // Member names for dropdown
-  const memberNames = [
-    "Prof. Nasrin Akter",
-    "Dr. Kamrun Nahar",
-    "Dr. Shirin Sultana",
-    "Dr. Shehreen Amin Monami",
-    "Dr. Farhana Begum",
-    "Dr. Homayon Kabir",
-    "Mr. Tanvir Ahmed",
-    "Ms. Kamrun Nahar"
+  // Member names with profile images
+  const memberOptions = [
+    { name: "Prof. Nasrin Akter", image: "/images/team/01.jpg" },
+    { name: "Dr. Kamrun Nahar", image: "/images/team/02.jpg" },
+    { name: "Dr. Shirin Sultana", image: "/images/team/03.jpg" },
+    { name: "Dr. Shehreen Amin Monami", image: "/images/team/04.jpg" },
+    { name: "Dr. Farhana Begum", image: "/images/team/05.jpg" },
+    { name: "Dr. Homayon Kabir", image: "/images/team/06.jpg" },
+    { name: "Mr. Tanvir Ahmed", image: "/images/team/07.jpg" },
+    { name: "Ms. Kamrun Nahar", image: "/images/team/08.jpg" }
   ];
 
   const [teamMembers, setTeamMembers] = useState([
@@ -539,8 +539,11 @@ const TeamEditor = () => {
       role: "MEDICAL DIRECTOR",
       department: "Executive Office",
       credentials: "MBBS, MS (Gynaecology)",
+      description: "Leading medical strategy and clinical excellence across all departments.",
       social_linkedin: true,
-      image: ""
+      linkedin_url: "https://linkedin.com/in/nasrin-akter",
+      image: "/images/team/01.jpg",
+      expanded: false
     },
     {
       id: "member-2",
@@ -548,8 +551,11 @@ const TeamEditor = () => {
       role: "CHIEF OPERATIONS OFFICER",
       department: "Executive Office",
       credentials: "MBIA (Healthcare Management)",
+      description: "Oversees daily operations, process optimization, and service quality across all departments.",
       social_linkedin: true,
-      image: ""
+      linkedin_url: "https://linkedin.com/in/kamrun-nahar",
+      image: "/images/team/02.jpg",
+      expanded: false
     },
     {
       id: "member-3",
@@ -557,8 +563,11 @@ const TeamEditor = () => {
       role: "HEAD OF DIAGNOSTICS",
       department: "Diagnostics",
       credentials: "MBBS, MD (Pathology)",
+      description: "Manages diagnostic services, laboratory operations, and quality control standards.",
       social_linkedin: true,
-      image: ""
+      linkedin_url: "https://linkedin.com/in/shirin-sultana",
+      image: "/images/team/03.jpg",
+      expanded: false
     },
     {
       id: "member-4",
@@ -566,8 +575,11 @@ const TeamEditor = () => {
       role: "CHIEF FINANCIAL OFFICER",
       department: "Finance",
       credentials: "CA, MBA (Finance)",
+      description: "Directs financial strategy, budgeting, and investment planning for growth.",
       social_linkedin: true,
-      image: ""
+      linkedin_url: "https://linkedin.com/in/shehreen-monami",
+      image: "/images/team/04.jpg",
+      expanded: false
     },
     {
       id: "member-5",
@@ -575,8 +587,11 @@ const TeamEditor = () => {
       role: "HEAD OF NURSING",
       department: "Nursing",
       credentials: "BSc Nursing, MPH",
+      description: "Leads nursing staff development, patient care protocols, and clinical training.",
       social_linkedin: true,
-      image: ""
+      linkedin_url: "https://linkedin.com/in/farhana-begum",
+      image: "/images/team/05.jpg",
+      expanded: false
     }
   ]);
 
@@ -587,8 +602,9 @@ const TeamEditor = () => {
   const [newMember, setNewMember] = useState({
     role: "",
     department: "",
-    memberName: ""
+    memberIndex: null
   });
+  const [savingMember, setSavingMember] = useState(null);
 
   // Update section data
   const updateSectionData = (key, value) => {
@@ -605,7 +621,7 @@ const TeamEditor = () => {
         m.name.toLowerCase().includes(term) ||
         m.role.toLowerCase().includes(term) ||
         m.department.toLowerCase().includes(term) ||
-        m.credentials.toLowerCase().includes(term)
+        (m.description && m.description.toLowerCase().includes(term))
       );
     }
     
@@ -616,16 +632,14 @@ const TeamEditor = () => {
     return filtered;
   }, [teamMembers, searchTerm, selectedDepartment]);
 
-  // Group members by department
-  const groupedMembers = useMemo(() => {
-    const groups = {};
-    filteredMembers.forEach(member => {
-      const dept = member.department || "Other";
-      if (!groups[dept]) groups[dept] = [];
-      groups[dept].push(member);
-    });
-    return groups;
-  }, [filteredMembers]);
+  // Toggle member expansion
+  const toggleExpand = (id) => {
+    setTeamMembers(prev => 
+      prev.map(m => 
+        m.id === id ? { ...m, expanded: !m.expanded } : { ...m, expanded: false }
+      )
+    );
+  };
 
   const getDepartmentIcon = (dept) => {
     const icons = {
@@ -644,20 +658,23 @@ const TeamEditor = () => {
   };
 
   const openModal = () => {
-    setNewMember({ role: "", department: "", memberName: "" });
+    setNewMember({ role: "", department: "", memberIndex: null });
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false);
-    setNewMember({ role: "", department: "", memberName: "" });
+    setNewMember({ role: "", department: "", memberIndex: null });
   };
 
   const handleAddMember = async () => {
-    if (!newMember.role || !newMember.department || !newMember.memberName) {
+    if (!newMember.role || !newMember.department || newMember.memberIndex === null) {
       showToast("Please fill in all required fields", "error");
       return;
     }
+
+    const selectedMember = memberOptions[newMember.memberIndex];
+    if (!selectedMember) return;
 
     setIsSubmitting(true);
     await new Promise(r => setTimeout(r, 800));
@@ -665,17 +682,20 @@ const TeamEditor = () => {
     const newId = `member-${Date.now()}`;
     setTeamMembers(prev => [...prev, {
       id: newId,
-      name: newMember.memberName,
+      name: selectedMember.name,
       role: newMember.role,
       department: newMember.department,
       credentials: "",
+      description: "",
       social_linkedin: false,
-      image: ""
+      linkedin_url: "",
+      image: selectedMember.image,
+      expanded: false
     }]);
 
     setIsSubmitting(false);
     closeModal();
-    showToast(`${newMember.memberName} added successfully!`, "success");
+    showToast(`${selectedMember.name} added successfully!`, "success");
   };
 
   const removeMember = (id) => {
@@ -690,6 +710,14 @@ const TeamEditor = () => {
     );
   };
 
+  const saveMember = async (id) => {
+    setSavingMember(id);
+    await new Promise(r => setTimeout(r, 800));
+    setSavingMember(null);
+    const member = teamMembers.find(m => m.id === id);
+    showToast(`${member?.name || 'Member'} saved successfully!`, "success");
+  };
+
   const duplicateMember = (id) => {
     const member = teamMembers.find(m => m.id === id);
     if (!member) return;
@@ -697,7 +725,8 @@ const TeamEditor = () => {
     setTeamMembers(prev => [...prev, {
       ...member,
       id: newId,
-      name: `${member.name} (Copy)`
+      name: `${member.name} (Copy)`,
+      expanded: false
     }]);
   };
 
@@ -712,6 +741,76 @@ const TeamEditor = () => {
     const updated = [...teamMembers];
     [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
     setTeamMembers(updated);
+  };
+
+  // Photo Upload Component for tab body (left side)
+  const TabPhotoUploadField = ({ value, onChange, name }) => {
+    const fileInputRef = useRef(null);
+
+    const handleFileSelect = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const imageUrl = URL.createObjectURL(file);
+        onChange?.(imageUrl);
+      }
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    };
+
+    const triggerUpload = () => {
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      }
+    };
+
+    const removePhoto = () => {
+      if (value && value.startsWith('blob:')) {
+        URL.revokeObjectURL(value);
+      }
+      onChange?.(null);
+    };
+
+    return (
+      <div className="wc-photo-upload-wrapper">
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+          onChange={handleFileSelect}
+        />
+        {value ? (
+          <div className="wc-photo-preview">
+            <img src={value} alt={name || "Team member"} />
+            <div className="wc-photo-overlay">
+              <button 
+                className="wc-photo-action-btn"
+                onClick={(e) => { e.stopPropagation(); triggerUpload(); }}
+                title="Replace photo"
+              >
+                <Upload size={14} />
+              </button>
+              <button 
+                className="wc-photo-action-btn wc-photo-remove"
+                onClick={(e) => { e.stopPropagation(); removePhoto(); }}
+                title="Remove photo"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="wc-photo-upload" onClick={(e) => { e.stopPropagation(); triggerUpload(); }}>
+            <div className="wc-photo-upload-icon">
+              <UserPlus size={24} />
+            </div>
+            <p>Upload Photo</p>
+            <span>Click to browse</span>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -754,7 +853,7 @@ const TeamEditor = () => {
       <div className="wc-editor-card">
         <div className="wc-editor-card-header">
           <div className="wc-editor-card-title">
-            <Users size={15} /> Team Members ({teamMembers.length})
+            <Users size={15} /> Our Leadership ({teamMembers.length})
           </div>
           <button className="wc-btn wc-btn-primary" onClick={openModal}>
             <Plus size={14} /> Add Team Member
@@ -795,110 +894,197 @@ const TeamEditor = () => {
             </span>
           </div>
 
-          {/* Members Grid */}
-          <div className="wc-team-grid">
-            {teamMembers.map((member) => (
-              <div key={member.id} className="wc-team-member-card">
-                <div className="wc-team-member-header">
-                  <TeamPhotoUpload 
-                    value={member.image}
-                    onChange={(val) => updateMember(member.id, "image", val)}
-                    name={member.name || "Team Member"}
-                  />
-                  <button 
-                    className="wc-team-remove-btn"
-                    onClick={() => removeMember(member.id)}
-                    title="Remove member"
+          {/* Members Tab View */}
+          <div className="wc-team-tabs">
+            {filteredMembers.map((member, index) => {
+              const isExpanded = member.expanded;
+              const isSaving = savingMember === member.id;
+              
+              return (
+                <div key={member.id} className="wc-team-tab">
+                  {/* Tab Header - #1, Profile Image, Name, Role */}
+                  <div 
+                    className={`wc-team-tab-header ${isExpanded ? 'expanded' : ''}`}
+                    onClick={() => toggleExpand(member.id)}
                   >
-                    <X size={16} />
-                  </button>
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Name</label>
-                  <input 
-                    className="wc-input" 
-                    value={member.name} 
-                    onChange={e => updateMember(member.id, "name", e.target.value)} 
-                    placeholder="Full name"
-                  />
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Role</label>
-                  <select 
-                    className="wc-select" 
-                    value={member.role} 
-                    onChange={e => updateMember(member.id, "role", e.target.value)}
-                  >
-                    <option value="">Select a role...</option>
-                    {roles.map(role => (
-                      <option key={role} value={role}>{role}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Department</label>
-                  <select 
-                    className="wc-select" 
-                    value={member.department} 
-                    onChange={e => updateMember(member.id, "department", e.target.value)}
-                  >
-                    <option value="">Select a department...</option>
-                    {departments.map(dept => (
-                      <option key={dept} value={dept}>{dept}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="wc-field">
-                  <label className="wc-field-label">Credentials</label>
-                  <input 
-                    className="wc-input" 
-                    value={member.credentials} 
-                    onChange={e => updateMember(member.id, "credentials", e.target.value)} 
-                    placeholder="Degrees / certifications"
-                  />
-                </div>
-                <div className="wc-member-actions">
-                  <button 
-                    className="wc-btn wc-btn-ghost wc-btn-sm"
-                    onClick={() => moveMember(member.id, 'up')}
-                    disabled={teamMembers.findIndex(m => m.id === member.id) === 0}
-                  >
-                    <ArrowUp size={14} />
-                  </button>
-                  <button 
-                    className="wc-btn wc-btn-ghost wc-btn-sm"
-                    onClick={() => moveMember(member.id, 'down')}
-                    disabled={teamMembers.findIndex(m => m.id === member.id) === teamMembers.length - 1}
-                  >
-                    <ArrowDown size={14} />
-                  </button>
-                  <button 
-                    className="wc-btn wc-btn-ghost wc-btn-sm"
-                    onClick={() => duplicateMember(member.id)}
-                  >
-                    <Copy size={14} />
-                  </button>
-                </div>
-                <div className="wc-toggle-row" style={{ paddingTop: 8 }}>
-                  <div className="wc-toggle-info">
-                    <h4 style={{ fontSize: 12 }}>Show LinkedIn</h4>
+                    <div className="wc-team-tab-left">
+                      <span className="wc-team-tab-sl">#{index + 1}</span>
+                      <div className="wc-team-tab-avatar">
+                        {member.image ? (
+                          <img src={member.image} alt={member.name} />
+                        ) : (
+                          <User size={20} />
+                        )}
+                      </div>
+                      <div className="wc-team-tab-info">
+                        <span className="wc-team-tab-name">{member.name}</span>
+                        <span className="wc-team-tab-role">{member.role}</span>
+                      </div>
+                    </div>
+                    <div className="wc-team-tab-right">
+                      <span className="wc-team-tab-dept">
+                        {getDepartmentIcon(member.department)}
+                        {member.department}
+                      </span>
+                      <ChevronUp 
+                        size={18} 
+                        className={`wc-team-tab-chevron ${isExpanded ? 'expanded' : ''}`}
+                      />
+                    </div>
                   </div>
-                  <label className="wc-switch">
-                    <input 
-                      type="checkbox" 
-                      checked={member.social_linkedin} 
-                      onChange={e => updateMember(member.id, "social_linkedin", e.target.checked)} 
-                    />
-                    <span className="wc-switch-slider" />
-                  </label>
+
+                  {/* Tab Content (Expanded) - With Profile Image on Left */}
+                  {isExpanded && (
+                    <div className="wc-team-tab-content">
+                      <div className="wc-team-tab-details">
+                        {/* Photo Section - Left Side */}
+                        <div className="wc-team-tab-photo-section">
+                          <TabPhotoUploadField 
+                            value={member.image}
+                            onChange={(val) => updateMember(member.id, "image", val)}
+                            name={member.name || "Team Member"}
+                          />
+                        </div>
+                        
+                        {/* Info Section - Right Side */}
+                        <div className="wc-team-tab-info-section">
+                          <div className="wc-team-tab-fields">
+                            {/* Full Name */}
+                            <div className="wc-field span-2">
+                              <label className="wc-field-label">Full Name <span className="required">*</span></label>
+                              <input 
+                                className="wc-input" 
+                                value={member.name} 
+                                onChange={e => updateMember(member.id, "name", e.target.value)} 
+                                placeholder="Full name"
+                              />
+                            </div>
+                            
+                            {/* Role */}
+                            <div className="wc-field">
+                              <label className="wc-field-label">Role <span className="required">*</span></label>
+                              <select 
+                                className="wc-select" 
+                                value={member.role} 
+                                onChange={e => updateMember(member.id, "role", e.target.value)}
+                              >
+                                <option value="">Select a role...</option>
+                                {roles.map(role => (
+                                  <option key={role} value={role}>{role}</option>
+                                ))}
+                              </select>
+                            </div>
+                            
+                            {/* Department */}
+                            <div className="wc-field">
+                              <label className="wc-field-label">Department <span className="required">*</span></label>
+                              <select 
+                                className="wc-select" 
+                                value={member.department} 
+                                onChange={e => updateMember(member.id, "department", e.target.value)}
+                              >
+                                <option value="">Select a department...</option>
+                                {departments.map(dept => (
+                                  <option key={dept} value={dept}>{dept}</option>
+                                ))}
+                              </select>
+                            </div>
+                            
+                            {/* Description */}
+                            <div className="wc-field span-2">
+                              <label className="wc-field-label">Description</label>
+                              <textarea 
+                                className="wc-textarea" 
+                                value={member.description || ""} 
+                                onChange={e => updateMember(member.id, "description", e.target.value)} 
+                                placeholder="Member description"
+                                rows={2}
+                              />
+                            </div>
+                            
+                            {/* LinkedIn URL */}
+                            <div className="wc-field span-2">
+                              <label className="wc-field-label">LinkedIn URL</label>
+                              <input 
+                                className="wc-input" 
+                                value={member.linkedin_url || ""} 
+                                onChange={e => updateMember(member.id, "linkedin_url", e.target.value)} 
+                                placeholder="https://linkedin.com/in/username"
+                              />
+                            </div>
+                            
+                            {/* LinkedIn Toggle + Save Button Row */}
+                            <div className="wc-team-tab-actions span-2">
+                              <div className="wc-toggle-row" style={{ paddingTop: 0, paddingBottom: 0, borderBottom: 'none' }}>
+                                <div className="wc-toggle-info">
+                                  <h4 style={{ fontSize: 12 }}>Show LinkedIn badge on member profile</h4>
+                                </div>
+                                <label className="wc-switch">
+                                  <input 
+                                    type="checkbox" 
+                                    checked={member.social_linkedin} 
+                                    onChange={e => updateMember(member.id, "social_linkedin", e.target.checked)} 
+                                  />
+                                  <span className="wc-switch-slider" />
+                                </label>
+                              </div>
+                              <button 
+                                className="wc-btn wc-btn-success wc-btn-sm"
+                                onClick={(e) => { e.stopPropagation(); saveMember(member.id); }}
+                                disabled={isSaving}
+                              >
+                                {isSaving ? (
+                                  <><RefreshCw size={14} className="spinning" /> Saving...</>
+                                ) : (
+                                  <><Save size={14} /> Save</>
+                                )}
+                              </button>
+                            </div>
+                            
+                            {/* Action Buttons - Move, Copy, Delete */}
+                            <div className="wc-team-tab-actions-bottom span-2">
+                              <div className="wc-member-actions">
+                                <button 
+                                  className="wc-btn wc-btn-ghost wc-btn-sm"
+                                  onClick={(e) => { e.stopPropagation(); moveMember(member.id, 'up'); }}
+                                  disabled={teamMembers.findIndex(m => m.id === member.id) === 0}
+                                >
+                                  <ArrowUp size={14} />
+                                </button>
+                                <button 
+                                  className="wc-btn wc-btn-ghost wc-btn-sm"
+                                  onClick={(e) => { e.stopPropagation(); moveMember(member.id, 'down'); }}
+                                  disabled={teamMembers.findIndex(m => m.id === member.id) === teamMembers.length - 1}
+                                >
+                                  <ArrowDown size={14} />
+                                </button>
+                                <button 
+                                  className="wc-btn wc-btn-ghost wc-btn-sm"
+                                  onClick={(e) => { e.stopPropagation(); duplicateMember(member.id); }}
+                                >
+                                  <Copy size={14} />
+                                </button>
+                                <button 
+                                  className="wc-btn wc-btn-danger wc-btn-sm"
+                                  onClick={(e) => { e.stopPropagation(); removeMember(member.id); }}
+                                >
+                                  <Trash size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {filteredMembers.length === 0 && (
             <div className="wc-team-empty-state">
-              <AlertCircle size={48} className="wc-empty-icon" />
+              <AlertCircle size={48} />
               <h3>No members found</h3>
               <p>Try adjusting your search filters or add a new team member</p>
               <button className="wc-btn wc-btn-primary" onClick={openModal}>
@@ -906,10 +1092,6 @@ const TeamEditor = () => {
               </button>
             </div>
           )}
-
-          <button className="wc-repeater-add" onClick={openModal}>
-            <Plus size={14} /> Add Team Member
-          </button>
         </div>
       </div>
 
@@ -959,21 +1141,49 @@ const TeamEditor = () => {
                   </select>
                 </div>
 
-                {/* Member Name Dropdown */}
+                {/* Member Name Dropdown with Image */}
                 <div className="wc-field">
                   <label className="wc-field-label">
                     Member Name <span className="required">*</span>
                   </label>
                   <select
                     className="wc-select"
-                    value={newMember.memberName}
-                    onChange={e => handleNewMemberChange("memberName", e.target.value)}
+                    value={newMember.memberIndex !== null ? newMember.memberIndex : ""}
+                    onChange={e => handleNewMemberChange("memberIndex", parseInt(e.target.value))}
                   >
                     <option value="">Select a member...</option>
-                    {memberNames.map(name => (
-                      <option key={name} value={name}>{name}</option>
+                    {memberOptions.map((member, index) => (
+                      <option key={index} value={index}>
+                        {member.name}
+                      </option>
                     ))}
                   </select>
+                  {newMember.memberIndex !== null && memberOptions[newMember.memberIndex] && (
+                    <div style={{ 
+                      marginTop: '8px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '10px',
+                      padding: '8px',
+                      background: '#f8fafc',
+                      borderRadius: '6px',
+                      border: '1px solid #e2e8f0'
+                    }}>
+                      <img 
+                        src={memberOptions[newMember.memberIndex].image} 
+                        alt={memberOptions[newMember.memberIndex].name}
+                        style={{ 
+                          width: '32px', 
+                          height: '32px', 
+                          borderRadius: '50%', 
+                          objectFit: 'cover'
+                        }}
+                      />
+                      <span style={{ fontSize: '13px', fontWeight: '500' }}>
+                        {memberOptions[newMember.memberIndex].name}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1012,7 +1222,7 @@ const ManagingDirectorEditor = () => {
     md_role: "MANAGING DIRECTOR",
     md_specialty: "MBBS, FCPS (Medicine)",
     md_badge: "15+ Years Leading | 50K+ Lives Touched | 98% Patient Satisfaction",
-    md_image: "",
+    md_image: "/images/team/md.jpg",
     quote: "At Renova Life Care, our mission has always been simple: to deliver world-class healthcare with a human touch. Every patient who walks through our doors deserves the best medical expertise paired with genuine compassion. We are committed to continuous growth, ethical practice, and making quality care accessible to all.",
     stats: [
       { label: "Years Leading", value: "15+" },
