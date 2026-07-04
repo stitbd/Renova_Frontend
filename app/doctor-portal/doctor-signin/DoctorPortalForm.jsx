@@ -87,6 +87,7 @@ export default function DoctorPortalForm() {
               alt="Renova Life Care Logo"
               width={160}
               height={60}
+              loading="eager"
               className="doctor-portal__logo"
               style={{ objectFit: "contain" }}
             />

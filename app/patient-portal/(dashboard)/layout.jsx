@@ -137,7 +137,7 @@ export default function PatientPortalLayout({ children }) {
         {/* Sidebar */}
         <aside className={`patient-sidebar ${sidebarOpen ? "open" : ""}`}>
           <div className="sidebar-logo">
-            <img src="/images/logo2.png" alt="Renova Life Care" />
+            <img src="/images/logo2.png" alt="Renova Life Care" loading="eager" />
           </div>
 
           <nav className="sidebar-nav">

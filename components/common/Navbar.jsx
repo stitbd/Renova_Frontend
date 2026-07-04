@@ -402,6 +402,7 @@ export default function Navbar() {
                 width={180}
                 height={64}
                 priority
+                loading="eager"
                 style={{ width: "auto", height: "52px", maxHeight: "52px", objectFit: "contain" }}
               />
             </div>
@@ -526,6 +527,7 @@ export default function Navbar() {
               alt="Renova Life Care"
               width={160}
               height={56}
+              loading="eager"
               style={{ width: "auto", height: "38px", maxHeight: "38px", objectFit: "contain" }}
             />
           </Link>

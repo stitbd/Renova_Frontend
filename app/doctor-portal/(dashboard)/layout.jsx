@@ -122,7 +122,7 @@ export default function DoctorPortalDashboardLayout({ children }) {
         <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : ""}`}>
           <div className="sidebar-header">
             <div className="sidebar-logo">
-              <img src="/images/logo2.png" alt="Renova Life Care" />
+              <img src="/images/logo2.png" alt="Renova Life Care" loading="eager" />
             </div>
           </div>
 

@@ -62,6 +62,7 @@ export default function SuperAdminPortalForm() {
               alt="Renova Life Care Logo"
               width={160}
               height={60}
+              loading="eager"
               className="super-admin-portal__logo"
               style={{ objectFit: "contain" }}
             />

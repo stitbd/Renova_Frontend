@@ -81,6 +81,7 @@ export default function PatientPortalForm() {
               alt="Renova Life Care Logo"
               width={160}
               height={60}
+              loading="eager"
               className="patient-portal__logo"
               style={{ objectFit: "contain" }}
             />

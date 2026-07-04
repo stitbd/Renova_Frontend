@@ -61,6 +61,7 @@ export default function OutletPortalForm() {
               alt="Renova Life Care Logo"
               width={160}
               height={60}
+              loading="eager"
               className="outlet-portal__logo"
               style={{ objectFit: "contain" }}
             />

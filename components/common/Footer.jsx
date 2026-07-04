@@ -68,6 +68,7 @@ export default function Footer() {
                   width={200}
                   height={80}
                   priority
+                  loading="eager"
                   style={{ width: '100%', height: 'auto' }}
                 />
               </div>

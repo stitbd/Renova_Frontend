@@ -14,6 +14,7 @@ export default function Sidebar({ isOpen, onClose }) {
         <img
           src="/images/logo2.png"
           alt="Renova Life Care"
+          loading="eager"
           onError={(e) => { e.target.style.display = "none"; }}
         />
       </div>
