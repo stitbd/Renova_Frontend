@@ -129,6 +129,11 @@ const navItems = [
     label: "Patient Trends",
     icon: TrendingUp,
   },
+  {
+    href: "/supar-admin-panel/analytics/website-analytics",
+    label: "Website Analytics",
+    icon: Globe,
+  },
   // {
   //   type: "section",
   //   label: "ACCESS CONTROL",
