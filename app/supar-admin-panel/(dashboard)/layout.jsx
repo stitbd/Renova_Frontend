@@ -96,6 +96,11 @@ const navItems = [
     label: "FINANCE",
   },
   {
+    href: "/supar-admin-panel/finance/expenses",
+    label: "Expenses",
+    icon: DollarSign,
+  },
+  {
     href: "/supar-admin-panel/finance/revenue",
     label: "Revenue",
     icon: DollarSign,
