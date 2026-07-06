@@ -11,6 +11,8 @@ import ExpenseDetailsModal from "./components/ExpenseDetailsModal";
 import DocumentViewerModal from "./components/DocumentViewerModal";
 import VendorDetailsModal from "./components/VendorDetailsModal";
 import AllExpensesModal from "./components/AllExpensesModal";
+import PrintableReport from "./components/PrintableReport";
+import { exportOverviewToPDF, exportExpensesToExcel } from "./utils/exportUtils";
 import {
     DollarSign, Calendar, TrendingUp, TrendingDown, CreditCard, Building2,
     Activity, Users, CheckCircle, AlertTriangle, Info, XCircle,
@@ -239,6 +241,55 @@ const cashFlowMonths = [38, 41, 36, 45, 40, 48, 44, 52, 47, 55, 50, 58];
 const statusOptions = ["approved", "pending", "rejected"];
 const methodOptions = ["Bank Transfer", "Cash", "Credit Card", "Online Payment"];
 
+// ─── Dynamic Financial Overview KPI builder (today/monthly/yearly/custom) ───
+const kpiVariantCycle = ["primary", "secondary", "tertiary", "quaternary", "quinary", "senary", "septenary", "octonary", "nonary", "denary"];
+
+const formatKpiAmount = (n) => {
+    return `৳${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
+const periodTotalLabel = {
+    today: "Today's Expenses",
+    monthly: "Monthly Expenses",
+    yearly: "Yearly Expenses",
+    custom: "Custom Range Expenses",
+};
+
+const buildOverviewKpis = (periodExpenses, period, allCategories) => {
+    const sumNet = (arr) => arr.reduce((s, e) => s + e.net, 0);
+    const total = sumNet(periodExpenses);
+    const cash = sumNet(periodExpenses.filter((e) => e.method === "Cash"));
+    const bank = sumNet(periodExpenses.filter((e) => e.method === "Bank Transfer"));
+    const online = sumNet(periodExpenses.filter((e) => e.method === "Online Payment" || e.method === "Credit Card"));
+    const pendingCount = periodExpenses.filter((e) => e.status === "pending").length;
+    const approvedCount = periodExpenses.filter((e) => e.status === "approved").length;
+    const rejectedCount = periodExpenses.filter((e) => e.status === "rejected").length;
+
+    const cards = [
+        { label: periodTotalLabel[period], value: formatKpiAmount(total), trend: "", up: true, icon: DollarSign, variant: "primary" },
+        { label: "Cash Expense", value: formatKpiAmount(cash), trend: "", up: true, icon: CreditCard, variant: "nonary" },
+        { label: "Bank Expense", value: formatKpiAmount(bank), trend: "", up: true, icon: Building2, variant: "denary" },
+        { label: "Online Payment", value: formatKpiAmount(online), trend: "", up: true, icon: Globe, variant: "quinary" },
+        { label: "Pending Approval", value: String(pendingCount), trend: "", up: true, icon: AlertCircle, variant: "senary" },
+        { label: "Approved Expenses", value: String(approvedCount), trend: "", up: true, icon: CheckCircle, variant: "septenary" },
+        { label: "Rejected Expenses", value: String(rejectedCount), trend: "", up: false, icon: XCircle, variant: "octonary" },
+    ];
+
+    const categoryTotals = {};
+    periodExpenses.forEach((e) => {
+        if (!e.category || e.category === "-") return;
+        categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.net;
+    });
+
+    // Always show one card per category from the Expense Categories list, even if 0
+    allCategories.forEach((cat, i) => {
+        const val = categoryTotals[cat] || 0;
+        cards.push({ label: cat, value: formatKpiAmount(val), trend: "", up: true, icon: Package, variant: kpiVariantCycle[i % kpiVariantCycle.length] });
+    });
+
+    return cards;
+};
+
 // ─── Sub-Components ─────────────────────────────────────────────
 const SectionHeader = ({ icon: Icon, title, subtitle, action, color = "#2563eb", bg = "#eff6ff" }) => (
     <div className="em-section-header">
@@ -265,10 +316,12 @@ const KpiCard = ({ label, value, trend, up, icon: Icon, color, variant }) => (
         </div>
         <div className="em-kpi-row-bottom">
             <div className="em-kpi-label">{label}</div>
-            <span className={`em-kpi-trend ${up ? "up" : "down"}`}>
-                {up ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
-                {trend}
-            </span>
+            {trend ? (
+                <span className={`em-kpi-trend ${up ? "up" : "down"}`}>
+                    {up ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                    {trend}
+                </span>
+            ) : null}
         </div>
     </motion.div>
 );
@@ -331,17 +384,56 @@ export default function ExpenseManagementPage() {
     const [editingVendor, setEditingVendor] = useState(null); // vendor object being edited, null = "Add" mode
     const [viewingVendor, setViewingVendor] = useState(null); // vendor object being viewed in details modal
     const [categoryDetails, setCategoryDetails] = useState({}); // { [categoryName]: { type, budgetHead, description, status } }
-const [editingCategory, setEditingCategory] = useState(null); // original category name being edited, null = "Add" mode
+    const [editingCategory, setEditingCategory] = useState(null); // original category name being edited, null = "Add" mode
 
     const [approvalRequests, setApprovalRequests] = useState(approvals);
     const [requestChangesTarget, setRequestChangesTarget] = useState(null);
     const [requestChangesNote, setRequestChangesNote] = useState("");
+
+    const [overviewPeriod, setOverviewPeriod] = useState("monthly"); // 'today' | 'monthly' | 'yearly' | 'custom'
+    const [overviewCustomFrom, setOverviewCustomFrom] = useState("");
+    const [overviewCustomTo, setOverviewCustomTo] = useState("");
 
     const branchNames = branches.map((b) => b.name).concat(["Head Office"]);
     const deptNames = [...new Set(departments.map((d) => d.name))];
     const vendorNames = vendors.map((v) => v.name);
 
     const pendingApprovals = approvalRequests.filter((a) => a.status === "pending");
+
+    const getPeriodExpenses = (period, customFrom, customTo) => {
+        const now = new Date();
+        return expenses.filter((row) => {
+            const d = new Date(row.date);
+            if (period === "today") {
+                return row.date === now.toISOString().slice(0, 10);
+            }
+            if (period === "monthly") {
+                return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+            }
+            if (period === "yearly") {
+                return d.getFullYear() === now.getFullYear();
+            }
+            if (period === "custom") {
+                if (!customFrom || !customTo) return false;
+                return row.date >= customFrom && row.date <= customTo;
+            }
+            return true;
+        });
+    };
+
+    const overviewExpenses = useMemo(
+        () => getPeriodExpenses(overviewPeriod, overviewCustomFrom, overviewCustomTo),
+        [expenses, overviewPeriod, overviewCustomFrom, overviewCustomTo]
+    );
+
+    const overviewKpiMetrics = useMemo(
+        () => buildOverviewKpis(overviewExpenses, overviewPeriod, categories),
+        [overviewExpenses, overviewPeriod, categories]
+    );
+
+    const overviewPeriodLabel = overviewPeriod === "custom"
+        ? (overviewCustomFrom && overviewCustomTo ? `${overviewCustomFrom} to ${overviewCustomTo}` : "Custom Range")
+        : { today: "Today", monthly: "This Month", yearly: "This Year" }[overviewPeriod];
 
     const currentMonthExpenses = useMemo(() => {
         const now = new Date();
@@ -563,6 +655,21 @@ const [editingCategory, setEditingCategory] = useState(null); // original catego
 
     return (
         <div className="em-page">
+            <PrintableReport
+                kpiMetrics={overviewKpiMetrics}
+                periodLabel={overviewPeriodLabel}
+                topCategorySpend={topCategorySpend}
+                topVendorsSpend={topVendorsSpend}
+                yearlyComparison={yearlyComparison}
+                monthlyTrend={[35, 42, 38, 55, 48, 62, 58, 72, 68, 85, 78, 92]}
+                categoryDistribution={[
+                    { label: "Salary", pct: 32, color: "#2563eb" },
+                    { label: "Medical", pct: 24, color: "#059669" },
+                    { label: "Operations", pct: 20, color: "#7c3aed" },
+                    { label: "Others", pct: 24, color: "#ea580c" },
+                ]}
+                cashFlowMonths={cashFlowMonths}
+            />
             <main className="em-main">
                 {/* ─── HEADER ─────────────────────────────────── */}
                 <header className="em-header">
@@ -587,17 +694,41 @@ const [editingCategory, setEditingCategory] = useState(null); // original catego
                         </button>
                         <button className="em-btn em-btn-ghost" onClick={() => { setEditingCategory(null); setModal("category"); }}><Layers size={14} /> Add Category</button>
                         <button className="em-btn em-btn-ghost" onClick={() => { setEditingVendor(null); setModal("vendor"); }}><Users size={14} /> Add Vendor</button>
-                        <button className="em-btn em-btn-ghost"><FileText size={14} /> Export PDF</button>
-                        <button className="em-btn em-btn-ghost"><Receipt size={14} /> Print</button>
+                        <button className="em-btn em-btn-ghost" onClick={() => exportOverviewToPDF()}><FileText size={14} /> Export PDF</button>
+                        <button className="em-btn em-btn-ghost" onClick={() => window.print()}><Receipt size={14} /> Print</button>
                     </div>
                 </header>
 
                 {/* ─── SECTION 1: FINANCIAL OVERVIEW ───────────────── */}
                 <motion.section className="em-section" variants={fadeUp} initial="hidden" animate="visible">
-                    <SectionHeader icon={DollarSign} title="Financial Overview" subtitle="Real-time expense tracking across all dimensions" />
-                    <motion.div className="em-kpi-grid" variants={stagger} initial="hidden" animate="visible">
-                        {kpiMetrics.map((kpi, i) => <KpiCard key={i} {...kpi} />)}
-                    </motion.div>
+                    <SectionHeader
+                        icon={DollarSign}
+                        title="Financial Overview"
+                        subtitle={`Real-time expense tracking — ${overviewPeriodLabel}`}
+                        action={
+                            <div className="em-overview-filter">
+                                <button className={`em-btn em-btn-ghost ${overviewPeriod === "today" ? "em-btn-active" : ""}`} onClick={() => setOverviewPeriod("today")}>Today</button>
+                                <button className={`em-btn em-btn-ghost ${overviewPeriod === "monthly" ? "em-btn-active" : ""}`} onClick={() => setOverviewPeriod("monthly")}>Monthly</button>
+                                <button className={`em-btn em-btn-ghost ${overviewPeriod === "yearly" ? "em-btn-active" : ""}`} onClick={() => setOverviewPeriod("yearly")}>Yearly</button>
+                                <button className={`em-btn em-btn-ghost ${overviewPeriod === "custom" ? "em-btn-active" : ""}`} onClick={() => setOverviewPeriod("custom")}>Custom</button>
+                                {overviewPeriod === "custom" && (
+                                    <>
+                                        <input type="date" className="em-overview-date-input" value={overviewCustomFrom} onChange={(e) => setOverviewCustomFrom(e.target.value)} />
+                                        <input type="date" className="em-overview-date-input" value={overviewCustomTo} onChange={(e) => setOverviewCustomTo(e.target.value)} />
+                                    </>
+                                )}
+                            </div>
+                        }
+                    />
+                    {overviewKpiMetrics.length > 0 ? (
+                        <motion.div className="em-kpi-grid" variants={stagger} initial="hidden" animate="visible">
+                            {overviewKpiMetrics.map((kpi, i) => <KpiCard key={i} {...kpi} />)}
+                        </motion.div>
+                    ) : (
+                        <div className="em-card">
+                            <p className="em-card-footnote" style={{ margin: 0 }}>No expenses found for the selected period.</p>
+                        </div>
+                    )}
                 </motion.section>
 
                 {/* ─── SECTION 2: EXPENSE ANALYTICS ────────────────── */}
@@ -689,7 +820,7 @@ const [editingCategory, setEditingCategory] = useState(null); // original catego
                                 <button className={`em-btn em-btn-ghost ${activeFilterCount ? "em-btn-active" : ""}`} onClick={() => setShowFilters((s) => !s)}>
                                     <Filter size={14} /> Filters {activeFilterCount > 0 && <span className="em-filter-count">{activeFilterCount}</span>}
                                 </button>
-                                <button className="em-btn em-btn-ghost"><Download size={14} /> Export Excel</button>
+                                <button className="em-btn em-btn-ghost" onClick={() => exportExpensesToExcel(expenses)}><Download size={14} /> Export Excel</button>
                                 <button className="em-btn em-btn-primary em-view-all-desktop" onClick={() => setShowAllExpenses(true)}>
                                     <Eye size={14} /> View All Expenses
                                 </button>

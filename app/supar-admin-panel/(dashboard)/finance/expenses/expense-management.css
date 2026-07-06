@@ -150,6 +150,28 @@ body {
     border-top: 1px solid var(--border-light);
 }
 
+/* ─── Financial Overview period filter ─── */
+.em-overview-filter {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.em-overview-date-input {
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text-main);
+    background: #fff;
+    outline: none;
+}
+.em-overview-date-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
 /* ─── Buttons ─────────────────────────────────────────────────── */
 .em-btn {
     display: inline-flex;
@@ -1695,4 +1717,159 @@ body {
     .em-cashflow-chart { height: 55px; }
     .em-card { padding: 10px; }
     .em-card-title { font-size: 12px; margin-bottom: 8px; }
+}
+
+
+
+
+/* ─── Printable Report (hidden on screen, used by PDF export & Print) ─── */
+.em-print-report {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 794px;
+    background: #ffffff;
+    padding: 28px 32px;
+    font-family: var(--font-sans);
+    color: #0f172a;
+}
+
+.em-print-header {
+    text-align: center;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 12px;
+}
+.em-print-header h1 { font-size: 20px; font-weight: 800; color: #2563eb; }
+.em-print-header p { font-size: 13px; color: #334155; margin-top: 2px; }
+.em-print-header span { font-size: 10.5px; color: #94a3b8; }
+
+.em-print-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin: 14px 0 8px;
+    color: #0f172a;
+    border-left: 4px solid #2563eb;
+    padding-left: 8px;
+}
+
+.em-print-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+}
+.em-print-kpi-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.em-print-kpi-label { font-size: 8px; color: #64748b; font-weight: 600; }
+.em-print-kpi-value { font-size: 12px; font-weight: 800; }
+.em-print-kpi-trend { font-size: 8px; font-weight: 700; }
+.em-print-kpi-trend.up { color: #16a34a; }
+.em-print-kpi-trend.down { color: #ef4444; }
+
+.em-print-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.em-print-block h3 {
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #334155;
+}
+.em-print-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+.em-print-table { width: 100%; border-collapse: collapse; font-size: 9.5px; }
+.em-print-table td { padding: 2.5px 4px; border-bottom: 1px solid #f1f5f9; }
+.em-print-right { text-align: right; font-weight: 700; }
+
+/* Mini bar chart (Monthly Trend / Yearly Comparison) */
+.em-print-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 55px;
+    gap: 3px;
+}
+.em-print-bars-yearly { height: 45px; }
+.em-print-bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 3px;
+}
+.em-print-bar-col span { font-size: 7px; color: #64748b; font-weight: 600; }
+.em-print-bar {
+    width: 100%;
+    max-width: 12px;
+    background: linear-gradient(to top, #2563eb, #60a5fa);
+    border-radius: 2px 2px 0 0;
+}
+.em-print-bar-green { background: linear-gradient(to top, #059669, #6ee7b7); }
+
+/* Donut chart */
+.em-print-donut-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.em-print-donut {
+    width: 60px;
+    height: 60px;
+    transform: rotate(-90deg);
+    flex-shrink: 0;
+}
+.em-print-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 8.5px;
+    color: #334155;
+    font-weight: 500;
+}
+.em-print-legend div { display: flex; align-items: center; gap: 5px; }
+.em-print-legend span {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Cash flow SVG */
+.em-print-cashflow {
+    width: 100%;
+    height: 55px;
+}
+.em-print-footnote {
+    font-size: 8px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+/* ─── Print Media (Print button click → window.print()) ─── */
+@media print {
+    body * { visibility: hidden; }
+    .em-print-report, .em-print-report * { visibility: visible; }
+    .em-print-report {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 10mm;
+    }
+    @page { size: A4; margin: 0; }
 }
