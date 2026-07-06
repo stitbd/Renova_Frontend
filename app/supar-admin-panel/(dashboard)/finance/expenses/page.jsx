@@ -8,6 +8,9 @@ import AddExpenseModal from "./components/AddExpenseModal";
 import AddCategoryModal from "./components/AddCategoryModal";
 import AddVendorModal from "./components/AddVendorModal";
 import ExpenseDetailsModal from "./components/ExpenseDetailsModal";
+import DocumentViewerModal from "./components/DocumentViewerModal";
+import VendorDetailsModal from "./components/VendorDetailsModal";
+import AllExpensesModal from "./components/AllExpensesModal";
 import {
     DollarSign, Calendar, TrendingUp, TrendingDown, CreditCard, Building2,
     Activity, Users, CheckCircle, AlertTriangle, Info, XCircle,
@@ -60,7 +63,6 @@ const kpiMetrics = [
     { label: "Cash Expense", value: "৳12.5M", trend: "+2%", up: true, icon: CreditCard, variant: "nonary" },
     { label: "Bank Expense", value: "৳28.4M", trend: "+8%", up: true, icon: Building2, variant: "denary" },
     { label: "Online Payment", value: "৳7.6M", trend: "+15%", up: true, icon: Globe, variant: "primary" },
-    { label: "Branch-wise Exp", value: "৳42.1M", trend: "+10%", up: true, icon: MapPin, variant: "secondary" },
     { label: "Staff Salary", value: "৳18.5M", trend: "+0%", up: true, icon: Users, variant: "tertiary" },
     { label: "Doctor Payments", value: "৳12.4M", trend: "+5%", up: true, icon: UserCog, variant: "quaternary" },
     { label: "Marketing Exp", value: "৳3.2M", trend: "+18%", up: true, icon: Megaphone, variant: "quinary" },
@@ -73,14 +75,60 @@ const kpiMetrics = [
     { label: "Sample Collection", value: "৳1.5M", trend: "+10%", up: true, icon: Microscope, variant: "secondary" },
     { label: "Courier Cost", value: "৳0.6M", trend: "+3%", up: true, icon: Send, variant: "tertiary" },
     { label: "Transportation Cost", value: "৳1.1M", trend: "-1%", up: false, icon: Truck, variant: "quaternary" },
+    { label: "Others", value: "৳2.1M", trend: "+10%", up: true, icon: DollarSign, variant: "secondary" },
 ];
 
 const initialExpenses = [
-    { id: "EXP-1042", date: "2026-07-05", title: "Reagent Purchase - Q3", category: "Laboratory", sub: "Diagnostic Reagents", branch: "Dhanmondi", dept: "Pathology", vendor: "MedSupply Co.", method: "Bank Transfer", invoice: "INV-9921", amount: 145000, tax: 5, discount: 0, net: 152250, created: "Admin 1", approved: "Super Admin", status: "approved", attachment: 2, remarks: "Urgent restock" },
-    { id: "EXP-1041", date: "2026-07-04", title: "Facebook Ads Campaign", category: "Marketing", sub: "Digital Marketing", branch: "Head Office", dept: "Marketing", vendor: "Meta Platforms", method: "Credit Card", invoice: "INV-8832", amount: 50000, tax: 0, discount: 0, net: 50000, created: "Manager 2", approved: "-", status: "pending", attachment: 1, remarks: "July campaign" },
-    { id: "EXP-1040", date: "2026-07-03", title: "Ambulance Fuel", category: "Transportation", sub: "Fuel", branch: "Uttara", dept: "Administration", vendor: "Padma Oil", method: "Cash", invoice: "INV-7712", amount: 12000, tax: 0, discount: 0, net: 12000, created: "Staff 4", approved: "Admin 1", status: "approved", attachment: 1, remarks: "Monthly fuel" },
-    { id: "EXP-1039", date: "2026-07-02", title: "Cloud Hosting AWS", category: "IT", sub: "Cloud Hosting", branch: "Head Office", dept: "IT", vendor: "AWS", method: "Online Payment", invoice: "INV-6601", amount: 85000, tax: 0, discount: 5, net: 80750, created: "Admin 2", approved: "Super Admin", status: "approved", attachment: 1, remarks: "Monthly bill" },
-    { id: "EXP-1038", date: "2026-07-01", title: "Office Rent - July", category: "Administrative", sub: "Office Rent", branch: "Mirpur", dept: "Accounts", vendor: "RealState BD", method: "Bank Transfer", invoice: "INV-5590", amount: 120000, tax: 0, discount: 0, net: 120000, created: "Admin 1", approved: "-", status: "rejected", attachment: 3, remarks: "Duplicate entry" },
+    { id: "EXP-1042", date: "2026-07-05", title: "Reagent Purchase - Q3", category: "Laboratory", sub: "Diagnostic Reagents", branch: "Dhanmondi", dept: "Pathology", vendor: "MedSupply Co.", method: "Bank Transfer", invoice: "INV-9921", amount: 145000, tax: 5, discount: 0, net: 152250, created: "Admin 1", approved: "Super Admin", status: "approved", attachment: 2, remarks: "Urgent restock",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+            { name: "Invoice.jpg", url: "/images/docs/Invoice.jpg" },
+        ] },
+    { id: "EXP-1041", date: "2026-07-04", title: "Facebook Ads Campaign", category: "Marketing", sub: "Digital Marketing", branch: "Head Office", dept: "Marketing", vendor: "Meta Platforms", method: "Credit Card", invoice: "INV-8832", amount: 50000, tax: 0, discount: 0, net: 50000, created: "Manager 2", approved: "-", status: "pending", attachment: 1, remarks: "July campaign",
+        docs: [
+            { name: "Invoice.jpg", url: "/images/docs/Invoice.jpg" },
+        ] },
+    { id: "EXP-1040", date: "2026-07-03", title: "Ambulance Fuel", category: "Transportation", sub: "Fuel", branch: "Uttara", dept: "Administration", vendor: "Padma Oil", method: "Cash", invoice: "INV-7712", amount: 12000, tax: 0, discount: 0, net: 12000, created: "Staff 4", approved: "Admin 1", status: "approved", attachment: 1, remarks: "Monthly fuel",
+        docs: [
+            { name: "Prescription.jpg", url: "/images/docs/Prescription.jpg" },
+        ] },
+    { id: "EXP-1039", date: "2026-07-02", title: "Cloud Hosting AWS", category: "IT", sub: "Cloud Hosting", branch: "Head Office", dept: "IT", vendor: "AWS", method: "Online Payment", invoice: "INV-6601", amount: 85000, tax: 0, discount: 5, net: 80750, created: "Admin 2", approved: "Super Admin", status: "approved", attachment: 1, remarks: "Monthly bill",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+        ] },
+    { id: "EXP-1038", date: "2026-07-01", title: "Office Rent - July", category: "Administrative", sub: "Office Rent", branch: "Mirpur", dept: "Accounts", vendor: "RealState BD", method: "Bank Transfer", invoice: "INV-5590", amount: 120000, tax: 0, discount: 0, net: 120000, created: "Admin 1", approved: "-", status: "rejected", attachment: 3, remarks: "Duplicate entry",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+            { name: "Invoice.jpg", url: "/images/docs/Invoice.jpg" },
+            { name: "Prescription.jpg", url: "/images/docs/Prescription.jpg" },
+        ] },
+    { id: "EXP-1037", date: "2026-07-05", title: "Reagent Purchase - Q3", category: "Laboratory", sub: "Diagnostic Reagents", branch: "Dhanmondi", dept: "Pathology", vendor: "MedSupply Co.", method: "Bank Transfer", invoice: "INV-9921", amount: 145000, tax: 5, discount: 0, net: 152250, created: "Admin 1", approved: "Super Admin", status: "approved", attachment: 2, remarks: "Urgent restock",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+            { name: "Invoice.jpg", url: "/images/docs/Invoice.jpg" },
+        ] },
+    { id: "EXP-1036", date: "2026-07-04", title: "Facebook Ads Campaign", category: "Marketing", sub: "Digital Marketing", branch: "Head Office", dept: "Marketing", vendor: "Meta Platforms", method: "Credit Card", invoice: "INV-8832", amount: 50000, tax: 0, discount: 0, net: 50000, created: "Manager 2", approved: "-", status: "pending", attachment: 1, remarks: "July campaign",
+        docs: [
+            { name: "Invoice.jpg", url: "/images/docs/Invoice.jpg" },
+        ] },
+    { id: "EXP-1035", date: "2026-07-03", title: "Ambulance Fuel", category: "Transportation", sub: "Fuel", branch: "Uttara", dept: "Administration", vendor: "Padma Oil", method: "Cash", invoice: "INV-7712", amount: 12000, tax: 0, discount: 0, net: 12000, created: "Staff 4", approved: "Admin 1", status: "approved", attachment: 1, remarks: "Monthly fuel",
+        docs: [
+            { name: "Prescription.jpg", url: "/images/docs/Prescription.jpg" },
+        ] },
+    { id: "EXP-1034", date: "2026-07-02", title: "Cloud Hosting AWS", category: "IT", sub: "Cloud Hosting", branch: "Head Office", dept: "IT", vendor: "AWS", method: "Online Payment", invoice: "INV-6601", amount: 85000, tax: 0, discount: 5, net: 80750, created: "Admin 2", approved: "Super Admin", status: "approved", attachment: 1, remarks: "Monthly bill",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+        ] },
+    { id: "EXP-1033", date: "2026-07-01", title: "Office Rent - July", category: "Administrative", sub: "Office Rent", branch: "Mirpur", dept: "Accounts", vendor: "RealState BD", method: "Bank Transfer", invoice: "INV-5590", amount: 120000, tax: 0, discount: 0, net: 120000, created: "Admin 1", approved: "-", status: "rejected", attachment: 3, remarks: "Duplicate entry",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+            { name: "Invoice.jpg", url: "/images/docs/Invoice.jpg" },
+            { name: "Prescription.jpg", url: "/images/docs/Prescription.jpg" },
+        ] },
+    { id: "EXP-1032", date: "2026-07-02", title: "Cloud Hosting AWS", category: "IT", sub: "Cloud Hosting", branch: "Head Office", dept: "IT", vendor: "AWS", method: "Online Payment", invoice: "INV-6601", amount: 85000, tax: 0, discount: 5, net: 80750, created: "Admin 2", approved: "Super Admin", status: "approved", attachment: 1, remarks: "Monthly bill",
+        docs: [
+            { name: "Invoice.pdf", url: "/images/docs/Invoice.pdf" },
+        ] },
 ];
 
 const initialCategories = [
@@ -109,18 +157,41 @@ const branches = [
 ];
 
 const initialVendors = [
-    { name: "MedSupply Co.", contact: "support@medsupply.com", paid: 1250000, outstanding: 145000, rating: 4.8, status: "active" },
-    { name: "Meta Platforms", contact: "billing@meta.com", paid: 450000, outstanding: 50000, rating: 5.0, status: "active" },
-    { name: "AWS", contact: "aws@amazon.com", paid: 850000, outstanding: 0, rating: 4.9, status: "active" },
-    { name: "Padma Oil", contact: "sales@padmaoil.com", paid: 120000, outstanding: 12000, rating: 4.2, status: "active" },
-    { name: "RealState BD", contact: "rent@realstate.com", paid: 1200000, outstanding: 120000, rating: 4.5, status: "warning" },
+    { name: "MedSupply Co.", contact: "support@medsupply.com", phone: "+880 1711-000001", address: "Dhanmondi, Dhaka", category: "Laboratory", paymentTerms: "Net 30", paid: 1250000, outstanding: 145000,  status: "active",
+        profileImage: "/images/vendor/01.jpg",
+        docs: [
+            { name: "trade-license.jpg", url: "/images/docs/trade-license.jpg" },
+            { name: "Agreement.jpg", url: "/images/docs/Agreement.jpg" },
+        ] },
+    { name: "Meta Platforms", contact: "billing@meta.com", phone: "+1 650-543-4800", address: "Menlo Park, USA", category: "Digital Marketing", paymentTerms: "Immediate", paid: 450000, outstanding: 50000,  status: "active",
+        profileImage: "/images/vendor/02.jpg",
+        docs: [
+            { name: "Agreement.jpg", url: "/images/docs/Agreement.jpg" },
+        ] },
+    { name: "AWS", contact: "aws@amazon.com", phone: "+1 206-266-1000", address: "Seattle, USA", category: "Cloud Hosting", paymentTerms: "Net 15", paid: 850000, outstanding: 0,  status: "active",
+        profileImage: "/images/vendor/03.jpg",
+        docs: [
+            { name: "License.pdf", url: "/images/docs/License.pdf" },
+        ] },
+    { name: "Padma Oil", contact: "sales@padmaoil.com", phone: "+880 1911-000002", address: "Uttara, Dhaka", category: "Fuel Supply", paymentTerms: "Net 30", paid: 120000, outstanding: 12000,  status: "active",
+        profileImage: "/images/vendor/04.jpg",
+        docs: [
+            { name: "trade-license.jpg", url: "/images/docs/trade-license.jpg" },
+        ] },
+    { name: "RealState BD", contact: "rent@realstate.com", phone: "+880 1811-000003", address: "Mirpur, Dhaka", category: "Property Rental", paymentTerms: "Net 60", paid: 1200000, outstanding: 120000,  status: "warning",
+        profileImage: "/images/vendor/05.jpg",
+        docs: [
+            { name: "License.pdf", url: "/images/docs/License.pdf" },
+            { name: "trade-license.jpg", url: "/images/docs/trade-license.jpg" },
+            { name: "Agreement.jpg", url: "/images/docs/Agreement.jpg" },
+        ] },
 ];
 
 const approvals = [
     { id: "EXP-1041", title: "Facebook Ads Campaign", amount: 50000, requester: "Manager 2", date: "2h ago", status: "pending" },
     { id: "EXP-1045", title: "New MRI Machine Part", amount: 250000, requester: "Admin 3", date: "5h ago", status: "pending" },
-    { id: "EXP-1039", title: "Cloud Hosting AWS", amount: 85000, requester: "Admin 2", date: "1d ago", status: "approved" },
-    { id: "EXP-1038", title: "Office Rent - July", amount: 120000, requester: "Admin 1", date: "2d ago", status: "rejected" },
+    { id: "EXP-1039", title: "Cloud Hosting AWS", amount: 85000, requester: "Admin 2", date: "1d ago", status: "pending" },
+    { id: "EXP-1038", title: "Office Rent - July", amount: 120000, requester: "Admin 1", date: "2d ago", status: "pending" },
 ];
 
 const documents = [
@@ -255,6 +326,12 @@ export default function ExpenseManagementPage() {
     const [modal, setModal] = useState(null); // 'expense' | 'category' | 'vendor' | null
     const [editingExpense, setEditingExpense] = useState(null); // row object being edited, null = "Add" mode
     const [viewingExpense, setViewingExpense] = useState(null); // row object being viewed in details modal
+    const [showAllExpenses, setShowAllExpenses] = useState(false);
+    const [viewingDocs, setViewingDocs] = useState(null); // { documents: [...], index: number } | null
+    const [editingVendor, setEditingVendor] = useState(null); // vendor object being edited, null = "Add" mode
+    const [viewingVendor, setViewingVendor] = useState(null); // vendor object being viewed in details modal
+    const [categoryDetails, setCategoryDetails] = useState({}); // { [categoryName]: { type, budgetHead, description, status } }
+const [editingCategory, setEditingCategory] = useState(null); // original category name being edited, null = "Add" mode
 
     const [approvalRequests, setApprovalRequests] = useState(approvals);
     const [requestChangesTarget, setRequestChangesTarget] = useState(null);
@@ -264,8 +341,18 @@ export default function ExpenseManagementPage() {
     const deptNames = [...new Set(departments.map((d) => d.name))];
     const vendorNames = vendors.map((v) => v.name);
 
-    const filteredExpenses = useMemo(() => {
+    const pendingApprovals = approvalRequests.filter((a) => a.status === "pending");
+
+    const currentMonthExpenses = useMemo(() => {
+        const now = new Date();
         return expenses.filter((row) => {
+            const d = new Date(row.date);
+            return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+        });
+    }, [expenses]);
+
+    const filteredExpenses = useMemo(() => {
+        return currentMonthExpenses.filter((row) => {
             const q = search.trim().toLowerCase();
             if (q && !(`${row.id} ${row.title} ${row.vendor} ${row.invoice}`.toLowerCase().includes(q))) return false;
             if (filters.category && row.category !== filters.category) return false;
@@ -278,7 +365,7 @@ export default function ExpenseManagementPage() {
             if (filters.to && row.date > filters.to) return false;
             return true;
         });
-    }, [expenses, search, filters]);
+    }, [currentMonthExpenses, search, filters]);
 
     const clearFilters = () => setFilters({ category: "", branch: "", department: "", vendor: "", status: "", method: "", from: "", to: "" });
     const activeFilterCount = Object.values(filters).filter(Boolean).length;
@@ -357,19 +444,76 @@ export default function ExpenseManagementPage() {
         }, ...prev]);
     };
     const handleSaveCategory = (form) => {
-        if (form.name && !categories.includes(form.name)) {
+        if (!form.name) return;
+
+        if (editingCategory) {
+            // ── UPDATE existing category (supports rename) ──
+            setCategories((prev) => prev.map((c) => (c === editingCategory ? form.name : c)));
+            setCategoryDetails((prev) => {
+                const next = { ...prev };
+                delete next[editingCategory];
+                next[form.name] = {
+                    type: form.type,
+                    description: form.description,
+                    status: form.status,
+                };
+                return next;
+            });
+            setEditingCategory(null);
+            return;
+        }
+
+        // ── ADD new category (existing behavior) ──
+        if (!categories.includes(form.name)) {
             setCategories((prev) => [form.name, ...prev]);
+            setCategoryDetails((prev) => ({
+                ...prev,
+                [form.name]: {
+                    type: form.type,
+                    description: form.description,
+                    status: form.status,
+                },
+            }));
         }
     };
 
     const handleSaveVendor = (form) => {
+        if (editingVendor) {
+            // ── UPDATE existing vendor ──
+            setVendors((prev) => prev.map((v) =>
+                v.name === editingVendor.name
+                    ? {
+                        ...v,
+                        name: form.name,
+                        contact: form.email || v.contact,
+                        phone: form.phone,
+                        address: form.address,
+                        category: form.category,
+                        paymentTerms: form.paymentTerms,
+                        outstanding: parseFloat(form.openingBalance) || v.outstanding,
+                        status: form.status?.toLowerCase() || v.status,
+                        profileImage: form.profileImage || v.profileImage,
+                    }
+                    : v
+            ));
+            setEditingVendor(null);
+            return;
+        }
+
+        // ── ADD new vendor (existing behavior) ──
         setVendors((prev) => [{
             name: form.name,
             contact: form.email || "-",
+            phone: form.phone || "",
+            address: form.address || "",
+            category: form.category || "",
+            paymentTerms: form.paymentTerms || "Net 30",
             paid: 0,
             outstanding: parseFloat(form.openingBalance) || 0,
             rating: 0,
             status: form.status?.toLowerCase() || "active",
+            profileImage: form.profileImage || null,
+            docs: [],
         }, ...prev]);
     };
 
@@ -402,6 +546,11 @@ export default function ExpenseManagementPage() {
         setApprovalRequests((prev) => prev.filter((a) => a.id !== approvalId));
     };
 
+    const openDocuments = (docs, startIdx = 0) => {
+        if (!docs || docs.length === 0) return;
+        setViewingDocs({ documents: docs, index: startIdx });
+    };
+
     const openRequestChanges = (approvalId) => {
         setRequestChangesTarget(approvalId);
         setRequestChangesNote("");
@@ -415,8 +564,8 @@ export default function ExpenseManagementPage() {
     return (
         <div className="em-page">
             <main className="em-main">
-                {/* ─── STICKY HEADER ─────────────────────────────────── */}
-                <header className="em-sticky-header">
+                {/* ─── HEADER ─────────────────────────────────── */}
+                <header className="em-header">
                     <div className="em-header-top">
                         <div className="em-header-title-group">
                             <h1 className="em-page-title">Expenses Management</h1>
@@ -436,10 +585,9 @@ export default function ExpenseManagementPage() {
                         <button className="em-btn em-btn-primary" onClick={() => { setEditingExpense(null); setModal("expense"); }}>
                             <Plus size={14} /> Add Expense
                         </button>
-                        <button className="em-btn em-btn-ghost" onClick={() => setModal("category")}><Layers size={14} /> Add Category</button>
-                        <button className="em-btn em-btn-ghost" onClick={() => setModal("vendor")}><Users size={14} /> Add Vendor</button>
+                        <button className="em-btn em-btn-ghost" onClick={() => { setEditingCategory(null); setModal("category"); }}><Layers size={14} /> Add Category</button>
+                        <button className="em-btn em-btn-ghost" onClick={() => { setEditingVendor(null); setModal("vendor"); }}><Users size={14} /> Add Vendor</button>
                         <button className="em-btn em-btn-ghost"><FileText size={14} /> Export PDF</button>
-                        <button className="em-btn em-btn-ghost"><Download size={14} /> Export Excel</button>
                         <button className="em-btn em-btn-ghost"><Receipt size={14} /> Print</button>
                     </div>
                 </header>
@@ -488,7 +636,7 @@ export default function ExpenseManagementPage() {
                     <div className="em-grid-4">
                         <div className="em-card">
                             <h3 className="em-card-title">Yearly Comparison</h3>
-                            <div className="em-chart-bar" style={{ height: 140 }}>
+                            <div className="em-chart-bar em-chart-bar-yearly">
                                 {yearlyComparison.map((y, i) => (
                                     <div key={i} className="em-bar-col">
                                         <div className="em-bar" style={{ height: `${(y.value / 50) * 100}%`, background: "linear-gradient(to top, #059669, #6ee7b7)" }} />
@@ -541,7 +689,10 @@ export default function ExpenseManagementPage() {
                                 <button className={`em-btn em-btn-ghost ${activeFilterCount ? "em-btn-active" : ""}`} onClick={() => setShowFilters((s) => !s)}>
                                     <Filter size={14} /> Filters {activeFilterCount > 0 && <span className="em-filter-count">{activeFilterCount}</span>}
                                 </button>
-                                <button className="em-btn em-btn-ghost"><Download size={14} /> Export</button>
+                                <button className="em-btn em-btn-ghost"><Download size={14} /> Export Excel</button>
+                                <button className="em-btn em-btn-primary em-view-all-desktop" onClick={() => setShowAllExpenses(true)}>
+                                    <Eye size={14} /> View All Expenses
+                                </button>
                             </div>
                         }
                     />
@@ -612,19 +763,35 @@ export default function ExpenseManagementPage() {
                             <div className="em-bulk-actions">
                                 <button className="em-btn em-btn-success" onClick={() => bulkSetStatus("approved")}><CheckCircle size={14} /> Bulk Approve</button>
                                 <button className="em-btn em-btn-danger" onClick={() => bulkSetStatus("rejected")}><XCircle size={14} /> Bulk Reject</button>
-                                <button className="em-btn em-btn-ghost"><Download size={14} /> Export Selected</button>
+                                <button className="em-btn em-btn-ghost"><Download size={14} /> Export Excel Selected</button>
                                 <button className="em-btn em-btn-outline-danger" onClick={bulkDelete}><Trash2 size={14} /> Bulk Delete</button>
                                 <button className="em-btn em-btn-ghost" onClick={() => setSelectedRows([])}><X size={14} /> Clear</button>
                             </div>
                         </div>
                     )}
 
-                    <div className="em-table-wrapper">
-                        <table className="em-table">
+                    <div className="em-table-wrapper em-table-scroll-limit em-table-wrapper-noscroll">
+                        <table className="em-table em-table-fluid">
+                            <colgroup>
+                                <col style={{ width: "2%" }} />
+                                <col style={{ width: "6%" }} />
+                                <col style={{ width: "7%" }} />
+                                <col style={{ width: "15%" }} />
+                                <col style={{ width: "8%" }} />
+                                <col style={{ width: "7%" }} />
+                                <col style={{ width: "8%" }} />
+                                <col style={{ width: "6%" }} />
+                                <col style={{ width: "8%" }} />
+                                <col style={{ width: "7%" }} />
+                                <col style={{ width: "8%" }} />
+                                <col style={{ width: "7%" }} />
+                                <col style={{ width: "5%" }} />
+                                <col style={{ width: "6%" }} />
+                            </colgroup>
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" checked={selectedRows.length === filteredExpenses.length && filteredExpenses.length > 0} onChange={toggleAll} /></th>
-                                    <th>Expense ID</th><th>Date</th><th>Title</th><th>Category</th><th>Branch</th>
+                                    <th>Exp: ID</th><th>Date</th><th>Title</th><th>Category</th><th>Branch</th>
                                     <th>Method</th><th>Invoice</th>
                                     <th>Net Amount</th>
                                     <th>Created By</th><th>Approved By</th><th>Status</th><th>Docs</th><th>Actions</th>
@@ -645,7 +812,17 @@ export default function ExpenseManagementPage() {
                                         <td>{row.created}</td>
                                         <td>{row.approved}</td>
                                         <td><StatusBadge status={row.status} /></td>
-                                        <td><span className="em-attachment-badge"><FileCheck size={12} /> {row.attachment}</span></td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className="em-attachment-badge em-attachment-btn"
+                                                onClick={() => openDocuments(row.docs, 0)}
+                                                disabled={!row.docs?.length}
+                                                title={row.docs?.length ? "View attached documents" : "No documents attached"}
+                                            >
+                                                <FileCheck size={12} /> {row.docs?.length ?? row.attachment}
+                                            </button>
+                                        </td>
                                         <td>
                                             <div className="em-row-actions">
                                                 <button title="View" onClick={() => setViewingExpense(row)}><Eye size={14} /></button>
@@ -663,60 +840,83 @@ export default function ExpenseManagementPage() {
                             </tbody>
                         </table>
                     </div>
-                    <div className="em-pagination">
-                        <span>Showing {filteredExpenses.length} of 1,240 expenses</span>
-                        <div className="em-page-btns">
-                            <button className="em-page-btn" disabled><ChevronLeft size={14} /></button>
-                            <button className="em-page-btn active">1</button>
-                            <button className="em-page-btn">2</button>
-                            <button className="em-page-btn">3</button>
-                            <button className="em-page-btn"><ChevronRight size={14} /></button>
-                        </div>
-                    </div>
+                    <button className="em-btn em-btn-primary em-view-all-mobile" onClick={() => setShowAllExpenses(true)}>
+                        <Eye size={14} /> View All Expenses
+                    </button>
+                    <p className="em-card-footnote" style={{ marginTop: 1 }}>Showing this month's {filteredExpenses.length} expense(s). Scroll to see more.</p>
                 </motion.section>
 
-                {/* ─── SECTION 4: EXPENSE CATEGORIES ───────────────── */}
-                <motion.section className="em-section" variants={fadeUp} initial="hidden" animate="visible">
-                    <SectionHeader icon={Layers} title="Expense Categories" subtitle="Manage and organize expense classifications"
-                        action={<button className="em-btn em-btn-primary" onClick={() => setModal("category")}><Plus size={14} /> Add Category</button>} />
-                    <div className="em-categories-grid">
-                        {categories.map((cat, i) => (
-                            <div key={i} className="em-category-card">
-                                <span className="em-category-name">{cat}</span>
-                                <div className="em-category-actions">
-                                    <button title="Edit"><Edit size={12} /></button>
-                                    <button title="Delete" onClick={() => setCategories((prev) => prev.filter((c) => c !== cat))}><Trash2 size={12} /></button>
+                {/* ─── SECTION 4: APPROVAL MANAGEMENT ──────────────── */}
+                {pendingApprovals.length > 0 && (
+                    <motion.section className="em-section" variants={fadeUp} initial="hidden" animate="visible">
+                        <SectionHeader icon={CheckSquareIcon} title="Approval Management" subtitle="Review and process pending expense requests" />
+                        <div className="em-grid-4">
+                            {pendingApprovals.map((a) => (
+                                <div key={a.id} className={`em-card em-approval-card ${a.status}`}>
+                                    <div className="em-approval-header">
+                                        <span className="em-approval-id">{a.id}</span>
+                                        <StatusBadge status={a.status} />
+                                    </div>
+                                    <h4>{a.title}</h4>
+                                    <div className="em-approval-amount">৳{a.amount.toLocaleString()}</div>
+                                    <div className="em-approval-meta">
+                                        <span>Requested by: <strong>{a.requester}</strong></span>
+                                        <span>{a.date}</span>
+                                    </div>
+                                    <div className="em-approval-actions">
+                                        <button className="em-btn em-btn-success" onClick={() => handleApprovalDecision(a.id, "approved")}><CheckCircle size={14} /> Approve</button>
+                                        <button className="em-btn em-btn-danger" onClick={() => handleApprovalDecision(a.id, "rejected")}><XCircle size={14} /> Reject</button>
+                                        <button className="em-btn em-btn-ghost" onClick={() => openRequestChanges(a.id)}><Edit size={14} /> Request Changes</button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </motion.section>
+                            ))}
+                        </div>
+                    </motion.section>
+                )}
 
                 {/* ─── SECTION 5: VENDOR MANAGEMENT ────────────────── */}
                 <motion.section className="em-section" variants={fadeUp} initial="hidden" animate="visible">
                     <SectionHeader icon={Users} title="Vendor Management" subtitle="Track payments, outstanding bills, and vendor performance"
-                        action={<button className="em-btn em-btn-primary" onClick={() => setModal("vendor")}><Plus size={14} /> Add Vendor</button>} />
+                        action={<button className="em-btn em-btn-primary" onClick={() => { setEditingVendor(null); setModal("vendor"); }}><Plus size={14} /> Add Vendor</button>} />
                     <div className="em-table-wrapper">
                         <table className="em-table em-table-compact">
                             <thead>
                                 <tr>
-                                    <th>Vendor Name</th><th>Contact</th><th>Total Paid</th><th>Outstanding</th><th>Rating</th><th>Status</th><th>Actions</th>
+                                    <th>Vendor</th><th>Phone</th><th>Emial</th><th>Total Paid</th><th>Outstanding</th><th>Status</th><th>Docs</th><th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {vendors.map((v, i) => (
                                     <tr key={i}>
-                                        <td><strong>{v.name}</strong></td>
+                                        <td>
+                                            <div className="em-vendor-name-cell">
+                                                <div className="em-vendor-avatar">
+                                                    {v.profileImage ? <img src={v.profileImage} alt={v.name} /> : <Users size={14} />}
+                                                </div>
+                                                <strong>{v.name}</strong>
+                                            </div>
+                                        </td>
+                                        <td><a href={`tel:${v.phone}`}>{v.phone}</a></td>
                                         <td><a href={`mailto:${v.contact}`}>{v.contact}</a></td>
                                         <td>৳{v.paid.toLocaleString()}</td>
                                         <td className={v.outstanding > 0 ? "text-warning" : ""}>৳{v.outstanding.toLocaleString()}</td>
-                                        <td><span className="em-rating"><Star size={12} fill="#f59e0b" color="#f59e0b" /> {v.rating || "—"}</span></td>
                                         <td><StatusBadge status={v.status} /></td>
                                         <td>
+                                            <button
+                                                type="button"
+                                                className="em-attachment-badge em-attachment-btn"
+                                                onClick={() => openDocuments(v.docs, 0)}
+                                                disabled={!v.docs?.length}
+                                                title={v.docs?.length ? "View attached documents" : "No documents attached"}
+                                            >
+                                                <FileCheck size={12} /> {v.docs?.length ?? 0}
+                                            </button>
+                                        </td>
+                                        <td>
                                             <div className="em-row-actions">
-                                                <button><Eye size={14} /></button>
-                                                <button><Edit size={14} /></button>
-                                                <button onClick={() => setVendors((prev) => prev.filter((x) => x.name !== v.name))}><Trash2 size={14} /></button>
+                                                <button title="View" onClick={() => setViewingVendor(v)}><Eye size={14} /></button>
+                                                <button title="Edit" onClick={() => { setEditingVendor(v); setModal("vendor"); }}><Edit size={14} /></button>
+                                                <button title="Delete" onClick={() => setVendors((prev) => prev.filter((x) => x.name !== v.name))}><Trash2 size={14} /></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -726,29 +926,18 @@ export default function ExpenseManagementPage() {
                     </div>
                 </motion.section>
 
-                {/* ─── SECTION 6: APPROVAL MANAGEMENT ──────────────── */}
+                {/* ─── SECTION 6: EXPENSE CATEGORIES ───────────────── */}
                 <motion.section className="em-section" variants={fadeUp} initial="hidden" animate="visible">
-                    <SectionHeader icon={CheckSquareIcon} title="Approval Management" subtitle="Review and process pending expense requests" />
-                    <div className="em-grid-4">
-                        {approvalRequests.map((a) => (
-                            <div key={a.id} className={`em-card em-approval-card ${a.status}`}>
-                                <div className="em-approval-header">
-                                    <span className="em-approval-id">{a.id}</span>
-                                    <StatusBadge status={a.status} />
+                    <SectionHeader icon={Layers} title="Expense Categories" subtitle="Manage and organize expense classifications"
+                        action={<button className="em-btn em-btn-primary" onClick={() => { setEditingCategory(null); setModal("category"); }}><Plus size={14} /> Add Category</button>} />
+                    <div className="em-categories-grid">
+                        {categories.map((cat, i) => (
+                            <div key={i} className="em-category-card">
+                                <span className="em-category-name">{cat}</span>
+                                <div className="em-category-actions">
+                                    <button title="Edit" onClick={() => { setEditingCategory(cat); setModal("category"); }}><Edit size={12} /></button>
+                                    <button title="Delete" onClick={() => setCategories((prev) => prev.filter((c) => c !== cat))}><Trash2 size={12} /></button>
                                 </div>
-                                <h4>{a.title}</h4>
-                                <div className="em-approval-amount">৳{a.amount.toLocaleString()}</div>
-                                <div className="em-approval-meta">
-                                    <span>Requested by: <strong>{a.requester}</strong></span>
-                                    <span>{a.date}</span>
-                                </div>
-                                {a.status === "pending" && (
-                                    <div className="em-approval-actions">
-                                        <button className="em-btn em-btn-success" onClick={() => handleApprovalDecision(a.id, "approved")}><CheckCircle size={14} /> Approve</button>
-                                        <button className="em-btn em-btn-danger" onClick={() => handleApprovalDecision(a.id, "rejected")}><XCircle size={14} /> Reject</button>
-                                        <button className="em-btn em-btn-ghost" onClick={() => openRequestChanges(a.id)}><Edit size={14} /> Request Changes</button>
-                                    </div>
-                                )}
                             </div>
                         ))}
                     </div>
@@ -769,14 +958,18 @@ export default function ExpenseManagementPage() {
             />
             <AddCategoryModal
                 open={modal === "category"}
-                onClose={() => setModal(null)}
+                onClose={() => { setModal(null); setEditingCategory(null); }}
                 onSave={handleSaveCategory}
+                initialData={editingCategory ? { name: editingCategory, ...categoryDetails[editingCategory] } : null}
             />
+            
             <AddVendorModal
                 open={modal === "vendor"}
-                onClose={() => setModal(null)}
+                onClose={() => { setModal(null); setEditingVendor(null); }}
                 onSave={handleSaveVendor}
+                initialData={editingVendor}
             />
+
             <ExpenseDetailsModal
                 open={!!viewingExpense}
                 onClose={() => setViewingExpense(null)}
@@ -786,6 +979,40 @@ export default function ExpenseManagementPage() {
                     setEditingExpense(row);
                     setModal("expense");
                 }}
+                onOpenDocument={(docs, idx) => openDocuments(docs, idx)}
+            />
+
+            <DocumentViewerModal
+                open={!!viewingDocs}
+                onClose={() => setViewingDocs(null)}
+                documents={viewingDocs?.documents || []}
+                startIndex={viewingDocs?.index || 0}
+            />
+
+            <VendorDetailsModal
+                open={!!viewingVendor}
+                onClose={() => setViewingVendor(null)}
+                vendor={viewingVendor}
+                onEdit={(v) => {
+                    setViewingVendor(null);
+                    setEditingVendor(v);
+                    setModal("vendor");
+                }}
+                onOpenDocument={(docs, idx) => openDocuments(docs, idx)}
+            />
+
+            <AllExpensesModal
+                open={showAllExpenses}
+                onClose={() => setShowAllExpenses(false)}
+                expenses={expenses}
+                categories={categories}
+                branchNames={branchNames}
+                deptNames={deptNames}
+                vendorNames={vendorNames}
+                onView={(row) => { setShowAllExpenses(false); setViewingExpense(row); }}
+                onEdit={(row) => { setShowAllExpenses(false); setEditingExpense(row); setModal("expense"); }}
+                onDelete={(id) => setExpenses((prev) => prev.filter((e) => e.id !== id))}
+                onOpenDocument={(docs, idx) => openDocuments(docs, idx)}
             />
 
             {requestChangesTarget && (

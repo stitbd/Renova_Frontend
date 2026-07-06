@@ -1,8 +1,8 @@
 // app/super-admin/finance/expenses/components/AddVendorModal.jsx
 "use client";
 
-import { useState } from "react";
-import { Save, Users, Upload } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Save, Users, Upload, User } from "lucide-react";
 import Modal from "./Modal";
 
 const EMPTY = {
@@ -10,29 +10,76 @@ const EMPTY = {
     category: "", paymentTerms: "Net 30", openingBalance: "", status: "Active",
 };
 
-export default function AddVendorModal({ open, onClose, onSave }) {
+export default function AddVendorModal({ open, onClose, onSave, initialData = null }) {
     const [form, setForm] = useState(EMPTY);
     const [doc, setDoc] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
+
+    useEffect(() => {
+        if (!open) return;
+        if (initialData) {
+            const statusCap = initialData.status
+                ? initialData.status.charAt(0).toUpperCase() + initialData.status.slice(1)
+                : "Active";
+            setForm({
+                name: initialData.name || "",
+                contactPerson: initialData.contactPerson || "",
+                email: initialData.email || initialData.contact || "",
+                phone: initialData.phone || "",
+                address: initialData.address || "",
+                category: initialData.category || "",
+                paymentTerms: initialData.paymentTerms || "Net 30",
+                openingBalance: initialData.outstanding ?? "",
+                status: statusCap,
+            });
+            setProfileImage(initialData.profileImage || null);
+            setDoc(null);
+        } else {
+            setForm(EMPTY);
+            setProfileImage(null);
+            setDoc(null);
+        }
+    }, [open, initialData]);
+
     const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+
+    const handleProfilePick = (e) => {
+        const file = e.target.files?.[0];
+        if (file) setProfileImage(URL.createObjectURL(file));
+    };
+
+    const resetAll = () => { setForm(EMPTY); setDoc(null); setProfileImage(null); };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave?.({ ...form, document: doc });
-        setForm(EMPTY);
-        setDoc(null);
+        onSave?.({ ...form, document: doc, profileImage });
+        resetAll();
         onClose?.();
     };
 
     return (
         <Modal
             open={open}
-            onClose={() => { setForm(EMPTY); onClose?.(); }}
-            title="Add Vendor"
-            subtitle="Onboard a new supplier or service provider"
+            onClose={() => { resetAll(); onClose?.(); }}
+            title={initialData ? "Edit Vendor" : "Add Vendor"}
+            subtitle={initialData ? "Update supplier or service provider details" : "Onboard a new supplier or service provider"}
             icon={Users}
             width={640}
         >
             <form className="em-form-grid" onSubmit={handleSubmit}>
+                <div className="em-form-group span-3">
+                    <label>Vendor Profile Image</label>
+                    <div className="em-vendor-avatar-upload">
+                        <div className="em-vendor-avatar-preview">
+                            {profileImage ? <img src={profileImage} alt="Vendor profile" /> : <User size={24} />}
+                        </div>
+                        <label className="em-btn em-btn-ghost" htmlFor="vendor-profile-image">
+                            <Upload size={14} /> {profileImage ? "Change Photo" : "Upload Photo"}
+                        </label>
+                        <input id="vendor-profile-image" type="file" accept="image/*" hidden onChange={handleProfilePick} />
+                    </div>
+                </div>
+
                 <div className="em-form-group span-2">
                     <label>Vendor Name</label>
                     <input required value={form.name} onChange={set("name")} type="text" placeholder="e.g., MedSupply Co." />
@@ -93,8 +140,8 @@ export default function AddVendorModal({ open, onClose, onSave }) {
                 </div>
 
                 <div className="em-form-group span-3 em-form-actions">
-                    <button type="button" className="em-btn em-btn-ghost" onClick={() => { setForm(EMPTY); onClose?.(); }}>Cancel</button>
-                    <button type="submit" className="em-btn em-btn-primary"><Save size={14} /> Save Vendor</button>
+                    <button type="button" className="em-btn em-btn-ghost" onClick={() => { resetAll(); onClose?.(); }}>Cancel</button>
+                    <button type="submit" className="em-btn em-btn-primary"><Save size={14} /> {initialData ? "Update Vendor" : "Save Vendor"}</button>
                 </div>
             </form>
         </Modal>

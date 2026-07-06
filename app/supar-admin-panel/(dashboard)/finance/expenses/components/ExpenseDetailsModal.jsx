@@ -4,6 +4,7 @@
 import {
     Receipt, Calendar, Tag, Layers, Building2, Briefcase, Users,
     CreditCard, FileCheck, UserCog, CheckCircle2, MessageSquare, Edit,
+    FileText, Image as ImageIcon,
 } from "lucide-react";
 import Modal from "./Modal";
 
@@ -27,7 +28,7 @@ const DetailItem = ({ icon: Icon, label, value }) => (
     </div>
 );
 
-export default function ExpenseDetailsModal({ open, onClose, expense, onEdit }) {
+export default function ExpenseDetailsModal({ open, onClose, expense, onEdit, onOpenDocument }) {
     if (!expense) return null;
 
     return (
@@ -90,6 +91,26 @@ export default function ExpenseDetailsModal({ open, onClose, expense, onEdit }) 
                         <span>৳{Number(expense.net || 0).toLocaleString()}</span>
                     </div>
                 </div>
+
+                {/* ── Attached Documents ── */}
+                {expense.docs && expense.docs.length > 0 && (
+                    <div className="em-details-docs">
+                        <span className="em-detail-label">Attached Documents ({expense.docs.length})</span>
+                        <div className="em-doc-chip-row">
+                            {expense.docs.map((doc, i) => (
+                                <button
+                                    type="button"
+                                    key={i}
+                                    className="em-doc-chip-btn"
+                                    onClick={() => onOpenDocument?.(expense.docs, i)}
+                                >
+                                    {doc.url.toLowerCase().endsWith(".pdf") ? <FileText size={14} /> : <ImageIcon size={14} />}
+                                    <span>{doc.name}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* ── Remarks ── */}
                 <div className="em-details-remarks">

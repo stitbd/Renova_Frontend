@@ -1,15 +1,29 @@
 // app/super-admin/finance/expenses/components/AddCategoryModal.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Save, Layers } from "lucide-react";
 import Modal from "./Modal";
 
-const EMPTY = { name: "", type: "Operational", budgetHead: "", description: "", status: "Enabled" };
+const EMPTY = { name: "", type: "Operational", description: "", status: "Enabled" };
 
-export default function AddCategoryModal({ open, onClose, onSave }) {
+export default function AddCategoryModal({ open, onClose, onSave, initialData = null }) {
     const [form, setForm] = useState(EMPTY);
     const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+
+    useEffect(() => {
+        if (!open) return;
+        if (initialData) {
+            setForm({
+                name: initialData.name || "",
+                type: initialData.type || "Operational",
+                description: initialData.description || "",
+                status: initialData.status || "Enabled",
+            });
+        } else {
+            setForm(EMPTY);
+        }
+    }, [open, initialData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,8 +36,8 @@ export default function AddCategoryModal({ open, onClose, onSave }) {
         <Modal
             open={open}
             onClose={() => { setForm(EMPTY); onClose?.(); }}
-            title="Add Expense Category"
-            subtitle="Create a new expense classification"
+            title={initialData ? "Edit Expense Category" : "Add Expense Category"}
+            subtitle={initialData ? "Update this expense classification" : "Create a new expense classification"}
             icon={Layers}
             width={520}
         >
@@ -49,16 +63,12 @@ export default function AddCategoryModal({ open, onClose, onSave }) {
                     </select>
                 </div>
                 <div className="em-form-group span-3">
-                    <label>Default Budget Head</label>
-                    <input value={form.budgetHead} onChange={set("budgetHead")} type="text" placeholder="Optional" />
-                </div>
-                <div className="em-form-group span-3">
                     <label>Description</label>
                     <textarea value={form.description} onChange={set("description")} rows="2" placeholder="Optional notes about this category"></textarea>
                 </div>
                 <div className="em-form-group span-3 em-form-actions">
                     <button type="button" className="em-btn em-btn-ghost" onClick={() => { setForm(EMPTY); onClose?.(); }}>Cancel</button>
-                    <button type="submit" className="em-btn em-btn-primary"><Save size={14} /> Save Category</button>
+                    <button type="submit" className="em-btn em-btn-primary"><Save size={14} /> {initialData ? "Update Category" : "Save Category"}</button>
                 </div>
             </form>
         </Modal>
