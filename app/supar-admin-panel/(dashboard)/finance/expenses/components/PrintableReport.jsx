@@ -29,7 +29,7 @@ const PrintableReport = ({
             <h2 className="em-print-section-title">Financial Overview{periodLabel ? ` — ${periodLabel}` : ""}</h2>
             <div className="em-print-kpi-grid">
                 {kpiMetrics.map((k, i) => (
-                    <div key={i} className="em-print-kpi-card">
+                    <div key={i} className={`em-print-kpi-card ${k.variant || ""}`}>
                         <span className="em-print-kpi-label">{k.label}</span>
                         <span className="em-print-kpi-value">{k.value}</span>
                         <span className={`em-print-kpi-trend ${k.up ? "up" : "down"}`}>{k.trend}</span>
