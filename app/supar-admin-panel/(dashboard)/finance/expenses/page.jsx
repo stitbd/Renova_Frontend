@@ -24,7 +24,8 @@ import {
     Microscope, Heart, Brain, Syringe, Ambulance, Home, UserCog,
     Receipt, BookOpen, Globe, Server, Megaphone, Wrench, Settings,
     Package, Layers, Award, Star, X, MoreHorizontal, Eye, Mail, Phone,
-    Truck, Send, TrendingUpIcon
+    Truck, Send, TrendingUpIcon, Stethoscope, TestTube, Pill, Droplet,
+    Flame, Wifi, GraduationCap, Scale
 } from "lucide-react";
 
 // ─── Custom SVG Icons ──────────────────────────────────────────
@@ -39,6 +40,16 @@ const CheckSquareIcon = ({ size = 16, color = "currentColor" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="9 11 12 14 22 4" />
         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+    </svg>
+);
+
+// Custom SVG — used where lucide-react has no exact matching icon (e.g. "Miscellaneous")
+const MiscellaneousIcon = ({ size = 16, color = "currentColor" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
     </svg>
 );
 
@@ -139,6 +150,33 @@ const initialCategories = [
     "Courier", "Electricity", "Water", "Gas", "Internet", "Software Subscription", "Marketing", "Office Rent",
     "Vehicle", "Ambulance", "Insurance", "Repair", "Training", "Legal", "Miscellaneous"
 ];
+
+// Maps each expense category to a distinct icon (label-dependent icons for KPI cards)
+const categoryIconMap = {
+    "Staff Salary": Users,
+    "Consultant Fee": UserCog,
+    "Laboratory Equipment": Microscope,
+    "Medical Equipment": Stethoscope,
+    "Medical Consumables": Package,
+    "Diagnostic Reagents": TestTube,
+    "Medicine Purchase": Pill,
+    "Sample Collection": Syringe,
+    "Courier": Send,
+    "Electricity": Zap,
+    "Water": Droplet,
+    "Gas": Flame,
+    "Internet": Wifi,
+    "Software Subscription": Server,
+    "Marketing": Megaphone,
+    "Office Rent": Home,
+    "Vehicle": Truck,
+    "Ambulance": Ambulance,
+    "Insurance": Shield,
+    "Repair": Wrench,
+    "Training": GraduationCap,
+    "Legal": Scale,
+    "Miscellaneous": MiscellaneousIcon,
+};
 
 const departments = [
     { name: "Laboratory", icon: Microscope, color: "#2563eb" },
@@ -242,7 +280,7 @@ const statusOptions = ["approved", "pending", "rejected"];
 const methodOptions = ["Bank Transfer", "Cash", "Credit Card", "Online Payment"];
 
 // ─── Dynamic Financial Overview KPI builder (today/monthly/yearly/custom) ───
-const kpiVariantCycle = ["primary", "secondary", "tertiary", "quaternary", "quinary", "senary", "septenary", "octonary", "nonary", "denary"];
+const kpiVariantCycle = ["secondary", "tertiary", "quaternary", "salary", "consultant", "lab", "medical", "consumables", "diagnostic", "medicine", "sample", "courier", "utility", "internet", "software", "marketing", "rent", "vehicle", "ambulance", "insurance", "repair", "training", "legal"];
 
 const formatKpiAmount = (n) => {
     return `৳${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -284,7 +322,8 @@ const buildOverviewKpis = (periodExpenses, period, allCategories) => {
     // Always show one card per category from the Expense Categories list, even if 0
     allCategories.forEach((cat, i) => {
         const val = categoryTotals[cat] || 0;
-        cards.push({ label: cat, value: formatKpiAmount(val), trend: "", up: true, icon: Package, variant: kpiVariantCycle[i % kpiVariantCycle.length] });
+        const CategoryIcon = categoryIconMap[cat] || Package;
+        cards.push({ label: cat, value: formatKpiAmount(val), trend: "", up: true, icon: CategoryIcon, variant: kpiVariantCycle[i % kpiVariantCycle.length] });
     });
 
     return cards;

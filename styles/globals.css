@@ -39,6 +39,126 @@
   --color-status-error: #ef4444;
   --color-status-info: #1E6FAF;
 
+  --color-primary-light: #eff6ff;
+  --color-primary-lighter: #dbeafe;
+  --color-primary-border: #bfdbfe;
+
+  --color-success: #4CAF50;
+  --color-success-light: #ecfdf5;
+  --color-success-alt: #428a26;
+  --color-success-alt-light: #dcfce7;
+  --color-success-alt-border: #bbf7d0;
+  --color-success-dark: #2e6a1a;
+
+  --color-warning-light: #fffbeb;
+
+  /* Card Colors */
+  --color-danger-light: #fef2f2;
+  --color-danger-alt: #dc2626;
+  --color-danger-alt-border: #fecaca;
+
+  --color-purple: #7c3aed;
+  --color-purple-light: #ede9fe;
+  --color-purple-border: #ddd6fe;
+
+  --color-orange: #ea580c;
+  --color-orange-light: #ffedd5;
+  --color-orange-border: #fed7aa;
+
+  --color-cyan: #0891b2;
+  --color-cyan-light: #cffafe;
+  --color-cyan-border: #a5f3fc;
+
+  --color-aqua: #00ffff;
+  --color-aqua-light: #e0ffff;
+  --color-aqua-border: #b0e0e6;
+
+  --color-blue: #3b82f6;
+  --color-blue-light: #eff6ff;
+  --color-blue-border: #bfdbfe;
+
+  --color-brown: #92400e;
+  --color-brown-light: #fef3c7;
+  --color-brown-border: #fcd34d;
+
+  --color-coral: #f97316;
+  --color-coral-light: #ffedd5;
+  --color-coral-border: #fed7aa;
+
+  --color-crimson: #dc2626;
+  --color-crimson-light: #fef2f2;
+  --color-crimson-border: #fecaca;
+
+  --color-magenta: #d946ef;
+  --color-magenta-light: #fae8ff;
+  --color-magenta-border: #f0abfc;
+
+  --color-pink: #ec4899;
+  --color-pink-light: #fce7f3;
+  --color-pink-border: #fbcfe8;
+
+  --color-fuchsia: #c026d3;
+  --color-fuchsia-light: #fdf4ff;
+  --color-fuchsia-border: #f5d0fe;
+
+  --color-gold: #f59e0b;
+  --color-gold-light: #fef3c7;
+  --color-gold-border: #fcd34d;
+
+  --color-gray: #6b7280;
+  --color-gray-light: #f9fafb;
+  --color-gray-border: #d1d5db;
+
+  --color-indigo: #4f46e5;
+  --color-indigo-light: #eef2ff;
+  --color-indigo-border: #c7d2fe;
+
+  --color-ivory: #fefae0;
+  --color-ivory-light: #fffbeb;
+  --color-ivory-border: #fde68a;
+
+  --color-lime: #65a30d;
+  --color-lime-light: #f7fee7;
+  --color-lime-border: #d9f99d;
+
+  --color-maroon: #991b1b;
+  --color-maroon-light: #fef2f2;
+  --color-maroon-border: #fecaca;
+
+  --color-navy: #1e3a8a;
+  --color-navy-light: #eff6ff;
+  --color-navy-border: #bfdbfe;
+
+  --color-red: #dc2626;
+  --color-red-light: #fef2f2;
+  --color-red-border: #fecaca;
+
+  --color-silver: #9ca3af;
+  --color-silver-light: #f3f4f6;
+  --color-silver-border: #d1d5db;
+
+  --color-teal: #0d9488;
+  --color-teal-light: #f0fdfa;
+  --color-teal-border: #99f6e4;
+
+  --color-yellow: #eab308;
+  --color-yellow-light: #fefce8;
+  --color-yellow-border: #fde047;
+
+  --color-slate: #475569;
+  --color-slate-light: #f1f5f9;
+  --color-slate-border: #cbd5e1;
+  
+  --color-amber: #d97706;
+  --color-amber-light: #fffbeb;
+  --color-amber-border: #fde68a;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --gradient-authority: linear-gradient(135deg, var(--color-authority), var(--color-accent));
+  --gradient-hero: linear-gradient(135deg, var(--color-authority) 0%, var(--color-authority-dark) 40%, var(--color-authority-darker) 100%);
+  --gradient-green-section: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+
   /* Typography */
   --font-heading: 'Sen', sans-serif;
   --font-body: 'DM Sans', sans-serif;
@@ -60,6 +180,7 @@
   --font-weight-extrabold: 800;
 
   /* Spacing */
+  --space-0: 2px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -99,17 +220,12 @@
   --shadow-button-hover: 0 6px 24px rgba(66, 138, 38, 0.45);
   --shadow-cta: 0 4px 20px rgba(0, 0, 0, 0.15);
   --shadow-cta-hover: 0 8px 28px rgba(0, 0, 0, 0.2);
-
+ 
   /* Transitions */
   --transition-fast: all 0.2s ease;
   --transition-default: all 0.3s ease-in-out;
   --transition-hover: transform 0.3s ease, box-shadow 0.3s ease;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  --gradient-authority: linear-gradient(135deg, var(--color-authority), var(--color-accent));
-  --gradient-hero: linear-gradient(135deg, var(--color-authority) 0%, var(--color-authority-dark) 40%, var(--color-authority-darker) 100%);
-  --gradient-green-section: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
 }
 
 /* ─── 🔧 Base Resets ─────────────────────────────────────────── */
